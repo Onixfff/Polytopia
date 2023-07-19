@@ -13,21 +13,32 @@ public class GameBoardWindow : BaseWindow
 
     [SerializeField] private int mapSize = 16;
     [SerializeField] private float heightMultiplier = 0.01f;
-    
+    [SerializeField] private GameObject homePrefab;
+    public List<GameObject> GetAllTile()
+    {
+        return generatedTiles;
+    }
+
     [Button()]
     private void GenerateBoard()
     {
+        if(generatedTiles != null) RemoveBoard();
         generatedTiles ??= new List<GameObject>();
-        var width = mapSize / Mathf.Sqrt(mapSize);
+        var width = (int)(mapSize / Mathf.Sqrt(mapSize));
         for (var i = width; i > 0; i--)
         {
             for (var j = 0; j < width; j++)
             {
-                var tile = Instantiate(tilePrefab, tileParent);
+                var tileRectTransform = Instantiate(tilePrefab, tileParent);
                 
-                tile.anchoredPosition = new Vector2((i + j) * 50f, (i - j) * 31.5f);
-                tile.name = i + ", " + j;
-                generatedTiles.Add(tile.gameObject);
+                tileRectTransform.anchoredPosition = new Vector2((i + j) * 50f, (i - j) * 31.5f);
+                var ja = j + 1;
+                tileRectTransform.name = i + ", " + ja;
+                var tile = tileRectTransform.GetComponent<Tile>();
+                tile.pos = new Vector2Int(i, ja);
+                generatedTiles.Add(tileRectTransform.gameObject);
+                
+                SubscribeOnTile(tile);
             }
         }
     }
@@ -51,13 +62,23 @@ public class GameBoardWindow : BaseWindow
             tile.UnlockTile();
         }
     }
-    
     [Button()]
-    private void GenerateDecoration()
+    private void CreateHome()
     {
-        foreach (var tile in generatedTiles.Select(tile => tile.GetComponent<Tile>()))
-        {
-            tile.GetDecoration();
-        }
+        var randomTile = generatedTiles[Random.Range(0, generatedTiles.Count)];
+        var home = Instantiate(homePrefab, randomTile.transform);
+        var tile = randomTile.GetComponent<Tile>();
+        home.transform.position = tile.GetEnvironmentRectTransform().position;
+        tile.BuildHome();
+    }
+
+    private void SubscribeOnTile(Tile tile)
+    {
+        tile.OnClickOnTile += ShowTileInfo;
+    }
+
+    private void ShowTileInfo(string tileName)
+    {
+        Debug.Log(tileName);        
     }
 }
