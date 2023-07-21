@@ -1,19 +1,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class CivilisationController : MonoBehaviour
 {
     [SerializeField] private CivilisationInfo civilisationInfo;
+    [SerializeField] private Button civilisationButton;
     [SerializeField] private List<GameObject> unitPrefabs;
-    public Tile _homeTile;
+    public Tile homeTile;
     private GameBoardWindow _gameBoardWindow;
-    private void Awake()
+    private void Start()
     {
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
-        _homeTile = transform.parent.GetComponent<Tile>();
+        civilisationButton.onClick.AddListener(CivilisationOnClick);
+        homeTile = transform.parent.GetComponent<Tile>();
         SetupCivilisation();
         SpawnUnit(unitPrefabs[0]);
+        LevelManager.Instance.gameplayWindow.OnUnitSpawn += () =>
+        {
+            SpawnUnit(unitPrefabs[0]);
+        };
+    }
+
+    private void CivilisationOnClick()
+    {
+        homeTile.SelectTile();
+        LevelManager.Instance.gameplayWindow.ShowCivilisationButton();
     }
 
     private void SetupCivilisation()
@@ -50,9 +64,15 @@ public class CivilisationController : MonoBehaviour
 
     private void SpawnUnit(GameObject unitPrefab)
     {
-        var unit = Instantiate(unitPrefab, _homeTile.transform.parent);
-        unit.transform.SetSiblingIndex(unit.transform.parent.childCount);
-        var anchorPos = _homeTile.GetComponent<RectTransform>().anchoredPosition;
-        unit.GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorPos.x, anchorPos.y + 30);
+        if(!homeTile.IsTileFree()) 
+            return;
+        
+        var unitObject = Instantiate(unitPrefab, homeTile.transform.parent);
+        unitObject.transform.SetSiblingIndex(unitObject.transform.parent.childCount);
+        var anchorPos = homeTile.GetComponent<RectTransform>().anchoredPosition;
+        unitObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorPos.x, anchorPos.y + 30);
+        
+        var unit = unitObject.GetComponent<UnitController>();
+        unit.OccupyTile(homeTile);
     }
 }

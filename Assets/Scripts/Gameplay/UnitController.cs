@@ -5,13 +5,21 @@ using UnityEngine.UI;
 
 public class UnitController : MonoBehaviour
 {
+    public Tile occupiedTile;
+    public int rad = 1;
     [SerializeField] private Image unitImage;
     [SerializeField] private Button selectUnit;
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private float moveDuration = 2f;
-    private GameObject _occupiedTile;
     private bool _isSelected;
-    void Start()
+
+    public void OccupyTile(Tile tile)
+    {
+        tile.unitOnTile = gameObject;
+        occupiedTile = tile;
+    }
+    
+    private void Start()
     {
         unitImage.SetNativeSize();
         selectUnit.onClick.AddListener(SelectUnit);
@@ -27,18 +35,27 @@ public class UnitController : MonoBehaviour
     {
         if (pastO == gameObject)
         {
-            if (currO.TryGetComponent(out Tile tile))
+            if (currO != null && currO.TryGetComponent(out Tile tile))
             {
-                MoveToTile(tile.transform);
+                if(tile.IsTileFree() && tile.IsCanMoveTo())
+                    MoveToTile(tile);
+                if(!tile.IsTileFree() && tile.IsCanAttackTo())
+                    AttackUnitOnTile();
             }
             DeselectUnit();
         }
     }
 
-    private void MoveToTile(Transform to)
+    private void MoveToTile(Tile to)
     {
+        if(occupiedTile != null)
+        {
+            occupiedTile.unitOnTile = null;
+        }
+        OccupyTile(to);
+        
         var anchorPos = to.GetComponent<RectTransform>().anchoredPosition;
-        transform.SetParent(to.parent);
+        transform.SetParent(to.transform.parent);
         transform.SetSiblingIndex(transform.parent.childCount);
         var inValX = rectTransform.anchoredPosition.x;
         DOTween.To(() => inValX, x => inValX = x, anchorPos.x, moveDuration).OnUpdate((() =>
@@ -51,27 +68,28 @@ public class UnitController : MonoBehaviour
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, inValY);
         }));
     }
+
+    private void AttackUnitOnTile()
+    {
+        
+    }
     
     private void SelectUnit()
     {
         if (_isSelected)
         {
-            SelectOccupiedTile();
+            occupiedTile.SelectTile();
             return;
         }
         
         _isSelected = true;
+        LevelManager.Instance.currentName = "Warior";
         LevelManager.Instance.SelectObject(gameObject);
-        LevelManager.Instance.gameBoardWindow.GetAllTile();
+
     }
 
     private void DeselectUnit()
     {
         _isSelected = false;
-    }
-
-    private void SelectOccupiedTile()
-    {
-        Debug.Log("tileInfo");
     }
 }

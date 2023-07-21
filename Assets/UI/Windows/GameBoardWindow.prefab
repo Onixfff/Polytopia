@@ -33,8 +33,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1440, y: 2036.03}
+  m_AnchoredPosition: {x: 130, y: 0}
+  m_SizeDelta: {x: 2066, y: 1622.71}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4915098483655531128
 GameObject:
@@ -380,6 +380,6 @@ MonoBehaviour:
   generatedTiles: []
   tilePrefab: {fileID: 9052984237761949079, guid: 1760346af3469f940b15da02422d93f3, type: 3}
   tileParent: {fileID: 2061671586090657240}
-  mapSize: 16
+  mapSize: 64
   heightMultiplier: 0.01
   homePrefab: {fileID: 5697296062761007083, guid: bb5da2bfb2475ad4aadd81645304c540, type: 3}

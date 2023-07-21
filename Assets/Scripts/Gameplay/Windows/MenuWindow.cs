@@ -13,6 +13,7 @@ public class MenuWindow : BaseWindow
     private void LoadPlayScene()
     {
         WindowsManager.Instance.HideAllWindows();
+        WindowsManager.Instance.CreateWindow<GameBoardWindow>("GameBoardWindow").ShowWindow();
         WindowsManager.Instance.CreateWindow<GameplayWindow>("GameplayWindow").ShowWindow();
     }
 }
