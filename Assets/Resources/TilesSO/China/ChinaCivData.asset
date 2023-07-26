@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e356dc623519a24a8d8fbfa780ea66a, type: 3}
+  m_Name: ChinaCivData
+  m_EditorClassIdentifier: 
+  control: 1
+  civilName: China
+  civilColor: {r: 0.7075472, g: 0.377136, b: 0.377136, a: 1}
+  ground: {fileID: 21300000, guid: 2db910abdac9ad7488da68d33abe6a72, type: 3}
+  fruit: {fileID: 21300000, guid: 6a814775af8944941a83f3f59ab52b9d, type: 3}
+  tree: {fileID: 21300000, guid: 7aed32d6828bda54da6166f315101c8c, type: 3}
+  animal: {fileID: 21300000, guid: fc28a7f7eb923fa49a42803d83a73128, type: 3}
+  mountain: {fileID: 21300000, guid: 7dde154b0feb49345b3259aa568bace1, type: 3}
+  homeInfo: {fileID: 11400000, guid: 27cc87ca6f663644ea83d8638ef7201f, type: 2}
+  unitInfo:
+  - {fileID: 11400000, guid: e244ca73f6b58ab47b31f1ea4667011e, type: 2}
+  - {fileID: 11400000, guid: a78c2e9e2fa063348ac9f430715f8169, type: 2}
+  techInfo: {fileID: 11400000, guid: 98e583aec755f0447a2813360b540a42, type: 2}

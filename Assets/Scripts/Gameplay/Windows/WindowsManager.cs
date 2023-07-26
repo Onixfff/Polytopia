@@ -44,12 +44,15 @@ public class WindowsManager : SingletonPersistent<WindowsManager>
     public void CloseAllWindows()
     {
         if(_createdWindows == null) return;
-        
-        foreach (var window in _createdWindows)
+
+        var a = _createdWindows.Count;
+        for (var i = a - 1; i >= 0; i--)
         {
+            var window = _createdWindows[i];
             if (window.TryGetComponent(out BaseWindow windowController))
             {
-                windowController.CloseWindow();
+                _createdWindows.Remove(window);
+                window.CloseWindow();
             }
         }
     }

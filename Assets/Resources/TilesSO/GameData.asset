@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b46636363c54ca6b7640fea554cc43c, type: 3}
+  m_Name: GameData
+  m_EditorClassIdentifier: 
+  civilisationInfos:
+  - {fileID: 11400000, guid: 715557d38e026514f9e339bf4c5f589b, type: 2}
+  - {fileID: 11400000, guid: 33eef5dad280bb2459fbe0746aa08e5c, type: 2}
+  playerCivilisationInfos:
+  - {fileID: 11400000, guid: 04ffe0357263a414c9170c0ba86518b0, type: 2}
+  - {fileID: 11400000, guid: d8fed60508c3a2144b072ad0ba44510f, type: 2}
+  countPlayers: 2

@@ -33,8 +33,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 130, y: 0}
-  m_SizeDelta: {x: 2066, y: 1622.71}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 2280, y: 1280}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4915098483655531128
 GameObject:
@@ -155,8 +155,8 @@ RectTransform:
   m_GameObject: {fileID: 7821976947838905821}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6597377799759220201}
   m_Father: {fileID: 2333232739558206962}
@@ -380,6 +380,9 @@ MonoBehaviour:
   generatedTiles: []
   tilePrefab: {fileID: 9052984237761949079, guid: 1760346af3469f940b15da02422d93f3, type: 3}
   tileParent: {fileID: 2061671586090657240}
-  mapSize: 64
-  heightMultiplier: 0.01
-  homePrefab: {fileID: 5697296062761007083, guid: bb5da2bfb2475ad4aadd81645304c540, type: 3}
+  mapSize: 128
+  civilisationPrefab: {fileID: 5349752406243517778, guid: ebba51101a524ec409f2983c3efda5fd, type: 3}
+  defaultCiv: {fileID: 5349752406243517778, guid: 7e78944b78ec0f04987cefad6b44646d, type: 3}
+  village: {fileID: 8004393146802062611, guid: 7c4594764c3b69944850276018cdec26, type: 3}
+  gameInfo: {fileID: 11400000, guid: ebbdd51bcea3f2443be52158d15f64bf, type: 2}
+  waterFrequency: 30

@@ -42,6 +42,11 @@ public class BaseWindow : MonoBehaviour
     {
         _canvasGroup.blocksRaycasts = state;
     }
+    
+    public void OnTop()
+    {
+        transform.SetSiblingIndex(transform.parent.childCount);
+    }
 
     private void AddToWindowManager()
     {

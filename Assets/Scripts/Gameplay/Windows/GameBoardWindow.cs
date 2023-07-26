@@ -8,40 +8,28 @@ public class GameBoardWindow : BaseWindow
 {
     [SerializeField] private List<GameObject> boardPrefabs;
 
-    [SerializeField] private List<GameObject> generatedTiles;
+    [SerializeField] private List<Tile> generatedTiles;
     [SerializeField] private RectTransform tilePrefab;
     [SerializeField] private RectTransform tileParent;
 
     [SerializeField] private int mapSize = 16;
-    [SerializeField] private float heightMultiplier = 0.01f;
-    [SerializeField] private GameObject homePrefab;
+    [SerializeField] private CivilisationController civilisationPrefab;
+    [SerializeField] private CivilisationController defaultCiv;
+    [SerializeField] private Home village;
+    [SerializeField] private GameInfo gameInfo;
+    [SerializeField] private int waterFrequency = 10;
 
     private void Awake()
     {
         LevelManager.Instance.gameBoardWindow = this;
-        LevelManager.Instance.OnObjectSelect += (pastO, currO) =>
-        {
-            if (currO != null && currO.TryGetComponent(out UnitController unit) && pastO != currO)
-            {
-                var closeTiles = GetCloseTile(unit.occupiedTile, unit.rad);
-                foreach (var tile in generatedTiles.Select(tile => tile.GetComponent<Tile>()))
-                {
-                    tile.HideTargets();
-                }
-                foreach (var closeTile in closeTiles)
-                {
-                    closeTile.ShowBlueTarget();
-                }
 
-            }
-        };
-        
         GenerateBoard();
-        UnlockAllTile();
-        CreateHome();
+        GenerateWater();
+        CreateCivilisations();
+        GenerateVillage();
     }
 
-    public List<GameObject> GetAllTile()
+    public List<Tile> GetAllTile()
     {
         return generatedTiles;
     }
@@ -66,7 +54,6 @@ public class GameBoardWindow : BaseWindow
                 if(closeTile == null || closeTile.pos == tile.pos)
                     continue;
                 closeTiles.Add(closeTile);
-                Debug.Log(closeTile.pos);
             }
         }
         
@@ -77,7 +64,7 @@ public class GameBoardWindow : BaseWindow
     private void GenerateBoard()
     {
         if(generatedTiles != null) RemoveBoard();
-        generatedTiles ??= new List<GameObject>();
+        generatedTiles ??= new List<Tile>();
         var width = (int)(mapSize / Mathf.Sqrt(mapSize));
         for (var i = width; i > 0; i--)
         {
@@ -85,15 +72,108 @@ public class GameBoardWindow : BaseWindow
             {
                 var tileRectTransform = Instantiate(tilePrefab, tileParent);
                 
-                tileRectTransform.anchoredPosition = new Vector2((i + j) * 50f, (i - j) * 31.5f);
+                tileRectTransform.anchoredPosition = new Vector2(((i + j) * 50f) - Mathf.Sqrt(mapSize)*50, (i - j) * 31.5f);
                 var ja = j + 1;
                 tileRectTransform.name = i + ", " + ja;
                 var tile = tileRectTransform.GetComponent<Tile>();
                 tile.pos = new Vector2Int(i, ja);
-                generatedTiles.Add(tileRectTransform.gameObject);
+                generatedTiles.Add(tile);
                 
                 SubscribeOnTile(tile);
             }
+        }
+        
+        var tiles = generatedTiles.Select(tile => tile.GetComponent<Tile>()).ToList();
+        
+        foreach (var tile in tiles)
+        {
+            var a = Random.Range(0, 9);
+            switch (a)
+            {
+                case 0: 
+                    tile.SetPumpkinSprite(defaultCiv.civilisationInfo.fruitSprite, defaultCiv.civilisationInfo.fruitName);
+                    break;
+                case 1:
+                    tile.SetTreeSprite(defaultCiv.civilisationInfo.treeSprite, defaultCiv.civilisationInfo.treeName);
+                    break;
+                case 3:
+                    tile.SetTreeSprite(defaultCiv.civilisationInfo.treeSprite, defaultCiv.civilisationInfo.treeName);
+                    tile.SetAnimalSprite(defaultCiv.civilisationInfo.animalSprite, defaultCiv.civilisationInfo.animalName);
+                    break;
+                case 4:
+                    tile.SetAnimalSprite(defaultCiv.civilisationInfo.animalSprite, defaultCiv.civilisationInfo.animalName);
+                    break;
+                case 5:
+                    tile.SetMountainSprite(defaultCiv.civilisationInfo.mountainSprite, defaultCiv.civilisationInfo.mountainName);
+                    break;
+                default:
+                    tile.SetTreeSprite(null, defaultCiv.civilisationInfo.groundName);
+                    tile.SetPumpkinSprite(null, defaultCiv.civilisationInfo.groundName);
+                    tile.SetAnimalSprite(null, defaultCiv.civilisationInfo.groundName);
+                    break;
+            }
+        }
+        
+    }
+
+    [Button()]
+    private void GenerateWater()
+    {
+        foreach (var tile in generatedTiles)
+        {
+            if(!tile.IsTileFree())
+                continue;
+            
+            var a = Random.Range(0, waterFrequency);
+            switch (a)
+            {
+                case 0:
+                    tile.waterRad = 0;
+                    tile.CreateWaterArea();
+                    break;
+                case 1:
+                    tile.waterRad = 1;
+                    tile.CreateWaterArea();
+                    break;
+                case 2:
+                    tile.waterRad = 1;
+                    tile.CreateWaterArea();
+                    break;
+            }
+        }
+    }
+
+    [Button()]
+    private void CreateCivilisations()
+    {
+        var civilisation = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
+        civilisation.GetComponent<CivilisationController>().Init(gameInfo.playerCivilisationInfoLists[Random.Range(0, gameInfo.playerCivilisationInfoLists.Count)]);
+
+        for (var i = 0; i < gameInfo.playersCount - 1; i++)
+        {
+            var civilisation1 = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
+            civilisation1.GetComponent<CivilisationController>().AIInit(gameInfo.civilisationInfoLists[Random.Range(0, gameInfo.civilisationInfoLists.Count)]);
+        }
+    }
+    
+    [Button()]
+    private void GenerateVillage()
+    {
+        for (var i = 0; i < 6; i++)
+        {
+            Tile randomTile;
+            while (true)
+            {
+                randomTile = generatedTiles[Random.Range(0, generatedTiles.Count)];
+                if(randomTile.tileType == Tile.TileType.Water)
+                    continue;
+                if(randomTile.unitOnTile != null)
+                    continue;
+                break;
+            }
+
+            var home = Instantiate(village, randomTile.transform);
+            home.Init(null, randomTile);
         }
     }
     
@@ -102,7 +182,7 @@ public class GameBoardWindow : BaseWindow
     {
         for (var i = 0; i < generatedTiles.Count; i++)
         {
-            DestroyImmediate(generatedTiles[i]);
+            DestroyImmediate(generatedTiles[i].gameObject);
         }
         
         generatedTiles.Clear();
@@ -116,21 +196,12 @@ public class GameBoardWindow : BaseWindow
             tile.UnlockTile();
         }
     }
-    [Button()]
-    private void CreateHome()
-    {
-        var randomTile = generatedTiles[Random.Range(0, generatedTiles.Count)];
-        var home = Instantiate(homePrefab, randomTile.transform);
-        var tile = randomTile.GetComponent<Tile>();
-        home.transform.position = tile.GetEnvironmentRectTransform().position;
-        tile.BuildHome();
-    }
-
+    
     private void SubscribeOnTile(Tile tile)
     {
         tile.OnClickOnTile += ShowTileInfo;
     }
-
+ 
     private void ShowTileInfo(Tile tile)
     {
         //LevelManager.Instance.gameplayWindow.SetTileName(tile.GetTileName());
