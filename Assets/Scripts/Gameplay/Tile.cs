@@ -74,7 +74,6 @@ public class Tile : MonoBehaviour
     {
         fog.SetActive(false);
         groundImage.enabled = true;
-        mountainTileImage.gameObject.SetActive(true);
     }
 
     public string GetTileName()
@@ -174,10 +173,10 @@ public class Tile : MonoBehaviour
     public void BuildHome(Home home)
     {
         homeOnTile = home;
-        treeTileImage.enabled = false;
-        fruitTileImage.enabled = false;
-        animalTileImage.enabled = false;
-        mountainTileImage.enabled = false;
+        Destroy(treeTileImage.gameObject); 
+        Destroy(fruitTileImage.gameObject); 
+        Destroy(animalTileImage.gameObject); 
+        Destroy(mountainTileImage.gameObject); 
         groundImage.sprite = _owner.owner.civilisationInfo.groundSprite;
         tileType = TileType.Ground;
         _isHomeOnTile = true;

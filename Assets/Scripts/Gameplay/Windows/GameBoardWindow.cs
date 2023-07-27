@@ -24,10 +24,10 @@ public class GameBoardWindow : BaseWindow
         LevelManager.Instance.gameBoardWindow = this;
 
         GenerateBoard();
-        GenerateVillage();
+        CreateCivilisations();
         GenerateEnvironment();
         GenerateWater();
-        CreateCivilisations();
+        GenerateVillage();
     }
 
     public List<Tile> GetAllTile()
