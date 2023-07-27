@@ -24,9 +24,10 @@ public class GameBoardWindow : BaseWindow
         LevelManager.Instance.gameBoardWindow = this;
 
         GenerateBoard();
+        GenerateVillage();
+        GenerateEnvironment();
         GenerateWater();
         CreateCivilisations();
-        GenerateVillage();
     }
 
     public List<Tile> GetAllTile()
@@ -82,11 +83,17 @@ public class GameBoardWindow : BaseWindow
                 SubscribeOnTile(tile);
             }
         }
-        
+    }
+
+    [Button()]
+    private void GenerateEnvironment()
+    {
         var tiles = generatedTiles.Select(tile => tile.GetComponent<Tile>()).ToList();
         
         foreach (var tile in tiles)
         {
+            if(!tile.IsTileFree() || tile.homeOnTile != null)
+                continue;
             var a = Random.Range(0, 9);
             switch (a)
             {
@@ -113,15 +120,15 @@ public class GameBoardWindow : BaseWindow
                     break;
             }
         }
-        
     }
+
 
     [Button()]
     private void GenerateWater()
     {
         foreach (var tile in generatedTiles)
         {
-            if(!tile.IsTileFree())
+            if(!tile.IsTileFree() || tile.homeOnTile != null)
                 continue;
             
             var a = Random.Range(0, waterFrequency);
@@ -146,8 +153,9 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void CreateCivilisations()
     {
+        var a = Random.Range(0, gameInfo.playerCivilisationInfoLists.Count);
         var civilisation = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
-        civilisation.GetComponent<CivilisationController>().Init(gameInfo.playerCivilisationInfoLists[Random.Range(0, gameInfo.playerCivilisationInfoLists.Count)]);
+        civilisation.GetComponent<CivilisationController>().Init(gameInfo.playerCivilisationInfoLists[a]);
 
         for (var i = 0; i < gameInfo.playersCount - 1; i++)
         {

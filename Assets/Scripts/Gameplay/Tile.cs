@@ -174,15 +174,14 @@ public class Tile : MonoBehaviour
     public void BuildHome(Home home)
     {
         homeOnTile = home;
-        treeTileImage.gameObject.SetActive(false);
-        fruitTileImage.gameObject.SetActive(false);
-        animalTileImage.gameObject.SetActive(false);
-        mountainTileImage.gameObject.SetActive(false);
+        treeTileImage.enabled = false;
+        fruitTileImage.enabled = false;
+        animalTileImage.enabled = false;
+        mountainTileImage.enabled = false;
         groundImage.sprite = _owner.owner.civilisationInfo.groundSprite;
         tileType = TileType.Ground;
         _isHomeOnTile = true;
         _tileName = "Home";
-        
     }
 
     public void HideTargetsTime()
