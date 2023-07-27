@@ -58,7 +58,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa0404f7a8181e3418f192b1d26e63f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  homePrefab: {fileID: 0}
+  homePrefab: {fileID: 5697296062761007083, guid: bb5da2bfb2475ad4aadd81645304c540, type: 3}
   civilisationInfo: {fileID: 11400000, guid: 715557d38e026514f9e339bf4c5f589b, type: 2}
-  mainHomeTile: {fileID: 0}
+  homes: []
   civColor: {r: 0, g: 0, b: 0, a: 1}
+  technologies: 

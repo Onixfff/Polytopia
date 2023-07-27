@@ -13,16 +13,12 @@ public class GameCycle : MonoBehaviour
     
     private void TurnBegin()
     {
-        Debug.Log("TurnBegin");
-
         EconomicManager.Instance.AddMoney(currentIncome);
         LevelManager.Instance.currentTurn++;
     }
     
     private void TurnEnd()
     {
-        Debug.Log("TurnEnd");
-
         LevelManager.Instance.SelectObject(null);
         var inVal = 0;
         DOTween.To(() => inVal, x => x = inVal, 5f, 1f).OnComplete(() =>

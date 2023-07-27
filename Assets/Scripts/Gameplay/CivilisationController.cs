@@ -9,7 +9,7 @@ public class CivilisationController : MonoBehaviour
 {
     [SerializeField] private GameObject homePrefab;
     public CivilisationInfo civilisationInfo;
-    public Home mainHome;
+    public List<Home> homes;
     public Color civColor;
     public List<TechInfo.Technology> technologies;
 
@@ -51,17 +51,22 @@ public class CivilisationController : MonoBehaviour
             return;
         }
         var homeO = Instantiate(homePrefab, randomTile.transform);
-        mainHome = homeO.GetComponent<Home>();
-        mainHome.Init(this, randomTile.GetComponent<Tile>());
+        homes.Add(homeO.GetComponent<Home>());
+        homes[0].Init(this, randomTile.GetComponent<Tile>());
     }
     
     private void SetupCivilisation()
     {
-        var tiles = _gameBoardWindow.GetCloseTile(mainHome.homeTile, 2).Select(tile => tile.GetComponent<Tile>()).ToList();
-        mainHome.homeTile.UnlockTile();
+        var tiles = _gameBoardWindow.GetCloseTile(homes[0].homeTile, 2).Select(tile => tile.GetComponent<Tile>()).ToList();
+        homes[0].homeTile.UnlockTile();
         foreach (var tile in tiles)
         {
             tile.UnlockTile();
         }
+    }
+
+    public List<Home> GetAllHome()
+    {
+        return homes;
     }
 }

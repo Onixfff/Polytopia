@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Gameplay.SO;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,9 @@ public class Tile : MonoBehaviour
     public bool isHasMountain = false;
     public TileType tileType = TileType.Ground;
     public Home homeOnTile;
+    
+    public bool isExplored = false;
+    public Tile isExploredFrom;
 
     [SerializeField] private Image groundImage;
     [SerializeField] private Image fruitTileImage;
@@ -27,6 +31,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Image animalTileImage;
     [SerializeField] private Image mountainTileImage;
     [SerializeField] private Image fishTileImage;
+    [SerializeField] private RectTransform centerRect;
     [SerializeField] private Image blueTargetImage;
     [SerializeField] private Image redTargetImage;
     [SerializeField] private Image selectedOutlineImage;
@@ -40,6 +45,8 @@ public class Tile : MonoBehaviour
     public void ReplaceOwner(Home home)
     {
         if(_isHomeOnTile) return;
+        if(_owner != null && _owner.owner == home.owner)
+            return;
 
         _owner = home;
         homeOnTile = home;
@@ -167,7 +174,7 @@ public class Tile : MonoBehaviour
     
     public RectTransform GetRectTransform()
     {
-        return fruitTileImage.GetComponent<RectTransform>();
+        return centerRect;
     }
 
     public void BuildHome(Home home)
@@ -214,32 +221,17 @@ public class Tile : MonoBehaviour
         if(pastO == gameObject)
             DeselectedTile();
 
-        if (currO != null && currO == gameObject)
-        {
-            if (_owner != null)
-            {
-                if (fruitTileImage.gameObject.activeSelf)
-                {
-                    
-                }
-                else if(animalTileImage.gameObject.activeSelf)
-                {
-                    
-                }
-            }
-        }
-        
         if (_owner != null && currO == gameObject)
         {
             
             var types = new List<GameplayWindow.OpenedTechType>();
-            if(fruitTileImage.enabled)
+            if(fruitTileImage != null && fruitTileImage.enabled)
                 types.Add(GameplayWindow.OpenedTechType.Fruit);
             
-            if(treeTileImage.enabled)
+            if(treeTileImage != null && treeTileImage.enabled)
                 types.Add(GameplayWindow.OpenedTechType.Tree);
             
-            if(animalTileImage.enabled)
+            if(animalTileImage != null && animalTileImage.enabled)
                 types.Add(GameplayWindow.OpenedTechType.Animal);
             
             LevelManager.Instance.gameplayWindow.ShowTileButton(types);
@@ -312,5 +304,29 @@ public class Tile : MonoBehaviour
                 fishTileImage.gameObject.SetActive(true);
                 break;
         }
+    }
+
+    public bool BuyFruit()
+    {
+        if (_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Gather))
+            return false;
+        if(!fruitTileImage.enabled)
+            return false;
+
+        Destroy(fruitTileImage.gameObject);
+        _owner.GetFood(1);
+        return true;
+    }
+    
+    public bool BuyAnimal()
+    {
+        if (_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Hunt))
+            return false;
+        if(!animalTileImage.enabled)
+            return false;
+
+        Destroy(animalTileImage.gameObject);
+        _owner.GetFood(1);
+        return true;
     }
 }

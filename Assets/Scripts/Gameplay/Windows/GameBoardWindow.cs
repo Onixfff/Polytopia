@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,6 +10,7 @@ public class GameBoardWindow : BaseWindow
     [SerializeField] private List<GameObject> boardPrefabs;
 
     [SerializeField] private List<Tile> generatedTiles;
+    [SerializeField] private List<Home> generatedVillage;
     [SerializeField] private RectTransform tilePrefab;
     [SerializeField] private RectTransform tileParent;
 
@@ -59,6 +61,30 @@ public class GameBoardWindow : BaseWindow
         }
         
         return closeTiles;
+    }
+    
+    public List<Home> GetVillage()
+    {
+        return generatedVillage;
+    }
+
+    public Home FindNearbyVillage(Tile tile)
+    {
+        var dist = 1000f;
+        Home home = null;
+        foreach (var village in generatedVillage)
+        {
+            var point = village.homeTile.pos;
+            var point2 = tile.pos;
+            var distance = Vector2.Distance(point, point2);
+            if(distance < dist)
+            {
+                home = village;
+                dist = distance;
+            }
+        }
+
+        return home;
     }
 
     [Button()]
@@ -121,8 +147,7 @@ public class GameBoardWindow : BaseWindow
             }
         }
     }
-
-
+    
     [Button()]
     private void GenerateWater()
     {
@@ -156,11 +181,16 @@ public class GameBoardWindow : BaseWindow
         var a = Random.Range(0, gameInfo.playerCivilisationInfoLists.Count);
         var civilisation = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
         civilisation.GetComponent<CivilisationController>().Init(gameInfo.playerCivilisationInfoLists[a]);
-
+        AIController.Instance.countAi = gameInfo.playersCount - 1;
         for (var i = 0; i < gameInfo.playersCount - 1; i++)
         {
             var civilisation1 = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
             civilisation1.GetComponent<CivilisationController>().AIInit(gameInfo.civilisationInfoLists[Random.Range(0, gameInfo.civilisationInfoLists.Count)]);
+            
+            var ai = civilisation1.AddComponent<AI>();
+            ai.aiNumber = i;
+            
+            AIController.Instance.AddAI(ai);
         }
     }
     
@@ -181,6 +211,7 @@ public class GameBoardWindow : BaseWindow
             }
 
             var home = Instantiate(village, randomTile.transform);
+            generatedVillage.Add(home);
             home.Init(null, randomTile);
         }
     }

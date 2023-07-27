@@ -87,42 +87,8 @@ public class UnitController : MonoBehaviour
     {
         return unitInfo;
     }
-
-    private void OnDestroy()
-    {
-        LevelManager.Instance.OnObjectSelect -= SelectEvent;
-    }
-
-    private void SelectEvent(GameObject pastO, GameObject currO)
-    {
-        if (pastO == gameObject)
-        {
-            DeselectUnit();
-            if (_attackThisTurn > 0)
-            {
-                if (currO != null && pastO != null && currO.TryGetComponent(out UnitController unit1) && pastO.TryGetComponent(out UnitController unit2) && pastO != currO)
-                {
-                    if (unit2 == this)
-                    {
-                        if(!unit1.IsThisUnitAlly(_owner.owner) && unit1.occupiedTile.IsCanAttackTo())
-                            AttackUnitOnTile(unit1);
-                        return;
-                    }
-                }
-            }
-
-            if (_moveThisTurn > 0)
-            {
-                if (currO != null && currO.TryGetComponent(out Tile tile))
-                {
-                    if (tile.IsTileFree() && tile.IsCanMoveTo())
-                        MoveToTile(tile);
-                }
-            }
-        }
-    }
-
-    private void MoveToTile(Tile to)
+    
+    public void MoveToTile(Tile to)
     {
         if(occupiedTile != null)
         {
@@ -159,6 +125,42 @@ public class UnitController : MonoBehaviour
             }
         }));
     }
+    
+    private void OnDestroy()
+    {
+        LevelManager.Instance.OnObjectSelect -= SelectEvent;
+    }
+
+    private void SelectEvent(GameObject pastO, GameObject currO)
+    {
+        if (pastO == gameObject)
+        {
+            DeselectUnit();
+            if (_attackThisTurn > 0)
+            {
+                if (currO != null && pastO != null && currO.TryGetComponent(out UnitController unit1) && pastO.TryGetComponent(out UnitController unit2) && pastO != currO)
+                {
+                    if (unit2 == this)
+                    {
+                        if(!unit1.IsThisUnitAlly(_owner.owner) && unit1.occupiedTile.IsCanAttackTo())
+                            AttackUnitOnTile(unit1);
+                        return;
+                    }
+                }
+            }
+
+            if (_moveThisTurn > 0)
+            {
+                if (currO != null && currO.TryGetComponent(out Tile tile))
+                {
+                    if (tile.IsTileFree() && tile.IsCanMoveTo())
+                        MoveToTile(tile);
+                }
+            }
+        }
+    }
+
+    
     
     private void AttackUnitOnTile(UnitController unitController)
     {

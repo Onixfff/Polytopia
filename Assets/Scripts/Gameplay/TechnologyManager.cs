@@ -78,29 +78,39 @@ public class TechnologyManager : MonoBehaviour
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Hunt);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(2);
+        huntingButton.image.color = Color.green;
+        Destroy(huntingButton);
     }
     
     private void RidersTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Rider);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(2);
+        horsebackRidingButton.image.color = Color.green;
+        Destroy(horsebackRidingButton);
     }
     
     private void GatheringTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Gather);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(1);
+        gatheringButton.image.color = Color.green;
+        Destroy(gatheringButton);
     }
     
     private void MountainTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Mountain);
         //LevelManager.Instance.gameplayWindow.UnlockUnitTech(4);
+        mountaineeringButton.image.color = Color.green;
+        Destroy(mountaineeringButton);
     }
     
     private void FishingTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Fish);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(3);
+        fishingButton.image.color = Color.green;
+        Destroy(fishingButton);
     }
 }

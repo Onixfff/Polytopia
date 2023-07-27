@@ -4,12 +4,13 @@ using UnityEngine.UI;
 
 public class Home : MonoBehaviour
 {
+    public Tile homeTile;
+    public CivilisationController owner;
+    public int homeRad = 1;
     [SerializeField] private Button homeButton;
     [SerializeField] private Button occupyButton;
     [SerializeField] private Image homeImage;
     [SerializeField] private List<UnitController> unitPrefabs;
-    public Tile homeTile;
-    public CivilisationController owner;
     private List<UnitController> _unitList;
     private HomeInfo _homeInfo;
     private int _homeLevel = 0;
@@ -22,7 +23,7 @@ public class Home : MonoBehaviour
         transform.position = homeTile.GetRectTransform().position;
         homeTile.ReplaceOwner(this);
         transform.SetSiblingIndex(transform.GetSiblingIndex()-2);
-
+        _unitList = new List<UnitController>();
         if (controller != null)
         {
             _homeInfo = controller.civilisationInfo.home;
@@ -44,11 +45,12 @@ public class Home : MonoBehaviour
         {
             
         }
+        homeButton.onClick.RemoveAllListeners();
         homeButton.onClick.AddListener(HomeOnClick);
+        occupyButton.onClick.RemoveAllListeners();
         occupyButton.onClick.AddListener(OccupyHome);
     }
     
-
     public void GetFood(int count)
     {
         for (var i = 0; i < count; i++)
@@ -76,14 +78,22 @@ public class Home : MonoBehaviour
     
     public void OccupyHome()
     {
+        homeTile.unitOnTile.GetOwner().RemoveUnit(homeTile.unitOnTile);
         occupyButton.gameObject.SetActive(false);
         Init(homeTile.unitOnTile.GetOwner().owner, homeTile);
+        homeTile.unitOnTile.SetOwner(this);
+        AddUnit(homeTile.unitOnTile);
     }
 
     public void UpdateVisual(Sprite sprite)
     {
         homeImage.sprite = sprite;
         
+    }
+
+    public List<UnitController> GetUnitList()
+    {
+        return _unitList;
     }
 
     private void OnDestroy()
@@ -111,7 +121,17 @@ public class Home : MonoBehaviour
         var unitObject = Instantiate(unitPrefabs[unitIndex], homeTile.transform.parent);
         var unit = unitObject.GetComponent<UnitController>();
         unit.Init(this, homeTile, unitIndex);
-        //_unitList.Add(unit);
+        AddUnit(unit);
+    }
+
+    public void AddUnit(UnitController unit)
+    {
+        _unitList.Add(unit);
+    }
+
+    public void RemoveUnit(UnitController unit)
+    {
+        _unitList.Remove(unit);
     }
     
 }

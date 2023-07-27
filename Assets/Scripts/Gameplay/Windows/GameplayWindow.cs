@@ -193,6 +193,7 @@ public class GameplayWindow : BaseWindow
             turnBegin.SetActive(false);
         });
     }
+    
     private void HideDownBar()
     {
         if (downBar != null) downBar.SetActive(false);
