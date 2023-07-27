@@ -310,7 +310,7 @@ public class Tile : MonoBehaviour
     {
         if (_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Gather))
             return false;
-        if(!fruitTileImage.enabled)
+        if(fruitTileImage != null && !fruitTileImage.enabled)
             return false;
 
         Destroy(fruitTileImage.gameObject);
@@ -322,7 +322,7 @@ public class Tile : MonoBehaviour
     {
         if (_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Hunt))
             return false;
-        if(!animalTileImage.enabled)
+        if(animalTileImage != null && !animalTileImage.enabled)
             return false;
 
         Destroy(animalTileImage.gameObject);

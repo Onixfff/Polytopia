@@ -133,5 +133,17 @@ public class Home : MonoBehaviour
     {
         _unitList.Remove(unit);
     }
-    
+
+    public void AIBuyUnit()
+    {
+        if(!homeTile.IsTileFree())
+            return;
+        
+        var unitObject = Instantiate(unitPrefabs[0], homeTile.transform.parent);
+        var unit = unitObject.GetComponent<UnitController>();
+        unit.Init(this, homeTile, 0);
+        AddUnit(unit);
+    }
+
+    public UnitController exploringUnit;
 }

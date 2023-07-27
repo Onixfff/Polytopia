@@ -41,10 +41,17 @@ public class AI : MonoBehaviour
 
         foreach (var home in homes)
         {
-            foreach (var unit in home.GetUnitList())
+            var list = home.GetUnitList();
+            for (var i = 0; i < list.Count; i++)
             {
+                var unit = list[i];
                 unit.MoveToTile(GetTileForMove(unit));
             }
+        }
+
+        foreach (var home in homes)
+        {
+            home.AIBuyUnit();
         }
     }
 
@@ -53,24 +60,44 @@ public class AI : MonoBehaviour
         _unitFinder ??= new Dictionary<UnitController, List<Tile>>();
         var board = LevelManager.Instance.gameBoardWindow;
         var village = board.FindNearbyVillage(unit.occupiedTile);
+
         var tiles = new List<Tile>();
         if (!_unitFinder.ContainsKey(unit))
         {
             tiles = SearchPath.Instance.GetPath(unit.occupiedTile, village.homeTile);
             tiles.Remove(tiles.First());
             _unitFinder.Add(unit, tiles);
+            if(village.exploringUnit == null)
+                village.exploringUnit = unit;
         }
         else
         {
             _unitFinder.TryGetValue(unit, out tiles);
-            tiles.Remove(tiles.First());
+            if (tiles.Count > 0)
+            {
+                tiles.Remove(tiles.First());
+            }
             _unitFinder[unit] = tiles;
         }
-        
-        Debug.Log(unit.occupiedTile.pos + " to " + village.homeTile.pos);
-        Debug.Log(tiles[0].pos);
-        
+
+        if (unit.occupiedTile.pos == village.homeTile.pos)
+        {
+            _unitFinder.Remove(unit);
+            OccupyVillage(unit.occupiedTile.homeOnTile);
+            return unit.occupiedTile;
+        }
+
+        if (tiles.Count < 1)
+        {
+            return unit.occupiedTile;
+        }
         return tiles[0];
+    }
+
+    private void OccupyVillage(Home home)
+    {
+        home.OccupyHome();
+        LevelManager.Instance.gameBoardWindow.RemoveVillage(home);
     }
     
     private void EndTurn()

@@ -67,6 +67,11 @@ public class GameBoardWindow : BaseWindow
     {
         return generatedVillage;
     }
+    
+    public void RemoveVillage(Home home)
+    {
+        generatedVillage.Remove(home);
+    }
 
     public Home FindNearbyVillage(Tile tile)
     {

@@ -66,6 +66,8 @@ public class SearchPath : Singleton<SearchPath>
     {
         foreach (var tile in LevelManager.Instance.gameBoardWindow.GetAllTile().Where(tile => tile.tileType == Tile.TileType.Ground).ToList())
         {
+            if(!tile.IsTileFree())
+                continue;
             if (_tileDictionary.ContainsKey(tile.pos))
             {
                 Debug.LogWarning("2 Nodes present in same position. i.e nodes overlapped.");

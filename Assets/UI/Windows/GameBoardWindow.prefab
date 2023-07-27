@@ -34,7 +34,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2280, y: 1280}
+  m_SizeDelta: {x: 2280, y: 1780}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4915098483655531128
 GameObject:
@@ -378,6 +378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardPrefabs: []
   generatedTiles: []
+  generatedVillage: []
   tilePrefab: {fileID: 9052984237761949079, guid: 1760346af3469f940b15da02422d93f3, type: 3}
   tileParent: {fileID: 2061671586090657240}
   mapSize: 128
