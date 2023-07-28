@@ -30,12 +30,10 @@ public class SearchPath : Singleton<SearchPath>
     {
         get
         {
-            if (_path.Count == 0)                       
-            {
-                LoadAllBlocks();
-                BFS();
-                CreatePath();
-            }
+            LoadAllBlocks();
+            BFS();
+            CreatePath();
+            
             return _path;
         }
     }
@@ -58,16 +56,16 @@ public class SearchPath : Singleton<SearchPath>
             previousNode = previousNode.isExploredFrom;
         }
 
-        SetPath(_startingPoint);
+        //SetPath(_startingPoint);
         _path.Reverse();
     }
 
     private void LoadAllBlocks()
     {
-        foreach (var tile in LevelManager.Instance.gameBoardWindow.GetAllTile().Where(tile => tile.tileType == Tile.TileType.Ground).ToList())
+        foreach (var tile in LevelManager.Instance.gameBoardWindow.GetAllTile()/*.Where(tile => tile.tileType == Tile.TileType.Ground).ToList()*/)
         {
-            if(!tile.IsTileFree())
-                continue;
+            /*if(!tile.IsTileFree())
+                continue;*/
             if (_tileDictionary.ContainsKey(tile.pos))
             {
                 Debug.LogWarning("2 Nodes present in same position. i.e nodes overlapped.");
@@ -79,28 +77,25 @@ public class SearchPath : Singleton<SearchPath>
         }
     }
     
-    private void BFS()
+    private bool BFS()
     {
         _queue.Enqueue(_startingPoint);
         while (_queue.Count > 0 && _isExploring) 
         {
             _searchingPoint = _queue.Dequeue();
-            OnReachingEnd();
+            if (_searchingPoint == _endingPoint) 
+            {
+                _isExploring = false;
+                return true;
+            } 
+            
+            _isExploring = true;
             ExploreNeighbourNodes();
         }
+
+        return false;
     }
-    
-    private void OnReachingEnd()
-    {
-        if (_searchingPoint == _endingPoint) {
-            _isExploring = false;
-        }
-        else
-        {
-            _isExploring = true;
-        }
-    }
-    
+
     private void ExploreNeighbourNodes()
     {
         if (_isExploring == false)

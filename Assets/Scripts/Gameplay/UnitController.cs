@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class UnitController : MonoBehaviour
 {
     public Tile occupiedTile;
-    
+
     [SerializeField] private UnitInfo unitInfo;
     [SerializeField] private Image unitBackGround;
     [SerializeField] private TextMeshProUGUI unitHpTMPro;
@@ -23,6 +23,7 @@ public class UnitController : MonoBehaviour
     private int _attackThisTurn = 1;
     private int _hp;
     private int _unitIndex;
+    private Sequence _moveSeq;
 
     public void Init(Home owner, Tile tile, int index)
     {
@@ -72,6 +73,7 @@ public class UnitController : MonoBehaviour
         _owner = controller;
         unitBackGround.color = controller.owner.civColor;
     }
+    
     public Home GetOwner()
     {
         return _owner;
@@ -88,28 +90,29 @@ public class UnitController : MonoBehaviour
         return unitInfo;
     }
     
-    public void MoveToTile(Tile to)
+    public Tween MoveToTile(Tile to)
     {
         if(occupiedTile != null)
         {
             occupiedTile.unitOnTile = null;
         }
 
-        _moveThisTurn = 0;
+        _moveSeq = DOTween.Sequence();
         
+        _moveThisTurn = 0;
         var anchorPos = to.GetComponent<RectTransform>().anchoredPosition;
         transform.SetParent(to.transform.parent);
         transform.SetSiblingIndex(transform.parent.childCount);
         var inValX = rectTransform.anchoredPosition.x;
-        DOTween.To(() => inValX, x => inValX = x, anchorPos.x, moveDuration).OnUpdate((() =>
+        OccupyTile(to);
+        _moveSeq.Append(DOTween.To(() => inValX, x => inValX = x, anchorPos.x, moveDuration).OnUpdate((() =>
         {
             rectTransform.anchoredPosition = new Vector2(inValX, rectTransform.anchoredPosition.y);
-        }));
+        })));
         var inValY = rectTransform.anchoredPosition.y;
-        DOTween.To(() => inValY, x => inValY = x, anchorPos.y + 30, moveDuration).OnUpdate((() =>
+        _moveSeq.Join(DOTween.To(() => inValY, x => inValY = x, anchorPos.y + 30, moveDuration).OnUpdate((() =>
         {
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, inValY);
-            OccupyTile(to);
             if (occupiedTile.homeOnTile != null && (occupiedTile.homeOnTile.owner == null || occupiedTile.homeOnTile.owner != _owner.owner))
             {
                 occupiedTile.homeOnTile.ShowOccupyButton();
@@ -123,12 +126,15 @@ public class UnitController : MonoBehaviour
             {
                 tile.UnlockTile();
             }
-        }));
+        })));
+
+        return _moveSeq;
     }
     
     private void OnDestroy()
     {
         LevelManager.Instance.OnObjectSelect -= SelectEvent;
+        _moveSeq.Kill();
     }
 
     private void SelectEvent(GameObject pastO, GameObject currO)
@@ -160,8 +166,6 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    
-    
     private void AttackUnitOnTile(UnitController unitController)
     {
         var pos = transform.position;
@@ -232,4 +236,7 @@ public class UnitController : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    public string aiName = "unit1";
+    public Home aiHomeExploring;
 }

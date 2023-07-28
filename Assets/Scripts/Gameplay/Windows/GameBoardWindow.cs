@@ -91,6 +91,13 @@ public class GameBoardWindow : BaseWindow
 
         return home;
     }
+    
+    public Home FindRandomVillage(Tile tile)
+    {
+        var listVillage = generatedVillage.Where(village => village.homeType == Home.HomeType.Village).ToList();
+        var rand = Random.Range(0, listVillage.Count);
+        return listVillage[rand];
+    }
 
     [Button()]
     private void GenerateBoard()
@@ -212,12 +219,18 @@ public class GameBoardWindow : BaseWindow
                     continue;
                 if(randomTile.unitOnTile != null)
                     continue;
+                if(GetCloseTile(randomTile, 1).Find(tile => tile.homeOnTile))
+                    continue;
+                if(randomTile.homeOnTile != null)
+                    continue;
+
                 break;
             }
 
             var home = Instantiate(village, randomTile.transform);
             generatedVillage.Add(home);
             home.Init(null, randomTile);
+            home.homeType = Home.HomeType.Village;
         }
     }
     

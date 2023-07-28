@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using DG.Tweening;
 using Gameplay.SO;
 using UnityEngine;
 using Random = System.Random;
@@ -9,7 +9,6 @@ public class AI : MonoBehaviour
     public int aiNumber;
     
     private CivilisationController _controller;
-    private Dictionary<UnitController, List<Tile>> _unitFinder;
 
     private void Start()
     {
@@ -19,14 +18,14 @@ public class AI : MonoBehaviour
     public void StartTurn()
     {
         var homes = _controller.GetAllHome();
-        
+
         var random = new Random();
         var type = typeof(TechInfo.Technology);
         var values = type.GetEnumValues();
         var techIndex = random.Next(values.Length);
         var tech = (TechInfo.Technology)values.GetValue(techIndex);
         _controller.technologies.Add(tech);
-        
+
         foreach (var home in homes)
         {
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(home.homeTile, home.homeRad);
@@ -39,15 +38,13 @@ public class AI : MonoBehaviour
             }
         }
 
+        var allUnits = new List<UnitController>();
         foreach (var home in homes)
         {
-            var list = home.GetUnitList();
-            for (var i = 0; i < list.Count; i++)
-            {
-                var unit = list[i];
-                unit.MoveToTile(GetTileForMove(unit));
-            }
+            allUnits.AddRange(home.GetUnitList());
         }
+        
+        UnitsMove(allUnits, 0);
 
         foreach (var home in homes)
         {
@@ -55,43 +52,54 @@ public class AI : MonoBehaviour
         }
     }
 
+    private void UnitsMove(List<UnitController> units, int index)
+    {
+        if(units.Count < index)
+            return;
+        
+        var homes = _controller.GetAllHome();
+        units[index].MoveToTile(GetTileForMove(units[index])).OnComplete((() =>
+        {
+            UnitsMove(units, index+1);
+        }));
+    }
+
     private Tile GetTileForMove(UnitController unit)
     {
-        _unitFinder ??= new Dictionary<UnitController, List<Tile>>();
         var board = LevelManager.Instance.gameBoardWindow;
-        var village = board.FindNearbyVillage(unit.occupiedTile);
 
-        var tiles = new List<Tile>();
-        if (!_unitFinder.ContainsKey(unit))
+        if (unit.aiHomeExploring == null)
         {
-            tiles = SearchPath.Instance.GetPath(unit.occupiedTile, village.homeTile);
-            tiles.Remove(tiles.First());
-            _unitFinder.Add(unit, tiles);
-            if(village.exploringUnit == null)
-                village.exploringUnit = unit;
+            for (var i = 0; i <= 5; i++)
+            {
+                var village = board.FindRandomVillage(unit.occupiedTile);
+                if (village.exploringUnit != null)
+                {
+                    village = board.FindRandomVillage(unit.occupiedTile);
+                }
+                else
+                {
+                    unit.aiHomeExploring = village;
+                    unit.aiHomeExploring.exploringUnit = unit;
+                    break;
+                }
+            }
+        }
+        
+        if (unit.aiHomeExploring.homeTile.pos == unit.occupiedTile.pos)
+        {
+            OccupyVillage(unit.occupiedTile.homeOnTile);
+            unit.aiHomeExploring.exploringUnit = null;
+            unit.aiHomeExploring = null;
+            return unit.occupiedTile;
         }
         else
         {
-            _unitFinder.TryGetValue(unit, out tiles);
-            if (tiles.Count > 0)
-            {
-                tiles.Remove(tiles.First());
-            }
-            _unitFinder[unit] = tiles;
+            var tile = SearchPath.Instance.GetPath(unit.occupiedTile, unit.aiHomeExploring.homeTile);
+            if (tile == null)
+                return unit.occupiedTile;
+            return tile[0];
         }
-
-        if (unit.occupiedTile.pos == village.homeTile.pos)
-        {
-            _unitFinder.Remove(unit);
-            OccupyVillage(unit.occupiedTile.homeOnTile);
-            return unit.occupiedTile;
-        }
-
-        if (tiles.Count < 1)
-        {
-            return unit.occupiedTile;
-        }
-        return tiles[0];
     }
 
     private void OccupyVillage(Home home)

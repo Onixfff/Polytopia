@@ -180,10 +180,10 @@ public class Tile : MonoBehaviour
     public void BuildHome(Home home)
     {
         homeOnTile = home;
-        Destroy(treeTileImage.gameObject); 
-        Destroy(fruitTileImage.gameObject); 
-        Destroy(animalTileImage.gameObject); 
-        Destroy(mountainTileImage.gameObject); 
+        if (treeTileImage != null) Destroy(treeTileImage.gameObject);
+        if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
+        if (animalTileImage != null) Destroy(animalTileImage.gameObject);
+        if (mountainTileImage != null) Destroy(mountainTileImage.gameObject);
         groundImage.sprite = _owner.owner.civilisationInfo.groundSprite;
         tileType = TileType.Ground;
         _isHomeOnTile = true;
@@ -308,9 +308,11 @@ public class Tile : MonoBehaviour
 
     public bool BuyFruit()
     {
+        if(fruitTileImage == null)
+            return false;
         if (_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Gather))
             return false;
-        if(fruitTileImage != null && !fruitTileImage.enabled)
+        if(!fruitTileImage.enabled)
             return false;
 
         Destroy(fruitTileImage.gameObject);
@@ -320,9 +322,11 @@ public class Tile : MonoBehaviour
     
     public bool BuyAnimal()
     {
-        if (_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Hunt))
+        if(animalTileImage == null)
             return false;
-        if(animalTileImage != null && !animalTileImage.enabled)
+        if(_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Hunt))
+            return false;
+        if(!animalTileImage.enabled)
             return false;
 
         Destroy(animalTileImage.gameObject);

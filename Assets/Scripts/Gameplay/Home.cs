@@ -4,9 +4,16 @@ using UnityEngine.UI;
 
 public class Home : MonoBehaviour
 {
+    public enum HomeType
+    {
+        Village,
+        City
+    }
+    
     public Tile homeTile;
     public CivilisationController owner;
     public int homeRad = 1;
+    public HomeType homeType = HomeType.City;
     [SerializeField] private Button homeButton;
     [SerializeField] private Button occupyButton;
     [SerializeField] private Image homeImage;
@@ -78,6 +85,7 @@ public class Home : MonoBehaviour
     
     public void OccupyHome()
     {
+        homeType = HomeType.City;
         homeTile.unitOnTile.GetOwner().RemoveUnit(homeTile.unitOnTile);
         occupyButton.gameObject.SetActive(false);
         Init(homeTile.unitOnTile.GetOwner().owner, homeTile);
@@ -141,6 +149,7 @@ public class Home : MonoBehaviour
         
         var unitObject = Instantiate(unitPrefabs[0], homeTile.transform.parent);
         var unit = unitObject.GetComponent<UnitController>();
+        unit.aiName = "unit" + Random.Range(0, 1000000);
         unit.Init(this, homeTile, 0);
         AddUnit(unit);
     }
