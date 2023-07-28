@@ -96,7 +96,10 @@ public class GameBoardWindow : BaseWindow
     {
         var listVillage = generatedVillage.Where(village => village.homeType == Home.HomeType.Village).ToList();
         var rand = Random.Range(0, listVillage.Count);
-        return listVillage[rand];
+        if (rand >= 0 && rand < listVillage.Count)
+            return listVillage[rand];
+        else
+            return null;
     }
 
     [Button()]
@@ -190,14 +193,24 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void CreateCivilisations()
     {
-        var a = Random.Range(0, gameInfo.playerCivilisationInfoLists.Count);
+        var randomCiv = Random.Range(0, gameInfo.playerCivilisationInfoLists.Count);
+        var listCiv = new List<int> { randomCiv };
         var civilisation = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
-        civilisation.GetComponent<CivilisationController>().Init(gameInfo.playerCivilisationInfoLists[a]);
+        civilisation.GetComponent<CivilisationController>().Init(gameInfo.playerCivilisationInfoLists[randomCiv]);
         AIController.Instance.countAi = gameInfo.playersCount - 1;
+        
         for (var i = 0; i < gameInfo.playersCount - 1; i++)
         {
+            var randC = Random.Range(0, gameInfo.civilisationInfoLists.Count);
+            while (true)
+            {
+                if(listCiv.Contains(randC))
+                    randC = Random.Range(0, gameInfo.civilisationInfoLists.Count);
+                else
+                    break;
+            }
             var civilisation1 = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
-            civilisation1.GetComponent<CivilisationController>().AIInit(gameInfo.civilisationInfoLists[Random.Range(0, gameInfo.civilisationInfoLists.Count)]);
+            civilisation1.GetComponent<CivilisationController>().AIInit(gameInfo.civilisationInfoLists[randC]);
             
             var ai = civilisation1.AddComponent<AI>();
             ai.aiNumber = i;

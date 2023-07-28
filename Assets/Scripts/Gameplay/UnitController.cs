@@ -24,6 +24,7 @@ public class UnitController : MonoBehaviour
     private int _hp;
     private int _unitIndex;
     private Sequence _moveSeq;
+    private Sequence _attSeq;
 
     public void Init(Home owner, Tile tile, int index)
     {
@@ -96,9 +97,9 @@ public class UnitController : MonoBehaviour
         {
             occupiedTile.unitOnTile = null;
         }
-
-        _moveSeq = DOTween.Sequence();
         
+        _moveSeq = DOTween.Sequence();
+        aiFromTile = occupiedTile;
         _moveThisTurn = 0;
         var anchorPos = to.GetComponent<RectTransform>().anchoredPosition;
         transform.SetParent(to.transform.parent);
@@ -124,7 +125,8 @@ public class UnitController : MonoBehaviour
             LevelManager.Instance.SelectObject(null);
             foreach (var tile in closeTiles)
             {
-                tile.UnlockTile();
+                if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+                    tile.UnlockTile();
             }
         })));
 
@@ -135,6 +137,7 @@ public class UnitController : MonoBehaviour
     {
         LevelManager.Instance.OnObjectSelect -= SelectEvent;
         _moveSeq.Kill();
+        _attSeq.Kill();
     }
 
     private void SelectEvent(GameObject pastO, GameObject currO)
@@ -166,10 +169,12 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    private void AttackUnitOnTile(UnitController unitController)
+    public Tween AttackUnitOnTile(UnitController unitController)
     {
+        _attSeq = DOTween.Sequence();
+        
         var pos = transform.position;
-        transform.DOMove(unitController.transform.position, 0.1f).OnComplete((() =>
+        _attSeq.Append(transform.DOMove(unitController.transform.position, 0.1f).OnComplete((() =>
         {
             _attackThisTurn = 0; 
             _moveThisTurn = 0;
@@ -177,11 +182,12 @@ public class UnitController : MonoBehaviour
             unitController.TakeDamage(unitInfo.dmg); 
             LevelManager.Instance.SelectObject(null);
             DeselectUnit();
-            transform.DOMove(pos, 0.1f).OnComplete((() =>
-            {
-                SelectUnit();
-            }));
-        }));
+        })));
+        _attSeq.Append(transform.DOMove(pos, 0.1f).OnComplete((() =>
+        {
+            SelectUnit();
+        })));
+        return _attSeq;
     }
     
     private void SelectUnit()
@@ -234,9 +240,12 @@ public class UnitController : MonoBehaviour
 
     private void KillUnit()
     {
+        occupiedTile.unitOnTile = null;
+        _owner.RemoveUnit(this);
         Destroy(gameObject);
     }
 
     public string aiName = "unit1";
     public Home aiHomeExploring;
+    public Tile aiFromTile;
 }

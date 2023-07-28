@@ -32,6 +32,7 @@ public class SearchPath : Singleton<SearchPath>
         {
             LoadAllBlocks();
             BFS();
+            Debug.Log(BFS());
             CreatePath();
             
             return _path;
@@ -42,16 +43,29 @@ public class SearchPath : Singleton<SearchPath>
     {
         _startingPoint = startTile;
         _endingPoint = endTile;
+        _path.Clear();
         return Path;
     }
 
     private void CreatePath()
     {
+        foreach (var a in _queue)
+        {
+            if(a == null)
+                Debug.Log("null");
+                
+            Debug.Log(a.pos);
+        }
+        
         SetPath(_endingPoint);
         var previousNode = _endingPoint.isExploredFrom;
 
         while (previousNode != _startingPoint) 
         {
+            if (previousNode == null)
+            {
+                break;
+            }
             SetPath(previousNode);
             previousNode = previousNode.isExploredFrom;
         }
@@ -62,10 +76,8 @@ public class SearchPath : Singleton<SearchPath>
 
     private void LoadAllBlocks()
     {
-        foreach (var tile in LevelManager.Instance.gameBoardWindow.GetAllTile()/*.Where(tile => tile.tileType == Tile.TileType.Ground).ToList()*/)
+        foreach (var tile in LevelManager.Instance.gameBoardWindow.GetAllTile())
         {
-            /*if(!tile.IsTileFree())
-                continue;*/
             if (_tileDictionary.ContainsKey(tile.pos))
             {
                 Debug.LogWarning("2 Nodes present in same position. i.e nodes overlapped.");
@@ -92,7 +104,7 @@ public class SearchPath : Singleton<SearchPath>
             _isExploring = true;
             ExploreNeighbourNodes();
         }
-
+        
         return false;
     }
 
@@ -108,14 +120,15 @@ public class SearchPath : Singleton<SearchPath>
             if (_tileDictionary.ContainsKey(neighbourPos))
             {
                 var tile = _tileDictionary[neighbourPos];
+                if(tile.tileType == Tile.TileType.Water || !tile.IsTileFree())
+                    continue;
+                
+                if (tile.isExplored) 
+                    continue;
 
-                if (tile.isExplored) { }
-                else
-                {
-                    _queue.Enqueue(tile);
-                    tile.isExplored = true;
-                    tile.isExploredFrom = _searchingPoint;
-                }
+                _queue.Enqueue(tile);
+                tile.isExplored = true;
+                tile.isExploredFrom = _searchingPoint;
             }
         }
     }

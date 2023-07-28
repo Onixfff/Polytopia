@@ -45,7 +45,7 @@ public class CivilisationController : MonoBehaviour
     {
         var allTile = _gameBoardWindow.GetAllTile();
         var randomTile = allTile[Random.Range(0, allTile.Count)];
-        if (randomTile.GetComponent<Tile>().tileType == Tile.TileType.Water)
+        if (randomTile.GetComponent<Tile>().tileType == Tile.TileType.Water || LevelManager.Instance.gameBoardWindow.GetCloseTile(randomTile, 2).Find(tile => tile.homeOnTile))
         {
             CreateHome();
             return;
@@ -64,7 +64,7 @@ public class CivilisationController : MonoBehaviour
             tile.UnlockTile();
         }
     }
-
+    
     public List<Home> GetAllHome()
     {
         return homes;

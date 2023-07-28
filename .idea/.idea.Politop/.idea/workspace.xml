@@ -4,8 +4,8 @@
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/System/SearchPath.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/System/SearchPath.cs" afterDir="false" />
@@ -31,17 +31,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Discover.Launch.Via.Unity": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "XThreadsFramesViewSplitterKey": "0.49756098",
-    "rider.run.widget.enabled.cache": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.49756098&quot;,
+    &quot;rider.run.widget.enabled.cache&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.4f1\Editor\Unity.exe" />
@@ -61,10 +61,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="1892">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="12904">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="1892" />
+      <option name="pid" value="12904" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -82,7 +82,7 @@
       <updated>1690392525966</updated>
       <workItem from="1690392525969" duration="51000" />
       <workItem from="1690443686770" duration="24254000" />
-      <workItem from="1690530205907" duration="8507000" />
+      <workItem from="1690530205907" duration="13875000" />
     </task>
     <servers />
   </component>

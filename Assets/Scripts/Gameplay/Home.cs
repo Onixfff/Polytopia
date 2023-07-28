@@ -35,6 +35,8 @@ public class Home : MonoBehaviour
         {
             _homeInfo = controller.civilisationInfo.home;
             SetOwner(controller);
+            if(!controller.homes.Contains(this))
+                controller.homes.Add(this);
             UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
             homeTile.BuildHome(this);
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, 1);
@@ -70,7 +72,9 @@ public class Home : MonoBehaviour
                 _homeLevel++;
             }
         }
-        UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
+
+        if (_homeLevel >= 0 && _homeLevel < _homeInfo.homeSprites.Count)
+            UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
     }
 
     public void SetOwner(CivilisationController controller)
@@ -153,6 +157,7 @@ public class Home : MonoBehaviour
         unit.Init(this, homeTile, 0);
         AddUnit(unit);
     }
+    
 
     public UnitController exploringUnit;
 }
