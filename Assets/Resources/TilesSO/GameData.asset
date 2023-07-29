@@ -15,7 +15,9 @@ MonoBehaviour:
   civilisationInfos:
   - {fileID: 11400000, guid: 715557d38e026514f9e339bf4c5f589b, type: 2}
   - {fileID: 11400000, guid: 33eef5dad280bb2459fbe0746aa08e5c, type: 2}
+  - {fileID: 11400000, guid: 95c5a114c16ffe744b495ce0dcf68f57, type: 2}
   playerCivilisationInfos:
   - {fileID: 11400000, guid: 04ffe0357263a414c9170c0ba86518b0, type: 2}
   - {fileID: 11400000, guid: d8fed60508c3a2144b072ad0ba44510f, type: 2}
+  - {fileID: 11400000, guid: 5085c89e40f11f143a37965fa558a711, type: 2}
   countPlayers: 2

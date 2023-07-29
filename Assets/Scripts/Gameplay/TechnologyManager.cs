@@ -9,6 +9,7 @@ public class TechnologyManager : MonoBehaviour
     [SerializeField] private Button fishingButton;
     [SerializeField] private Button gatheringButton;
     [SerializeField] private Button mountaineeringButton;
+    [SerializeField] private Button freeSpiritButton;
     [SerializeField] private int priseFirstTier = 5;
     [SerializeField] private int priseTwoTier = 10;
     [SerializeField] private int priseThreeTier = 15;
@@ -34,6 +35,10 @@ public class TechnologyManager : MonoBehaviour
         mountaineeringButton.onClick.AddListener(() =>
         {
             BuyTechnology(5);
+        });
+        freeSpiritButton.onClick.AddListener(() =>
+        {
+            BuyTechnology(6);
         });
     }
 
@@ -71,6 +76,12 @@ public class TechnologyManager : MonoBehaviour
                 EconomicManager.Instance.BuySomething(priseFirstTier);
                 MountainTech();
                 break;
+            case 6:
+                if (!EconomicManager.Instance.IsCanBuy(priseTwoTier)) 
+                    return;
+                EconomicManager.Instance.BuySomething(priseTwoTier);
+                FreeSpiritTech();
+                break;
         }
     }
     
@@ -96,6 +107,14 @@ public class TechnologyManager : MonoBehaviour
         LevelManager.Instance.gameplayWindow.UnlockTileTech(1);
         gatheringButton.image.color = Color.green;
         Destroy(gatheringButton);
+    }
+    
+    private void FreeSpiritTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.FreeSpirit);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(4);
+        freeSpiritButton.image.color = Color.green;
+        Destroy(freeSpiritButton);
     }
     
     private void MountainTech()

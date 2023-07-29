@@ -38,7 +38,7 @@ public class Home : MonoBehaviour
             if(!controller.homes.Contains(this))
                 controller.homes.Add(this);
             UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
-            homeTile.BuildHome(this);
+
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, 1);
             foreach (var ti in tiles)
             {
@@ -54,6 +54,7 @@ public class Home : MonoBehaviour
         {
             
         }
+        homeTile.BuildHome(this);
         homeButton.onClick.RemoveAllListeners();
         homeButton.onClick.AddListener(HomeOnClick);
         occupyButton.onClick.RemoveAllListeners();

@@ -184,7 +184,7 @@ public class Tile : MonoBehaviour
         if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
         if (animalTileImage != null) Destroy(animalTileImage.gameObject);
         if (mountainTileImage != null) Destroy(mountainTileImage.gameObject);
-        groundImage.sprite = _owner.owner.civilisationInfo.groundSprite;
+        if (_owner.owner != null) groundImage.sprite = _owner.owner.civilisationInfo.groundSprite;
         tileType = TileType.Ground;
         _isHomeOnTile = true;
         _tileName = "Home";

@@ -17,6 +17,18 @@ public class AI : MonoBehaviour
     private CivilisationController _controller;
     private Sequence _unitsSeq;
     private Sequence _unitsActionSeq;
+    
+    private Vector2Int[] _directions = 
+    {
+        Vector2Int.up, 
+        Vector2Int.right, 
+        Vector2Int.down, 
+        Vector2Int.left, 
+        new Vector2Int(1, 1), 
+        new Vector2Int(-1, -1),
+        new Vector2Int(-1, 1), 
+        new Vector2Int(1, -1)
+    };
 
     private void Start()
     {
@@ -109,13 +121,19 @@ public class AI : MonoBehaviour
         
         if (tileForMove.Count > 0)
         {
-            var home = tileForMove.Find(tile => tile.homeOnTile);
+            var tileWithHome = tileForMove.Find(tile => tile.homeOnTile);
 
-            if (home != null && home.homeOnTile.owner != unit.GetOwner().owner)
+            if (tileWithHome != null && tileWithHome.homeOnTile.owner != unit.GetOwner().owner)
             {
-                if (home.IsTileFree())
+                if(!tileWithHome.IsTileFree() && tileWithHome.unitOnTile.GetOwner().owner != unit.GetOwner().owner)
                 {
-                    _unitsActionSeq.Append(unit.MoveToTile(home));
+                    _unitsActionSeq.Append(unit.AttackUnitOnTile(tileWithHome.unitOnTile));    
+                    return _unitsActionSeq;
+                }
+                
+                if (tileWithHome.IsTileFree())
+                {
+                    _unitsActionSeq.Append(unit.MoveToTile(tileWithHome));
                     if (unit.occupiedTile.homeOnTile != null && unit.occupiedTile.homeOnTile.owner != unit.GetOwner().owner)
                     {
                         OccupyVillage(unit.occupiedTile.homeOnTile);
@@ -123,11 +141,7 @@ public class AI : MonoBehaviour
                  
                     return _unitsActionSeq;
                 }
-                if(home.unitOnTile.GetOwner().owner != unit.GetOwner().owner)
-                {
-                    _unitsActionSeq.Append(unit.AttackUnitOnTile(home.unitOnTile));    
-                    return _unitsActionSeq;
-                }
+                
             }
         }
         
@@ -139,24 +153,12 @@ public class AI : MonoBehaviour
 
         if (tileForMove.Count > 0)
         {
-            var rand = Random.Range(0, tileForMove.Count);
-            unit.MoveToTile(tileForMove[rand]);
+            var dir = ChooseMoveDirection(unit);
+            var tile = LevelManager.Instance.gameBoardWindow.GetTile(dir);
+            unit.MoveToTile(tile);
         }
         
         return _unitsActionSeq;
-
-    }
-
-    private void UnitsPerformAction(List<UnitController> units, int index)
-    {
-        if(units.Count < index)
-            return;
-        
-        var homes = _controller.GetAllHome();
-        units[index].MoveToTile(GetTileForMove(units[index])).OnComplete((() =>
-        {
-            UnitsPerformAction(units, index+1);
-        }));
     }
 
     private void OccupyVillage(Home home)
@@ -170,21 +172,75 @@ public class AI : MonoBehaviour
         AIController.Instance.OnAITurnEnded?.Invoke(aiNumber+1);
     }
     
+    private Vector2Int ChooseMoveDirection(UnitController unit)
+    {
+        var randDir = Random.Range(0, _directions.Length);
+        var dir = _directions[randDir] + unit.occupiedTile.pos;
+        var tile = LevelManager.Instance.gameBoardWindow.GetTile(dir);
+        if (!tile.IsTileFree())
+        {
+            for (var i = 0; i < _directions.Length; i++)
+            {
+                dir = _directions[i];
+                if (tile.IsTileFree())
+                {
+                    break;
+                }
+
+                if (i == _directions.Length - 1)
+                {
+                    dir = unit.occupiedTile.pos;
+                    break;
+                }
+            }
+        }
+
+        if (unit.aiFromTile == null || unit.occupiedTile == unit.aiFromTile)
+        {
+            return dir;
+        }
+
+        var a = (unit.occupiedTile.pos - unit.aiFromTile.pos) + unit.occupiedTile.pos;
+        var nextTile = LevelManager.Instance.gameBoardWindow.GetTile(a);
+        Debug.Log(unit.occupiedTile.pos);
+        Debug.Log(unit.aiFromTile.pos);
+        Debug.Log(a);
+        
+        if (nextTile == null || !nextTile.IsTileFree() || nextTile.tileType == Tile.TileType.Water)
+        {
+            return dir;
+        }
+
+        dir = nextTile.pos;
+        return dir;
+    }
+    
     private void AIBuyTech(CivilisationController aiController, TechInfo.Technology tech)
     {
         aiController.technologies.Add(tech);
+    }
+    
+    private void UnitsPerformAction(List<UnitController> units, int index)
+    {
+        if(units.Count < index)
+            return;
+        
+        var homes = _controller.GetAllHome();
+        /*units[index].MoveToTile(GetTileForMove(units[index])).OnComplete((() =>
+        {
+            UnitsPerformAction(units, index+1);
+        }));*/
     }
     
     private Tile GetTileForMove(UnitController unit)
     {
         var board = LevelManager.Instance.gameBoardWindow;
 
-        Home village = null;
         if (unit.aiHomeExploring == null)
         {
             for (var i = 0; i <= 5; i++)
             {
-                village = board.FindRandomVillage(unit.occupiedTile);
+                var village = board.FindRandomVillage(unit.occupiedTile);
                 if (village == null)
                     return unit.occupiedTile;
                 if (village.exploringUnit != null)
@@ -199,9 +255,7 @@ public class AI : MonoBehaviour
                 }
             }
         }
-        
-        
-        
+
         if (unit.aiHomeExploring.homeTile.pos == unit.occupiedTile.pos)
         {
             OccupyVillage(unit.occupiedTile.homeOnTile);
@@ -215,4 +269,5 @@ public class AI : MonoBehaviour
             return tile;
         }
     }
+
 }

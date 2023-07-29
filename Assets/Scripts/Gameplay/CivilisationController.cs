@@ -43,16 +43,25 @@ public class CivilisationController : MonoBehaviour
     
     private void CreateHome()
     {
-        var allTile = _gameBoardWindow.GetAllTile();
-        var randomTile = allTile[Random.Range(0, allTile.Count)];
-        if (randomTile.GetComponent<Tile>().tileType == Tile.TileType.Water || LevelManager.Instance.gameBoardWindow.GetCloseTile(randomTile, 2).Find(tile => tile.homeOnTile))
+        var posLastTile = _gameBoardWindow.GetAllTile().Last().pos;
+        var factor = posLastTile.y / 4;
+        
+        var civPoses = new Vector2Int(factor, factor);
+        var civPoses1 = new Vector2Int(posLastTile.y - factor, posLastTile.y - factor);
+        var civPoses2 = new Vector2Int(posLastTile.y - factor, factor);
+        var civPoses3 = new Vector2Int(factor, posLastTile.y - factor);
+        var listPos = new List<Vector2Int>() { civPoses, civPoses1, civPoses2, civPoses3};
+        var randPos = listPos[Random.Range(0, listPos.Count)];
+        var tile = _gameBoardWindow.GetTile(randPos);
+        
+        if (tile.GetComponent<Tile>().tileType == Tile.TileType.Water || LevelManager.Instance.gameBoardWindow.GetCloseTile(tile, 2).Find(tile => tile.homeOnTile))
         {
             CreateHome();
             return;
         }
-        var homeO = Instantiate(homePrefab, randomTile.transform);
+        var homeO = Instantiate(homePrefab, tile.transform);
         homes.Add(homeO.GetComponent<Home>());
-        homes[0].Init(this, randomTile.GetComponent<Tile>());
+        homes[0].Init(this, tile.GetComponent<Tile>());
     }
     
     private void SetupCivilisation()

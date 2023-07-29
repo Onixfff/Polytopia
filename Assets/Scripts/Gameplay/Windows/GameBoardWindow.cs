@@ -26,12 +26,17 @@ public class GameBoardWindow : BaseWindow
         LevelManager.Instance.gameBoardWindow = this;
 
         GenerateBoard();
-        CreateCivilisations();
         GenerateEnvironment();
+        CreateCivilisations();
         GenerateWater();
         GenerateVillage();
     }
 
+    public Tile GetTile(Vector2Int pos)
+    {
+        return generatedTiles.Find(tile => tile.pos == pos);
+    }
+    
     public List<Tile> GetAllTile()
     {
         return generatedTiles;
@@ -129,11 +134,9 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void GenerateEnvironment()
     {
-        var tiles = generatedTiles.Select(tile => tile.GetComponent<Tile>()).ToList();
-        
-        foreach (var tile in tiles)
+        foreach (var tile in generatedTiles)
         {
-            if(!tile.IsTileFree() || tile.homeOnTile != null)
+            if(tile.homeOnTile != null)
                 continue;
             var a = Random.Range(0, 9);
             switch (a)
