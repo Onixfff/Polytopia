@@ -39,7 +39,7 @@ public class Home : MonoBehaviour
                 controller.homes.Add(this);
             UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
 
-            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, 1);
+            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, 3);
             foreach (var ti in tiles)
             {
                 ti.ReplaceOwner(this);

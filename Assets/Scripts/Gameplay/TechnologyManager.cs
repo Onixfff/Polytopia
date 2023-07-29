@@ -88,7 +88,7 @@ public class TechnologyManager : MonoBehaviour
     private void HuntingTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Hunt);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(2);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(1);
         huntingButton.image.color = Color.green;
         Destroy(huntingButton);
     }
@@ -96,7 +96,7 @@ public class TechnologyManager : MonoBehaviour
     private void RidersTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Rider);
-        LevelManager.Instance.gameplayWindow.UnlockUnitTech(2);
+        LevelManager.Instance.gameplayWindow.UnlockUnitTech(1);
         horsebackRidingButton.image.color = Color.green;
         Destroy(horsebackRidingButton);
     }
@@ -104,7 +104,7 @@ public class TechnologyManager : MonoBehaviour
     private void GatheringTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Gather);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(1);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(0);
         gatheringButton.image.color = Color.green;
         Destroy(gatheringButton);
     }
@@ -112,7 +112,7 @@ public class TechnologyManager : MonoBehaviour
     private void FreeSpiritTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.FreeSpirit);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(4);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(3);
         freeSpiritButton.image.color = Color.green;
         Destroy(freeSpiritButton);
     }
@@ -128,7 +128,7 @@ public class TechnologyManager : MonoBehaviour
     private void FishingTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Fish);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(3);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(2);
         fishingButton.image.color = Color.green;
         Destroy(fishingButton);
     }

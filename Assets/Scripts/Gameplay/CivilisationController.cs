@@ -50,6 +50,7 @@ public class CivilisationController : MonoBehaviour
         var civPoses1 = new Vector2Int(posLastTile.y - factor, posLastTile.y - factor);
         var civPoses2 = new Vector2Int(posLastTile.y - factor, factor);
         var civPoses3 = new Vector2Int(factor, posLastTile.y - factor);
+        
         var listPos = new List<Vector2Int>() { civPoses, civPoses1, civPoses2, civPoses3};
         var randPos = listPos[Random.Range(0, listPos.Count)];
         var tile = _gameBoardWindow.GetTile(randPos);

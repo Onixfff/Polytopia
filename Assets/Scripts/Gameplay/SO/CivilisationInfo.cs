@@ -40,8 +40,12 @@ public class CivilisationInfo : BaseCivilisationInfo
     public Sprite mountainSprite => mountain;
     public string mountainName => MountainName;
     
+    [SerializeField] private Sprite church;
+    public Sprite churchSprite => church;
+    
     [SerializeField] private HomeInfo homeInfo;
     public HomeInfo home => homeInfo;
+    
     
     [SerializeField] private List<UnitInfo> unitInfo;
     public List<UnitInfo> units => unitInfo;

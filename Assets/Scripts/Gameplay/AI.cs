@@ -177,7 +177,7 @@ public class AI : MonoBehaviour
         var randDir = Random.Range(0, _directions.Length);
         var dir = _directions[randDir] + unit.occupiedTile.pos;
         var tile = LevelManager.Instance.gameBoardWindow.GetTile(dir);
-        if (!tile.IsTileFree())
+        if (tile != null && !tile.IsTileFree())
         {
             for (var i = 0; i < _directions.Length; i++)
             {
@@ -202,9 +202,6 @@ public class AI : MonoBehaviour
 
         var a = (unit.occupiedTile.pos - unit.aiFromTile.pos) + unit.occupiedTile.pos;
         var nextTile = LevelManager.Instance.gameBoardWindow.GetTile(a);
-        Debug.Log(unit.occupiedTile.pos);
-        Debug.Log(unit.aiFromTile.pos);
-        Debug.Log(a);
         
         if (nextTile == null || !nextTile.IsTileFree() || nextTile.tileType == Tile.TileType.Water)
         {

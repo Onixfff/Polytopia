@@ -20,6 +20,7 @@ MonoBehaviour:
   tree: {fileID: 21300000, guid: 1e61421c3153f124eac2c06502a9369f, type: 3}
   animal: {fileID: 21300000, guid: 4e2fd61ec66ef6049b96bbad3ad035e2, type: 3}
   mountain: {fileID: 21300000, guid: 7dde154b0feb49345b3259aa568bace1, type: 3}
+  church: {fileID: 21300000, guid: c347d9197a9adbe4d9e858db53646c7b, type: 3}
   homeInfo: {fileID: 11400000, guid: 3e0817172ad881143b2af03d421ec454, type: 2}
   unitInfo:
   - {fileID: 11400000, guid: 871b77b22f09fbb4fafb2df4dfce09d5, type: 2}

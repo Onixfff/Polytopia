@@ -13,7 +13,8 @@ namespace Gameplay.SO
             Rider,
             Fish,
             Gather,
-            FreeSpirit
+            FreeSpirit,
+            Church
         }
 
         [SerializeField] private List<Technology> technologiesList;

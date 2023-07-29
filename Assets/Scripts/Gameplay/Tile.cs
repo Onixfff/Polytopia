@@ -30,6 +30,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Image treeTileImage;
     [SerializeField] private Image animalTileImage;
     [SerializeField] private Image mountainTileImage;
+    [SerializeField] private Image freeTileImage;
     [SerializeField] private Image fishTileImage;
     [SerializeField] private RectTransform centerRect;
     [SerializeField] private Image blueTargetImage;
@@ -38,10 +39,10 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject fog;
     [SerializeField] private Button getInfoButton;
 
-    private string _tileName = "";
+    private string _tileName = "Ground";
     private bool _isHomeOnTile = false;
     private Home _owner;
-
+    private List<GameplayWindow.OpenedTechType> _techTypes;
     public void ReplaceOwner(Home home)
     {
         if(_isHomeOnTile) return;
@@ -59,6 +60,7 @@ public class Tile : MonoBehaviour
             animalTileImage.sprite = civilisationInfo.animalSprite;
             treeTileImage.sprite = civilisationInfo.treeSprite; 
             fruitTileImage.sprite = civilisationInfo.fruitSprite;
+            mountainTileImage.sprite = civilisationInfo.mountainSprite;
         }
     }
     
@@ -94,7 +96,7 @@ public class Tile : MonoBehaviour
         treeTileImage.sprite = sprite;
         treeTileImage.enabled = true;
         
-        if (_tileName != "")
+        if (_tileName != "Ground")
             _tileName = _tileName + ", " + tileName;
         else
             _tileName = tileName;
@@ -106,7 +108,7 @@ public class Tile : MonoBehaviour
         fruitTileImage.sprite = sprite;
         fruitTileImage.enabled = true;
         
-        if (_tileName != "")
+        if (_tileName != "Ground")
             _tileName = _tileName + ", " + tileName;
         else
             _tileName = tileName;
@@ -118,7 +120,7 @@ public class Tile : MonoBehaviour
         animalTileImage.sprite = sprite;
         animalTileImage.enabled = true;
         
-        if (_tileName != "")
+        if (_tileName != "Ground")
             _tileName = _tileName + ", " + tileName;
         else
             _tileName = tileName;
@@ -129,9 +131,9 @@ public class Tile : MonoBehaviour
         if(sprite == null || _isHomeOnTile) return;
         mountainTileImage.sprite = sprite;
         mountainTileImage.enabled = true;
-        mountainTileImage.gameObject.SetActive(false);
+        mountainTileImage.gameObject.SetActive(true);
         isHasMountain = true;
-        if (_tileName != "")
+        if (_tileName != "Ground")
             _tileName = _tileName + ", " + tileName;
         else
             _tileName = tileName;
@@ -224,17 +226,23 @@ public class Tile : MonoBehaviour
         if (_owner != null && currO == gameObject)
         {
             
-            var types = new List<GameplayWindow.OpenedTechType>();
+            _techTypes = new List<GameplayWindow.OpenedTechType>();
             if(fruitTileImage != null && fruitTileImage.enabled)
-                types.Add(GameplayWindow.OpenedTechType.Fruit);
+                _techTypes.Add(GameplayWindow.OpenedTechType.Fruit);
             
             if(treeTileImage != null && treeTileImage.enabled)
-                types.Add(GameplayWindow.OpenedTechType.Tree);
+                _techTypes.Add(GameplayWindow.OpenedTechType.Tree);
             
             if(animalTileImage != null && animalTileImage.enabled)
-                types.Add(GameplayWindow.OpenedTechType.Animal);
+                _techTypes.Add(GameplayWindow.OpenedTechType.Animal);
+
+            if(tileType == TileType.Water)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Water);
             
-            LevelManager.Instance.gameplayWindow.ShowTileButton(types);
+            if(tileType == TileType.Ground)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Ground);
+            
+            LevelManager.Instance.gameplayWindow.ShowTileButton(_techTypes);
         }
     }
 
@@ -257,8 +265,19 @@ public class Tile : MonoBehaviour
             return;
         Debug.Log(pos);
         EconomicManager.Instance.BuySomething(2);
-        animalTileImage.gameObject.SetActive(false);
-        fruitTileImage.gameObject.SetActive(false);
+        if(_techTypes.Contains(GameplayWindow.OpenedTechType.Animal))
+            Destroy(animalTileImage.gameObject);
+        if(_techTypes.Contains(GameplayWindow.OpenedTechType.Fruit))
+            Destroy(fruitTileImage.gameObject);
+        if (_techTypes.TrueForAll(tech => tech == GameplayWindow.OpenedTechType.Ground))
+        {
+            if (animalTileImage != null) Destroy(animalTileImage.gameObject);
+            if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
+            freeTileImage.sprite = _owner.owner.civilisationInfo.churchSprite;
+            freeTileImage.enabled = true;
+            freeTileImage.gameObject.SetActive(true);
+        }
+        _tileName = "Ground";
         _owner.GetFood(1);
     }
 
@@ -283,14 +302,15 @@ public class Tile : MonoBehaviour
             tile.SetWaterTile();
         }
     }
+    
     private void SetWaterTile()
     {
+        _tileName = "Water";
         treeTileImage.gameObject.SetActive(false);
         fruitTileImage.gameObject.SetActive(false);
         animalTileImage.gameObject.SetActive(false);
         mountainTileImage.gameObject.SetActive(false);
-        
-        
+
         var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(this, 1);
         
         if(tiles.TrueForAll(tile => tile.tileType == TileType.Water))

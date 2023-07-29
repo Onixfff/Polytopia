@@ -227,9 +227,12 @@ public class GameBoardWindow : BaseWindow
     {
         for (var i = 0; i < 6; i++)
         {
-            Tile randomTile;
-            while (true)
+            Tile randomTile = null;
+            for(var j = 100; j >= 0; j--)
             {
+                if (j == 0)
+                    return;
+                
                 randomTile = generatedTiles[Random.Range(0, generatedTiles.Count)];
                 if(randomTile.tileType == Tile.TileType.Water)
                     continue;

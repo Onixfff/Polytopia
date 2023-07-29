@@ -15,7 +15,9 @@ public class GameplayWindow : BaseWindow
         Fruit,
         Animal,
         Tree,
-        Fish
+        Fish,
+        Ground,
+        Water
     }
     
     [SerializeField] private TextMeshProUGUI currentTurnUGUI;
@@ -40,8 +42,8 @@ public class GameplayWindow : BaseWindow
 
     public void UnlockUnitTech(int unitIndex)
     {
-        unitTechButtons[unitIndex-1].gameObject.SetActive(true);
-        unitTechButtons[unitIndex-1].onClick.AddListener((() =>
+        unitTechButtons[unitIndex].gameObject.SetActive(true);
+        unitTechButtons[unitIndex].onClick.AddListener((() =>
         {
             BuyUnit(unitIndex-1);
         }));
@@ -49,10 +51,10 @@ public class GameplayWindow : BaseWindow
     
     public void UnlockTileTech(int techIndex)
     {
-        _openedTileTechButtons ??= new List<Button>(){null, null, null};
-        _openedTileTechButtons.Insert(techIndex-1, tileTechButtons[techIndex-1]);
-        tileTechButtons[techIndex-1].gameObject.SetActive(true);
-        tileTechButtons[techIndex-1].onClick.AddListener((() =>
+        _openedTileTechButtons ??= new List<Button>(){null, null, null, null, null, null, null, null, null};
+        _openedTileTechButtons.Insert(techIndex, tileTechButtons[techIndex]);
+        tileTechButtons[techIndex].gameObject.SetActive(true);
+        tileTechButtons[techIndex].onClick.AddListener((() =>
         {
             BuyTileTech(techIndex);
         }));
@@ -95,10 +97,17 @@ public class GameplayWindow : BaseWindow
                 if(_openedTileTechButtons[0] != null)
                     _openedTileTechButtons[0].gameObject.SetActive(true);
             }
-            /*if (type == OpenedTechType.Fish)
+            if (type == OpenedTechType.Fish)
             {
                 _openedTileTechButtons[1].gameObject.SetActive(true);
-            }*/
+            }
+            if(type == OpenedTechType.Ground)
+            {
+                if (_openedTileTechButtons[3] != null)
+                {
+                    _openedTileTechButtons[3].gameObject.SetActive(true);
+                }
+            }
         }
     }
     
@@ -216,6 +225,7 @@ public class GameplayWindow : BaseWindow
     private void BuyTileTech(int index)
     {
         OnTileTech?.Invoke(index);
+        HideDownBar();
     }
     
     private void OpenTechnologyWindow()
