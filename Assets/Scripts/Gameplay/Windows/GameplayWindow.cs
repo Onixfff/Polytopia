@@ -45,7 +45,7 @@ public class GameplayWindow : BaseWindow
         unitTechButtons[unitIndex].gameObject.SetActive(true);
         unitTechButtons[unitIndex].onClick.AddListener((() =>
         {
-            BuyUnit(unitIndex-1);
+            BuyUnit(unitIndex);
         }));
     }
     
@@ -119,7 +119,7 @@ public class GameplayWindow : BaseWindow
         technologyCloseButton.onClick.AddListener(CloseTechnologyWindow);
         turnEndButton.onClick.AddListener(EndTurn);
         downBarBackButton.onClick.AddListener(HideDownBar);
-        UnlockUnitTech(1);
+        UnlockUnitTech(0);
 
         EconomicManager.Instance.OnMoneyChanged += MoneyChanged;
 
@@ -220,6 +220,7 @@ public class GameplayWindow : BaseWindow
     private void BuyUnit(int index)
     {
         OnUnitSpawn?.Invoke(index);
+        HideDownBar();
     }
     
     private void BuyTileTech(int index)

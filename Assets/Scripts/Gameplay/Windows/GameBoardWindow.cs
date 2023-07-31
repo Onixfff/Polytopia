@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Sequence = DG.Tweening.Sequence;
 
 public class GameBoardWindow : BaseWindow
 {
@@ -21,15 +24,26 @@ public class GameBoardWindow : BaseWindow
     [SerializeField] private GameInfo gameInfo;
     [SerializeField] private int waterFrequency = 10;
 
+    private Sequence _generateSeq;
+
     private void Awake()
     {
         LevelManager.Instance.gameBoardWindow = this;
-
+        _generateSeq = DOTween.Sequence();
         GenerateBoard();
-        GenerateEnvironment();
-        CreateCivilisations();
-        GenerateWater();
-        GenerateVillage();
+        var inVal = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.1f).OnComplete((GenerateEnvironment)));
+        var inVal1 = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal1, x => x = inVal1, 0f, 0.1f).OnComplete((CreateCivilisations)));
+        var inVal2 = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal2, x => x = inVal2, 0f, 0.1f).OnComplete((GenerateWater)));
+        var inVal3 = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal3, x => x = inVal3, 0f, 0.1f).OnComplete((GenerateVillage)));
+    }
+
+    private void OnDestroy()
+    {
+        _generateSeq.Kill();
     }
 
     public Tile GetTile(Vector2Int pos)
@@ -66,6 +80,12 @@ public class GameBoardWindow : BaseWindow
         }
         
         return closeTiles;
+    }
+
+    public bool IsThisTheNearestTile(Tile tile1, Tile tile2)
+    {
+        var closeTile = GetCloseTile(tile1, 1);
+        return closeTile.Contains(tile2);
     }
     
     public List<Home> GetVillage()
@@ -246,10 +266,13 @@ public class GameBoardWindow : BaseWindow
                 break;
             }
 
-            var home = Instantiate(village, randomTile.transform);
-            generatedVillage.Add(home);
-            home.Init(null, randomTile);
-            home.homeType = Home.HomeType.Village;
+            if (randomTile != null)
+            {
+                var home = Instantiate(village, randomTile.transform);
+                generatedVillage.Add(home);
+                home.Init(null, randomTile);
+                home.homeType = Home.HomeType.Village;
+            }
         }
     }
     

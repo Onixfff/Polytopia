@@ -43,24 +43,25 @@ public class Tile : MonoBehaviour
     private bool _isHomeOnTile = false;
     private Home _owner;
     private List<GameplayWindow.OpenedTechType> _techTypes;
-    public void ReplaceOwner(Home home)
-    {
-        if(_isHomeOnTile) return;
-        if(_owner != null && _owner.owner == home.owner)
-            return;
 
+    public void SetOwner(Home home)
+    {
         _owner = home;
-        homeOnTile = home;
-        if(home.owner == null)
-            return;
-        var civilisationInfo = home.owner.civilisationInfo;
-        if (tileType == TileType.Ground)
+    }
+    
+    public void ChangeTileVisual(Home home)
+    {
+        if (home.owner != null)
         {
-            groundImage.sprite = civilisationInfo.groundSprite;
-            animalTileImage.sprite = civilisationInfo.animalSprite;
-            treeTileImage.sprite = civilisationInfo.treeSprite; 
-            fruitTileImage.sprite = civilisationInfo.fruitSprite;
-            mountainTileImage.sprite = civilisationInfo.mountainSprite;
+            var civilisationInfo = home.owner.civilisationInfo;
+            if (tileType == TileType.Ground)
+            {
+                if (groundImage != null) groundImage.sprite = civilisationInfo.groundSprite;
+                if (animalTileImage != null) animalTileImage.sprite = civilisationInfo.animalSprite;
+                if (treeTileImage != null) treeTileImage.sprite = civilisationInfo.treeSprite;
+                if (fruitTileImage != null) fruitTileImage.sprite = civilisationInfo.fruitSprite;
+                if (mountainTileImage != null) mountainTileImage.sprite = civilisationInfo.mountainSprite;
+            }
         }
     }
     
@@ -83,11 +84,6 @@ public class Tile : MonoBehaviour
     {
         fog.SetActive(false);
         groundImage.enabled = true;
-    }
-
-    public string GetTileName()
-    {
-        return _tileName;
     }
 
     public void SetTreeSprite(Sprite sprite, string tileName)
@@ -182,11 +178,14 @@ public class Tile : MonoBehaviour
     public void BuildHome(Home home)
     {
         homeOnTile = home;
+        SetOwner(home);
+        ChangeTileVisual(home);
         if (treeTileImage != null) Destroy(treeTileImage.gameObject);
         if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
         if (animalTileImage != null) Destroy(animalTileImage.gameObject);
         if (mountainTileImage != null) Destroy(mountainTileImage.gameObject);
-        if (_owner.owner != null) groundImage.sprite = _owner.owner.civilisationInfo.groundSprite;
+        if (_owner.owner != null) 
+            groundImage.sprite = _owner.owner.civilisationInfo.groundSprite;
         tileType = TileType.Ground;
         _isHomeOnTile = true;
         _tileName = "Home";
@@ -287,24 +286,30 @@ public class Tile : MonoBehaviour
     public void CreateWaterArea()
     {
         var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(this, waterRad);
+        
+        if (homeOnTile != null)
+            return;
+        
         tileType = TileType.Water;
+        
         foreach (var tile in tiles)
         {
-            if(tile._owner != null && tile._owner.homeTile == this)
-                continue;
-            tile.tileType = TileType.Water;
+            if(tile.homeOnTile == null)
+                tile.tileType = TileType.Water;
         }
+
         SetWaterTile();
+        
         foreach (var tile in tiles)
         {
-            if(tile._owner != null && tile._owner.homeTile == this)
-                continue;
-            tile.SetWaterTile();
+            if(tile.homeOnTile == null)
+                tile.SetWaterTile();
         }
     }
     
     private void SetWaterTile()
     {
+        isHasMountain = false;
         _tileName = "Water";
         treeTileImage.gameObject.SetActive(false);
         fruitTileImage.gameObject.SetActive(false);
@@ -317,11 +322,12 @@ public class Tile : MonoBehaviour
             groundImage.sprite = LevelManager.Instance.waterSprites[1];
         else
             groundImage.sprite = LevelManager.Instance.waterSprites[0];
-        var a = UnityEngine.Random.Range(0, 6);
-        switch (a)
+        var randomFish = UnityEngine.Random.Range(0, 6);
+        switch (randomFish)
         {
             case 1:
                 fishTileImage.gameObject.SetActive(true);
+                fishTileImage.enabled = true;
                 break;
         }
     }

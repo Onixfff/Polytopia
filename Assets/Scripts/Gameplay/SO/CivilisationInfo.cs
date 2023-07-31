@@ -20,6 +20,9 @@ public class CivilisationInfo : BaseCivilisationInfo
     [SerializeField] private Color civilColor;
     public Color civilisationColor => civilColor;
     
+    [SerializeField] private Sprite head;
+    public Sprite headSprite => head;
+    
     [SerializeField] private Sprite ground;
     public Sprite groundSprite => ground;
     public string groundName => GroundName;

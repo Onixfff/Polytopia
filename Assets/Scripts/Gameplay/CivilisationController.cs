@@ -54,12 +54,12 @@ public class CivilisationController : MonoBehaviour
         var listPos = new List<Vector2Int>() { civPoses, civPoses1, civPoses2, civPoses3};
         var randPos = listPos[Random.Range(0, listPos.Count)];
         var tile = _gameBoardWindow.GetTile(randPos);
-        
-        if (tile.GetComponent<Tile>().tileType == Tile.TileType.Water || LevelManager.Instance.gameBoardWindow.GetCloseTile(tile, 2).Find(tile => tile.homeOnTile))
+        if (tile.homeOnTile != null)
         {
             CreateHome();
             return;
         }
+
         var homeO = Instantiate(homePrefab, tile.transform);
         homes.Add(homeO.GetComponent<Home>());
         homes[0].Init(this, tile.GetComponent<Tile>());

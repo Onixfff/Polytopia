@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Gameplay.SO;
@@ -10,11 +11,13 @@ public class UnitController : MonoBehaviour
     public Tile occupiedTile;
 
     [SerializeField] private UnitInfo unitInfo;
-    [SerializeField] private Image unitBackGround;
+    [SerializeField] private List<Image> unitBackGrounds;
+    [SerializeField] private Image headImage;
+    [SerializeField] private Image horseImage;
     [SerializeField] private TextMeshProUGUI unitHpTMPro;
     [SerializeField] private Button selectUnitButton;
     [SerializeField] private RectTransform rectTransform;
-    [SerializeField] private float moveDuration = 2f;
+    [SerializeField] private float moveDuration = 0.1f;
     
     private Home _owner;
     private bool _isCanSelected = true;
@@ -52,16 +55,17 @@ public class UnitController : MonoBehaviour
         unitHpTMPro.text = _hp.ToString();
     }
 
-    public void TakeDamage(int dmg)
+    public bool TakeDamage(int dmg)
     {
         _hp -= dmg;
         if (_hp <= 0)
         {
             KillUnit();
-            return;
+            return true;
         }
 
         unitHpTMPro.text = _hp.ToString();
+        return false;
     }
     
     public bool IsThisUnitAlly(CivilisationController controller)
@@ -72,7 +76,12 @@ public class UnitController : MonoBehaviour
     public void SetOwner(Home controller)
     {
         _owner = controller;
-        unitBackGround.color = controller.owner.civColor;
+        headImage.sprite = controller.owner.civilisationInfo.headSprite;
+        if (horseImage != null) horseImage.sprite = controller.owner.civilisationInfo.animalSprite;
+        foreach (var unitBackGround in unitBackGrounds)
+        {
+            unitBackGround.color = controller.owner.civColor;
+        }
     }
     
     public Home GetOwner()
@@ -91,7 +100,7 @@ public class UnitController : MonoBehaviour
         return unitInfo;
     }
     
-    public Tween MoveToTile(Tile to)
+    public Tween MoveToTile(Tile to, float dur = 0.2f)
     {
         if(occupiedTile != null)
         {
@@ -106,12 +115,12 @@ public class UnitController : MonoBehaviour
         transform.SetSiblingIndex(transform.parent.childCount);
         var inValX = rectTransform.anchoredPosition.x;
         OccupyTile(to);
-        _moveSeq.Append(DOTween.To(() => inValX, x => inValX = x, anchorPos.x, moveDuration).OnUpdate((() =>
+        _moveSeq.Append(DOTween.To(() => inValX, x => inValX = x, anchorPos.x, dur).OnUpdate((() =>
         {
             rectTransform.anchoredPosition = new Vector2(inValX, rectTransform.anchoredPosition.y);
         })));
         var inValY = rectTransform.anchoredPosition.y;
-        _moveSeq.Join(DOTween.To(() => inValY, x => inValY = x, anchorPos.y + 30, moveDuration).OnUpdate((() =>
+        _moveSeq.Join(DOTween.To(() => inValY, x => inValY = x, anchorPos.y + 30, dur).OnUpdate((() =>
         {
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, inValY);
             if (occupiedTile.homeOnTile != null && (occupiedTile.homeOnTile.owner == null || occupiedTile.homeOnTile.owner != _owner.owner))
@@ -169,24 +178,34 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public Tween AttackUnitOnTile(UnitController unitController)
+    public Tween AttackUnitOnTile(UnitController unitToAttack)
     {
         _attSeq = DOTween.Sequence();
         
         var pos = transform.position;
-        _attSeq.Append(transform.DOMove(unitController.transform.position, 0.1f).OnComplete((() =>
+        DeselectUnit();
+        var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile);
+        if (unitToAttack.TakeDamage(unitInfo.dmg) && isThisTheNearestTile)
         {
+            _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
             _attackThisTurn = 0; 
             _moveThisTurn = 0;
-            
-            unitController.TakeDamage(unitInfo.dmg); 
-            LevelManager.Instance.SelectObject(null);
-            DeselectUnit();
-        })));
-        _attSeq.Append(transform.DOMove(pos, 0.1f).OnComplete((() =>
+        }
+        else
         {
-            SelectUnit();
-        })));
+            _attSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+            {
+                _attackThisTurn = 0; 
+                _moveThisTurn = 0;
+
+            
+                LevelManager.Instance.SelectObject(null);
+                SelectUnit();
+
+            })));
+            _attSeq.Append(transform.DOMove(pos, 0.1f));
+        }
+        
         return _attSeq;
     }
     

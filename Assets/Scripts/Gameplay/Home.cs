@@ -24,11 +24,10 @@ public class Home : MonoBehaviour
     private int _foodFromNextLvl = 2;
     private int _foodCount = 2;
     
-    public void Init(CivilisationController controller, Tile tile)
+    public void Init(CivilisationController controller, Tile tile, bool isFirstInit = true)
     {
         homeTile = tile;
         transform.position = homeTile.GetRectTransform().position;
-        homeTile.ReplaceOwner(this);
         transform.SetSiblingIndex(transform.GetSiblingIndex()-2);
         _unitList = new List<UnitController>();
         if (controller != null)
@@ -38,11 +37,16 @@ public class Home : MonoBehaviour
             if(!controller.homes.Contains(this))
                 controller.homes.Add(this);
             UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
-
-            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, 3);
+            var rad = 1;
+            if (isFirstInit)
+            {
+                rad = 3;
+            }
+            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, rad);
             foreach (var ti in tiles)
             {
-                ti.ReplaceOwner(this);
+                ti.SetOwner(this);
+                ti.ChangeTileVisual(this);
             }
             LevelManager.Instance.gameplayWindow.OnUnitSpawn += BuyUnit;
             EconomicManager.Instance.AddMoney(5);
@@ -52,9 +56,10 @@ public class Home : MonoBehaviour
         }
         else
         {
-            
+
         }
         homeTile.BuildHome(this);
+
         homeButton.onClick.RemoveAllListeners();
         homeButton.onClick.AddListener(HomeOnClick);
         occupyButton.onClick.RemoveAllListeners();
@@ -93,7 +98,7 @@ public class Home : MonoBehaviour
         homeType = HomeType.City;
         homeTile.unitOnTile.GetOwner().RemoveUnit(homeTile.unitOnTile);
         occupyButton.gameObject.SetActive(false);
-        Init(homeTile.unitOnTile.GetOwner().owner, homeTile);
+        Init(homeTile.unitOnTile.GetOwner().owner, homeTile, false);
         homeTile.unitOnTile.SetOwner(this);
         AddUnit(homeTile.unitOnTile);
     }

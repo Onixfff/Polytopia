@@ -15,7 +15,7 @@ public class LevelManager : SingletonPersistent<LevelManager>
 
     public GameBoardWindow gameBoardWindow;
     public GameplayWindow gameplayWindow;
-    private GameObject _selectedObject;
+    [SerializeField]private GameObject _selectedObject;
     public string currentName;
     
     public List<Sprite> waterSprites;

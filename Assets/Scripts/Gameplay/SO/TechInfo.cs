@@ -14,7 +14,10 @@ namespace Gameplay.SO
             Fish,
             Gather,
             FreeSpirit,
-            Church
+            Farming,
+            Strategy,
+            Mining,
+            Archery
         }
 
         [SerializeField] private List<Technology> technologiesList;

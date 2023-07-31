@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   control: 0
   civilName: Oumaji
-  civilColor: {r: 0.6462119, g: 0.6509804, b: 0.15686272, a: 1}
+  civilColor: {r: 0.764151, g: 0.69702023, b: 0.29196337, a: 1}
+  head: {fileID: 21300000, guid: 62e7675766fae464889308a10e0477d8, type: 3}
   ground: {fileID: 21300000, guid: c54aa1f4fae535a459a8f7d3b2c05eea, type: 3}
   fruit: {fileID: 21300000, guid: 9d7c8da7683348f4aab297ead5c7ad19, type: 3}
   tree: {fileID: 21300000, guid: 255703d7b89c52749b2dafe61c05dcc7, type: 3}
@@ -25,4 +26,6 @@ MonoBehaviour:
   unitInfo:
   - {fileID: 11400000, guid: afee9ac28cea12048a80dda30417389a, type: 2}
   - {fileID: 11400000, guid: a78c2e9e2fa063348ac9f430715f8169, type: 2}
+  - {fileID: 11400000, guid: 445a78d4bd7c48e458d0b61da947fd79, type: 2}
+  - {fileID: 11400000, guid: dd670c25175d7b6428e50e4bb6231fad, type: 2}
   techInfo: {fileID: 11400000, guid: 4a926c8bd63677a46857beec3b37fb0d, type: 2}

@@ -12,6 +12,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: b5543f18d6219314e8bceefcf1fb04c4, type: 3}
+    - target: {fileID: 3469348152958105020, guid: bb5da2bfb2475ad4aadd81645304c540, type: 3}
+      propertyPath: homeType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3469348152958105020, guid: bb5da2bfb2475ad4aadd81645304c540, type: 3}
+      propertyPath: unitPrefabs.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3469348152958105020, guid: bb5da2bfb2475ad4aadd81645304c540, type: 3}
+      propertyPath: unitPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 6667371355122788597, guid: 5beca99b492476b4d99d77dfcc2cc224, type: 3}
     - target: {fileID: 5697296062761007083, guid: bb5da2bfb2475ad4aadd81645304c540, type: 3}
       propertyPath: m_Name
       value: Village

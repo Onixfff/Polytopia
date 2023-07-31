@@ -257,14 +257,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6e5c647346d5f4da2ca555bc6d6844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  homeTile: {fileID: 0}
+  owner: {fileID: 0}
+  homeRad: 1
+  homeType: 1
   homeButton: {fileID: 4125785684360822284}
   occupyButton: {fileID: 4497024037642038627}
   homeImage: {fileID: 2212580032476123589}
   unitPrefabs:
   - {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
-  - {fileID: 6667371355122788597, guid: 5beca99b492476b4d99d77dfcc2cc224, type: 3}
-  homeTile: {fileID: 0}
-  owner: {fileID: 0}
+  - {fileID: 908440429283511281, guid: 5beca99b492476b4d99d77dfcc2cc224, type: 3}
+  - {fileID: 7153613370450505250, guid: f1aa9971716ce77488cc8ca2f096373d, type: 3}
+  - {fileID: 2650723956706019991, guid: 9ee4616aa8ab40f4b80ed385b4c2bc9e, type: 3}
+  exploringUnit: {fileID: 0}
 --- !u!1 &7376424880112021022
 GameObject:
   m_ObjectHideFlags: 0
