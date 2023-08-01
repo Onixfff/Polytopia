@@ -31,8 +31,11 @@ public class AIController : Singleton<AIController>
 
     private void AIStartTurn(int i)
     {
-        if(i > countAi)
+        if (i >= countAi)
+        {
+            LevelManager.Instance.OnTurnBegin?.Invoke();
             return;
+        }
         _aiList[i].StartTurn();
     }
 }

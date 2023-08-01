@@ -8,6 +8,12 @@ using UnityEngine.UI;
 
 public class UnitController : MonoBehaviour
 {
+    public enum UnitType
+    {
+        Unit,
+        Ship
+    }
+    
     public Tile occupiedTile;
 
     [SerializeField] private UnitInfo unitInfo;
@@ -17,8 +23,10 @@ public class UnitController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI unitHpTMPro;
     [SerializeField] private Button selectUnitButton;
     [SerializeField] private RectTransform rectTransform;
-    [SerializeField] private float moveDuration = 0.1f;
+    [SerializeField] private UnitController shipUnit;
+    [SerializeField] private UnitType unitType;
     
+    private UnitController _unitInTheShip;
     private Home _owner;
     private bool _isCanSelected = true;
     private bool _isSelected;
@@ -28,6 +36,7 @@ public class UnitController : MonoBehaviour
     private int _unitIndex;
     private Sequence _moveSeq;
     private Sequence _attSeq;
+    private Sequence _counterstrikeSeq;
 
     public void Init(Home owner, Tile tile, int index)
     {
@@ -36,6 +45,7 @@ public class UnitController : MonoBehaviour
         var anchorPos = occupiedTile.GetComponent<RectTransform>().anchoredPosition;
         GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorPos.x, anchorPos.y + 30);
         SetOwner(owner);
+        selectUnitButton.onClick.RemoveAllListeners();
         selectUnitButton.onClick.AddListener(SelectUnit);
         LevelManager.Instance.OnObjectSelect += SelectEvent;
         LevelManager.Instance.OnTurnEnd += () =>
@@ -50,7 +60,9 @@ public class UnitController : MonoBehaviour
         };
 
         _unitIndex = index;
-        unitInfo = owner.owner.civilisationInfo.units[index];
+        if(unitType == UnitType.Unit)
+            unitInfo = owner.owner.civilisationInfo.units[index];
+        
         _hp = unitInfo.hp;
         unitHpTMPro.text = _hp.ToString();
     }
@@ -63,7 +75,7 @@ public class UnitController : MonoBehaviour
             KillUnit();
             return true;
         }
-
+        
         unitHpTMPro.text = _hp.ToString();
         return false;
     }
@@ -99,6 +111,11 @@ public class UnitController : MonoBehaviour
     {
         return unitInfo;
     }
+
+    public void SetUnitInShip(UnitController unitController)
+    {
+        _unitInTheShip = unitController;
+    }
     
     public Tween MoveToTile(Tile to, float dur = 0.2f)
     {
@@ -123,6 +140,10 @@ public class UnitController : MonoBehaviour
         _moveSeq.Join(DOTween.To(() => inValY, x => inValY = x, anchorPos.y + 30, dur).OnUpdate((() =>
         {
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, inValY);
+        })));
+        var inVal1 = 0;
+        _moveSeq.Join(DOTween.To(() => inValY, x => inValY = x, 1, dur)).OnComplete((() =>
+        {
             if (occupiedTile.homeOnTile != null && (occupiedTile.homeOnTile.owner == null || occupiedTile.homeOnTile.owner != _owner.owner))
             {
                 occupiedTile.homeOnTile.ShowOccupyButton();
@@ -137,7 +158,17 @@ public class UnitController : MonoBehaviour
                 if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
                     tile.UnlockTile();
             }
-        })));
+
+            if (unitType == UnitType.Unit && to.IsTileHasPort())
+            {
+                TurnIntoAShip();
+            }
+
+            if (unitType == UnitType.Ship && to.tileType == Tile.TileType.Ground)
+            {
+                TurnIntoAUnit();
+            }
+        }));
 
         return _moveSeq;
     }
@@ -145,6 +176,7 @@ public class UnitController : MonoBehaviour
     private void OnDestroy()
     {
         LevelManager.Instance.OnObjectSelect -= SelectEvent;
+
         _moveSeq.Kill();
         _attSeq.Kill();
     }
@@ -198,15 +230,44 @@ public class UnitController : MonoBehaviour
                 _attackThisTurn = 0; 
                 _moveThisTurn = 0;
 
-            
                 LevelManager.Instance.SelectObject(null);
                 SelectUnit();
 
             })));
             _attSeq.Append(transform.DOMove(pos, 0.1f));
+            if (_attackThisTurn != 0)
+                _attSeq.Append(unitToAttack.Counterstrike(this));
         }
         
         return _attSeq;
+    }
+
+    private Tween Counterstrike(UnitController enemyWhoAttack)
+    {
+        _counterstrikeSeq = DOTween.Sequence();
+        
+        _counterstrikeSeq.Append(AttackUnitOnTile(enemyWhoAttack));
+        return _counterstrikeSeq;
+    }
+
+    private void TurnIntoAShip()
+    {
+        LevelManager.Instance.SelectObject(null);
+      
+        var ship = Instantiate(shipUnit, transform.parent);
+        ship.Init(_owner, occupiedTile, 0);
+        ship.SetUnitInShip(this);
+        gameObject.SetActive(false);
+    }
+    
+    private void TurnIntoAUnit()
+    {
+        LevelManager.Instance.SelectObject(null);
+        
+        _unitInTheShip.gameObject.SetActive(true);
+        _unitInTheShip.Init(_owner, occupiedTile, _unitInTheShip._unitIndex);
+        occupiedTile.unitOnTile = _unitInTheShip;
+        KillUnit();
     }
     
     private void SelectUnit()
@@ -219,7 +280,6 @@ public class UnitController : MonoBehaviour
         }
         
         _isSelected = true;
-        LevelManager.Instance.currentName = "Warior";
         LevelManager.Instance.SelectObject(gameObject);
         if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI) 
             return;
@@ -238,7 +298,7 @@ public class UnitController : MonoBehaviour
             if(closeTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                 continue;
             
-            if(closeTile.tileType == Tile.TileType.Water)
+            if(unitType != UnitType.Ship && closeTile.tileType == Tile.TileType.Water && !closeTile.IsTileHasPort())
                 continue;
             closeTile.ShowBlueTarget();
         }

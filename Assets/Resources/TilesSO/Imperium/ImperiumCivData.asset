@@ -22,10 +22,13 @@ MonoBehaviour:
   animal: {fileID: 21300000, guid: 4e2fd61ec66ef6049b96bbad3ad035e2, type: 3}
   mountain: {fileID: 21300000, guid: 7dde154b0feb49345b3259aa568bace1, type: 3}
   church: {fileID: 21300000, guid: c347d9197a9adbe4d9e858db53646c7b, type: 3}
+  port: {fileID: 21300000, guid: d5a68ec5673e79a4bb6b421365aeaa5f, type: 3}
+  farm: {fileID: 21300000, guid: adda91b60a61f3748a66d00a37088339, type: 3}
   homeInfo: {fileID: 11400000, guid: 3e0817172ad881143b2af03d421ec454, type: 2}
   unitInfo:
   - {fileID: 11400000, guid: 871b77b22f09fbb4fafb2df4dfce09d5, type: 2}
   - {fileID: 11400000, guid: a78c2e9e2fa063348ac9f430715f8169, type: 2}
   - {fileID: 11400000, guid: 445a78d4bd7c48e458d0b61da947fd79, type: 2}
   - {fileID: 11400000, guid: dd670c25175d7b6428e50e4bb6231fad, type: 2}
+  shipUnitInfo: []
   techInfo: {fileID: 11400000, guid: 9f41a74702c7dcc40a6d282438f4d207, type: 2}

@@ -45,6 +45,15 @@ public class GameBoardWindow : BaseWindow
     {
         _generateSeq.Kill();
     }
+    
+    public void ShowAllOre()
+    {
+        foreach (var tile in generatedTiles)
+        {
+            if(tile.isHasMountain)
+                tile.ShowOre();
+        }
+    }
 
     public Tile GetTile(Vector2Int pos)
     {

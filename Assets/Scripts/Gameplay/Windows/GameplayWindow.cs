@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Gameplay.SO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +18,8 @@ public class GameplayWindow : BaseWindow
         Tree,
         Fish,
         Ground,
-        Water
+        Water,
+        Construct
     }
     
     [SerializeField] private TextMeshProUGUI currentTurnUGUI;
@@ -27,6 +29,7 @@ public class GameplayWindow : BaseWindow
     [SerializeField] private Button technologyCloseButton;
     [SerializeField] private Button turnEndButton;
     [SerializeField] private GameObject technologyObject;
+    [SerializeField] private GameObject inputBlockObject;
     
     [SerializeField] private GameObject turnEnd;
     [SerializeField] private GameObject turnBegin;
@@ -74,17 +77,19 @@ public class GameplayWindow : BaseWindow
         tileNameUGUI.text = "Home";
     }
     
-    public void ShowTileButton(List<OpenedTechType> types)
+    public void ShowTileButton(List<OpenedTechType> types, Tile tileC)
     {
         if(_openedTileTechButtons == null) return;
         downBar.SetActive(true);
         tileTechButtonParent.SetActive(true);
-
+        var controller = tileC.GetOwner().owner;
         foreach (var tile in tileTechButtons)
         {
             tile.gameObject.SetActive(false);            
         }
-
+        
+        if(types.Contains(OpenedTechType.Construct))
+            return;
         foreach (var type in types)
         {
             if (type == OpenedTechType.Animal)
@@ -99,13 +104,45 @@ public class GameplayWindow : BaseWindow
             }
             if (type == OpenedTechType.Fish)
             {
-                _openedTileTechButtons[1].gameObject.SetActive(true);
+                if (_openedTileTechButtons[2] != null) 
+                    _openedTileTechButtons[2].gameObject.SetActive(true);
             }
             if(type == OpenedTechType.Ground)
             {
-                if (_openedTileTechButtons[3] != null)
+                if (!tileC.isHasMountain)
+                {
+                    if(controller.technologies.Contains(TechInfo.Technology.FreeSpirit))
+                    {
+                        if(_openedTileTechButtons[3] != null)
+                            _openedTileTechButtons[3].gameObject.SetActive(true);
+                    }
+                    if(controller.technologies.Contains(TechInfo.Technology.Farming))
+                    {
+                        if (_openedTileTechButtons[5] != null) 
+                            _openedTileTechButtons[5].gameObject.SetActive(true);
+                    }
+                }
+                else
+                {
+                    if(controller.technologies.Contains(TechInfo.Technology.Mining))
+                    {
+                        if(_openedTileTechButtons[6] != null)
+                            _openedTileTechButtons[6].gameObject.SetActive(true);
+                    }
+                }
+            }
+            if(type == OpenedTechType.Ground)
+            {
+                if(controller.technologies.Contains(TechInfo.Technology.FreeSpirit) && _openedTileTechButtons[3] != null)
                 {
                     _openedTileTechButtons[3].gameObject.SetActive(true);
+                }
+            }
+            if(controller.technologies.Contains(TechInfo.Technology.Sailing) && type == OpenedTechType.Water)
+            {
+                if (_openedTileTechButtons[4] != null)
+                {
+                    _openedTileTechButtons[4].gameObject.SetActive(true);
                 }
             }
         }
@@ -171,12 +208,14 @@ public class GameplayWindow : BaseWindow
 
     private void TurnBegin()
     {
+        BlockInput(false);
         ShowTurnBegin();
         currentTurnUGUI.text = "Ход: " + LevelManager.Instance.currentTurn;
     }
     
     private void TurnEnd()
     {
+        BlockInput(true);
         ShowTurnEnd();
         HideDownBar();
     }
@@ -242,5 +281,10 @@ public class GameplayWindow : BaseWindow
     private void EndTurn()
     {
         LevelManager.Instance.OnTurnEnd?.Invoke();
+    }
+
+    private void BlockInput(bool value)
+    {
+        inputBlockObject.SetActive(value);
     }
 }

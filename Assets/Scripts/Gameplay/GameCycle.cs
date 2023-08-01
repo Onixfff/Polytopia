@@ -20,11 +20,6 @@ public class GameCycle : MonoBehaviour
     private void TurnEnd()
     {
         LevelManager.Instance.SelectObject(null);
-        var inVal = 0;
-        DOTween.To(() => inVal, x => x = inVal, 5f, 1f).OnComplete(() =>
-        {
-            LevelManager.Instance.OnTurnBegin?.Invoke();
-        });
     }
 }
 

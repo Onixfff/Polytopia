@@ -100,6 +100,13 @@ public class TechnologyManager : MonoBehaviour
                 StrategyTech();
             }
         }));
+        farmingButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priseTwoTier))
+            {
+                FarmingTech();
+            }
+        }));
 
         #endregion
         #region Mountain
@@ -124,6 +131,13 @@ public class TechnologyManager : MonoBehaviour
             if(TryBuyTech(priseFirstTier))
             {
                 FishingTech();
+            }
+        }));
+        sailingButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priseTwoTier))
+            {
+                SailingTech();
             }
         }));
         #endregion
@@ -180,14 +194,14 @@ public class TechnologyManager : MonoBehaviour
     private void GatheringTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Gather);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(0);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(1);
         gatheringButton.image.color = Color.green;
         Destroy(gatheringButton);
     }
     private void FarmingTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Farming);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(0);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(5);
         farmingButton.image.color = Color.green;
         Destroy(farmingButton);
     }
@@ -203,12 +217,14 @@ public class TechnologyManager : MonoBehaviour
     private void MountainTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Mountain);
+        LevelManager.Instance.gameBoardWindow.ShowAllOre();
         mountainButton.image.color = Color.green;
         Destroy(mountainButton);
     }
     private void MiningTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Mining);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(6);
         miningButton.image.color = Color.green;
         Destroy(miningButton);
     }
@@ -220,6 +236,13 @@ public class TechnologyManager : MonoBehaviour
         LevelManager.Instance.gameplayWindow.UnlockTileTech(2);
         fishingButton.image.color = Color.green;
         Destroy(fishingButton);
+    }
+    private void SailingTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Sailing);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(4);
+        sailingButton.image.color = Color.green;
+        Destroy(sailingButton);
     }
     #endregion
     #region Hunt

@@ -30,6 +30,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Image treeTileImage;
     [SerializeField] private Image animalTileImage;
     [SerializeField] private Image mountainTileImage;
+    [SerializeField] private Image miningImage;
     [SerializeField] private Image freeTileImage;
     [SerializeField] private Image fishTileImage;
     [SerializeField] private RectTransform centerRect;
@@ -43,7 +44,12 @@ public class Tile : MonoBehaviour
     private bool _isHomeOnTile = false;
     private Home _owner;
     private List<GameplayWindow.OpenedTechType> _techTypes;
-
+    
+    public Home GetOwner()
+    {
+        return _owner;
+    }
+    
     public void SetOwner(Home home)
     {
         _owner = home;
@@ -159,12 +165,25 @@ public class Tile : MonoBehaviour
     {
         return unitOnTile == null;
     }
+
+    public bool IsTileHasPort()
+    {
+        return _tileName.Contains("Port");
+    }
     
     public bool IsCanMoveTo()
     {
         return blueTargetImage.gameObject.activeSelf && !redTargetImage.gameObject.activeSelf;
     }
-    
+
+    public void ShowOre()
+    {
+        if (miningImage == null) 
+            return;
+        miningImage.gameObject.SetActive(true);
+        miningImage.enabled = true;
+    }
+
     public bool IsCanAttackTo()
     {
         return redTargetImage.gameObject.activeSelf;
@@ -207,12 +226,7 @@ public class Tile : MonoBehaviour
         LevelManager.Instance.OnObjectSelect += SelectEvent;
         LevelManager.Instance.gameplayWindow.OnTileTech += BuyTileTech;
     }
-
-    private void OnDestroy()
-    {
-        LevelManager.Instance.OnObjectSelect -= SelectEvent;
-    }
-
+    
     private void SelectEvent(GameObject pastO, GameObject currO)
     {
         if(currO == null || currO.TryGetComponent(out Tile tile))
@@ -234,6 +248,9 @@ public class Tile : MonoBehaviour
             
             if(animalTileImage != null && animalTileImage.enabled)
                 _techTypes.Add(GameplayWindow.OpenedTechType.Animal);
+            
+            if(fishTileImage != null && fishTileImage.enabled)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Fish);
 
             if(tileType == TileType.Water)
                 _techTypes.Add(GameplayWindow.OpenedTechType.Water);
@@ -241,7 +258,10 @@ public class Tile : MonoBehaviour
             if(tileType == TileType.Ground)
                 _techTypes.Add(GameplayWindow.OpenedTechType.Ground);
             
-            LevelManager.Instance.gameplayWindow.ShowTileButton(_techTypes);
+            if(freeTileImage.enabled)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Construct);
+            
+            LevelManager.Instance.gameplayWindow.ShowTileButton(_techTypes, this);
         }
     }
 
@@ -258,26 +278,94 @@ public class Tile : MonoBehaviour
     
     private void BuyTileTech(int index)
     {
-        if (!EconomicManager.Instance.IsCanBuy(2)) 
-            return;
         if(gameObject != LevelManager.Instance.GetSelectedObject())
             return;
-        Debug.Log(pos);
-        EconomicManager.Instance.BuySomething(2);
-        if(_techTypes.Contains(GameplayWindow.OpenedTechType.Animal))
-            Destroy(animalTileImage.gameObject);
-        if(_techTypes.Contains(GameplayWindow.OpenedTechType.Fruit))
-            Destroy(fruitTileImage.gameObject);
-        if (_techTypes.TrueForAll(tech => tech == GameplayWindow.OpenedTechType.Ground))
+        switch (index)
         {
-            if (animalTileImage != null) Destroy(animalTileImage.gameObject);
-            if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-            freeTileImage.sprite = _owner.owner.civilisationInfo.churchSprite;
-            freeTileImage.enabled = true;
-            freeTileImage.gameObject.SetActive(true);
+            case 0:
+                if (!EconomicManager.Instance.IsCanBuy(2)) 
+                    return;
+                EconomicManager.Instance.BuySomething(2);
+                BuyFruit();
+                _tileName = "Ground";
+                break;
+            case 1:
+                if (!EconomicManager.Instance.IsCanBuy(2)) 
+                    return;
+                EconomicManager.Instance.BuySomething(2);
+                BuyAnimal();
+                _tileName = "Ground";
+
+                break;
+            case 2:
+                if (!EconomicManager.Instance.IsCanBuy(2)) 
+                    return;
+                EconomicManager.Instance.BuySomething(2);
+                BuyFish();
+                _tileName = "Water";
+
+                break;
+            case 3:
+               
+                if (_techTypes.TrueForAll(tech => tech == GameplayWindow.OpenedTechType.Ground))
+                {
+                    if (!EconomicManager.Instance.IsCanBuy(10)) 
+                        return;
+                    EconomicManager.Instance.BuySomething(10);
+                    if (animalTileImage != null) Destroy(animalTileImage.gameObject);
+                    if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.churchSprite;
+                    freeTileImage.enabled = true;
+                    freeTileImage.gameObject.SetActive(true);
+                    _tileName = "Ground";
+                    _owner.GetFood(2);
+                }
+                break;
+            case 4:
+                
+                if (_techTypes.Contains(GameplayWindow.OpenedTechType.Water))
+                {
+                    if (!EconomicManager.Instance.IsCanBuy(10)) 
+                        return;
+                    EconomicManager.Instance.BuySomething(10);
+                    if (fishTileImage != null) Destroy(fishTileImage.gameObject);
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.portSprite;
+                    freeTileImage.enabled = true;
+                    freeTileImage.gameObject.SetActive(true);
+                    _tileName = "Port";
+                    _owner.GetFood(2);
+                }
+                break;
+            case 5:
+                if (_techTypes.Contains(GameplayWindow.OpenedTechType.Ground))
+                {
+                    if (!EconomicManager.Instance.IsCanBuy(10)) 
+                        return;
+                    EconomicManager.Instance.BuySomething(10);
+                    if (animalTileImage != null) Destroy(animalTileImage.gameObject);
+                    if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.farmSprite;
+                    freeTileImage.enabled = true;
+                    freeTileImage.gameObject.SetActive(true);
+                    _tileName = "Ground";
+                    _owner.GetFood(2);
+                }
+                break;
+            case 6:
+                if (_techTypes.Contains(GameplayWindow.OpenedTechType.Ground) && isHasMountain)
+                {
+                    if (!EconomicManager.Instance.IsCanBuy(5)) 
+                        return;
+                    EconomicManager.Instance.BuySomething(5);
+                    if (animalTileImage != null) Destroy(animalTileImage.gameObject);
+                    if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
+                    miningImage.sprite = _owner.owner.civilisationInfo.miningSprite;
+                    _tileName = "Ground";
+                    _owner.GetFood(2);
+                }
+                break;
         }
-        _tileName = "Ground";
-        _owner.GetFood(1);
+        
     }
 
     public int waterRad = 1;
@@ -356,6 +444,20 @@ public class Tile : MonoBehaviour
             return false;
 
         Destroy(animalTileImage.gameObject);
+        _owner.GetFood(1);
+        return true;
+    }
+    
+    public bool BuyFish()
+    {
+        if(fishTileImage == null)
+            return false;
+        if(_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Fish))
+            return false;
+        if(!fishTileImage.enabled)
+            return false;
+
+        Destroy(fishTileImage.gameObject);
         _owner.GetFood(1);
         return true;
     }

@@ -43,15 +43,28 @@ public class CivilisationInfo : BaseCivilisationInfo
     public Sprite mountainSprite => mountain;
     public string mountainName => MountainName;
     
+    [SerializeField] private Sprite mining;
+    public Sprite miningSprite => mining;
+    
     [SerializeField] private Sprite church;
     public Sprite churchSprite => church;
     
+    
+    [SerializeField] private Sprite port;
+    public Sprite portSprite => port;
+    
+    [SerializeField] private Sprite farm;
+    public Sprite farmSprite => farm;
+
     [SerializeField] private HomeInfo homeInfo;
     public HomeInfo home => homeInfo;
     
     
     [SerializeField] private List<UnitInfo> unitInfo;
     public List<UnitInfo> units => unitInfo;
+    
+    [SerializeField] private List<UnitInfo> shipUnitInfo;
+    public List<UnitInfo> ships => shipUnitInfo;
     
     [SerializeField] private TechInfo techInfo;
     public TechInfo technology => techInfo;

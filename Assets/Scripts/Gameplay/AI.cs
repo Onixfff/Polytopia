@@ -17,6 +17,7 @@ public class AI : MonoBehaviour
     private CivilisationController _controller;
     private Sequence _unitsSeq;
     private Sequence _unitsActionSeq;
+    private List<UnitController> _allUnits;
 
     private void Start()
     {
@@ -32,10 +33,12 @@ public class AI : MonoBehaviour
         var values = type.GetEnumValues();
         var techIndex = random.Next(values.Length);
         var tech = (TechInfo.Technology)values.GetValue(techIndex);
-        //_controller.technologies.Add(tech);
+        _controller.technologies.Add(tech);
+        homes.RemoveAll(home => home.owner != _controller);
 
         foreach (var home in homes)
         {
+                
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(home.homeTile, home.homeRad);
             foreach (var tile in tiles)
             {
@@ -46,18 +49,29 @@ public class AI : MonoBehaviour
             }
         }
 
-        var allUnits = new List<UnitController>();
+        _allUnits ??= new List<UnitController>();
         foreach (var home in homes)
         {
-            allUnits.AddRange(home.GetUnitList());
+            foreach (var unit in home.GetUnitList())
+            {
+                if(!_allUnits.Contains(unit) && unit.GetOwner().owner == _controller)
+                    _allUnits.Add(unit);
+            }
         }
 
-        UnitAction(allUnits, 0);
+        _allUnits.RemoveAll(unit => unit == null);
+        if (_allUnits.Count != 0) 
+            UnitAction(_allUnits, 0);
 
         foreach (var home in homes)
         {
-            /*if(LevelManager.Instance.currentTurn % 2 == 0)
-                home.AIBuyUnit();*/
+            if(LevelManager.Instance.currentTurn % 2 == 0)
+                home.AIBuyUnit(_controller);
+        }
+
+        if (_allUnits.Count == 0)
+        {
+            EndTurn();
         }
     }
 
@@ -68,8 +82,11 @@ public class AI : MonoBehaviour
 
     private void UnitAction(List<UnitController> units, int i)
     {
-        if(units.Count < i)
+        if (units.Count <= i)
+        {
+            EndTurn();
             return;
+        }
         
         UnitPriority(units[i]).OnComplete(() =>
         {
@@ -169,8 +186,6 @@ public class AI : MonoBehaviour
         var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, 1);
         var unitHasMountTech = unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain);
         
-        
-        
         closeTile.RemoveAll(tile => tile == null);
         closeTile.RemoveAll(tile => !tile.IsTileFree());
         closeTile.RemoveAll(tile => tile.tileType == Tile.TileType.Water);
@@ -179,6 +194,8 @@ public class AI : MonoBehaviour
         
         if (unit.aiFromTile == null || unit.occupiedTile == unit.aiFromTile)
         {
+            if (closeTile.Count == 0)
+                return unit.occupiedTile;
             return LevelManager.Instance.gameBoardWindow.GetTile(closeTile[Random.Range(0, closeTile.Count)].pos);
         }
         var forwardDir = (unit.occupiedTile.pos - unit.aiFromTile.pos) + unit.occupiedTile.pos;
@@ -186,7 +203,11 @@ public class AI : MonoBehaviour
         if(closeTile.Contains(nextTile))
             return nextTile;
         else
+        {
+            if (closeTile.Count == 0)
+                return unit.occupiedTile;
             return LevelManager.Instance.gameBoardWindow.GetTile(closeTile[Random.Range(0, closeTile.Count)].pos);
+        }
     }
     
     /*private void AIBuyTech(CivilisationController aiController, TechInfo.Technology tech)

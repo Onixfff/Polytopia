@@ -17,7 +17,8 @@ namespace Gameplay.SO
             Farming,
             Strategy,
             Mining,
-            Archery
+            Archery,
+            Sailing
         }
 
         [SerializeField] private List<Technology> technologiesList;

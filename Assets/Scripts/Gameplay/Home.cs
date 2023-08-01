@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Gameplay.SO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,7 @@ public class Home : MonoBehaviour
     private int _homeLevel = 0;
     private int _foodFromNextLvl = 2;
     private int _foodCount = 2;
+    private int _unitCapacity = 2;
     
     public void Init(CivilisationController controller, Tile tile, bool isFirstInit = true)
     {
@@ -36,7 +38,8 @@ public class Home : MonoBehaviour
             SetOwner(controller);
             if(!controller.homes.Contains(this))
                 controller.homes.Add(this);
-            UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
+            if (_homeLevel >= 0 && _homeLevel < _homeInfo.homeSprites.Count)
+                UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
             var rad = 1;
             if (isFirstInit)
             {
@@ -95,6 +98,7 @@ public class Home : MonoBehaviour
     
     public void OccupyHome()
     {
+        _unitList.Clear();
         homeType = HomeType.City;
         homeTile.unitOnTile.GetOwner().RemoveUnit(homeTile.unitOnTile);
         occupyButton.gameObject.SetActive(false);
@@ -129,7 +133,7 @@ public class Home : MonoBehaviour
     
     private void BuyUnit(int unitIndex)
     {
-        if(!homeTile.IsTileFree() || !homeTile.isSelected)
+        if(!homeTile.IsTileFree() || !homeTile.isSelected || _unitList.Count >= _unitCapacity)
             return;
 
         if (!EconomicManager.Instance.IsCanBuy(owner.civilisationInfo.units[unitIndex].price)) 
@@ -152,12 +156,30 @@ public class Home : MonoBehaviour
         _unitList.Remove(unit);
     }
 
-    public void AIBuyUnit()
+    public void AIBuyUnit(CivilisationController controller)
     {
-        if(!homeTile.IsTileFree())
+        if(!homeTile.IsTileFree() || _unitList.Count >= _unitCapacity)
             return;
         
-        var unitObject = Instantiate(unitPrefabs[0], homeTile.transform.parent);
+        var unitIndexForBuy = new List<int>(){0};
+        
+        if (controller.technologies.Contains(TechInfo.Technology.Rider))
+        {
+            unitIndexForBuy.Add(1);
+        }
+        if (controller.technologies.Contains(TechInfo.Technology.Strategy))
+        {
+            unitIndexForBuy.Add(2);
+        }
+        if (controller.technologies.Contains(TechInfo.Technology.Archery))
+        {
+            unitIndexForBuy.Add(3);
+        }
+        
+        var randUnit = unitIndexForBuy[Random.Range(0, unitIndexForBuy.Count)];
+        
+        
+        var unitObject = Instantiate(unitPrefabs[randUnit], homeTile.transform.parent);
         var unit = unitObject.GetComponent<UnitController>();
         unit.aiName = "unit" + Random.Range(0, 1000000);
         unit.Init(this, homeTile, 0);
