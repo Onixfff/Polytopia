@@ -267,6 +267,7 @@ MonoBehaviour:
   currentIncome: 2
   gameBoardWindow: {fileID: 0}
   gameplayWindow: {fileID: 0}
+  _selectedObject: {fileID: 0}
   currentName: 
   waterSprites:
   - {fileID: 21300000, guid: ff2bce772e898184089e150d88c4c62f, type: 3}

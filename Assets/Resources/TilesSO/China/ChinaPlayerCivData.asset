@@ -21,6 +21,7 @@ MonoBehaviour:
   tree: {fileID: 21300000, guid: 7aed32d6828bda54da6166f315101c8c, type: 3}
   animal: {fileID: 21300000, guid: fc28a7f7eb923fa49a42803d83a73128, type: 3}
   mountain: {fileID: 21300000, guid: 7dde154b0feb49345b3259aa568bace1, type: 3}
+  mining: {fileID: 21300000, guid: 2ed51bc765e14614598ebcdc9cc50cc2, type: 3}
   church: {fileID: 21300000, guid: c347d9197a9adbe4d9e858db53646c7b, type: 3}
   port: {fileID: 21300000, guid: d5a68ec5673e79a4bb6b421365aeaa5f, type: 3}
   farm: {fileID: 21300000, guid: adda91b60a61f3748a66d00a37088339, type: 3}

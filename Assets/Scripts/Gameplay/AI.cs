@@ -5,15 +5,10 @@ using UnityEngine;
 
 public class AI : MonoBehaviour
 {
-    public enum PriorityEnum
-    {
-        OccupyCity,
-        AttackEnemy,
-        Scouting,
-    }
-    
     public int aiNumber;
-    
+
+    [SerializeField] private AIQuestGiver aiQuestGiver;
+    private AIQuestGiver _questGiver;
     private CivilisationController _controller;
     private Sequence _unitsSeq;
     private Sequence _unitsActionSeq;
@@ -22,6 +17,7 @@ public class AI : MonoBehaviour
     private void Start()
     {
         _controller = GetComponent<CivilisationController>();
+        _questGiver = Instantiate(aiQuestGiver, transform);
     }
 
     public void StartTurn()
@@ -36,9 +32,8 @@ public class AI : MonoBehaviour
         _controller.technologies.Add(tech);
         homes.RemoveAll(home => home.owner != _controller);
 
-        foreach (var home in homes)
+        /*foreach (var home in homes)
         {
-                
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(home.homeTile, home.homeRad);
             foreach (var tile in tiles)
             {
@@ -47,7 +42,7 @@ public class AI : MonoBehaviour
                 if(tile.BuyFruit())
                     break;
             }
-        }
+        }*/
 
         _allUnits ??= new List<UnitController>();
         foreach (var home in homes)
@@ -61,7 +56,7 @@ public class AI : MonoBehaviour
 
         _allUnits.RemoveAll(unit => unit == null);
         if (_allUnits.Count != 0) 
-            UnitAction(_allUnits, 0);
+            UnitAction(_allUnits);
 
         foreach (var home in homes)
         {
@@ -71,7 +66,7 @@ public class AI : MonoBehaviour
 
         if (_allUnits.Count == 0)
         {
-            EndTurn();
+            //EndTurn();
         }
     }
 
@@ -80,18 +75,10 @@ public class AI : MonoBehaviour
         AIController.Instance.OnAITurnEnded?.Invoke(aiNumber+1);
     }
 
-    private void UnitAction(List<UnitController> units, int i)
+    private void UnitAction(List<UnitController> units)
     {
-        if (units.Count <= i)
-        {
-            EndTurn();
-            return;
-        }
-        
-        UnitPriority(units[i]).OnComplete(() =>
-        {
-            UnitAction(units, i+1);
-        });
+        _questGiver.AddUnitsToList(units);
+        _questGiver.AssignTasks();
     }
     
     private Tween UnitPriority(UnitController unit)

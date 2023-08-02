@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using NaughtyAttributes;
@@ -244,7 +243,7 @@ public class GameBoardWindow : BaseWindow
             var civilisation1 = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
             civilisation1.GetComponent<CivilisationController>().AIInit(gameInfo.civilisationInfoLists[randC]);
             
-            var ai = civilisation1.AddComponent<AI>();
+            var ai = civilisation1.GetComponent<AI>();
             ai.aiNumber = i;
             
             AIController.Instance.AddAI(ai);
