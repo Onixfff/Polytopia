@@ -7,17 +7,15 @@ public class AI : MonoBehaviour
 {
     public int aiNumber;
 
-    [SerializeField] private AIQuestGiver aiQuestGiver;
-    private AIQuestGiver _questGiver;
     private CivilisationController _controller;
     private Sequence _unitsSeq;
     private Sequence _unitsActionSeq;
     private List<UnitController> _allUnits;
-
+    public AIQuestGiver aiQuestGiver;
+    
     private void Start()
     {
-        _controller = GetComponent<CivilisationController>();
-        _questGiver = Instantiate(aiQuestGiver, transform);
+        _controller = GetComponentInParent<CivilisationController>();
     }
 
     public void StartTurn()
@@ -57,7 +55,7 @@ public class AI : MonoBehaviour
         _allUnits.RemoveAll(unit => unit == null);
         if (_allUnits.Count != 0) 
             UnitAction(_allUnits);
-
+        
         foreach (var home in homes)
         {
             if(LevelManager.Instance.currentTurn % 2 == 0)
@@ -66,7 +64,7 @@ public class AI : MonoBehaviour
 
         if (_allUnits.Count == 0)
         {
-            //EndTurn();
+            EndTurn();
         }
     }
 
@@ -77,8 +75,9 @@ public class AI : MonoBehaviour
 
     private void UnitAction(List<UnitController> units)
     {
-        _questGiver.AddUnitsToList(units);
-        _questGiver.AssignTasks();
+        aiQuestGiver.AddUnitsToList(units);
+        aiQuestGiver.AssignTasks();
+        aiQuestGiver.OnTaskAreDistributed += EndTurn;
     }
     
     private Tween UnitPriority(UnitController unit)

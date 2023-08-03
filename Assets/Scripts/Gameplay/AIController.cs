@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class AIController : Singleton<AIController>
 {
     public Action<int> OnAITurnEnded;
     public int countAi;
+    public AI aiPrefab;
     private List<AI> _aiList;
 
     public void AddAI(AI ai)

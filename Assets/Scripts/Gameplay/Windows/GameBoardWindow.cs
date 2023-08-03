@@ -243,9 +243,8 @@ public class GameBoardWindow : BaseWindow
             var civilisation1 = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
             civilisation1.GetComponent<CivilisationController>().AIInit(gameInfo.civilisationInfoLists[randC]);
             
-            var ai = civilisation1.GetComponent<AI>();
+            var ai = Instantiate(AIController.Instance.aiPrefab, civilisation1.transform);
             ai.aiNumber = i;
-            
             AIController.Instance.AddAI(ai);
         }
     }

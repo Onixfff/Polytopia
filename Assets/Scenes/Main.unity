@@ -324,6 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countAi: 0
+  aiPrefab: {fileID: 3437649028417736428, guid: fa48358a4361f4a42b553ed7b79d6610, type: 3}
 --- !u!114 &668022223
 MonoBehaviour:
   m_ObjectHideFlags: 0

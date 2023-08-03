@@ -3,19 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurPlayerCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaPlayerCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/DefCivilisationData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/DefCivilisationData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumPlayerCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiPlayerCivData.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AIController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AIController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AIQuestGiver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AIQuestGiver.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/BaseTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/BaseTask.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/ExploringTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/ExploringTask.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Civilisation.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Civilisation.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Tasks/QuestGiver.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Tasks/QuestGiver.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Tasks/QuestGiver.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Tasks/QuestGiver.prefab.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +30,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d44b17e136d09081da1e8fd0e8c83fde60e11818b9f2442d7ed8cb733fae895e/System.Collections.Generic.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/AIQuestGiver.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/BaseTask.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/CaptureTask.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/ExploringTask.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/System/Loader.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -46,17 +45,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.34634146&quot;,
-    &quot;rider.run.widget.enabled.cache&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Discover.Launch.Via.Unity": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "XThreadsFramesViewSplitterKey": "0.34634146",
+    "rider.run.widget.enabled.cache": "false",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.4f1\Editor\Unity.exe" />
@@ -76,10 +75,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="5176">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="17544">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="5176" />
+      <option name="pid" value="17544" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -104,6 +103,8 @@
       <workItem from="1690900864141" duration="1121000" />
       <workItem from="1690961344152" duration="3598000" />
       <workItem from="1690966134959" duration="14880000" />
+      <workItem from="1690985838104" duration="369000" />
+      <workItem from="1691051681927" duration="19864000" />
     </task>
     <servers />
   </component>

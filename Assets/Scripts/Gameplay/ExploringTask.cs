@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using Gameplay.SO;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class ExploringTask : BaseTask
 {
     private Sequence _exploreSeq;
-
-    public override int CalculatePriority()
+    public override int CalculatePriority(List<UnitController> units)
     {
-        TaskPriority++;
-        return base.CalculatePriority();
+        TaskPriority = 1;
+        return base.CalculatePriority(units);
     }
 
     protected override void TaskRealisation()
@@ -22,7 +22,12 @@ public class ExploringTask : BaseTask
     {
         if (units.Count <= i)
         {
-            EndTask();
+            if (CheckInterestingPlace())
+            {
+                EndTask();
+                return;
+            }
+            EndTurn();
             return;
         }
         
@@ -49,7 +54,6 @@ public class ExploringTask : BaseTask
         closeTile.RemoveAll(tile => !tile.IsTileFree());
         closeTile.RemoveAll(tile => tile.tileType == Tile.TileType.Water);
         closeTile.RemoveAll(tile => tile.isHasMountain && !unitHasMountTech);
-        closeTile.RemoveAll(tile => tile == null);
         
         if (unit.aiFromTile == null || unit.occupiedTile == unit.aiFromTile)
         {
@@ -74,10 +78,18 @@ public class ExploringTask : BaseTask
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().rad);
             foreach (var tile in tiles)
             {
-                //tile
+                if (tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != unit.GetOwner().owner)
+                {
+                    return true;
+                }
+
+                if (tile.homeOnTile != null && tile.homeOnTile.owner != unit.GetOwner().owner)
+                {
+                    return true;
+                }
             }
         }
 
-        return true;
+        return false;
     }
 }

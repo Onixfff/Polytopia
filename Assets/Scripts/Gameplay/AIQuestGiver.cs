@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AIQuestGiver : MonoBehaviour
@@ -7,68 +8,102 @@ public class AIQuestGiver : MonoBehaviour
     public Action OnTaskAreDistributed;
     
     [SerializeField] private List<BaseTask> allTasks;
-    private List<UnitController> _allUnits;
+    private Dictionary<UnitController, bool> _allUnits;
 
     public void AddUnitsToList(List<UnitController> units)
     {
-        _allUnits ??= new List<UnitController>();
+        _allUnits ??= new Dictionary<UnitController, bool>();
         foreach (var unit in units)
         {
-            if(_allUnits.Contains(unit))
+            if(_allUnits.ContainsKey(unit))
                 continue;
-            _allUnits.Add(unit);
-        }        
+            _allUnits.Add(unit, false);
+        }
     }
     
     public void AssignTasks()
     {
         AssignUnits();
-        StartTasksExecution();
+        StartTasksExecution(0);
     }
 
     private void AssignUnits()
     {
-        var tasks = allTasks;
-        for (var i = _allUnits.Count - 1; i >= 0; i--)
-        {
-            var unit = _allUnits[i];
-            var maxPriority = 0;
-            BaseTask maxTask = null;
+        var tasks = new List<BaseTask>();
 
-            foreach (var task in tasks)
+        foreach (var task in allTasks)
+        {
+            task.CalculatePriority(_allUnits.Keys.ToList());
+        }
+        tasks = allTasks.OrderBy(or => or.TaskPriority).ToList();
+        tasks.Reverse();
+        foreach (var task in tasks)
+        {
+            Debug.Log(task.name + " " + task.TaskPriority);
+            if(task.TaskPriority is 0 or -1)
+                continue;
+            
+            if (task.TaskPriority == 2)
             {
-                if (task.TaskPriority >= maxPriority)
+                for (var i = 0; i < 2; i++)
                 {
-                    maxPriority = task.CalculatePriority();
-                    maxTask = task;
+                    if(_allUnits.Count <= i)
+                        continue;
+                    
+                    var unit = _allUnits.Keys.ToList()[i];
+                    if(_allUnits[unit])
+                        continue;
+                    task.OnUnitReturn += ReturnUnitsToList;
+                    task.AddUnitToTask(unit);
+                    RemoveUnitFromList(unit);
                 }
             }
-
-            if (maxTask != null)
+            if(task.TaskPriority == 1)
             {
-                maxTask.OnTaskEnded += ReturnUnitsToList;
-                maxTask.AddUnitToTask(unit);
-                RemoveUnitFromList(unit);
+                for (var i = 0; i < _allUnits.Count; i++)
+                {
+                    if(_allUnits.Count <= i)
+                        continue;
+                    var unit = _allUnits.Keys.ToList()[i];
+                    if(_allUnits[unit])
+                        continue;
+                    task.OnUnitReturn += ReturnUnitsToList;
+                    task.AddUnitToTask(unit);
+                    RemoveUnitFromList(unit);
+                }
             }
         }
     }
 
-    private void StartTasksExecution()
+    private void StartTasksExecution(int i)
     {
-        foreach (var task in allTasks)
+        if (allTasks.Count <= i)
         {
-            task.StartTask();
+            OnTaskAreDistributed?.Invoke();
+            return;
+        }
+        allTasks[i].OnTurnEnded += RecursionActionStart;
+
+        allTasks[i].StartTask();
+        
+        void RecursionActionStart()
+        {
+            allTasks[i].OnTurnEnded -= RecursionActionStart;
+            StartTasksExecution(i+1);
         }
     }
 
     private void ReturnUnitsToList(BaseTask task, List<UnitController> units)
     {
-        task.OnTaskEnded -= ReturnUnitsToList;
-        _allUnits.AddRange(units);
+        task.OnUnitReturn -= ReturnUnitsToList;
+        foreach (var unit in units)
+        {
+            _allUnits[unit] = false;
+        }
     }
 
     private void RemoveUnitFromList(UnitController unit)
     {
-        _allUnits.Remove(unit);
+        _allUnits[unit] = true;
     }
 }

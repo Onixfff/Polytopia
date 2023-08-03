@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 9052984237761949079}
   - component: {fileID: 6394952415186480389}
   - component: {fileID: 5349752406243517778}
-  - component: {fileID: 439124470714033705}
   m_Layer: 5
   m_Name: Civilisation
   m_TagString: Untagged
@@ -64,17 +63,3 @@ MonoBehaviour:
   homes: []
   civColor: {r: 1, g: 0, b: 0, a: 1}
   technologies: 
---- !u!114 &439124470714033705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5697296062761007083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bffa7da1f7c4812a4ea28fdace32ed1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aiNumber: 0
-  aiQuestGiver: {fileID: 6786566108114821514, guid: fa48358a4361f4a42b553ed7b79d6610, type: 3}
