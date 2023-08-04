@@ -47,7 +47,7 @@ public class ExploringTask : BaseTask
 
     private Tile ChooseTileForExploring(UnitController unit)
     {
-        var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, 1);
+        var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().moveRad);
         var unitHasMountTech = unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain);
         
         closeTile.RemoveAll(tile => tile == null);

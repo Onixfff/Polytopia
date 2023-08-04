@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AIQuestGiver : MonoBehaviour
 {
@@ -37,40 +39,22 @@ public class AIQuestGiver : MonoBehaviour
         }
         tasks = allTasks.OrderBy(or => or.TaskPriority).ToList();
         tasks.Reverse();
+        var allUnits = _allUnits;
         foreach (var task in tasks)
         {
-            Debug.Log(task.name + " " + task.TaskPriority);
             if(task.TaskPriority is 0 or -1)
                 continue;
             
-            if (task.TaskPriority == 2)
+            var units = ChooseTheRightUnit(task.taskType, allUnits.Keys.ToList());
+
+            for (var i = 0; i < units.Count; i++)
             {
-                for (var i = 0; i < 2; i++)
-                {
-                    if(_allUnits.Count <= i)
-                        continue;
-                    
-                    var unit = _allUnits.Keys.ToList()[i];
-                    if(_allUnits[unit])
-                        continue;
-                    task.OnUnitReturn += ReturnUnitsToList;
-                    task.AddUnitToTask(unit);
-                    RemoveUnitFromList(unit);
-                }
-            }
-            if(task.TaskPriority == 1)
-            {
-                for (var i = 0; i < _allUnits.Count; i++)
-                {
-                    if(_allUnits.Count <= i)
-                        continue;
-                    var unit = _allUnits.Keys.ToList()[i];
-                    if(_allUnits[unit])
-                        continue;
-                    task.OnUnitReturn += ReturnUnitsToList;
-                    task.AddUnitToTask(unit);
-                    RemoveUnitFromList(unit);
-                }
+                var unit = units[i];
+                if (allUnits[unit])
+                    continue;
+                task.OnUnitReturn += ReturnUnitsToList;
+                task.AddUnitToTask(unit);
+                RemoveUnitFromList(unit);
             }
         }
     }
@@ -105,5 +89,35 @@ public class AIQuestGiver : MonoBehaviour
     private void RemoveUnitFromList(UnitController unit)
     {
         _allUnits[unit] = true;
+    }
+
+    private List<UnitController> ChooseTheRightUnit(BaseTask.TaskType taskType, List<UnitController> units)
+    {
+        var board = LevelManager.Instance.gameBoardWindow;
+        var rightUnits = new List<UnitController>();
+        switch (taskType)
+        {
+            case BaseTask.TaskType.Capture:
+                foreach (var unit in units)
+                {
+                    if (unit.occupiedTile.homeOnTile != null && unit.occupiedTile.homeOnTile.owner != unit.GetOwner().owner)
+                    {
+                        rightUnits.Add(unit);
+                        continue;
+                    }
+                    var closeTile = board.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().moveRad);
+                    if (closeTile.Any(tile => tile.homeOnTile != null && tile.homeOnTile.owner != unit.GetOwner().owner))
+                    {
+                        rightUnits.Add(unit);
+                        continue;
+                    }
+                }
+                break;
+            case BaseTask.TaskType.Exploring:
+                rightUnits.AddRange(units);
+                break;
+        }
+
+        return rightUnits;
     }
 }

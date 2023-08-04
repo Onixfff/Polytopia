@@ -5,6 +5,13 @@ using UnityEngine;
 
 public abstract class BaseTask : MonoBehaviour
 {
+    public enum TaskType
+    {
+        Exploring,
+        Capture
+    }
+
+    public TaskType taskType;
     public Action<BaseTask, List<UnitController>> OnUnitReturn;
     public Action OnTurnEnded;
     public int TaskPriority = 1;

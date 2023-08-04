@@ -14,20 +14,14 @@ public class CaptureTask : BaseTask
         {
             if (CheckInterestingPlace(unit))
             {
-                if (TaskPriority == -1)
-                {
-                    TaskPriority = 2;
-                    break;
-                }
-                
-                TaskPriority++;
+                TaskPriority = 2;
+                break;
             }
-            else
-            {
-                if(TaskPriority > -1)
-                    TaskPriority--;
-            }
+            
+            if(TaskPriority > -1)
+                TaskPriority--;
         }
+        
         return base.CalculatePriority(units);
     }
 
@@ -60,7 +54,6 @@ public class CaptureTask : BaseTask
     private Tween CaptureCloseHome(UnitController unit)
     {
         _captureSeq = DOTween.Sequence();
-        Debug.Log("captureHome");
         if (unit.occupiedTile.homeOnTile != null && unit.occupiedTile.homeOnTile.owner != unit.GetOwner().owner)
         {
             unit.occupiedTile.homeOnTile.OccupyHome();

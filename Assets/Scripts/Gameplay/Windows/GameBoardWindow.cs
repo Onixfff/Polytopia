@@ -2,7 +2,6 @@
 using System.Linq;
 using DG.Tweening;
 using NaughtyAttributes;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Sequence = DG.Tweening.Sequence;
@@ -67,7 +66,6 @@ public class GameBoardWindow : BaseWindow
     public List<Tile> GetCloseTile(Tile tile, int radius)
     {
         var closeTiles = new List<Tile>();
-        var allTiles = generatedTiles.Select(til => til.GetComponent<Tile>()).ToList();
 
         var tilePos = tile.pos;
 
@@ -80,7 +78,7 @@ public class GameBoardWindow : BaseWindow
         {
             for (var y = minY; y <= maxY; y++)
             {
-                var closeTile = allTiles.Find(til => til.pos == new Vector2Int(x, y));
+                var closeTile = generatedTiles.Find(til => til.pos == new Vector2Int(x, y));
                 if(closeTile == null || closeTile.pos == tile.pos)
                     continue;
                 closeTiles.Add(closeTile);
