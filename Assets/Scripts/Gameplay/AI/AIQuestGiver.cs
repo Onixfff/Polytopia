@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AIQuestGiver : MonoBehaviour
 {
@@ -37,14 +35,11 @@ public class AIQuestGiver : MonoBehaviour
         {
             task.CalculatePriority(_allUnits.Keys.ToList());
         }
-        tasks = allTasks.OrderBy(or => or.TaskPriority).ToList();
+        tasks = allTasks.OrderBy(or => or.taskPriority).ToList();
         tasks.Reverse();
         var allUnits = _allUnits;
         foreach (var task in tasks)
         {
-            if(task.TaskPriority is 0 or -1)
-                continue;
-            
             var units = ChooseTheRightUnit(task.taskType, allUnits.Keys.ToList());
 
             for (var i = 0; i < units.Count; i++)
@@ -97,6 +92,28 @@ public class AIQuestGiver : MonoBehaviour
         var rightUnits = new List<UnitController>();
         switch (taskType)
         {
+            case BaseTask.TaskType.SendTroops:
+                foreach (var unit in units)
+                {
+                    var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, Mathf.Max(unit.GetUnitInfo().rad, unit.GetUnitInfo().moveRad));
+                    if (tiles.Any(tile => tile.unitOnTile == null || tile.homeOnTile == null))
+                    {
+                        rightUnits.Add(unit);
+                    }
+                }
+                break;
+            case BaseTask.TaskType.Attack:
+                foreach (var unit in units)
+                {
+                    var owner = unit.GetOwner().owner;
+            
+                    var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().rad);
+                    if (tiles.Any(tile => tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner))
+                    {
+                        rightUnits.Add(unit);
+                    }
+                }
+                break;
             case BaseTask.TaskType.Capture:
                 foreach (var unit in units)
                 {

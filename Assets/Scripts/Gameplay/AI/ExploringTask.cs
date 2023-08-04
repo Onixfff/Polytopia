@@ -9,8 +9,8 @@ public class ExploringTask : BaseTask
     private Sequence _exploreSeq;
     public override int CalculatePriority(List<UnitController> units)
     {
-        TaskPriority = 1;
-        return base.CalculatePriority(units);
+        taskPriority = 1;
+        return taskPriority;
     }
 
     protected override void TaskRealisation()

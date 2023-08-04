@@ -14,15 +14,14 @@ public class CaptureTask : BaseTask
         {
             if (CheckInterestingPlace(unit))
             {
-                TaskPriority = 2;
+                taskPriority = 2;
                 break;
             }
             
-            if(TaskPriority > -1)
-                TaskPriority--;
+            taskPriority = -1;
         }
         
-        return base.CalculatePriority(units);
+        return taskPriority;
     }
 
     protected override void TaskRealisation()
@@ -36,11 +35,9 @@ public class CaptureTask : BaseTask
         {
             if (_isHomeCapture)
             {
-                Debug.Log("Capture");
                 EndTask();
                 return;
             }
-            Debug.Log("PreCapture");
             EndTurn();
             return;
         }
@@ -85,16 +82,11 @@ public class CaptureTask : BaseTask
     {
         var owner = unit.GetOwner().owner;
         if (unit.occupiedTile.homeOnTile != null && unit.occupiedTile.homeOnTile.owner != owner)
-            return unit.occupiedTile;
+            return true;
         
-        var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().rad);
+        var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().moveRad);
         foreach (var tile in tiles)
         {
-            if (tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner)
-            {
-                return true;
-            }
-
             if (tile.homeOnTile != null && tile.homeOnTile.owner != owner)
             {
                 return true;

@@ -235,8 +235,8 @@ public class UnitController : MonoBehaviour
 
             })));
             _attSeq.Append(transform.DOMove(pos, 0.1f));
-            if (_attackThisTurn != 0)
-                _attSeq.Append(unitToAttack.Counterstrike(this));
+            
+            //_attSeq.Append(unitToAttack.Counterstrike(this));
         }
         
         return _attSeq;

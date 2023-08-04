@@ -8,6 +8,7 @@ using Sequence = DG.Tweening.Sequence;
 
 public class GameBoardWindow : BaseWindow
 {
+    public CivilisationController playerCiv;
     [SerializeField] private List<GameObject> boardPrefabs;
 
     [SerializeField] private List<Tile> generatedTiles;
@@ -23,26 +24,6 @@ public class GameBoardWindow : BaseWindow
     [SerializeField] private int waterFrequency = 10;
 
     private Sequence _generateSeq;
-
-    private void Awake()
-    {
-        LevelManager.Instance.gameBoardWindow = this;
-        _generateSeq = DOTween.Sequence();
-        GenerateBoard();
-        var inVal = 0f;
-        _generateSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.1f).OnComplete((GenerateEnvironment)));
-        var inVal1 = 0f;
-        _generateSeq.Append(DOTween.To(() => inVal1, x => x = inVal1, 0f, 0.1f).OnComplete((CreateCivilisations)));
-        var inVal2 = 0f;
-        _generateSeq.Append(DOTween.To(() => inVal2, x => x = inVal2, 0f, 0.1f).OnComplete((GenerateWater)));
-        var inVal3 = 0f;
-        _generateSeq.Append(DOTween.To(() => inVal3, x => x = inVal3, 0f, 0.1f).OnComplete((GenerateVillage)));
-    }
-
-    private void OnDestroy()
-    {
-        _generateSeq.Kill();
-    }
     
     public void ShowAllOre()
     {
@@ -103,36 +84,27 @@ public class GameBoardWindow : BaseWindow
     {
         generatedVillage.Remove(home);
     }
-
-    public Home FindNearbyVillage(Tile tile)
+    
+    private void Awake()
     {
-        var dist = 1000f;
-        Home home = null;
-        foreach (var village in generatedVillage)
-        {
-            var point = village.homeTile.pos;
-            var point2 = tile.pos;
-            var distance = Vector2.Distance(point, point2);
-            if(distance < dist)
-            {
-                home = village;
-                dist = distance;
-            }
-        }
+        LevelManager.Instance.gameBoardWindow = this;
+        _generateSeq = DOTween.Sequence();
+        GenerateBoard();
+        var inVal = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.1f).OnComplete((GenerateEnvironment)));
+        var inVal1 = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal1, x => x = inVal1, 0f, 0.1f).OnComplete((CreateCivilisations)));
+        var inVal2 = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal2, x => x = inVal2, 0f, 0.1f).OnComplete((GenerateWater)));
+        var inVal3 = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal3, x => x = inVal3, 0f, 0.1f).OnComplete((GenerateVillage)));
+    }
 
-        return home;
+    private void OnDestroy()
+    {
+        _generateSeq.Kill();
     }
     
-    public Home FindRandomVillage(Tile tile)
-    {
-        var listVillage = generatedVillage.Where(village => village.homeType == Home.HomeType.Village).ToList();
-        var rand = Random.Range(0, listVillage.Count);
-        if (rand >= 0 && rand < listVillage.Count)
-            return listVillage[rand];
-        else
-            return null;
-    }
-
     [Button()]
     private void GenerateBoard()
     {
@@ -225,6 +197,7 @@ public class GameBoardWindow : BaseWindow
         var randomCiv = Random.Range(0, gameInfo.playerCivilisationInfoLists.Count);
         var listCiv = new List<int> { randomCiv };
         var civilisation = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
+        playerCiv = civilisation;
         civilisation.GetComponent<CivilisationController>().Init(gameInfo.playerCivilisationInfoLists[randomCiv]);
         AIController.Instance.countAi = gameInfo.playersCount - 1;
         
@@ -275,6 +248,7 @@ public class GameBoardWindow : BaseWindow
             {
                 var home = Instantiate(village, randomTile.transform);
                 generatedVillage.Add(home);
+                randomTile.isHasMountain = false;
                 home.Init(null, randomTile);
                 home.homeType = Home.HomeType.Village;
             }

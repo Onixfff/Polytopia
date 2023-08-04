@@ -51,6 +51,7 @@ public class SearchPath : Singleton<SearchPath>
     {
         foreach (var a in _queue)
         {
+            continue;
             if(a == null)
                 Debug.Log("null");
                 

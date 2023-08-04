@@ -8,20 +8,18 @@ public abstract class BaseTask : MonoBehaviour
     public enum TaskType
     {
         Exploring,
-        Capture
+        Capture,
+        Attack,
+        SendTroops
     }
 
     public TaskType taskType;
     public Action<BaseTask, List<UnitController>> OnUnitReturn;
     public Action OnTurnEnded;
-    public int TaskPriority = 1;
+    public int taskPriority = 1;
     
     protected List<UnitController> UnitsAssignedToTheTask;
 
-    public virtual int CalculatePriority(List<UnitController> units)
-    {
-        return TaskPriority;
-    }
 
     public virtual void AddUnitToTask(UnitController unit)
     {
@@ -54,6 +52,8 @@ public abstract class BaseTask : MonoBehaviour
             UnitsAssignedToTheTask.Clear();
         }
     }
+    
+    public abstract int CalculatePriority(List<UnitController> units);
     
     protected abstract void TaskRealisation();
 
