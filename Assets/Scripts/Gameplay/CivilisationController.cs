@@ -39,10 +39,13 @@ public class CivilisationController : MonoBehaviour
     {
         technologies.Add(technology);
     }
-    
+
     private void CreateHome()
     {
-        var posLastTile = _gameBoardWindow.GetAllTile().Last().pos;
+        var allTile = _gameBoardWindow.GetAllTile();
+        var pos = _gameBoardWindow.GetAllTile().Keys.ToList().Last();
+        var posLastTile = allTile[pos].pos;
+
         var factor = posLastTile.y / 4;
         
         var civPoses = new Vector2Int(factor, factor);

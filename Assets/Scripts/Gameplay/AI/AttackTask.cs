@@ -10,17 +10,13 @@ public class AttackTask : BaseTask
 
     public override int CalculatePriority(List<UnitController> units)
     {
-        foreach (var unit in units)
+        if (IsEnemyNearby(units))
         {
-            if (IsEnemyNearby(units))
-            {
-                taskPriority = 3;
-                break;
-            }
-
-            taskPriority = -1;
+            taskPriority = 5;
+            return taskPriority;
         }
         
+        taskPriority = -1;
         return taskPriority;
     }
 
@@ -33,11 +29,6 @@ public class AttackTask : BaseTask
     {
         if (units.Count <= i)
         {
-            if (IsEnemyNearby(units))
-            {
-                EndTurn();
-                return;
-            }
             EndTask();
             return;
         }
@@ -58,7 +49,7 @@ public class AttackTask : BaseTask
     
     private UnitController ChooseUnitForAttack(UnitController unit)
     {
-        var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().moveRad);
+        var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().rad);
         var unitHasMountTech = unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain);
         var closeUnits = new List<UnitController>();
         
@@ -71,9 +62,11 @@ public class AttackTask : BaseTask
             
             closeUnits.Add(tile.unitOnTile);
         }
+
+        closeUnits.RemoveAll(unite => unite.GetOwner().owner == unit.GetOwner().owner);
         
-        var minDef = closeUnits.Min(unit => unit.GetUnitInfo().def);
-        var unitForAttack = closeUnits.FirstOrDefault(unit => unit.GetUnitInfo().def == minDef);
+        var minDef = closeUnits.Min(unite => unite.GetUnitInfo().def);
+        var unitForAttack = closeUnits.FirstOrDefault(unite => unite.GetUnitInfo().def == minDef);
 
         return unitForAttack;
     }

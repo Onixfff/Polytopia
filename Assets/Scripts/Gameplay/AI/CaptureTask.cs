@@ -14,7 +14,7 @@ public class CaptureTask : BaseTask
         {
             if (CheckInterestingPlace(unit))
             {
-                taskPriority = 2;
+                taskPriority = 4;
                 break;
             }
             

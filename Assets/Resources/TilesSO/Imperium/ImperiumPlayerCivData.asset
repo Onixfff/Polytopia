@@ -27,7 +27,7 @@ MonoBehaviour:
   farm: {fileID: 21300000, guid: adda91b60a61f3748a66d00a37088339, type: 3}
   homeInfo: {fileID: 11400000, guid: 3e0817172ad881143b2af03d421ec454, type: 2}
   unitInfo:
-  - {fileID: 11400000, guid: 871b77b22f09fbb4fafb2df4dfce09d5, type: 2}
+  - {fileID: 11400000, guid: 8153519a2e8d6954a96c5b58f9ee8ecb, type: 2}
   - {fileID: 11400000, guid: a78c2e9e2fa063348ac9f430715f8169, type: 2}
   - {fileID: 11400000, guid: 445a78d4bd7c48e458d0b61da947fd79, type: 2}
   - {fileID: 11400000, guid: dd670c25175d7b6428e50e4bb6231fad, type: 2}

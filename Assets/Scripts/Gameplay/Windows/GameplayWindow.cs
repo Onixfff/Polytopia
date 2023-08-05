@@ -83,6 +83,8 @@ public class GameplayWindow : BaseWindow
         downBar.SetActive(true);
         tileTechButtonParent.SetActive(true);
         var controller = tileC.GetOwner().owner;
+        if(controller == null)
+            return;
         foreach (var tile in tileTechButtons)
         {
             tile.gameObject.SetActive(false);            

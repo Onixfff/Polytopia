@@ -1,9 +1,30 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "UnitData", menuName = "ScriptableObjects/CreateUnitData", order = 1)]
 
 public class UnitInfo : ScriptableObject
 {
+    public enum AbilityType
+    {
+        Carry,
+        Convert,
+        Dash,
+        Escape,
+        Float,
+        Fly,
+        Fortify,
+        Heal,
+        Hide,
+        Infiltrate,
+        Persist,
+        Scout,
+        Sneak,
+    }
+    
+    [SerializeField] private List<AbilityType> abilities;
+    public List<AbilityType> abilityTypes => abilities;
+
     [SerializeField] private int unitHp;
     public int hp => unitHp;
     

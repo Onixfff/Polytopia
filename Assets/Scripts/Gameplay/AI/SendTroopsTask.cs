@@ -14,10 +14,9 @@ public class SendTroopsTask : BaseTask
             var owner = unit.GetOwner().owner;
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, Mathf.Max(unit.GetUnitInfo().rad, unit.GetUnitInfo().moveRad));
             
-            
             if (tiles.Any(tile => (tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner) || (tile.homeOnTile != null && tile.homeOnTile.owner != null && tile.homeOnTile.owner != owner)))
             {
-                //taskPriority = 4;
+                taskPriority = 3;
             }
         }
         
@@ -53,8 +52,13 @@ public class SendTroopsTask : BaseTask
 
     private Tile FindPath(UnitController unit)
     {
+        var allTiles = LevelManager.Instance.gameBoardWindow.GetAllTile();
         var civHomes = LevelManager.Instance.gameBoardWindow.playerCiv.homes;
-        var path = SearchPath.Instance.GetPath(unit.occupiedTile, civHomes[Random.Range(0, civHomes.Count)].homeTile);
-        return path[0];
+        var path = AStarAlgorithm.FindPath(unit.occupiedTile.pos, civHomes[Random.Range(0, civHomes.Count)].homeTile.pos, unit);
+        if (path == null)
+            return unit.occupiedTile;
+        if (!allTiles[path[0]].IsTileFree())
+            return unit.occupiedTile;
+        return allTiles[path[0]];
     }
 }

@@ -3,22 +3,48 @@
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AIController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AIController.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AIQuestGiver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AIQuestGiver.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/BaseTask.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/BaseTask.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CaptureTask.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CaptureTask.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/ExploringTask.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/ExploringTask.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurPlayerCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurWarior.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurWarior.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/BaseUnitArcher.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/BaseUnitArcher.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/BaseUnitShield.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/BaseUnitShield.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaPlayerCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaRider.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaRider.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaWarior.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaWarior.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumPlayerCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumWarior.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumWarior.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiPlayerCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiWarior.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiWarior.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AIQuestGiver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AIQuestGiver.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AttackTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AttackTask.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/BaseTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/BaseTask.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/CaptureTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/CaptureTask.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/UnitInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/UnitInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SendTroopsTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/SendTroopsTask.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SendTroopsTask.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/SendTroopsTask.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/System/SearchPath.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/System/SearchPath.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Tasks/QuestGiver.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Tasks/QuestGiver.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Ship.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Ship.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Unit.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Unit.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitArcher.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitArcher.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitRider.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitRider.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitShield.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitShield.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameBoardWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameBoardWindow.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +52,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5ddb5fa70dfe40d2818192400111b9ec2aa00/91/1e6b1293/Sequence.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5ddb5fa70dfe40d2818192400111b9ec2aa00/a9/3ebf7a97/TweenManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5ddb5fa70dfe40d2818192400111b9ec2aa00/d9/0f67b62a/Tween.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/605bf8b31fcb444b85176da963870aa746ac00/23/8202a606/Action`1.cs" root0="SKIP_HIGHLIGHTING" />
@@ -34,8 +61,10 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/da771086bc2e4cfc9ad0a72e083a7f9893fe00/3f/9030910b/SerializedObject.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3ea01e77be99618395f448b16bd7cc2bd4248bd9e5d8474964b2d97f39c5d74/System.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d44b17e136d09081da1e8fd0e8c83fde60e11818b9f2442d7ed8cb733fae895e/System.Collections.Generic.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/AstarTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Chel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AttackTask.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/SendTroopsTask.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/SendTroopsTask.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/System/Loader.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -55,7 +84,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "XThreadsFramesViewSplitterKey": "0.34634146",
+    "XThreadsFramesViewSplitterKey": "0.1902439",
     "rider.run.widget.enabled.cache": "false",
     "vue.rearranger.settings.migration": "true"
   }
@@ -79,10 +108,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="18708">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="29812">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="18708" />
+      <option name="pid" value="29812" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -109,7 +138,8 @@
       <workItem from="1690966134959" duration="14880000" />
       <workItem from="1690985838104" duration="369000" />
       <workItem from="1691051681927" duration="19864000" />
-      <workItem from="1691137468397" duration="19673000" />
+      <workItem from="1691137468397" duration="21032000" />
+      <workItem from="1691216868347" duration="25152000" />
     </task>
     <servers />
   </component>
@@ -137,17 +167,17 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Gameplay/SendTroopsTask.cs</url>
-          <line>17</line>
-          <properties documentPath="C:\Users\Genius_1\Unity\Politop\Assets\Scripts\Gameplay\SendTroopsTask.cs" initialLine="17" containingFunctionPresentation="lambda expression inside method 'CalculatePriority'">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs</url>
+          <line>115</line>
+          <properties documentPath="C:\Users\Genius_1\Unity\Politop\Assets\Scripts\Gameplay\Windows\GameplayWindow.cs" initialLine="113" containingFunctionPresentation="method 'ShowTileButton'">
             <startOffsets>
-              <option value="585" />
+              <option value="3766" />
             </startOffsets>
             <endOffsets>
-              <option value="704" />
+              <option value="3834" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="16" />
+          <option name="timeStamp" value="44" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

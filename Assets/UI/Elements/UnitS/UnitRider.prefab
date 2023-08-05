@@ -121,6 +121,10 @@ PrefabInstance:
       value: UnitRider
       objectReference: {fileID: 0}
     - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitInfo
+      value: 
+      objectReference: {fileID: 11400000, guid: a78c2e9e2fa063348ac9f430715f8169, type: 2}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: horseImage
       value: 
       objectReference: {fileID: 4817316001413677766}

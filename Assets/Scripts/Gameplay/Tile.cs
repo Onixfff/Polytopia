@@ -15,7 +15,6 @@ public class Tile : MonoBehaviour
     }
     
     public Action<Tile> OnClickOnTile;
-    public Vector2Int pos;
     public UnitController unitOnTile;
     public bool isSelected = false;
     public bool isHasMountain = false;
@@ -368,10 +367,7 @@ public class Tile : MonoBehaviour
         
     }
 
-    public int waterRad = 1;
-
-    [Button()]
-    public void CreateWaterArea()
+    public void CreateWaterArea(int waterRad)
     {
         var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(this, waterRad);
         
@@ -461,4 +457,23 @@ public class Tile : MonoBehaviour
         _owner.GetFood(1);
         return true;
     }
+
+    #region ForA-star
+
+    public Vector2Int pos;
+    public bool obstacle;
+    public float gCost = float.PositiveInfinity;
+    public float hCost = float.PositiveInfinity;
+    public float fCost = float.PositiveInfinity;
+    public Tile previousTile;
+    
+    public void CalculateCost(Tile startTile, Tile targetTile)
+    {
+        gCost = Mathf.Abs(pos.x - startTile.pos.x) + Mathf.Abs(pos.y - startTile.pos.y);
+        hCost = Mathf.Abs(pos.x - targetTile.pos.x) + Mathf.Abs(pos.y - targetTile.pos.y);
+        fCost = gCost + hCost;
+    }
+
+    #endregion
+    
 }

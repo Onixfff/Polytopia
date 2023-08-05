@@ -11,7 +11,6 @@ public class GameBoardWindow : BaseWindow
     public CivilisationController playerCiv;
     [SerializeField] private List<GameObject> boardPrefabs;
 
-    [SerializeField] private List<Tile> generatedTiles;
     [SerializeField] private List<Home> generatedVillage;
     [SerializeField] private RectTransform tilePrefab;
     [SerializeField] private RectTransform tileParent;
@@ -21,14 +20,16 @@ public class GameBoardWindow : BaseWindow
     [SerializeField] private CivilisationController defaultCiv;
     [SerializeField] private Home village;
     [SerializeField] private GameInfo gameInfo;
-    [SerializeField] private int waterFrequency = 10;
+    [SerializeField] private int countWaterZone = 6;
 
+    private Dictionary<Vector2Int ,Tile> _generatedTiles;
     private Sequence _generateSeq;
     
     public void ShowAllOre()
     {
-        foreach (var tile in generatedTiles)
+        foreach (var vector2Int in _generatedTiles.Keys.ToList())
         {
+            var tile = _generatedTiles[vector2Int];
             if(tile.isHasMountain)
                 tile.ShowOre();
         }
@@ -36,12 +37,14 @@ public class GameBoardWindow : BaseWindow
 
     public Tile GetTile(Vector2Int pos)
     {
-        return generatedTiles.Find(tile => tile.pos == pos);
+        if (!_generatedTiles.ContainsKey(pos))
+            return null;
+        return _generatedTiles[pos];
     }
     
-    public List<Tile> GetAllTile()
+    public Dictionary<Vector2Int ,Tile> GetAllTile()
     {
-        return generatedTiles;
+        return _generatedTiles;
     }
     
     public List<Tile> GetCloseTile(Tile tile, int radius)
@@ -59,8 +62,10 @@ public class GameBoardWindow : BaseWindow
         {
             for (var y = minY; y <= maxY; y++)
             {
-                var closeTile = generatedTiles.Find(til => til.pos == new Vector2Int(x, y));
-                if(closeTile == null || closeTile.pos == tile.pos)
+                if(!_generatedTiles.ContainsKey(new Vector2Int(x, y)))
+                    continue;
+                var closeTile = _generatedTiles[new Vector2Int(x, y)];
+                if(closeTile.pos == tile.pos)
                     continue;
                 closeTiles.Add(closeTile);
             }
@@ -108,8 +113,8 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void GenerateBoard()
     {
-        if(generatedTiles != null) RemoveBoard();
-        generatedTiles ??= new List<Tile>();
+        if(_generatedTiles != null) RemoveBoard();
+        _generatedTiles ??= new Dictionary<Vector2Int, Tile>();
         var width = (int)(mapSize / Mathf.Sqrt(mapSize));
         for (var i = width; i > 0; i--)
         {
@@ -122,7 +127,7 @@ public class GameBoardWindow : BaseWindow
                 tileRectTransform.name = i + ", " + ja;
                 var tile = tileRectTransform.GetComponent<Tile>();
                 tile.pos = new Vector2Int(i, ja);
-                generatedTiles.Add(tile);
+                _generatedTiles.Add(tile.pos, tile);
                 
                 SubscribeOnTile(tile);
             }
@@ -132,8 +137,9 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void GenerateEnvironment()
     {
-        foreach (var tile in generatedTiles)
+        foreach (var vector2Int in _generatedTiles.Keys.ToList())
         {
+            var tile = _generatedTiles[vector2Int];
             if(tile.homeOnTile != null)
                 continue;
             var a = Random.Range(0, 9);
@@ -167,27 +173,31 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void GenerateWater()
     {
-        foreach (var tile in generatedTiles)
+        /*foreach (var vector2Int in _generatedTiles.Keys.ToList())
         {
+            var tile = _generatedTiles[vector2Int];
             if(!tile.IsTileFree() || tile.homeOnTile != null)
                 continue;
             
-            var a = Random.Range(0, waterFrequency);
+            var a = Random.Range(0, countWaterZone);
             switch (a)
             {
                 case 0:
-                    tile.waterRad = 0;
-                    tile.CreateWaterArea();
+                    tile.CreateWaterArea(0);
                     break;
                 case 1:
-                    tile.waterRad = 1;
-                    tile.CreateWaterArea();
+                    tile.CreateWaterArea(1);
                     break;
                 case 2:
-                    tile.waterRad = 1;
-                    tile.CreateWaterArea();
+                    tile.CreateWaterArea(2);
                     break;
             }
+        }*/
+
+        for (var i = 0; i < countWaterZone; i++)
+        {
+            var randomTile = _generatedTiles[_generatedTiles.Keys.ToList()[Random.Range(0, _generatedTiles.Keys.ToList().Count)]];
+            randomTile.CreateWaterArea(Random.Range(0, 2));
         }
     }
 
@@ -197,8 +207,8 @@ public class GameBoardWindow : BaseWindow
         var randomCiv = Random.Range(0, gameInfo.playerCivilisationInfoLists.Count);
         var listCiv = new List<int> { randomCiv };
         var civilisation = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
-        playerCiv = civilisation;
-        civilisation.GetComponent<CivilisationController>().Init(gameInfo.playerCivilisationInfoLists[randomCiv]);
+        playerCiv = civilisation.GetComponent<CivilisationController>();
+        playerCiv.Init(gameInfo.playerCivilisationInfoLists[randomCiv]);
         AIController.Instance.countAi = gameInfo.playersCount - 1;
         
         for (var i = 0; i < gameInfo.playersCount - 1; i++)
@@ -231,7 +241,7 @@ public class GameBoardWindow : BaseWindow
                 if (j == 0)
                     return;
                 
-                randomTile = generatedTiles[Random.Range(0, generatedTiles.Count)];
+                randomTile = _generatedTiles[_generatedTiles.Keys.ToList()[Random.Range(0, _generatedTiles.Keys.ToList().Count)]];
                 if(randomTile.tileType == Tile.TileType.Water)
                     continue;
                 if(randomTile.unitOnTile != null)
@@ -258,19 +268,21 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void RemoveBoard()
     {
-        for (var i = 0; i < generatedTiles.Count; i++)
+        for (var i = 0; i < _generatedTiles.Count; i++)
         {
-            DestroyImmediate(generatedTiles[i].gameObject);
+            var a = _generatedTiles.Keys.ToList()[i];
+            DestroyImmediate(_generatedTiles[a].gameObject);
         }
         
-        generatedTiles.Clear();
+        _generatedTiles.Clear();
     }
     
     [Button()]
     private void UnlockAllTile()
     {
-        foreach (var tile in generatedTiles.Select(tile => tile.GetComponent<Tile>()))
+        foreach (var vector2Int in _generatedTiles.Keys.ToList())
         {
+            var tile = _generatedTiles[vector2Int];
             tile.UnlockTile();
         }
     }

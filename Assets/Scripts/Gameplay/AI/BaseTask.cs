@@ -29,13 +29,19 @@ public abstract class BaseTask : MonoBehaviour
     
     public virtual void StartTask()
     {
-        if (UnitsAssignedToTheTask != null && UnitsAssignedToTheTask.Count != 0)
+        if (UnitsAssignedToTheTask != null)
         {
-            Debug.Log("Task: " + name + " starter." + " Count units - " + UnitsAssignedToTheTask.Count);
-            TaskRealisation();
+            UnitsAssignedToTheTask.RemoveAll(unit => unit == null);
+            if (UnitsAssignedToTheTask.Count != 0)
+            {
+                Debug.Log("Task: " + name + " starter." + " Count units - " + UnitsAssignedToTheTask.Count);
+                TaskRealisation();
+                return;
+            }
         }
-        else
-            EndTurn();
+        Debug.Log("Task: " + name);
+
+        EndTurn();
     }
     
     protected virtual void EndTurn()

@@ -1,141 +1,109 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Gameplay.SO;
 using UnityEngine;
 
-public class SearchPath : Singleton<SearchPath>
+public static class AStarAlgorithm
 {
-    private Tile _startingPoint;
-    private Tile _endingPoint;
-
-    private Dictionary<Vector2Int, Tile> _tileDictionary = new Dictionary<Vector2Int, Tile>();
-
-    private Vector2Int[] _directions =
+    public static List<Vector2Int> FindPath(Vector2Int startPosition, Vector2Int targetPosition, UnitController unit = null)
     {
-        Vector2Int.up, 
-        Vector2Int.right, 
-        Vector2Int.down, 
-        Vector2Int.left, 
-        new Vector2Int(1, 1), 
-        new Vector2Int(-1, -1),
-        new Vector2Int(-1, 1), 
-        new Vector2Int(1, -1)
-    };
-    private Queue<Tile> _queue = new Queue<Tile>();
-    private Tile _searchingPoint;
-    private bool _isExploring = true;
-
-    private List<Tile> _path = new List<Tile>();
-    
-    public List<Tile> Path
-    {
-        get
-        {
-            LoadAllBlocks();
-            BFS();
-            Debug.Log(BFS());
-            CreatePath();
-            
-            return _path;
+        var tiles = LevelManager.Instance.gameBoardWindow.GetAllTile();
+        //var tiles = AstarTest.Instance.GeneratedTiles;
+        foreach (var tile in tiles.Keys.ToList().Select(vector2Int => tiles[vector2Int]))
+        { 
+            tile.previousTile = null;
+            tile.fCost = float.PositiveInfinity;
+            tile.gCost = float.PositiveInfinity;
+            tile.hCost = float.PositiveInfinity;
         }
-    }
+        var startTile = tiles[startPosition];
+        var targetTile = tiles[targetPosition];
 
-    public List<Tile> GetPath(Tile startTile, Tile endTile)
-    {
-        _startingPoint = startTile;
-        _endingPoint = endTile;
-        _path.Clear();
-        return Path;
-    }
+        var openList = new List<Tile>();
+        var closedList = new List<Tile>();
 
-    private void CreatePath()
-    {
-        foreach (var a in _queue)
-        {
-            continue;
-            if(a == null)
-                Debug.Log("null");
-                
-            Debug.Log(a.pos);
-        }
+        startTile.CalculateCost(startTile, targetTile);
+        openList.Add(startTile);
         
-        SetPath(_endingPoint);
-        var previousNode = _endingPoint.isExploredFrom;
-
-        while (previousNode != _startingPoint) 
+        while (openList.Count > 0)
         {
-            if (previousNode == null)
+            var currentTile = GetLowestFCostTile(openList);
+
+            if (currentTile == targetTile)
             {
-                break;
+                var path = new List<Vector2Int>();
+                while (currentTile.previousTile != null)
+                {
+                    path.Add(currentTile.pos);
+                    currentTile = currentTile.previousTile;
+                }
+                path.Reverse();
+                return path;
             }
-            SetPath(previousNode);
-            previousNode = previousNode.isExploredFrom;
-        }
 
-        //SetPath(_startingPoint);
-        _path.Reverse();
-    }
+            openList.Remove(currentTile);
+            closedList.Add(currentTile);
 
-    private void LoadAllBlocks()
-    {
-        foreach (var tile in LevelManager.Instance.gameBoardWindow.GetAllTile())
-        {
-            if (_tileDictionary.ContainsKey(tile.pos))
+            foreach (var neighborPosition in GetNeighborPositions(currentTile.pos))
             {
-                Debug.LogWarning("2 Nodes present in same position. i.e nodes overlapped.");
-            }
-            else
-            {
-                _tileDictionary.Add(tile.pos, tile);
-            }
-        }
-    }
-    
-    private bool BFS()
-    {
-        _queue.Enqueue(_startingPoint);
-        while (_queue.Count > 0 && _isExploring) 
-        {
-            _searchingPoint = _queue.Dequeue();
-            if (_searchingPoint == _endingPoint) 
-            {
-                _isExploring = false;
-                return true;
-            } 
-            
-            _isExploring = true;
-            ExploreNeighbourNodes();
-        }
-        
-        return false;
-    }
-
-    private void ExploreNeighbourNodes()
-    {
-        if (_isExploring == false)
-            return;
-
-        foreach (var tilee in _directions) 
-        {
-            var neighbourPos = _searchingPoint.pos + tilee;
-
-            if (_tileDictionary.ContainsKey(neighbourPos))
-            {
-                var tile = _tileDictionary[neighbourPos];
-                if(tile.tileType == Tile.TileType.Water || !tile.IsTileFree())
+                if (!tiles.ContainsKey(neighborPosition) || closedList.Contains(tiles[neighborPosition]))
                     continue;
                 
-                if (tile.isExplored) 
+                if(tiles[neighborPosition].obstacle)
+                    continue;
+                if(!tiles[neighborPosition].IsTileFree())
+                    continue;
+                if(tiles[neighborPosition].isHasMountain && !unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain))
+                    continue;
+                if(tiles[neighborPosition].tileType == Tile.TileType.Water && !unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float))
                     continue;
 
-                _queue.Enqueue(tile);
-                tile.isExplored = true;
-                tile.isExploredFrom = _searchingPoint;
+                var neighborTile = tiles[neighborPosition];
+                var newGCost = currentTile.gCost + 1;
+
+                if (newGCost < neighborTile.gCost)
+                {
+                    neighborTile.previousTile = currentTile;
+                    neighborTile.gCost = newGCost;
+                    neighborTile.CalculateCost(startTile, targetTile);
+
+                    if (!openList.Contains(neighborTile))
+                    {
+                        openList.Add(neighborTile);
+                    }
+                }
             }
         }
+
+        return null;
     }
-    
-    private void SetPath(Tile tile) 
+
+    private static Tile GetLowestFCostTile(List<Tile> tileList)
     {
-        _path.Add(tile);
+        var lowestFCostTile = tileList[0];
+        for (var i = 1; i < tileList.Count; i++)
+        {
+            if (tileList[i].fCost < lowestFCostTile.fCost)
+            {
+                lowestFCostTile = tileList[i];
+            }
+        }
+        return lowestFCostTile;
+    }
+
+    private static List<Vector2Int> GetNeighborPositions(Vector2Int position)
+    {
+        var neighborPositions = new List<Vector2Int>
+        {
+            new Vector2Int(position.x - 1, position.y), // left
+            new Vector2Int(position.x + 1, position.y), // right
+            new Vector2Int(position.x, position.y - 1), // up
+            new Vector2Int(position.x, position.y + 1), // down
+            new Vector2Int(position.x - 1, position.y - 1), // 
+            new Vector2Int(position.x + 1, position.y - 1), // 
+            new Vector2Int(position.x + 1, position.y + 1), // 
+            new Vector2Int(position.x - 1, position.y + 1) // 
+        };
+        return neighborPositions;
     }
 }

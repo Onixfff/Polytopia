@@ -254,6 +254,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitArcher
       objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitInfo
+      value: 
+      objectReference: {fileID: 11400000, guid: dd670c25175d7b6428e50e4bb6231fad, type: 2}
     - target: {fileID: 9052984237761949079, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

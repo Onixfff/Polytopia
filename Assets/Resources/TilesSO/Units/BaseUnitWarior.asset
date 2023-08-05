@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fcb8645f3a703d4aa1bdad0f2f276d9, type: 3}
-  m_Name: OumajiWarior
+  m_Name: BaseUnitWarior
   m_EditorClassIdentifier: 
+  abilities: 0200000006000000
   unitHp: 10
-  unitDmg: 5
-  unitDef: 1
+  unitDmg: 2
+  unitDef: 2
   unitMoveRad: 1
   unitRad: 1
   priceUnit: 2

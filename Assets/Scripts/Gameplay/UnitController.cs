@@ -15,7 +15,8 @@ public class UnitController : MonoBehaviour
     }
     
     public Tile occupiedTile;
-
+    public string aiTaskName;
+    
     [SerializeField] private UnitInfo unitInfo;
     [SerializeField] private List<Image> unitBackGrounds;
     [SerializeField] private Image headImage;
@@ -60,8 +61,6 @@ public class UnitController : MonoBehaviour
         };
 
         _unitIndex = index;
-        if(unitType == UnitType.Unit)
-            unitInfo = owner.owner.civilisationInfo.units[index];
         
         _hp = unitInfo.hp;
         unitHpTMPro.text = _hp.ToString();
@@ -69,7 +68,7 @@ public class UnitController : MonoBehaviour
 
     public bool TakeDamage(int dmg)
     {
-        _hp -= dmg;
+        _hp -= dmg + 5 - unitInfo.def;
         if (_hp <= 0)
         {
             KillUnit();
@@ -288,8 +287,9 @@ public class UnitController : MonoBehaviour
         var allTile = gameBoard.GetAllTile();
         var closeTilesForMove = gameBoard.GetCloseTile(occupiedTile, unitInfo.moveRad);
         var closeTilesForAttack = gameBoard.GetCloseTile(occupiedTile, unitInfo.rad);
-        foreach (var tile in allTile.Select(tile => tile.GetComponent<Tile>()))
+        foreach (var vector2Int in allTile.Keys.ToList())
         {
+            var tile = allTile[vector2Int];
             tile.HideTargets();
         }
         foreach (var closeTile in closeTilesForMove)

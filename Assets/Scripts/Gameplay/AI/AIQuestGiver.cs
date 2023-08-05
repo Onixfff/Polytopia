@@ -13,6 +13,8 @@ public class AIQuestGiver : MonoBehaviour
     public void AddUnitsToList(List<UnitController> units)
     {
         _allUnits ??= new Dictionary<UnitController, bool>();
+        _allUnits.Keys.ToList().RemoveAll(unit => unit == null);
+
         foreach (var unit in units)
         {
             if(_allUnits.ContainsKey(unit))
@@ -50,6 +52,7 @@ public class AIQuestGiver : MonoBehaviour
                 task.OnUnitReturn += ReturnUnitsToList;
                 task.AddUnitToTask(unit);
                 RemoveUnitFromList(unit);
+                unit.aiTaskName = task.taskType.ToString();
             }
         }
     }
@@ -93,7 +96,8 @@ public class AIQuestGiver : MonoBehaviour
         switch (taskType)
         {
             case BaseTask.TaskType.SendTroops:
-                foreach (var unit in units)
+                rightUnits.AddRange(units);
+                /*foreach (var unit in units)
                 {
                     var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, Mathf.Max(unit.GetUnitInfo().rad, unit.GetUnitInfo().moveRad));
                     if (tiles.Any(tile => tile.unitOnTile == null || tile.homeOnTile == null))
@@ -101,6 +105,7 @@ public class AIQuestGiver : MonoBehaviour
                         rightUnits.Add(unit);
                     }
                 }
+                break;*/
                 break;
             case BaseTask.TaskType.Attack:
                 foreach (var unit in units)

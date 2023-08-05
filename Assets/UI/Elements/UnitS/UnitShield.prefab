@@ -130,6 +130,10 @@ PrefabInstance:
       value: UnitShield
       objectReference: {fileID: 0}
     - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitInfo
+      value: 
+      objectReference: {fileID: 11400000, guid: 445a78d4bd7c48e458d0b61da947fd79, type: 2}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: unitBackGrounds.Array.size
       value: 2
       objectReference: {fileID: 0}
