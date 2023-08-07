@@ -42,7 +42,8 @@ public class AIQuestGiver : MonoBehaviour
         var allUnits = _allUnits;
         foreach (var task in tasks)
         {
-            var units = ChooseTheRightUnit(task.taskType, allUnits.Keys.ToList());
+            allUnits.Keys.ToList().RemoveAll(key => allUnits[key]);
+            var units = ChooseTheRightUnit(task, allUnits.Keys.ToList());
 
             for (var i = 0; i < units.Count; i++)
             {
@@ -89,12 +90,28 @@ public class AIQuestGiver : MonoBehaviour
         _allUnits[unit] = true;
     }
 
-    private List<UnitController> ChooseTheRightUnit(BaseTask.TaskType taskType, List<UnitController> units)
+    private List<UnitController> ChooseTheRightUnit(BaseTask task, List<UnitController> units)
     {
+        var taskType = task.taskType;
         var board = LevelManager.Instance.gameBoardWindow;
         var rightUnits = new List<UnitController>();
         switch (taskType)
         {
+            case BaseTask.TaskType.Patrol:
+                var homes = new List<Home>();
+                foreach (var unit in units)
+                {
+                    if(homes.Contains(unit.GetOwner()))
+                        continue;
+                    var homeUnits = unit.GetOwner().GetUnitList();
+                    homes.Add(unit.GetOwner());
+                    if (homeUnits.Find(task.UnitIsOnTask))
+                        continue;
+                    var unit1 = units.Find(unit2 => unit2.occupiedTile.homeOnTile != null && unit2.occupiedTile.homeOnTile == unit2.GetOwner()); 
+                    rightUnits.Add(unit1);
+                }
+                
+                break;
             case BaseTask.TaskType.SendTroops:
                 rightUnits.AddRange(units);
                 /*foreach (var unit in units)

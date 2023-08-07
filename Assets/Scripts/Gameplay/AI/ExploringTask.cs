@@ -20,6 +20,11 @@ public class ExploringTask : BaseTask
 
     protected override void UnitAction(List<UnitController> units, int i)
     {
+        if (CheckInterestingPlace())
+        {
+            EndTask();
+            return;
+        }
         if (units.Count <= i)
         {
             if (CheckInterestingPlace())

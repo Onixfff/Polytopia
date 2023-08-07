@@ -28,8 +28,13 @@ MonoBehaviour:
   homeInfo: {fileID: 11400000, guid: be68c5baf9b222e47ac64bf1c4677451, type: 2}
   unitInfo:
   - {fileID: 11400000, guid: 8153519a2e8d6954a96c5b58f9ee8ecb, type: 2}
-  - {fileID: 11400000, guid: a78c2e9e2fa063348ac9f430715f8169, type: 2}
-  - {fileID: 11400000, guid: 445a78d4bd7c48e458d0b61da947fd79, type: 2}
   - {fileID: 11400000, guid: dd670c25175d7b6428e50e4bb6231fad, type: 2}
+  - {fileID: 11400000, guid: 445a78d4bd7c48e458d0b61da947fd79, type: 2}
+  - {fileID: 11400000, guid: a78c2e9e2fa063348ac9f430715f8169, type: 2}
+  - {fileID: 11400000, guid: 4b75ca21c9be36f4f87bef13c6f88570, type: 2}
+  - {fileID: 11400000, guid: f1f1ccc98e2de8d4fa75881907309226, type: 2}
+  - {fileID: 11400000, guid: 85bb3604b6e83054ca09816acdd0e5ab, type: 2}
+  - {fileID: 11400000, guid: aa3230d2e94c83042881b34f157b2778, type: 2}
+  - {fileID: 11400000, guid: f59e0b3e53a7e334297dfcde7e46bd71, type: 2}
   shipUnitInfo: []
   techInfo: {fileID: 11400000, guid: ce96175793943314c9f4bcd3592a0c52, type: 2}

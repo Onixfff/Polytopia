@@ -18,7 +18,12 @@ namespace Gameplay.SO
             Strategy,
             Mining,
             Archery,
-            Sailing
+            Sailing,
+            Chivalry,
+            Diplomacy,
+            Forge,
+            Philosophy,
+            Mathematics
         }
 
         [SerializeField] private List<Technology> technologiesList;

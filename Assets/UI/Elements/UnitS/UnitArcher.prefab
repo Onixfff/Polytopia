@@ -36,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -20.2, y: 7.5036}
-  m_SizeDelta: {x: 17.3069, y: 22.5951}
+  m_AnchoredPosition: {x: -17.4, y: 12.8}
+  m_SizeDelta: {x: 10.4397, y: 13.6296}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4788576829850406292
 CanvasRenderer:
@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 18.5976, y: 5.9763}
-  m_SizeDelta: {x: 39.5812, y: 46.7278}
+  m_AnchoredPosition: {x: 6.003012, y: 11.8787155}
+  m_SizeDelta: {x: 23.8757, y: 28.1866}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7925240117850175042
 CanvasRenderer:
@@ -250,6 +250,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1155497438866532834, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 25.0128
+      objectReference: {fileID: 0}
+    - target: {fileID: 1155497438866532834, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 38.2549
+      objectReference: {fileID: 0}
+    - target: {fileID: 1155497438866532834, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -5.215188
+      objectReference: {fileID: 0}
+    - target: {fileID: 1155497438866532834, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 8.273816
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973349345756923438, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 25.0128
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973349345756923438, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 38.2549
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973349345756923438, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -5.215188
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973349345756923438, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 8.273816
+      objectReference: {fileID: 0}
     - target: {fileID: 5697296062761007083, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: m_Name
       value: UnitArcher
@@ -258,6 +290,22 @@ PrefabInstance:
       propertyPath: unitInfo
       value: 
       objectReference: {fileID: 11400000, guid: dd670c25175d7b6428e50e4bb6231fad, type: 2}
+    - target: {fileID: 7835748470077977843, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 22.0701
+      objectReference: {fileID: 0}
+    - target: {fileID: 7835748470077977843, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 22.0701
+      objectReference: {fileID: 0}
+    - target: {fileID: 7835748470077977843, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -5.9993877
+      objectReference: {fileID: 0}
+    - target: {fileID: 7835748470077977843, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 18.407717
+      objectReference: {fileID: 0}
     - target: {fileID: 9052984237761949079, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -343,7 +391,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3793246230660008141, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 982659306228795463, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       insertIndex: 0

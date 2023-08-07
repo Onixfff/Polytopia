@@ -87,7 +87,7 @@ public class UnitController : MonoBehaviour
     public void SetOwner(Home controller)
     {
         _owner = controller;
-        headImage.sprite = controller.owner.civilisationInfo.headSprite;
+        if (headImage != null) headImage.sprite = controller.owner.civilisationInfo.headSprite;
         if (horseImage != null) horseImage.sprite = controller.owner.civilisationInfo.animalSprite;
         foreach (var unitBackGround in unitBackGrounds)
         {
@@ -141,7 +141,7 @@ public class UnitController : MonoBehaviour
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, inValY);
         })));
         var inVal1 = 0;
-        _moveSeq.Join(DOTween.To(() => inValY, x => inValY = x, 1, dur)).OnComplete((() =>
+        _moveSeq.Join(DOTween.To(() => inVal1, x => inVal1 = x, 1, dur)).OnComplete((() =>
         {
             if (occupiedTile.homeOnTile != null && (occupiedTile.homeOnTile.owner == null || occupiedTile.homeOnTile.owner != _owner.owner))
             {

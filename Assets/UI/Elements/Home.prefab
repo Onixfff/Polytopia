@@ -265,10 +265,16 @@ MonoBehaviour:
   occupyButton: {fileID: 4497024037642038627}
   homeImage: {fileID: 2212580032476123589}
   unitPrefabs:
-  - {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
-  - {fileID: 908440429283511281, guid: 5beca99b492476b4d99d77dfcc2cc224, type: 3}
-  - {fileID: 7153613370450505250, guid: f1aa9971716ce77488cc8ca2f096373d, type: 3}
+  - {fileID: 1558370623009764137, guid: fc959d465c068934f8d9860937d5e39e, type: 3}
   - {fileID: 2650723956706019991, guid: 9ee4616aa8ab40f4b80ed385b4c2bc9e, type: 3}
+  - {fileID: 7153613370450505250, guid: f1aa9971716ce77488cc8ca2f096373d, type: 3}
+  - {fileID: 908440429283511281, guid: 5beca99b492476b4d99d77dfcc2cc224, type: 3}
+  - {fileID: 3284420833404134772, guid: fa94e1617aff2e84fb261849caf77f44, type: 3}
+  - {fileID: 5932281690317105334, guid: 94d17a2ccb9eaa64b98a1b70fb4d2e37, type: 3}
+  - {fileID: 954503772295560477, guid: bd2d02d71d6cc404c900c25d9118f2c4, type: 3}
+  - {fileID: 1274775029868630018, guid: a9dd78cf59649384b8c45cc6320beed9, type: 3}
+  - {fileID: 8068268424979350263, guid: 522b7cad69d42c14b851f20efbc8a6e0, type: 3}
+  - {fileID: 954503772295560477, guid: bd2d02d71d6cc404c900c25d9118f2c4, type: 3}
   exploringUnit: {fileID: 0}
 --- !u!1 &7376424880112021022
 GameObject:

@@ -70,13 +70,13 @@ public class TechnologyManager : MonoBehaviour
                 FreeSpiritTech();    
             }
         });
-        /*chivalryButton.onClick.AddListener(() =>
+        chivalryButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priseTwoTier))
+            if(TryBuyTech(priseThreeTier))
             {
-                RoadsTech();    
+                ChivalryTech();    
             }
-        });*/
+        });
         #endregion
         #region Gathering
         gatheringButton.onClick.AddListener(() =>
@@ -100,11 +100,11 @@ public class TechnologyManager : MonoBehaviour
                 StrategyTech();
             }
         }));
-        farmingButton.onClick.AddListener((() =>
+        diplomacyButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseTwoTier))
+            if(TryBuyTech(priseThreeTier))
             {
-                FarmingTech();
+                DiplomacyTech();
             }
         }));
 
@@ -122,6 +122,20 @@ public class TechnologyManager : MonoBehaviour
             if(TryBuyTech(priseTwoTier))
             {
                 MiningTech();
+            }
+        }));
+        forgeButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priseThreeTier))
+            {
+                ForgeTech();
+            }
+        }));
+        philosophyButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priseThreeTier))
+            {
+                PhilosophyTech();
             }
         }));
         #endregion
@@ -156,6 +170,13 @@ public class TechnologyManager : MonoBehaviour
                 ArcheryTech();
             }
         }));
+        mathematicsButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priseThreeTier))
+            {
+                MathematicsTech();
+            }
+        }));
         #endregion
     }
 
@@ -171,14 +192,13 @@ public class TechnologyManager : MonoBehaviour
     private void RidingTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Rider);
-        LevelManager.Instance.gameplayWindow.UnlockUnitTech(1);
+        LevelManager.Instance.gameplayWindow.UnlockUnitTech(3);
         ridingButton.image.color = Color.green;
         Destroy(ridingButton);
     }
     /*private void RoadsTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Rider);
-        LevelManager.Instance.gameplayWindow.UnlockUnitTech(1);
         ridingButton.image.color = Color.green;
         Destroy(ridingButton);
     }*/
@@ -189,6 +209,14 @@ public class TechnologyManager : MonoBehaviour
         freeSpiritButton.image.color = Color.green;
         Destroy(freeSpiritButton);
     }
+    private void ChivalryTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Chivalry);
+        LevelManager.Instance.gameplayWindow.UnlockUnitTech(8);
+        chivalryButton.image.color = Color.green;
+        Destroy(chivalryButton);
+    }
+    
     #endregion
     #region Gathering
     private void GatheringTech()
@@ -212,6 +240,14 @@ public class TechnologyManager : MonoBehaviour
         strategyButton.image.color = Color.green;
         Destroy(strategyButton);
     }
+    private void DiplomacyTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Diplomacy);
+        LevelManager.Instance.gameplayWindow.UnlockUnitTech(4);
+        diplomacyButton.image.color = Color.green;
+        Destroy(diplomacyButton);
+    }
+
     #endregion
     #region Mountain
     private void MountainTech()
@@ -227,6 +263,20 @@ public class TechnologyManager : MonoBehaviour
         LevelManager.Instance.gameplayWindow.UnlockTileTech(6);
         miningButton.image.color = Color.green;
         Destroy(miningButton);
+    }
+    private void ForgeTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Forge);
+        LevelManager.Instance.gameplayWindow.UnlockUnitTech(6);
+        forgeButton.image.color = Color.green;
+        Destroy(forgeButton);
+    }
+    private void PhilosophyTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Philosophy);
+        LevelManager.Instance.gameplayWindow.UnlockUnitTech(5);
+        philosophyButton.image.color = Color.green;
+        Destroy(philosophyButton);
     }
     #endregion
     #region Fish
@@ -256,9 +306,16 @@ public class TechnologyManager : MonoBehaviour
     private void ArcheryTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Archery);
-        LevelManager.Instance.gameplayWindow.UnlockUnitTech(3);
+        LevelManager.Instance.gameplayWindow.UnlockUnitTech(1);
         archeryButton.image.color = Color.green;
         Destroy(archeryButton);
+    }
+    private void MathematicsTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Mathematics);
+        LevelManager.Instance.gameplayWindow.UnlockUnitTech(7);
+        mathematicsButton.image.color = Color.green;
+        Destroy(mathematicsButton);
     }
     #endregion
 }

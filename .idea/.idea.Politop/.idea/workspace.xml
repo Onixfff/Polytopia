@@ -3,48 +3,31 @@
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurCivData.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurPlayerCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurWarior.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurWarior.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/BaseUnitArcher.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/BaseUnitArcher.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/BaseUnitShield.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/BaseUnitShield.asset.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaCivData.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaPlayerCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaRider.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaRider.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaWarior.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaWarior.asset.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumCivData.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumPlayerCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumWarior.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumWarior.asset.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiCivData.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiPlayerCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiWarior.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiWarior.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AIQuestGiver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AIQuestGiver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AttackTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AttackTask.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/BaseTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/BaseTask.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/CaptureTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/CaptureTask.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/UnitInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/UnitInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SendTroopsTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/SendTroopsTask.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SendTroopsTask.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/SendTroopsTask.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/ExploringTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/ExploringTask.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/TechInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/TechInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechnologyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechnologyManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/System/SearchPath.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/System/SearchPath.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Ship.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Ship.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Tasks/QuestGiver.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Tasks/QuestGiver.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/CudgelVisual.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/CudgelVisual.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Unit.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Unit.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitArcher.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitArcher.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitRider.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitRider.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitShield.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitShield.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameBoardWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameBoardWindow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,8 +47,10 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/AstarTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Chel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AttackTask.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/PatrolTask.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/SendTroopsTask.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/System/Loader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Text.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -78,17 +63,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Discover.Launch.Via.Unity": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "XThreadsFramesViewSplitterKey": "0.1902439",
-    "rider.run.widget.enabled.cache": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.1902439&quot;,
+    &quot;rider.run.widget.enabled.cache&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.4f1\Editor\Unity.exe" />
@@ -108,10 +93,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="29812">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="17712">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="29812" />
+      <option name="pid" value="17712" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -140,6 +125,7 @@
       <workItem from="1691051681927" duration="19864000" />
       <workItem from="1691137468397" duration="21032000" />
       <workItem from="1691216868347" duration="25152000" />
+      <workItem from="1691407765508" duration="9995000" />
     </task>
     <servers />
   </component>
@@ -162,24 +148,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs</url>
-          <line>115</line>
-          <properties documentPath="C:\Users\Genius_1\Unity\Politop\Assets\Scripts\Gameplay\Windows\GameplayWindow.cs" initialLine="113" containingFunctionPresentation="method 'ShowTileButton'">
-            <startOffsets>
-              <option value="3766" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3834" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

@@ -10,17 +10,31 @@ public abstract class BaseTask : MonoBehaviour
         Exploring,
         Capture,
         Attack,
-        SendTroops
+        SendTroops,
+        Patrol
     }
 
     public TaskType taskType;
     public Action<BaseTask, List<UnitController>> OnUnitReturn;
     public Action OnTurnEnded;
-    public int taskPriority = 1;
+    public int taskPriority = 2;
     
     protected List<UnitController> UnitsAssignedToTheTask;
 
+    public int GetCountUnit()
+    {
+        return UnitsAssignedToTheTask.Count;
+    }
 
+    public bool UnitIsOnTask(UnitController unit)
+    {
+        if (UnitsAssignedToTheTask == null)
+        {
+            return false;
+        }
+        return UnitsAssignedToTheTask.Contains(unit);
+    }
+    
     public virtual void AddUnitToTask(UnitController unit)
     {
         UnitsAssignedToTheTask ??= new List<UnitController>();
