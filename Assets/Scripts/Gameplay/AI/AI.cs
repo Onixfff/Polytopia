@@ -55,7 +55,6 @@ public class AI : MonoBehaviour
         _allUnits.RemoveAll(unit => unit == null);
         if (_allUnits.Count != 0) 
             UnitAction(_allUnits);
-        
         foreach (var home in homes)
         {
             if(LevelManager.Instance.currentTurn % 2 == 0)

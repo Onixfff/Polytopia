@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -13,6 +14,12 @@ public class UnitController : MonoBehaviour
         Unit,
         Ship
     }
+
+    public enum AttackType
+    {
+        Melee,
+        Range
+    }
     
     public Tile occupiedTile;
     public string aiTaskName;
@@ -26,6 +33,8 @@ public class UnitController : MonoBehaviour
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private UnitController shipUnit;
     [SerializeField] private UnitType unitType;
+    [SerializeField] private AttackType attackType;
+    [SerializeField] private GameObject projectilePrefab;
     
     private UnitController _unitInTheShip;
     private Home _owner;
@@ -66,17 +75,33 @@ public class UnitController : MonoBehaviour
         unitHpTMPro.text = _hp.ToString();
     }
 
+    public bool CheckAbility(UnitInfo.AbilityType abilityType)
+    {
+        return unitInfo.abilityTypes.Contains(abilityType);
+    }
+    
     public bool TakeDamage(int dmg)
     {
         _hp -= dmg + 5 - unitInfo.def;
         if (_hp <= 0)
         {
-            KillUnit();
+            var inVal = 0f;
+            DOTween.To(() => inVal, x => x = inVal, 0.2f, 0.2f).OnComplete(KillUnit);
             return true;
         }
         
         unitHpTMPro.text = _hp.ToString();
         return false;
+    }
+
+    public int GetHp()
+    {
+        return _hp;
+    }
+
+    public int GetDmg()
+    {
+        return unitInfo.dmg * Mathf.CeilToInt(_hp / unitInfo.hp);
     }
     
     public bool IsThisUnitAlly(CivilisationController controller)
@@ -121,11 +146,17 @@ public class UnitController : MonoBehaviour
         if(occupiedTile != null)
         {
             occupiedTile.unitOnTile = null;
+            if (occupiedTile.homeOnTile != null)
+            {
+                occupiedTile.homeOnTile.HideOccupyButton();
+            }
         }
         
         _moveSeq = DOTween.Sequence();
         aiFromTile = occupiedTile;
         _moveThisTurn = 0;
+        if (!CheckAbility(UnitInfo.AbilityType.Dash))
+            _attackThisTurn = 0;
         var anchorPos = to.GetComponent<RectTransform>().anchoredPosition;
         transform.SetParent(to.transform.parent);
         transform.SetSiblingIndex(transform.parent.childCount);
@@ -178,6 +209,7 @@ public class UnitController : MonoBehaviour
 
         _moveSeq.Kill();
         _attSeq.Kill();
+        _counterstrikeSeq.Kill();
     }
 
     private void SelectEvent(GameObject pastO, GameObject currO)
@@ -215,37 +247,117 @@ public class UnitController : MonoBehaviour
         
         var pos = transform.position;
         DeselectUnit();
-        var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile);
-        if (unitToAttack.TakeDamage(unitInfo.dmg) && isThisTheNearestTile)
+        var rad = 1;
+        if (attackType == AttackType.Range)
+            rad = unitInfo.rad;
+        var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
+        if (unitToAttack.TakeDamage(GetDmg()))
         {
-            _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
-            _attackThisTurn = 0; 
-            _moveThisTurn = 0;
+            if (isThisTheNearestTile && attackType == AttackType.Melee)
+            {
+                _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
+                _attackThisTurn = 0; 
+                if(!CheckAbility(UnitInfo.AbilityType.Escape))
+                    _moveThisTurn = 0;
+            }
+            else
+            {
+                _attackThisTurn = 0; 
+                if(!CheckAbility(UnitInfo.AbilityType.Escape))
+                   _moveThisTurn = 0;
+                
+                var pr = Instantiate(projectilePrefab, transform.parent);
+                pr.transform.position = transform.position;
+                _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                {
+                    LevelManager.Instance.SelectObject(null);
+                    SelectUnit();
+                    Destroy(pr.gameObject);
+                })));
+            }
         }
         else
         {
-            _attSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
-            {
-                _attackThisTurn = 0; 
+            _attackThisTurn = 0;
+            if(!CheckAbility(UnitInfo.AbilityType.Escape))
                 _moveThisTurn = 0;
+            if (attackType == AttackType.Melee)
+            {
+                _attSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                {
+                    LevelManager.Instance.SelectObject(null);
+                    SelectUnit();
 
-                LevelManager.Instance.SelectObject(null);
-                SelectUnit();
-
-            })));
-            _attSeq.Append(transform.DOMove(pos, 0.1f));
-            
-            //_attSeq.Append(unitToAttack.Counterstrike(this));
+                })));
+                _attSeq.Append(transform.DOMove(pos, 0.1f));
+                if (CheckAbility(UnitInfo.AbilityType.Convert))
+                {
+                    unitToAttack.GetOwner().RemoveUnit(unitToAttack);
+                    unitToAttack.SetOwner(_owner);
+                }
+            }
+            else
+            {
+                var pr = Instantiate(projectilePrefab, transform.parent);
+                pr.transform.position = transform.position;
+                _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                {
+                    LevelManager.Instance.SelectObject(null);
+                    SelectUnit();
+                    Destroy(pr.gameObject);
+                })));
+            }
+            if (!CheckAbility(UnitInfo.AbilityType.Convert))
+                _attSeq.Append(unitToAttack.Counterstrike(this));
         }
         
         return _attSeq;
     }
 
-    private Tween Counterstrike(UnitController enemyWhoAttack)
+    private Tween Counterstrike(UnitController unitToAttack)
     {
         _counterstrikeSeq = DOTween.Sequence();
-        
-        _counterstrikeSeq.Append(AttackUnitOnTile(enemyWhoAttack));
+        var rad = 1;
+        if (attackType == AttackType.Range)
+            rad = unitInfo.rad;
+        var pos = transform.position;
+        var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
+        if (!isThisTheNearestTile)
+            return _counterstrikeSeq;
+        var dmg = unitInfo.def * Mathf.CeilToInt(_hp / unitInfo.hp);
+        if (unitToAttack.TakeDamage(dmg))
+        {
+            if (isThisTheNearestTile && attackType == AttackType.Melee)
+            {
+                _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
+            }
+            else
+            {
+                var pr = Instantiate(projectilePrefab, transform.parent);
+                pr.transform.position = transform.position;
+                _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                {
+                    Destroy(pr.gameObject);
+                })));
+            }
+        }
+        else
+        {
+            if (attackType == AttackType.Melee)
+            {
+                _counterstrikeSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() => { })));
+                _counterstrikeSeq.Append(transform.DOMove(pos, 0.1f));
+            }
+            else
+            {
+                var pr = Instantiate(projectilePrefab, transform.parent);
+                pr.transform.position = transform.position;
+                _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                {
+                    Destroy(pr.gameObject);
+                })));
+            }
+        }
         return _counterstrikeSeq;
     }
 
@@ -319,7 +431,8 @@ public class UnitController : MonoBehaviour
 
     private void KillUnit()
     {
-        occupiedTile.unitOnTile = null;
+        if(occupiedTile.unitOnTile == this)
+            occupiedTile.unitOnTile = null;
         _owner.RemoveUnit(this);
         Destroy(gameObject);
     }

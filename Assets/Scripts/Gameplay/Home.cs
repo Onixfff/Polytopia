@@ -96,12 +96,19 @@ public class Home : MonoBehaviour
         occupyButton.gameObject.SetActive(true);
     }
     
+    public void HideOccupyButton()
+    {
+        occupyButton.gameObject.SetActive(false);
+    }
+    
     public void OccupyHome()
     {
+        if(owner != null)
+            owner.RemoveHome(this, _unitList);
         _unitList.Clear();
         homeType = HomeType.City;
         homeTile.unitOnTile.GetOwner().RemoveUnit(homeTile.unitOnTile);
-        occupyButton.gameObject.SetActive(false);
+        HideOccupyButton();
         Init(homeTile.unitOnTile.GetOwner().owner, homeTile, false);
         homeTile.unitOnTile.SetOwner(this);
         AddUnit(homeTile.unitOnTile);

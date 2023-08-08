@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.SO;
@@ -40,6 +41,12 @@ public class CivilisationController : MonoBehaviour
         technologies.Add(technology);
     }
 
+    private void OnDestroy()
+    {
+        LevelManager.Instance.CheckWin();
+
+    }
+
     private void CreateHome()
     {
         var allTile = _gameBoardWindow.GetAllTile();
@@ -80,5 +87,38 @@ public class CivilisationController : MonoBehaviour
     public List<Home> GetAllHome()
     {
         return homes;
+    }
+
+    public void RemoveHome(Home home, List<UnitController> unitList = null)
+    {
+        homes.Remove(home);
+        if (homes.Count == 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (unitList != null && unitList.Count != 0)
+        {
+            foreach (var unit in unitList)
+            {
+                homes[0].AddUnit(unit);
+            }
+        }
+    }
+
+    public void DestroyAllUnits()
+    {
+        var allUnits = new List<UnitController>();
+        foreach (var home in homes)
+        {
+            allUnits.AddRange(home.GetUnitList());
+        }
+        if(allUnits.Count == 0)
+            return;
+        for (var i = 0; i < allUnits.Count; i++)
+        {
+            Destroy(allUnits[i]);
+        }
     }
 }

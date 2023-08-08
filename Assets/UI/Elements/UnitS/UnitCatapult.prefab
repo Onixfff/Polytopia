@@ -145,6 +145,14 @@ PrefabInstance:
       propertyPath: unitInfo
       value: 
       objectReference: {fileID: 11400000, guid: aa3230d2e94c83042881b34f157b2778, type: 2}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: attackType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 7351668826297567673, guid: d500ccffbe15ac24fbb4388d17014ee0, type: 3}
     - target: {fileID: 9052984237761949079, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -24,6 +24,7 @@ public class AIController : Singleton<AIController>
     private void OnDestroy()
     {
         LevelManager.Instance.OnTurnEnd -= TurnEnd;
+        OnAITurnEnded -= AIStartTurn;
     }
 
     private void TurnEnd()
@@ -39,5 +40,10 @@ public class AIController : Singleton<AIController>
             return;
         }
         _aiList[i].StartTurn();
+    }
+
+    public void ClearAI()
+    {
+        _aiList.Clear();
     }
 }

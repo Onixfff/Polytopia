@@ -43,6 +43,7 @@ public abstract class BaseTask : MonoBehaviour
     
     public virtual void StartTask()
     {
+        Debug.Log("Task: " + name);
         if (UnitsAssignedToTheTask != null)
         {
             UnitsAssignedToTheTask.RemoveAll(unit => unit == null);
@@ -53,7 +54,6 @@ public abstract class BaseTask : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("Task: " + name);
 
         EndTurn();
     }

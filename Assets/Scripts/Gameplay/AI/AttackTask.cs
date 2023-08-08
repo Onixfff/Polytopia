@@ -1,12 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Gameplay.SO;
-using UnityEngine;
 
 public class AttackTask : BaseTask
 {
     private Sequence _attackSeq;
+
+    private void OnDestroy()
+    {
+        _attackSeq.Kill();
+    }
 
     public override int CalculatePriority(List<UnitController> units)
     {
@@ -43,7 +48,7 @@ public class AttackTask : BaseTask
     {
         _attackSeq = DOTween.Sequence();
         var unitForAttack = ChooseUnitForAttack(unit);
-        _attackSeq.Append(unit.AttackUnitOnTile(unitForAttack));
+        if (unitForAttack != null) _attackSeq.Append(unit.AttackUnitOnTile(unitForAttack));
         return _attackSeq;
     }
     
@@ -64,9 +69,11 @@ public class AttackTask : BaseTask
         }
 
         closeUnits.RemoveAll(unite => unite.GetOwner().owner == unit.GetOwner().owner);
-        
-        var minDef = closeUnits.Min(unite => unite.GetUnitInfo().def);
-        var unitForAttack = closeUnits.FirstOrDefault(unite => unite.GetUnitInfo().def == minDef);
+        closeUnits.RemoveAll(unit => unit == null);
+        if (closeTile.Count == 0)
+            return null;
+        var minHp = closeUnits.OrderBy(unite => unite.GetHp()).ToList();
+        var unitForAttack = closeUnits.FirstOrDefault(unite => unite.GetHp() == minHp.First().GetHp());
 
         return unitForAttack;
     }

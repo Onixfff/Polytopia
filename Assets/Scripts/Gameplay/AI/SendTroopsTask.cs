@@ -54,8 +54,11 @@ public class SendTroopsTask : BaseTask
     {
         var allTiles = LevelManager.Instance.gameBoardWindow.GetAllTile();
         var civHomes = LevelManager.Instance.gameBoardWindow.playerCiv.homes;
-        var path = AStarAlgorithm.FindPath(unit.occupiedTile.pos, civHomes[Random.Range(0, civHomes.Count)].homeTile.pos, unit);
-        if (path == null)
+        if (civHomes == null || civHomes.Count == 0)
+            return unit.occupiedTile;
+        var index = Random.Range(0, civHomes.Count);
+        var path = AStarAlgorithm.FindPath(unit.occupiedTile.pos, civHomes[index].homeTile.pos, unit);
+        if (path == null || path.Count == 0)
             return unit.occupiedTile;
         if (!allTiles[path[0]].IsTileFree())
             return unit.occupiedTile;

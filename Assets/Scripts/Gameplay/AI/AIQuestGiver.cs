@@ -48,6 +48,8 @@ public class AIQuestGiver : MonoBehaviour
             for (var i = 0; i < units.Count; i++)
             {
                 var unit = units[i];
+                if(unit == null)
+                    continue;
                 if (allUnits[unit])
                     continue;
                 task.OnUnitReturn += ReturnUnitsToList;

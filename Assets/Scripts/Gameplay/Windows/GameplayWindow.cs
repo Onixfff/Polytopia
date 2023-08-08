@@ -254,6 +254,7 @@ public class GameplayWindow : BaseWindow
 
     private void LoadMenuScene()
     {
+        LevelManager.Instance.DestroyAllCivilisation();
         WindowsManager.Instance.CloseAllWindows();
         WindowsManager.Instance.CreateWindow<MenuWindow>("MenuWindow").ShowWindow();
     }

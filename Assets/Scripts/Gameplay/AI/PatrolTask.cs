@@ -47,6 +47,7 @@ public class PatrolTask : BaseTask
     private Tile ChooseTileForPatrol(UnitController unit)
     {
         var tile = unit.GetOwner().homeTile;
+        var unitTile = unit.occupiedTile;
         var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(tile, 2);
         var unitHasMountTech = tile.homeOnTile.owner.technologies.Contains(TechInfo.Technology.Mountain);
  
@@ -58,7 +59,7 @@ public class PatrolTask : BaseTask
             return tile;
         
         
-        var index = closeTile.IndexOf(closeTile.Find(tile1 => tile1.pos == tile.pos));
+        var index = closeTile.IndexOf(closeTile.Find(tile1 => tile1.pos == unitTile.pos));
 
         if (index >= closeTile.Count)
         {

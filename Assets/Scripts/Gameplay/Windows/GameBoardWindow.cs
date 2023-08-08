@@ -74,9 +74,9 @@ public class GameBoardWindow : BaseWindow
         return closeTiles;
     }
 
-    public bool IsThisTheNearestTile(Tile tile1, Tile tile2)
+    public bool IsThisTheNearestTile(Tile tile1, Tile tile2, int rad)
     {
-        var closeTile = GetCloseTile(tile1, 1);
+        var closeTile = GetCloseTile(tile1, rad);
         return closeTile.Contains(tile2);
     }
     

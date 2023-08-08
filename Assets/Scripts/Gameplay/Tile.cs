@@ -43,6 +43,7 @@ public class Tile : MonoBehaviour
     private bool _isHomeOnTile = false;
     private Home _owner;
     private List<GameplayWindow.OpenedTechType> _techTypes;
+    private Sequence _timeTargetSeq;
     
     public Home GetOwner()
     {
@@ -211,12 +212,13 @@ public class Tile : MonoBehaviour
 
     public void HideTargetsTime()
     {
+        _timeTargetSeq = DOTween.Sequence();
         var inValY = 0;
-        DOTween.To(() => inValY, x => inValY = x, 0, 0.01f).OnComplete((() =>
+        _timeTargetSeq.Append(DOTween.To(() => inValY, x => inValY = x, 0, 0.01f).OnComplete((() =>
         {
             blueTargetImage.gameObject.SetActive(false);
             redTargetImage.gameObject.SetActive(false);   
-        }));
+        })));
     }
     
     private void Start()
@@ -225,7 +227,14 @@ public class Tile : MonoBehaviour
         LevelManager.Instance.OnObjectSelect += SelectEvent;
         LevelManager.Instance.gameplayWindow.OnTileTech += BuyTileTech;
     }
-    
+
+    private void OnDestroy()
+    {
+        LevelManager.Instance.OnObjectSelect -= SelectEvent;
+        LevelManager.Instance.gameplayWindow.OnTileTech -= BuyTileTech;
+        _timeTargetSeq.Kill();
+    }
+
     private void SelectEvent(GameObject pastO, GameObject currO)
     {
         if(currO == null || currO.TryGetComponent(out Tile tile))

@@ -692,6 +692,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4685326019531423981}
     - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: attackType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 7351668826297567673, guid: aef4d369d11589240a2a89f06e5a66e0, type: 3}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: selectUnitButton
       value: 
       objectReference: {fileID: 4902593624267368990}
