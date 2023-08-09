@@ -60,7 +60,10 @@ public class CaptureTask : BaseTask
         var tile = ChooseHomeForCapture(unit);
         if (tile == null)
             return _captureSeq;
-        _captureSeq.Append(unit.MoveToTile(tile));
+        var dur = 0f;
+        if (unit.occupiedTile.isOpened || tile.isOpened)
+            dur = 0.2f;
+        _captureSeq.Append(unit.MoveToTile(tile, dur));
         return _captureSeq;
     }
     

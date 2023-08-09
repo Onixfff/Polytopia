@@ -46,7 +46,10 @@ public class ExploringTask : BaseTask
     {
         _exploreSeq = DOTween.Sequence();
         var tile = ChooseTileForExploring(unit);
-        _exploreSeq.Append(unit.MoveToTile(tile));
+        var dur = 0f;
+        if (unit.occupiedTile.isOpened || tile.isOpened)
+            dur = 0.2f;
+        _exploreSeq.Append(unit.MoveToTile(tile, dur));
         return _exploreSeq;
     }
 

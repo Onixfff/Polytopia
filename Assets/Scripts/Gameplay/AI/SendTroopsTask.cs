@@ -46,7 +46,10 @@ public class SendTroopsTask : BaseTask
     {
         _captureSeq = DOTween.Sequence();
         var tile = FindPath(unit);
-        _captureSeq.Append(unit.MoveToTile(tile));
+        var dur = 0f;
+        if (unit.occupiedTile.isOpened || tile.isOpened)
+            dur = 0.2f;
+        _captureSeq.Append(unit.MoveToTile(tile, dur));
         return _captureSeq;
     }
 

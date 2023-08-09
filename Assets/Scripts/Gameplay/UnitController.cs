@@ -47,6 +47,8 @@ public class UnitController : MonoBehaviour
     private Sequence _moveSeq;
     private Sequence _attSeq;
     private Sequence _counterstrikeSeq;
+    private int _killCount = 0;
+    private int _lvl = 1;
 
     public void Init(Home owner, Tile tile, int index)
     {
@@ -73,6 +75,9 @@ public class UnitController : MonoBehaviour
         
         _hp = unitInfo.hp;
         unitHpTMPro.text = _hp.ToString();
+        
+        if(owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
+            gameObject.SetActive(false);
     }
 
     public bool CheckAbility(UnitInfo.AbilityType abilityType)
@@ -80,23 +85,48 @@ public class UnitController : MonoBehaviour
         return unitInfo.abilityTypes.Contains(abilityType);
     }
     
-    public bool TakeDamage(int dmg)
+    public bool CheckForKill(int dmg)
     {
-        _hp -= dmg + 5 - unitInfo.def;
+        var h = _hp;
+        h -= dmg;
+        if (h <= 0)
+            return true;
+        return false;
+    }
+    
+    public void TakeDamage(int dmg)
+    {
+        _hp -= dmg;
         if (_hp <= 0)
         {
             var inVal = 0f;
-            DOTween.To(() => inVal, x => x = inVal, 0.2f, 0.2f).OnComplete(KillUnit);
-            return true;
+            //DOTween.To(() => inVal, x => x = inVal, 0.2f, 0.2f).OnComplete(KillUnit);
+            KillUnit();
         }
         
         unitHpTMPro.text = _hp.ToString();
-        return false;
     }
 
     public int GetHp()
     {
         return _hp;
+    }
+    
+    public void Heal(int heal)
+    {
+        _hp += heal;
+    }
+    
+    public void LevelUp()
+    {
+        _hp = unitInfo.hp;
+        _hp += 5;
+    }
+    
+    public void DisbandTheSquad()
+    {
+        EconomicManager.Instance.AddMoney(Mathf.CeilToInt(unitInfo.price/2));
+        KillUnit();
     }
 
     public int GetDmg()
@@ -151,14 +181,16 @@ public class UnitController : MonoBehaviour
                 occupiedTile.homeOnTile.HideOccupyButton();
             }
         }
-        
+        if(to.isOpened)
+            gameObject.SetActive(true);
+        else
+            gameObject.SetActive(false);
         _moveSeq = DOTween.Sequence();
         aiFromTile = occupiedTile;
         _moveThisTurn = 0;
         if (!CheckAbility(UnitInfo.AbilityType.Dash))
             _attackThisTurn = 0;
         var anchorPos = to.GetComponent<RectTransform>().anchoredPosition;
-        transform.SetParent(to.transform.parent);
         transform.SetSiblingIndex(transform.parent.childCount);
         var inValX = rectTransform.anchoredPosition.x;
         OccupyTile(to);
@@ -176,7 +208,8 @@ public class UnitController : MonoBehaviour
         {
             if (occupiedTile.homeOnTile != null && (occupiedTile.homeOnTile.owner == null || occupiedTile.homeOnTile.owner != _owner.owner))
             {
-                occupiedTile.homeOnTile.ShowOccupyButton();
+                if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
+                    occupiedTile.homeOnTile.ShowOccupyButton();
             }
             var addedRad = 0;
             if (occupiedTile.isHasMountain)
@@ -214,6 +247,20 @@ public class UnitController : MonoBehaviour
 
     private void SelectEvent(GameObject pastO, GameObject currO)
     {
+        if (currO != null && currO == gameObject)
+        {
+            var ints = new List<int>();
+            if(_hp < unitInfo.hp)
+                ints.Add(0);
+            if(_owner.owner.technologies.Contains(TechInfo.Technology.FreeSpirit))
+                ints.Add(1);
+            if(unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Heal))
+                ints.Add(2);
+            if(_killCount == 3 && _lvl == 1)
+                ints.Add(3);
+            LevelManager.Instance.gameplayWindow.ShowUnitButton(ints, this);
+        }
+        
         if (pastO == gameObject)
         {
             DeselectUnit();
@@ -244,19 +291,23 @@ public class UnitController : MonoBehaviour
     public Tween AttackUnitOnTile(UnitController unitToAttack)
     {
         _attSeq = DOTween.Sequence();
-        
+        if (unitToAttack._owner.owner == _owner.owner)
+            return _attSeq;
         var pos = transform.position;
         DeselectUnit();
         var rad = 1;
         if (attackType == AttackType.Range)
             rad = unitInfo.rad;
         var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
-        if (unitToAttack.TakeDamage(GetDmg()))
+        if (unitToAttack.CheckForKill(GetDmg()))
         {
+            unitToAttack.TakeDamage(GetDmg());
+            AddKillInCount();
             if (isThisTheNearestTile && attackType == AttackType.Melee)
             {
                 _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
-                _attackThisTurn = 0; 
+                if(!CheckAbility(UnitInfo.AbilityType.Persist))
+                    _attackThisTurn = 0; 
                 if(!CheckAbility(UnitInfo.AbilityType.Escape))
                     _moveThisTurn = 0;
             }
@@ -285,6 +336,7 @@ public class UnitController : MonoBehaviour
             {
                 _attSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
+                    unitToAttack.TakeDamage(GetDmg());
                     LevelManager.Instance.SelectObject(null);
                     SelectUnit();
 
@@ -302,21 +354,28 @@ public class UnitController : MonoBehaviour
                 pr.transform.position = transform.position;
                 _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
+                    unitToAttack.TakeDamage(GetDmg());
                     LevelManager.Instance.SelectObject(null);
                     SelectUnit();
                     Destroy(pr.gameObject);
                 })));
-            }
-            if (!CheckAbility(UnitInfo.AbilityType.Convert))
-                _attSeq.Append(unitToAttack.Counterstrike(this));
+            } 
+            _attSeq.Append(unitToAttack.Counterstrike(this));
         }
         
         return _attSeq;
     }
 
+    private void AddKillInCount()
+    { 
+        _killCount++;
+    }
+    
     private Tween Counterstrike(UnitController unitToAttack)
     {
         _counterstrikeSeq = DOTween.Sequence();
+        if (unitToAttack._owner.owner == _owner.owner)
+            return _counterstrikeSeq;
         var rad = 1;
         if (attackType == AttackType.Range)
             rad = unitInfo.rad;
@@ -325,27 +384,24 @@ public class UnitController : MonoBehaviour
         if (!isThisTheNearestTile)
             return _counterstrikeSeq;
         var dmg = unitInfo.def * Mathf.CeilToInt(_hp / unitInfo.hp);
-        if (unitToAttack.TakeDamage(dmg))
+        if (unitToAttack.CheckForKill(dmg))
         {
-            if (isThisTheNearestTile && attackType == AttackType.Melee)
+            var pr = Instantiate(projectilePrefab, transform.parent);
+            pr.transform.position = transform.position;
+            _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
             {
-                _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
-            }
-            else
-            {
-                var pr = Instantiate(projectilePrefab, transform.parent);
-                pr.transform.position = transform.position;
-                _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
-                {
-                    Destroy(pr.gameObject);
-                })));
-            }
+                unitToAttack.TakeDamage(GetDmg());
+                Destroy(pr.gameObject);
+            })));
         }
         else
         {
             if (attackType == AttackType.Melee)
             {
-                _counterstrikeSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() => { })));
+                _counterstrikeSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                {
+                    unitToAttack.TakeDamage(GetDmg());
+                })));
                 _counterstrikeSeq.Append(transform.DOMove(pos, 0.1f));
             }
             else
@@ -354,6 +410,7 @@ public class UnitController : MonoBehaviour
                 pr.transform.position = transform.position;
                 _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
+                    unitToAttack.TakeDamage(GetDmg());
                     Destroy(pr.gameObject);
                 })));
             }

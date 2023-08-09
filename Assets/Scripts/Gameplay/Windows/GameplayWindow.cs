@@ -39,6 +39,8 @@ public class GameplayWindow : BaseWindow
     [SerializeField] private List<Button> unitTechButtons;
     [SerializeField] private GameObject unitTechButtonParent;
     [SerializeField] private List<Button> tileTechButtons;
+    [SerializeField] private GameObject unitButtonParent;
+    [SerializeField] private List<Button> unitButtons;
     [SerializeField] private GameObject tileTechButtonParent;
     [SerializeField] private TextMeshProUGUI tileNameUGUI;
     private List<Button> _openedTileTechButtons;
@@ -150,6 +152,55 @@ public class GameplayWindow : BaseWindow
         }
     }
     
+    public void ShowUnitButton(List<int> types, UnitController unit)
+    {
+        if(types.Count == 0)
+            return;
+        downBar.SetActive(true);
+        unitButtonParent.SetActive(true);
+        foreach (var tile in unitButtons)
+        {
+            tile.gameObject.SetActive(false);            
+        }
+
+        foreach (var type in types)
+        {
+            switch (type)
+            {
+                case 0:
+                    unitButtons[type].gameObject.SetActive(true);
+                    unitButtons[type].onClick.RemoveAllListeners();
+                    unitButtons[type].onClick.AddListener((() =>
+                    {
+                        unit.Heal(2);
+                    }));
+                    break;
+                case 1:
+                    unitButtons[type].gameObject.SetActive(true);
+                    unitButtons[type].onClick.RemoveAllListeners();
+                    unitButtons[type].onClick.AddListener((unit.DisbandTheSquad)); break;
+                case 2:
+                    unitButtons[type].gameObject.SetActive(true);
+                    unitButtons[type].onClick.RemoveAllListeners();
+                    unitButtons[type].onClick.AddListener((() =>
+                    {
+                        var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, 1);
+                        foreach (var tile in closeTile)
+                        {
+                            if(tile != null && tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner == unit.GetOwner().owner)
+                                tile.unitOnTile.Heal(5);
+                        }
+                    }));  
+                    break;
+                case 3:
+                    unitButtons[type].gameObject.SetActive(true);
+                    unitButtons[type].onClick.RemoveAllListeners();
+                    unitButtons[type].onClick.AddListener((unit.LevelUp));  
+                    break;
+            }
+        }
+    }
+    
     private void Awake()
     {
         LevelManager.Instance.gameplayWindow = this;
@@ -201,7 +252,23 @@ public class GameplayWindow : BaseWindow
                 }
             }
         }
+        
+        if (currO != null && !currO.TryGetComponent(out UnitController unit))
+        {
+            if (unitButtons != null && unitButtons.Count != 0)
+            {
+                if (unitButtonParent != null)
+                {
+                    foreach (var unitButton in unitButtons)
+                    {
+                        unitButton.gameObject.SetActive(false);
+                    }
+                    tileTechButtonParent.SetActive(false);
+                }
+            }
+        }
 
+        
         if (currO == null)
         {
             HideDownBar();

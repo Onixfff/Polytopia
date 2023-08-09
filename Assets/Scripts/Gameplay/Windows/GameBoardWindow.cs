@@ -9,11 +9,13 @@ using Sequence = DG.Tweening.Sequence;
 public class GameBoardWindow : BaseWindow
 {
     public CivilisationController playerCiv;
-    [SerializeField] private List<GameObject> boardPrefabs;
+    [SerializeField] private RectTransform tileParent;
+    [SerializeField] private RectTransform environmentParent;
+    [SerializeField] private RectTransform unitParent;
+    [SerializeField] private RectTransform fogParent;
 
     [SerializeField] private List<Home> generatedVillage;
     [SerializeField] private RectTransform tilePrefab;
-    [SerializeField] private RectTransform tileParent;
 
     [SerializeField] private int mapSize = 16;
     [SerializeField] private CivilisationController civilisationPrefab;
@@ -33,6 +35,11 @@ public class GameBoardWindow : BaseWindow
             if(tile.isHasMountain)
                 tile.ShowOre();
         }
+    }
+
+    public RectTransform GetUnitParent()
+    {
+        return unitParent;
     }
 
     public Tile GetTile(Vector2Int pos)
@@ -124,9 +131,9 @@ public class GameBoardWindow : BaseWindow
                 
                 tileRectTransform.anchoredPosition = new Vector2(((i + j) * 50f) - Mathf.Sqrt(mapSize)*50, (i - j) * 31.5f);
                 var ja = j + 1;
-                tileRectTransform.name = i + ", " + ja;
+                tileRectTransform.name = width - i + 1 + ", " + ja;
                 var tile = tileRectTransform.GetComponent<Tile>();
-                tile.pos = new Vector2Int(i, ja);
+                tile.pos = new Vector2Int(width - i + 1, ja);
                 _generatedTiles.Add(tile.pos, tile);
                 
                 SubscribeOnTile(tile);
@@ -257,6 +264,7 @@ public class GameBoardWindow : BaseWindow
             if (randomTile != null)
             {
                 var home = Instantiate(village, randomTile.transform);
+                home.gameObject.SetActive(false);
                 generatedVillage.Add(home);
                 randomTile.isHasMountain = false;
                 home.Init(null, randomTile);

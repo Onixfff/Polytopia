@@ -25,8 +25,9 @@ public class Home : MonoBehaviour
     private int _foodFromNextLvl = 2;
     private int _foodCount = 2;
     private int _unitCapacity = 2;
+    private int _boardRad;
     
-    public void Init(CivilisationController controller, Tile tile, bool isFirstInit = true)
+    public void Init(CivilisationController controller, Tile tile)
     {
         homeTile = tile;
         transform.position = homeTile.GetRectTransform().position;
@@ -40,16 +41,17 @@ public class Home : MonoBehaviour
                 controller.homes.Add(this);
             if (_homeLevel >= 0 && _homeLevel < _homeInfo.homeSprites.Count)
                 UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
-            var rad = 1;
-            if (isFirstInit)
-            {
-                rad = 3;
-            }
-            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, rad);
+            _boardRad = 1;
+            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, _boardRad);
+            homeTile.BuildHome(this);
             foreach (var ti in tiles)
             {
                 ti.SetOwner(this);
                 ti.ChangeTileVisual(this);
+            }
+            foreach (var til1e in tiles)
+            {
+                til1e.ChangeHomeBoards();
             }
             LevelManager.Instance.gameplayWindow.OnUnitSpawn += BuyUnit;
             EconomicManager.Instance.AddMoney(5);
@@ -59,9 +61,9 @@ public class Home : MonoBehaviour
         }
         else
         {
+            homeTile.BuildHome(this);
 
         }
-        homeTile.BuildHome(this);
 
         homeButton.onClick.RemoveAllListeners();
         homeButton.onClick.AddListener(HomeOnClick);
@@ -109,7 +111,7 @@ public class Home : MonoBehaviour
         homeType = HomeType.City;
         homeTile.unitOnTile.GetOwner().RemoveUnit(homeTile.unitOnTile);
         HideOccupyButton();
-        Init(homeTile.unitOnTile.GetOwner().owner, homeTile, false);
+        Init(homeTile.unitOnTile.GetOwner().owner, homeTile);
         homeTile.unitOnTile.SetOwner(this);
         AddUnit(homeTile.unitOnTile);
     }
@@ -147,7 +149,7 @@ public class Home : MonoBehaviour
             return;
         EconomicManager.Instance.BuySomething(owner.civilisationInfo.units[unitIndex].price);
         
-        var unitObject = Instantiate(unitPrefabs[unitIndex], homeTile.transform.parent);
+        var unitObject = Instantiate(unitPrefabs[unitIndex], LevelManager.Instance.gameBoardWindow.GetUnitParent());
         var unit = unitObject.GetComponent<UnitController>();
         unit.Init(this, homeTile, unitIndex);
         AddUnit(unit);
@@ -186,7 +188,8 @@ public class Home : MonoBehaviour
         var randUnit = unitIndexForBuy[Random.Range(0, unitIndexForBuy.Count)];
         
         
-        var unitObject = Instantiate(unitPrefabs[randUnit], homeTile.transform.parent);
+        var unitObject = Instantiate(unitPrefabs[randUnit], LevelManager.Instance.gameBoardWindow.GetUnitParent());
+        unitObject.gameObject.SetActive(false);
         var unit = unitObject.GetComponent<UnitController>();
         unit.aiName = "unit" + Random.Range(0, 1000000);
         unit.Init(this, homeTile, 0);

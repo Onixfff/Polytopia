@@ -131,7 +131,10 @@ public class AI : MonoBehaviour
                 
                 if (tileWithHome.IsTileFree())
                 {
-                    _unitsActionSeq.Append(unit.MoveToTile(tileWithHome));
+                    var dur = 0f;
+                    if (unit.occupiedTile.isOpened || tileWithHome.isOpened)
+                        dur = 0.2f;
+                    _unitsActionSeq.Append(unit.MoveToTile(tileWithHome, dur));
                     if (unit.occupiedTile.homeOnTile != null && unit.occupiedTile.homeOnTile.owner != unit.GetOwner().owner)
                     {
                         OccupyVillage(unit.occupiedTile.homeOnTile);
@@ -154,7 +157,10 @@ public class AI : MonoBehaviour
             var dir = ChooseTileForMove(unit);
             if (dir == null)
                 dir = unit.occupiedTile;
-            _unitsActionSeq.Append(unit.MoveToTile(dir));
+            var dur = 0f;
+            if (unit.occupiedTile.isOpened || dir.isOpened)
+                dur = 0.2f;
+            _unitsActionSeq.Append(unit.MoveToTile(dir, dur));
         }
         
         return _unitsActionSeq;

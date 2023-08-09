@@ -44,7 +44,6 @@ public class CivilisationController : MonoBehaviour
     private void OnDestroy()
     {
         LevelManager.Instance.CheckWin();
-
     }
 
     private void CreateHome()
@@ -70,6 +69,8 @@ public class CivilisationController : MonoBehaviour
         }
 
         var homeO = Instantiate(homePrefab, tile.transform);
+        if(civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
+            homeO.gameObject.SetActive(false);
         homes.Add(homeO.GetComponent<Home>());
         homes[0].Init(this, tile.GetComponent<Tile>());
     }

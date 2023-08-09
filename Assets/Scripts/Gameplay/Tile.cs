@@ -20,7 +20,8 @@ public class Tile : MonoBehaviour
     public bool isHasMountain = false;
     public TileType tileType = TileType.Ground;
     public Home homeOnTile;
-    
+
+    public bool isOpened = false;
     public bool isExplored = false;
     public Tile isExploredFrom;
 
@@ -36,7 +37,16 @@ public class Tile : MonoBehaviour
     [SerializeField] private Image blueTargetImage;
     [SerializeField] private Image redTargetImage;
     [SerializeField] private Image selectedOutlineImage;
+    
+    
     [SerializeField] private GameObject fog;
+    
+    [SerializeField] private GameObject downLeft;
+    [SerializeField] private GameObject downRight;
+    [SerializeField] private GameObject upRight;
+    [SerializeField] private GameObject upLeft;
+    
+    
     [SerializeField] private Button getInfoButton;
 
     private string _tileName = "Ground";
@@ -44,7 +54,7 @@ public class Tile : MonoBehaviour
     private Home _owner;
     private List<GameplayWindow.OpenedTechType> _techTypes;
     private Sequence _timeTargetSeq;
-    
+
     public Home GetOwner()
     {
         return _owner;
@@ -53,6 +63,7 @@ public class Tile : MonoBehaviour
     public void SetOwner(Home home)
     {
         _owner = home;
+        homeOnTile = _owner;
     }
     
     public void ChangeTileVisual(Home home)
@@ -88,10 +99,55 @@ public class Tile : MonoBehaviour
     
     public void UnlockTile()
     {
+        isOpened = true;
         fog.SetActive(false);
         groundImage.enabled = true;
+        if(isHasMountain && mountainTileImage != null) 
+            mountainTileImage.gameObject.SetActive(true);
+        if(homeOnTile != null)
+            homeOnTile.gameObject.SetActive(true);
+        if(unitOnTile != null)
+            unitOnTile.gameObject.SetActive(true);
+        ChangeHomeBoards();
     }
+    
+    [Button()]
+    public void ChangeHomeBoards()
+    {
+        if(_owner == null || _owner.owner == null)
+            return;
+        downLeft.SetActive(false);
+        downRight.SetActive(false);
+        upLeft.SetActive(false);
+        upRight.SetActive(false);
 
+        var board = LevelManager.Instance.gameBoardWindow;
+        var DownLeft = board.GetTile(new Vector2Int(pos.x + 1, pos.y));
+        var UpLeft = board.GetTile(new Vector2Int(pos.x - 1, pos.y));
+        var DownRight = board.GetTile(new Vector2Int(pos.x, pos.y + 1));
+        var UpRight = board.GetTile(new Vector2Int(pos.x, pos.y - 1));
+        if (DownLeft == null || DownLeft._owner == null)
+        {
+            if(isOpened)
+                downLeft.SetActive(true);
+        }
+        if (UpLeft == null || UpLeft._owner == null)
+        {
+            if(isOpened)
+                upRight.SetActive(true);
+        }
+        if (DownRight == null || DownRight._owner == null)
+        {
+            if(isOpened) 
+                downRight.SetActive(true);
+        }
+        if (UpRight == null || UpRight._owner == null)
+        {
+            if(isOpened) 
+                upLeft.SetActive(true);
+        }
+    }
+    
     public void SetTreeSprite(Sprite sprite, string tileName)
     {
         if(sprite == null || _isHomeOnTile) return;
@@ -133,7 +189,7 @@ public class Tile : MonoBehaviour
         if(sprite == null || _isHomeOnTile) return;
         mountainTileImage.sprite = sprite;
         mountainTileImage.enabled = true;
-        mountainTileImage.gameObject.SetActive(true);
+        mountainTileImage.gameObject.SetActive(false);
         isHasMountain = true;
         if (_tileName != "Ground")
             _tileName = _tileName + ", " + tileName;
@@ -199,6 +255,8 @@ public class Tile : MonoBehaviour
         homeOnTile = home;
         SetOwner(home);
         ChangeTileVisual(home);
+        
+
         if (treeTileImage != null) Destroy(treeTileImage.gameObject);
         if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
         if (animalTileImage != null) Destroy(animalTileImage.gameObject);

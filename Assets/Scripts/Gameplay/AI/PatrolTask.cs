@@ -40,7 +40,10 @@ public class PatrolTask : BaseTask
     {
         _exploreSeq = DOTween.Sequence();
         var tile = ChooseTileForPatrol(unit);
-        _exploreSeq.Append(unit.MoveToTile(tile));
+        var dur = 0f;
+        if (unit.occupiedTile.isOpened || tile.isOpened)
+            dur = 0.2f;
+        _exploreSeq.Append(unit.MoveToTile(tile, dur));
         return _exploreSeq;
     }
     
