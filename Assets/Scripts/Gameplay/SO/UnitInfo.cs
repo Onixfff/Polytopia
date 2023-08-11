@@ -25,14 +25,14 @@ public class UnitInfo : ScriptableObject
     [SerializeField] private List<AbilityType> abilities;
     public List<AbilityType> abilityTypes => abilities;
 
-    [SerializeField] private int unitHp;
-    public int hp => unitHp;
+    [SerializeField] private float unitHp;
+    public float hp => unitHp;
     
-    [SerializeField] private int unitDmg;
-    public int dmg => unitDmg;
+    [SerializeField] private float unitDmg;
+    public float dmg => unitDmg;
 
-    [SerializeField] private int unitDef;
-    public int def => unitDef;
+    [SerializeField] private float unitDef;
+    public float def => unitDef;
     
     [SerializeField] private int unitMoveRad;
     public int moveRad => unitMoveRad;

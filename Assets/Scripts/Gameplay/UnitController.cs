@@ -37,13 +37,13 @@ public class UnitController : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private List<RectTransform> sweats;
     
-    public int moveThisTurn = 1;
     private UnitController _unitInTheShip;
     private Home _owner;
     private bool _isCanSelected = true;
     private bool _isSelected;
+    private int _moveThisTurn = 1;
     private int _attackThisTurn = 1;
-    private int _hp;
+    private float _hp;
     private int _unitIndex;
     private Sequence _moveSeq;
     private Sequence _attSeq;
@@ -54,7 +54,7 @@ public class UnitController : MonoBehaviour
     public void Init(Home owner, Tile tile, int index)
     {
         SetSweatPos();
-        moveThisTurn = 0;
+        _moveThisTurn = 0;
         _attackThisTurn = 0;
         transform.SetSiblingIndex(transform.parent.childCount);
         OccupyTile(tile);
@@ -71,8 +71,7 @@ public class UnitController : MonoBehaviour
         LevelManager.Instance.OnTurnBegin += () =>
         {
             _isCanSelected = true;
-            moveThisTurn = 1;
-            _attackThisTurn = 1;
+            EnableUnit();
         };
 
         _unitIndex = index;
@@ -84,6 +83,12 @@ public class UnitController : MonoBehaviour
             gameObject.SetActive(false);
     }
 
+    public void EnableUnit()
+    {
+        _moveThisTurn = 1;
+        _attackThisTurn = 1;
+    }
+    
     public bool CheckAbility(UnitInfo.AbilityType abilityType)
     {
         return unitInfo.abilityTypes.Contains(abilityType);
@@ -109,7 +114,7 @@ public class UnitController : MonoBehaviour
         unitHpTMPro.text = _hp.ToString();
     }
 
-    public int GetHp()
+    public float GetHp()
     {
         return _hp;
     }
@@ -212,10 +217,22 @@ public class UnitController : MonoBehaviour
     
     public int GetDmg()
     {
-        var a = _hp / unitInfo.hp;
-        var b = Mathf.CeilToInt(a);
-        Debug.Log(b);
-        return unitInfo.dmg * b;
+        var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
+        var totalDamage = unitInfo.dmg + unitInfo.def;
+        var a = attackForce / totalDamage;
+        var attackResult = Mathf.Round(a * unitInfo.dmg * 4.5f); 
+
+        return (int)attackResult;
+    }
+    
+    public int GetDefDmg()
+    {
+        var defenseForce = unitInfo.def * (_hp / unitInfo.hp) * GetDefenseBonus();
+        var totalDamage = unitInfo.dmg + unitInfo.def;
+        var a = defenseForce / totalDamage;
+
+        var defenseResult = Mathf.Round(a * unitInfo.def * 4.5f);
+        return (int)defenseResult;
     }
     
     public bool IsThisUnitAlly(CivilisationController controller)
@@ -271,7 +288,7 @@ public class UnitController : MonoBehaviour
             gameObject.SetActive(false);
         _moveSeq = DOTween.Sequence();
         aiFromTile = occupiedTile;
-        moveThisTurn = 0; 
+        _moveThisTurn = 0; 
         _attackThisTurn = 0; 
         if(CheckAbility(UnitInfo.AbilityType.Persist)) 
             _attackThisTurn = 1;
@@ -362,7 +379,7 @@ public class UnitController : MonoBehaviour
                 }
             }
 
-            if (moveThisTurn > 0)
+            if (_moveThisTurn > 0)
             {
                 if (currO != null && currO.TryGetComponent(out Tile tile))
                 {
@@ -395,7 +412,7 @@ public class UnitController : MonoBehaviour
                 if(CheckAbility(UnitInfo.AbilityType.Persist)) 
                     _attackThisTurn = 1;
                 if(!CheckAbility(UnitInfo.AbilityType.Escape))
-                    moveThisTurn = 0;
+                    _moveThisTurn = 0;
             }
             else
             {
@@ -403,7 +420,7 @@ public class UnitController : MonoBehaviour
                 if(CheckAbility(UnitInfo.AbilityType.Persist)) 
                     _attackThisTurn = 1;
                 if(!CheckAbility(UnitInfo.AbilityType.Escape))
-                   moveThisTurn = 0;
+                   _moveThisTurn = 0;
                 
                 var pr = Instantiate(projectilePrefab, transform.parent);
                 pr.transform.position = transform.position;
@@ -421,7 +438,7 @@ public class UnitController : MonoBehaviour
             if(CheckAbility(UnitInfo.AbilityType.Persist)) 
                 _attackThisTurn = 1;
             if(!CheckAbility(UnitInfo.AbilityType.Escape))
-                moveThisTurn = 0;
+                _moveThisTurn = 0;
             if (attackType == AttackType.Melee)
             {
                 _attSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
@@ -473,24 +490,14 @@ public class UnitController : MonoBehaviour
         var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
         if (!isThisTheNearestTile)
             return _counterstrikeSeq;
-        var dmg = unitInfo.def * Mathf.CeilToInt(_hp / unitInfo.hp);
-        if (unitToAttack.CheckForKill(dmg))
-        {
-            var pr = Instantiate(projectilePrefab, transform.parent);
-            pr.transform.position = transform.position;
-            _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
-            {
-                unitToAttack.TakeDamage(GetDmg());
-                Destroy(pr.gameObject);
-            })));
-        }
-        else
+        
+        if (unitToAttack.CheckForKill(GetDefDmg()))
         {
             if (attackType == AttackType.Melee)
             {
                 _counterstrikeSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(GetDmg());
+                    unitToAttack.TakeDamage(GetDefDmg());
                 })));
                 _counterstrikeSeq.Append(transform.DOMove(pos, 0.1f));
             }
@@ -500,7 +507,28 @@ public class UnitController : MonoBehaviour
                 pr.transform.position = transform.position;
                 _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(GetDmg());
+                    unitToAttack.TakeDamage(GetDefDmg());
+                    Destroy(pr.gameObject);
+                })));
+            }
+        }
+        else
+        {
+            if (attackType == AttackType.Melee)
+            {
+                _counterstrikeSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                {
+                    unitToAttack.TakeDamage(GetDefDmg());
+                })));
+                _counterstrikeSeq.Append(transform.DOMove(pos, 0.1f));
+            }
+            else
+            {
+                var pr = Instantiate(projectilePrefab, transform.parent);
+                pr.transform.position = transform.position;
+                _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                {
+                    unitToAttack.TakeDamage(GetDefDmg());
                     Destroy(pr.gameObject);
                 })));
             }
@@ -526,6 +554,21 @@ public class UnitController : MonoBehaviour
         _unitInTheShip.Init(_owner, occupiedTile, _unitInTheShip._unitIndex);
         occupiedTile.unitOnTile = _unitInTheShip;
         KillUnit();
+    }
+
+    private int GetDefenseBonus()
+    {
+        var bonus = 1;
+        if (occupiedTile.isHasMountain)
+        {
+            bonus++;
+        }
+
+        if (occupiedTile.GetHomeOnTile() != null)
+        {
+            bonus++;
+        }
+        return bonus;
     }
     
     private void SelectUnit()
@@ -553,7 +596,7 @@ public class UnitController : MonoBehaviour
         }
         foreach (var closeTile in closeTilesForMove)
         {
-            if(moveThisTurn <= 0) break;
+            if(_moveThisTurn <= 0) break;
             if(closeTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                 continue;
             

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class TechIcon : MonoBehaviour
 {
     [SerializeField] private TechInfo.Technology type;
+    [SerializeField] private Button techButton; 
     [SerializeField] private GameObject lockObject; 
     [SerializeField] private GameObject lineObject;
     [SerializeField] private GameObject buyObject;
@@ -21,12 +22,12 @@ public class TechIcon : MonoBehaviour
         lineObject.SetActive(true);
         lineObject.transform.SetParent(transform.parent.parent.GetChild(0).transform);
         var inVal = 0;
-        DOTween.To(() => inVal, x => x = inVal, 1, 1).OnComplete(() =>
+        DOTween.To(() => inVal, x => x = inVal, 1, 0.03f).OnComplete(() =>
         {
             if (LevelManager.Instance.gameBoardWindow.playerCiv.technologies.Contains(type))
             {
-                UnlockTech();
-                BuyTech();
+                if (techButton != null) 
+                    techButton.onClick.Invoke();
             }
         });
     }
@@ -41,5 +42,6 @@ public class TechIcon : MonoBehaviour
     {
         lineObject.GetComponent<Image>().color = buyColor;
         buyObject.SetActive(true);
+        Destroy(techButton);
     }
 }

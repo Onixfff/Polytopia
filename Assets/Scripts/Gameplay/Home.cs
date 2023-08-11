@@ -129,9 +129,14 @@ public class Home : MonoBehaviour
     
     public void OccupyHome()
     {
+        for (var i = _unitList.Count - 1; i >= 0; i--)
+        {
+            var unit = _unitList[i];
+            RemoveUnit(unit);
+        }
+
         if(owner != null)
             owner.RemoveHome(this, _unitList);
-        _unitList.Clear();
         homeType = HomeType.City;
         homeTile.unitOnTile.GetOwner().RemoveUnit(homeTile.unitOnTile);
         HideOccupyButton();
@@ -159,7 +164,7 @@ public class Home : MonoBehaviour
     private void LeveUp()
     {
         var block = Instantiate(centerBlockPrefab, blockParent);
-        block.transform.SetSiblingIndex(block.transform.parent.childCount-1);
+        block.transform.SetSiblingIndex(blockParent.childCount-1);
         homeFoodBlocks.Insert(homeFoodBlocks.Count - 2, block);
         RemoveAllFood();
         _foodCount = 0;
@@ -188,7 +193,7 @@ public class Home : MonoBehaviour
         }
         else
         {
-            var a = _unitList.Count != 0 ? homeFoodBlocks[_unitList.Count] : homeFoodBlocks[_unitList.Count];
+            var a = homeFoodBlocks[_unitList.Count];
             a.transform.GetChild(1).gameObject.SetActive(false);
         }
     }
@@ -228,6 +233,7 @@ public class Home : MonoBehaviour
         var unitObject = Instantiate(unitPrefabs[stIndex], LevelManager.Instance.gameBoardWindow.GetUnitParent());
         var unit = unitObject.GetComponent<UnitController>();
         unit.Init(this, homeTile, stIndex);
+        unit.EnableUnit();
         AddUnit(unit);
     }
     

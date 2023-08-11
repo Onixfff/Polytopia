@@ -3,42 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiPlayerCivData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AIQuestGiver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AIQuestGiver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/CaptureTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/CaptureTask.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/ExploringTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/ExploringTask.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/PatrolTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/PatrolTask.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/SendTroopsTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/SendTroopsTask.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/EconomicManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/EconomicManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/GameCycle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/GameCycle.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/LevelManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/LevelManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/CivilisationInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/CivilisationInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/TechInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/TechInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechnologyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechnologyManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/UnitInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/UnitInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechIcon.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechIcon.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Tile.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Tile.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/ShieldVisual.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/ShieldVisual.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Center.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Center.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/TechIcon.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/TechIcon.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Ship.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Ship.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Unit.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Unit.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitRider.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitRider.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitShield.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitShield.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitSwordsman.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitSwordsman.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitWarior.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitWarior.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterDeepTile.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/WaterDeepTile.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterDeepTile.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/WaterDeepTile.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterTile.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/WaterTile.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterTile.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/WaterTile.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameBoardWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameBoardWindow.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitCloak.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitCloak.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitKnight.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitKnight.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitMindBender.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitMindBender.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitVisual.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitVisual.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +61,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "XThreadsFramesViewSplitterKey": "0.1902439",
+    "XThreadsFramesViewSplitterKey": "0.34513274",
     "nodejs_package_manager_path": "npm",
     "rider.run.widget.enabled.cache": "false",
     "vue.rearranger.settings.migration": "true"
@@ -109,10 +86,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="3680">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="3680" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -146,7 +123,7 @@
       <workItem from="1691570264163" duration="18512000" />
       <workItem from="1691595304699" duration="365000" />
       <workItem from="1691653689470" duration="17361000" />
-      <workItem from="1691739434950" duration="13616000" />
+      <workItem from="1691739434950" duration="18496000" />
     </task>
     <servers />
   </component>

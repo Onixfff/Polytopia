@@ -24,7 +24,8 @@ public class CivilisationController : MonoBehaviour
             technologies.AddRange(info.technology.startTechnologies);
         else
         {
-            
+            EconomicManager.Instance.AddMoney(100);
+            technologies.AddRange(info.technology.startTechnologies);
         }
         civColor = info.CivilisationColor;
         CreateHome();

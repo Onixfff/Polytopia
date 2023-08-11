@@ -387,6 +387,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1161709310964815892 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 30039945281057168, guid: a23ee580e8d85074e9b146da65f0e539, type: 3}
+  m_PrefabInstance: {fileID: 1185996314788161924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &2609207829119173484 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3765086181550713576, guid: a23ee580e8d85074e9b146da65f0e539, type: 3}
+  m_PrefabInstance: {fileID: 1185996314788161924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2875049561452028458 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4004750148409445294, guid: a23ee580e8d85074e9b146da65f0e539, type: 3}
@@ -401,6 +411,11 @@ MonoBehaviour:
 --- !u!224 &5548832695645344157 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6734263174060406809, guid: a23ee580e8d85074e9b146da65f0e539, type: 3}
+  m_PrefabInstance: {fileID: 1185996314788161924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &6406521046406407384 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5232348991559093596, guid: a23ee580e8d85074e9b146da65f0e539, type: 3}
   m_PrefabInstance: {fileID: 1185996314788161924}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &8847598001722485646 stripped
@@ -466,6 +481,18 @@ PrefabInstance:
       propertyPath: selectUnitButton
       value: 
       objectReference: {fileID: 2875049561452028458}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: sweats.Array.data[0]
+      value: 
+      objectReference: {fileID: 6406521046406407384}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: sweats.Array.data[1]
+      value: 
+      objectReference: {fileID: 1161709310964815892}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: sweats.Array.data[2]
+      value: 
+      objectReference: {fileID: 2609207829119173484}
     - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: unitBackGrounds.Array.size
       value: 2
