@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.SO;
@@ -17,13 +16,30 @@ public class CivilisationController : MonoBehaviour
 
     public void Init(CivilisationInfo info)
     {
+        EconomicManager.Instance.AddMoney(5);
+
         civilisationInfo = info;
-        technologies.AddRange(info.technology.startTechnologies);
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
-        civColor = info.civilisationColor;
+        if(civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
+            technologies.AddRange(info.technology.startTechnologies);
+        else
+        {
+            
+        }
+        civColor = info.CivilisationColor;
         CreateHome();
         SetupCivilisation();
-
+        LevelManager.Instance.OnTurnBegin += () =>
+        {
+            var income = 0;
+            foreach (var home in homes)
+            {
+                if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
+                    continue;
+                income += home.GetIncome();
+            }
+            EconomicManager.Instance.AddMoney(income);
+        };
         LevelManager.Instance.OnUnlockTechnology += AddNewTechnology;
     }
     
@@ -32,8 +48,17 @@ public class CivilisationController : MonoBehaviour
         civilisationInfo = info;
         technologies.AddRange(info.technology.startTechnologies);
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
-        civColor = info.civilisationColor;
+        civColor = info.CivilisationColor;
         CreateHome();
+        LevelManager.Instance.OnTurnBegin += () =>
+        {
+            var income = 0;
+            foreach (var home in homes)
+            {
+                income += home.GetIncome();
+            }
+            EconomicManager.Instance.AddAIMoney(income);
+        };
     }
     
     public void AddNewTechnology(TechInfo.Technology technology)
@@ -43,7 +68,6 @@ public class CivilisationController : MonoBehaviour
 
     private void OnDestroy()
     {
-        LevelManager.Instance.CheckWin();
     }
 
     private void CreateHome()
@@ -62,7 +86,7 @@ public class CivilisationController : MonoBehaviour
         var listPos = new List<Vector2Int>() { civPoses, civPoses1, civPoses2, civPoses3};
         var randPos = listPos[Random.Range(0, listPos.Count)];
         var tile = _gameBoardWindow.GetTile(randPos);
-        if (tile.homeOnTile != null)
+        if (tile.GetOwner() != null)
         {
             CreateHome();
             return;
@@ -95,7 +119,7 @@ public class CivilisationController : MonoBehaviour
         homes.Remove(home);
         if (homes.Count == 0)
         {
-            Destroy(gameObject);
+            DestroyCivilisation();
             return;
         }
 
@@ -106,6 +130,14 @@ public class CivilisationController : MonoBehaviour
                 homes[0].AddUnit(unit);
             }
         }
+    }
+
+    private void DestroyCivilisation()
+    {
+        LevelManager.Instance.RemoveCiv(this);
+        LevelManager.Instance.CheckWin();
+        DestroyAllUnits();
+        Destroy(gameObject);
     }
 
     public void DestroyAllUnits()
@@ -119,7 +151,7 @@ public class CivilisationController : MonoBehaviour
             return;
         for (var i = 0; i < allUnits.Count; i++)
         {
-            Destroy(allUnits[i]);
+            allUnits[i].TakeDamage(10000);
         }
     }
 }

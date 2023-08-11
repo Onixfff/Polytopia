@@ -75,6 +75,7 @@ RectTransform:
   m_Children:
   - {fileID: 7100455505759952897}
   - {fileID: 4063668654966565815}
+  - {fileID: 2787865033681969194}
   m_Father: {fileID: 6597377799759220201}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -174,6 +175,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!1 &6220324846872289294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2787865033681969194}
+  - component: {fileID: 8648695226905891554}
+  m_Layer: 5
+  m_Name: UIParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2787865033681969194
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6220324846872289294}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2061671586090657240}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8648695226905891554
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6220324846872289294}
+  m_CullTransparentMesh: 1
 --- !u!1 &6396300918863797765
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,16 +466,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2504195634850256243, guid: aea650016d9d3d14ba35f5f236349cc5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a63e1f65418ac804b89b705260d13a16, type: 3}
+    - target: {fileID: 2504195634850256243, guid: aea650016d9d3d14ba35f5f236349cc5, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2504195634850256243, guid: aea650016d9d3d14ba35f5f236349cc5, type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2504195634850256243, guid: aea650016d9d3d14ba35f5f236349cc5, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9169963782775985487, guid: aea650016d9d3d14ba35f5f236349cc5, type: 3}
       propertyPath: m_Name
@@ -470,13 +520,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCiv: {fileID: 0}
   tileParent: {fileID: 7100455505759952897}
-  environmentParent: {fileID: 0}
-  homesParent: {fileID: 0}
   unitParent: {fileID: 4063668654966565815}
-  fogParent: {fileID: 0}
+  uiParent: {fileID: 2787865033681969194}
   generatedVillage: []
   tilePrefab: {fileID: 9052984237761949079, guid: 1760346af3469f940b15da02422d93f3, type: 3}
-  mapSize: 128
+  mapSize: 121
   civilisationPrefab: {fileID: 5349752406243517778, guid: ebba51101a524ec409f2983c3efda5fd, type: 3}
   defaultCiv: {fileID: 5349752406243517778, guid: 7e78944b78ec0f04987cefad6b44646d, type: 3}
   village: {fileID: 8004393146802062611, guid: 7c4594764c3b69944850276018cdec26, type: 3}

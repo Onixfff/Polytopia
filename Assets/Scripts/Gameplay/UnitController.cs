@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Gameplay.SO;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,12 +35,13 @@ public class UnitController : MonoBehaviour
     [SerializeField] private UnitType unitType;
     [SerializeField] private AttackType attackType;
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private List<RectTransform> sweats;
     
+    public int moveThisTurn = 1;
     private UnitController _unitInTheShip;
     private Home _owner;
     private bool _isCanSelected = true;
     private bool _isSelected;
-    private int _moveThisTurn = 1;
     private int _attackThisTurn = 1;
     private int _hp;
     private int _unitIndex;
@@ -52,6 +53,9 @@ public class UnitController : MonoBehaviour
 
     public void Init(Home owner, Tile tile, int index)
     {
+        SetSweatPos();
+        moveThisTurn = 0;
+        _attackThisTurn = 0;
         transform.SetSiblingIndex(transform.parent.childCount);
         OccupyTile(tile);
         var anchorPos = occupiedTile.GetComponent<RectTransform>().anchoredPosition;
@@ -67,7 +71,7 @@ public class UnitController : MonoBehaviour
         LevelManager.Instance.OnTurnBegin += () =>
         {
             _isCanSelected = true;
-            _moveThisTurn = 1;
+            moveThisTurn = 1;
             _attackThisTurn = 1;
         };
 
@@ -99,8 +103,6 @@ public class UnitController : MonoBehaviour
         _hp -= dmg;
         if (_hp <= 0)
         {
-            var inVal = 0f;
-            //DOTween.To(() => inVal, x => x = inVal, 0.2f, 0.2f).OnComplete(KillUnit);
             KillUnit();
         }
         
@@ -115,6 +117,7 @@ public class UnitController : MonoBehaviour
     public void Heal(int heal)
     {
         _hp += heal;
+        unitHpTMPro.text = _hp.ToString();
     }
     
     public void LevelUp()
@@ -129,9 +132,90 @@ public class UnitController : MonoBehaviour
         KillUnit();
     }
 
+    private bool _isSweaty;
+    public float sweatyDur;
+    public Vector3 v0;
+    public Vector3 v1;
+    public Vector3 v2;
+    private Vector3 sv0;
+    private Vector3 sv1;
+    private Vector3 sv2;
+    
+    [Button()]
+    private void SetSweatPos()
+    {
+        sv0 = sweats[0].localPosition;
+        sv1 = sweats[1].localPosition;
+        sv2 = sweats[2].localPosition;
+    }
+    
+    [Button()]
+    public void SweatingAnimationEnable()
+    {
+        _isSweaty = true;
+        var startPoses = new List<Vector3>()
+        {
+            sv0, sv1, sv2
+        };
+        SweatyAnimation();
+        void SweatyAnimation()
+        {
+            if(!_isSweaty)
+                return;
+
+            for (var i = 0; i < sweats.Count; i++)
+            {
+                var sweat = sweats[i];
+                sweat.gameObject.SetActive(true);
+                var normVector = new Vector3(1, 1, 1);
+                var posVector = new Vector3(sweat.position.x, sweat.position.y, 0);
+                switch (i)
+                {
+                    case 0:
+                        posVector += v0;
+                        break;
+                    case 1:
+                        posVector += v1;
+                        break;
+                    case 2:
+                        posVector += v2;
+                        break;
+                }
+
+                sweat.localPosition = startPoses[i];
+                sweat.transform.localScale = Vector3.zero;
+                sweat.DOLocalMove(posVector, sweatyDur);
+                sweat.DOScale(normVector, sweatyDur / 2).OnComplete((() =>
+                {
+                    sweat.DOScale(Vector3.zero, sweatyDur / 2);
+                }));
+            }
+
+            var inVAl = 0f;
+            DOTween.To(() => inVAl, x => x = inVAl, 1, sweatyDur + 0.1f).OnComplete((() =>
+            {
+                foreach (var sweat in sweats)
+                {
+                    sweat.gameObject.SetActive(false);
+                }
+                if(_isSweaty)
+                    SweatyAnimation();
+            }));
+        }
+    }
+    
+    [Button()]
+    public void SweatingAnimationDisable()
+    {
+        _isSweaty = false;
+    }
+    
     public int GetDmg()
     {
-        return unitInfo.dmg * Mathf.CeilToInt(_hp / unitInfo.hp);
+        var a = _hp / unitInfo.hp;
+        var b = Mathf.CeilToInt(a);
+        Debug.Log(b);
+        return unitInfo.dmg * b;
     }
     
     public bool IsThisUnitAlly(CivilisationController controller)
@@ -142,8 +226,8 @@ public class UnitController : MonoBehaviour
     public void SetOwner(Home controller)
     {
         _owner = controller;
-        if (headImage != null) headImage.sprite = controller.owner.civilisationInfo.headSprite;
-        if (horseImage != null) horseImage.sprite = controller.owner.civilisationInfo.animalSprite;
+        if (headImage != null) headImage.sprite = controller.owner.civilisationInfo.HeadSprite;
+        if (horseImage != null) horseImage.sprite = controller.owner.civilisationInfo.AnimalSprite;
         foreach (var unitBackGround in unitBackGrounds)
         {
             unitBackGround.color = controller.owner.civColor;
@@ -176,9 +260,9 @@ public class UnitController : MonoBehaviour
         if(occupiedTile != null)
         {
             occupiedTile.unitOnTile = null;
-            if (occupiedTile.homeOnTile != null)
+            if (occupiedTile.GetHomeOnTile() != null)
             {
-                occupiedTile.homeOnTile.HideOccupyButton();
+                occupiedTile.GetHomeOnTile().HideOccupyButton();
             }
         }
         if(to.isOpened)
@@ -187,9 +271,10 @@ public class UnitController : MonoBehaviour
             gameObject.SetActive(false);
         _moveSeq = DOTween.Sequence();
         aiFromTile = occupiedTile;
-        _moveThisTurn = 0;
-        if (!CheckAbility(UnitInfo.AbilityType.Dash))
-            _attackThisTurn = 0;
+        moveThisTurn = 0; 
+        _attackThisTurn = 0; 
+        if(CheckAbility(UnitInfo.AbilityType.Persist)) 
+            _attackThisTurn = 1;
         var anchorPos = to.GetComponent<RectTransform>().anchoredPosition;
         transform.SetSiblingIndex(transform.parent.childCount);
         var inValX = rectTransform.anchoredPosition.x;
@@ -206,10 +291,10 @@ public class UnitController : MonoBehaviour
         var inVal1 = 0;
         _moveSeq.Join(DOTween.To(() => inVal1, x => inVal1 = x, 1, dur)).OnComplete((() =>
         {
-            if (occupiedTile.homeOnTile != null && (occupiedTile.homeOnTile.owner == null || occupiedTile.homeOnTile.owner != _owner.owner))
+            if (occupiedTile.GetHomeOnTile() != null && (occupiedTile.GetHomeOnTile().owner == null || occupiedTile.GetHomeOnTile().owner != _owner.owner))
             {
                 if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
-                    occupiedTile.homeOnTile.ShowOccupyButton();
+                    occupiedTile.GetHomeOnTile().ShowOccupyButton();
             }
             var addedRad = 0;
             if (occupiedTile.isHasMountain)
@@ -247,7 +332,7 @@ public class UnitController : MonoBehaviour
 
     private void SelectEvent(GameObject pastO, GameObject currO)
     {
-        if (currO != null && currO == gameObject)
+        if (currO != null && currO == gameObject && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
             var ints = new List<int>();
             if(_hp < unitInfo.hp)
@@ -277,7 +362,7 @@ public class UnitController : MonoBehaviour
                 }
             }
 
-            if (_moveThisTurn > 0)
+            if (moveThisTurn > 0)
             {
                 if (currO != null && currO.TryGetComponent(out Tile tile))
                 {
@@ -306,16 +391,19 @@ public class UnitController : MonoBehaviour
             if (isThisTheNearestTile && attackType == AttackType.Melee)
             {
                 _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
-                if(!CheckAbility(UnitInfo.AbilityType.Persist))
-                    _attackThisTurn = 0; 
+                _attackThisTurn = 0; 
+                if(CheckAbility(UnitInfo.AbilityType.Persist)) 
+                    _attackThisTurn = 1;
                 if(!CheckAbility(UnitInfo.AbilityType.Escape))
-                    _moveThisTurn = 0;
+                    moveThisTurn = 0;
             }
             else
             {
                 _attackThisTurn = 0; 
+                if(CheckAbility(UnitInfo.AbilityType.Persist)) 
+                    _attackThisTurn = 1;
                 if(!CheckAbility(UnitInfo.AbilityType.Escape))
-                   _moveThisTurn = 0;
+                   moveThisTurn = 0;
                 
                 var pr = Instantiate(projectilePrefab, transform.parent);
                 pr.transform.position = transform.position;
@@ -330,8 +418,10 @@ public class UnitController : MonoBehaviour
         else
         {
             _attackThisTurn = 0;
+            if(CheckAbility(UnitInfo.AbilityType.Persist)) 
+                _attackThisTurn = 1;
             if(!CheckAbility(UnitInfo.AbilityType.Escape))
-                _moveThisTurn = 0;
+                moveThisTurn = 0;
             if (attackType == AttackType.Melee)
             {
                 _attSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
@@ -463,7 +553,7 @@ public class UnitController : MonoBehaviour
         }
         foreach (var closeTile in closeTilesForMove)
         {
-            if(_moveThisTurn <= 0) break;
+            if(moveThisTurn <= 0) break;
             if(closeTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                 continue;
             
@@ -477,7 +567,7 @@ public class UnitController : MonoBehaviour
             if(_attackThisTurn <= 0) break;
             if(tile.unitOnTile != null && tile.unitOnTile.IsThisUnitAlly(_owner.owner))
                 continue;
-            tile.ShowRedTarget();
+            tile.ShowRedTarget(this);
         }
     }
 
@@ -490,7 +580,8 @@ public class UnitController : MonoBehaviour
     {
         if(occupiedTile.unitOnTile == this)
             occupiedTile.unitOnTile = null;
-        _owner.RemoveUnit(this);
+        if (_owner != null) 
+            _owner.RemoveUnit(this);
         Destroy(gameObject);
     }
 

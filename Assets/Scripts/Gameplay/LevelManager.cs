@@ -11,14 +11,16 @@ public class LevelManager : SingletonPersistent<LevelManager>
     public Action OnTurnBegin;
     public Action OnTurnEnd;
     public int currentTurn = 0;
-    public int currentIncome = 2;
     
     public GameBoardWindow gameBoardWindow;
     public GameplayWindow gameplayWindow;
-    [SerializeField]private GameObject _selectedObject;
     public string currentName;
     
     public List<Sprite> waterSprites;
+    
+    [SerializeField] private GameObject selectedObject;
+    
+    private List<CivilisationController> _civilisationControllers;
 
     public void SelectObject(GameObject objectForSelect)
     {
@@ -26,13 +28,13 @@ public class LevelManager : SingletonPersistent<LevelManager>
             gameplayWindow.SetTileName(currentName);
         if (objectForSelect == null)
             gameplayWindow.SetTileName("");
-        OnObjectSelect?.Invoke(_selectedObject, objectForSelect);
-        _selectedObject = objectForSelect;
+        OnObjectSelect?.Invoke(selectedObject, objectForSelect);
+        selectedObject = objectForSelect;
     }
 
     public GameObject GetSelectedObject()
     {
-        return _selectedObject;
+        return selectedObject;
     }
 
     public void DestroyAllCivilisation()
@@ -46,15 +48,24 @@ public class LevelManager : SingletonPersistent<LevelManager>
         }
     }
 
+    public void AddCiv(CivilisationController civ)
+    {
+        _civilisationControllers ??= new List<CivilisationController>();
+        _civilisationControllers.Add(civ);
+    }
+    
+    public void RemoveCiv(CivilisationController civ)
+    {
+        _civilisationControllers?.Remove(civ);
+    }
+    
     public void CheckWin()
     {
-        var civs = transform.GetComponentsInChildren<CivilisationController>();
-        if(civs.Length == 0)
+        if(_civilisationControllers.Count == 0)
             return;
-        var winCiv = civs.First();
-        if (civs.Length == 1)
+        if (_civilisationControllers.Count == 1)
         {
-            if (winCiv.civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
+            if (_civilisationControllers.First().civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
             {
                 var a = WindowsManager.Instance.CreateWindow<GameOverWindow>("GameOverWindow");
                 a.ShowWindow();

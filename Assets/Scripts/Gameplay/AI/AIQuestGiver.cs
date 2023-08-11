@@ -109,7 +109,7 @@ public class AIQuestGiver : MonoBehaviour
                     homes.Add(unit.GetOwner());
                     if (homeUnits.Find(task.UnitIsOnTask))
                         continue;
-                    var unit1 = units.Find(unit2 => unit2.occupiedTile.homeOnTile != null && unit2.occupiedTile.homeOnTile == unit2.GetOwner()); 
+                    var unit1 = units.Find(unit2 => unit2.occupiedTile.GetHomeOnTile() != null && unit2.occupiedTile.GetHomeOnTile() == unit2.GetOwner()); 
                     rightUnits.Add(unit1);
                 }
                 
@@ -119,7 +119,7 @@ public class AIQuestGiver : MonoBehaviour
                 /*foreach (var unit in units)
                 {
                     var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, Mathf.Max(unit.GetUnitInfo().rad, unit.GetUnitInfo().moveRad));
-                    if (tiles.Any(tile => tile.unitOnTile == null || tile.homeOnTile == null))
+                    if (tiles.Any(tile => tile.unitOnTile == null || tile._homeOnTile == null))
                     {
                         rightUnits.Add(unit);
                     }
@@ -141,13 +141,13 @@ public class AIQuestGiver : MonoBehaviour
             case BaseTask.TaskType.Capture:
                 foreach (var unit in units)
                 {
-                    if (unit.occupiedTile.homeOnTile != null && unit.occupiedTile.homeOnTile.owner != unit.GetOwner().owner)
+                    if (unit.occupiedTile.GetHomeOnTile() != null && unit.occupiedTile.GetHomeOnTile().owner != unit.GetOwner().owner)
                     {
                         rightUnits.Add(unit);
                         continue;
                     }
                     var closeTile = board.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().moveRad);
-                    if (closeTile.Any(tile => tile.homeOnTile != null && tile.homeOnTile.owner != unit.GetOwner().owner))
+                    if (closeTile.Any(tile => tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner))
                     {
                         rightUnits.Add(unit);
                         continue;

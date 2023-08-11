@@ -91,7 +91,7 @@ public class ExploringTask : BaseTask
                     return true;
                 }
 
-                if (tile.homeOnTile != null && tile.homeOnTile.owner != unit.GetOwner().owner)
+                if (tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner)
                 {
                     return true;
                 }

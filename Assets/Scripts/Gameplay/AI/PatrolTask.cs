@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using Gameplay.SO;
+using UnityEngine;
 
 public class PatrolTask : BaseTask
 {
@@ -52,8 +53,8 @@ public class PatrolTask : BaseTask
         var tile = unit.GetOwner().homeTile;
         var unitTile = unit.occupiedTile;
         var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(tile, 2);
-        var unitHasMountTech = tile.homeOnTile.owner.technologies.Contains(TechInfo.Technology.Mountain);
- 
+        var unitHasMountTech = tile.GetHomeOnTile().owner.technologies.Contains(TechInfo.Technology.Mountain);
+        
         closeTile.RemoveAll(tile => tile == null);
         closeTile.RemoveAll(tile => !tile.IsTileFree());
         closeTile.RemoveAll(tile => tile.tileType == Tile.TileType.Water);
@@ -61,15 +62,22 @@ public class PatrolTask : BaseTask
         if (closeTile.Count == 0)
             return tile;
         
+        var closeUnitTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(unitTile, 1);
+        var randTile = closeUnitTile[Random.Range(0, closeUnitTile.Count)];
         
-        var index = closeTile.IndexOf(closeTile.Find(tile1 => tile1.pos == unitTile.pos));
-
-        if (index >= closeTile.Count)
+        var i = 0;
+        while (!closeTile.Contains(randTile))
         {
-            return closeTile[0];
+            i++;
+            randTile = closeUnitTile[Random.Range(0, closeUnitTile.Count)];
+            if (i > 100)
+            {
+                randTile = unitTile;
+                break;
+            }
         }
-
-        return closeTile[index + 1];
+        
+        return randTile;
     }
     
     private bool CheckEnemyWithUnit()
@@ -84,7 +92,7 @@ public class PatrolTask : BaseTask
                     return true;
                 }
 
-                if (tile.homeOnTile != null && tile.homeOnTile.owner != unit.GetOwner().owner)
+                if (tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner)
                 {
                     return true;
                 }

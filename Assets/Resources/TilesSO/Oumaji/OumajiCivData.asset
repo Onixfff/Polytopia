@@ -37,4 +37,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aa3230d2e94c83042881b34f157b2778, type: 2}
   - {fileID: 11400000, guid: f59e0b3e53a7e334297dfcde7e46bd71, type: 2}
   shipUnitInfo: []
+  startUnitIndex: 3
   techInfo: {fileID: 11400000, guid: 4a926c8bd63677a46857beec3b37fb0d, type: 2}

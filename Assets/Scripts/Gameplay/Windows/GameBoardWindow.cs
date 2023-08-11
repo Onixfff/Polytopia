@@ -10,9 +10,8 @@ public class GameBoardWindow : BaseWindow
 {
     public CivilisationController playerCiv;
     [SerializeField] private RectTransform tileParent;
-    [SerializeField] private RectTransform environmentParent;
     [SerializeField] private RectTransform unitParent;
-    [SerializeField] private RectTransform fogParent;
+    [SerializeField] private Transform uiParent;
 
     [SerializeField] private List<Home> generatedVillage;
     [SerializeField] private RectTransform tilePrefab;
@@ -26,6 +25,11 @@ public class GameBoardWindow : BaseWindow
 
     private Dictionary<Vector2Int ,Tile> _generatedTiles;
     private Sequence _generateSeq;
+
+    public Transform GetUIParent()
+    {
+        return uiParent;
+    }
     
     public void ShowAllOre()
     {
@@ -147,26 +151,26 @@ public class GameBoardWindow : BaseWindow
         foreach (var vector2Int in _generatedTiles.Keys.ToList())
         {
             var tile = _generatedTiles[vector2Int];
-            if(tile.homeOnTile != null)
+            if(tile.GetHomeOnTile() != null)
                 continue;
             var a = Random.Range(0, 9);
             switch (a)
             {
                 case 0: 
-                    tile.SetPumpkinSprite(defaultCiv.civilisationInfo.fruitSprite, defaultCiv.civilisationInfo.fruitName);
+                    tile.SetPumpkinSprite(defaultCiv.civilisationInfo.FruitSprite, defaultCiv.civilisationInfo.fruitName);
                     break;
                 case 1:
-                    tile.SetTreeSprite(defaultCiv.civilisationInfo.treeSprite, defaultCiv.civilisationInfo.treeName);
+                    tile.SetTreeSprite(defaultCiv.civilisationInfo.TreeSprite, defaultCiv.civilisationInfo.treeName);
                     break;
                 case 3:
-                    tile.SetTreeSprite(defaultCiv.civilisationInfo.treeSprite, defaultCiv.civilisationInfo.treeName);
-                    tile.SetAnimalSprite(defaultCiv.civilisationInfo.animalSprite, defaultCiv.civilisationInfo.animalName);
+                    tile.SetTreeSprite(defaultCiv.civilisationInfo.TreeSprite, defaultCiv.civilisationInfo.treeName);
+                    tile.SetAnimalSprite(defaultCiv.civilisationInfo.AnimalSprite, defaultCiv.civilisationInfo.animalName);
                     break;
                 case 4:
-                    tile.SetAnimalSprite(defaultCiv.civilisationInfo.animalSprite, defaultCiv.civilisationInfo.animalName);
+                    tile.SetAnimalSprite(defaultCiv.civilisationInfo.AnimalSprite, defaultCiv.civilisationInfo.animalName);
                     break;
                 case 5:
-                    tile.SetMountainSprite(defaultCiv.civilisationInfo.mountainSprite, defaultCiv.civilisationInfo.mountainName);
+                    tile.SetMountainSprite(defaultCiv.civilisationInfo.MountainSprite, defaultCiv.civilisationInfo.mountainName);
                     break;
                 default:
                     tile.SetTreeSprite(null, defaultCiv.civilisationInfo.groundName);
@@ -183,7 +187,7 @@ public class GameBoardWindow : BaseWindow
         /*foreach (var vector2Int in _generatedTiles.Keys.ToList())
         {
             var tile = _generatedTiles[vector2Int];
-            if(!tile.IsTileFree() || tile.homeOnTile != null)
+            if(!tile.IsTileFree() || tile._homeOnTile != null)
                 continue;
             
             var a = Random.Range(0, countWaterZone);
@@ -211,10 +215,12 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void CreateCivilisations()
     {
+        
         var randomCiv = Random.Range(0, gameInfo.playerCivilisationInfoLists.Count);
         var listCiv = new List<int> { randomCiv };
-        var civilisation = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
-        playerCiv = civilisation.GetComponent<CivilisationController>();
+        var civilisationController = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
+        playerCiv = civilisationController;
+        LevelManager.Instance.AddCiv(playerCiv);
         playerCiv.Init(gameInfo.playerCivilisationInfoLists[randomCiv]);
         AIController.Instance.countAi = gameInfo.playersCount - 1;
         
@@ -229,7 +235,8 @@ public class GameBoardWindow : BaseWindow
                     break;
             }
             var civilisation1 = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
-            civilisation1.GetComponent<CivilisationController>().AIInit(gameInfo.civilisationInfoLists[randC]);
+            LevelManager.Instance.AddCiv(civilisation1);
+            civilisation1.AIInit(gameInfo.civilisationInfoLists[randC]);
             
             var ai = Instantiate(AIController.Instance.aiPrefab, civilisation1.transform);
             ai.aiNumber = i;
@@ -253,9 +260,9 @@ public class GameBoardWindow : BaseWindow
                     continue;
                 if(randomTile.unitOnTile != null)
                     continue;
-                if(GetCloseTile(randomTile, 1).Find(tile => tile.homeOnTile))
+                if(GetCloseTile(randomTile, 1).Find(tile => tile.GetOwner()))
                     continue;
-                if(randomTile.homeOnTile != null)
+                if(randomTile.GetOwner() != null)
                     continue;
 
                 break;

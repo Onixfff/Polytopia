@@ -14,7 +14,7 @@ public class SendTroopsTask : BaseTask
             var owner = unit.GetOwner().owner;
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, Mathf.Max(unit.GetUnitInfo().rad, unit.GetUnitInfo().moveRad));
             
-            if (tiles.Any(tile => (tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner) || (tile.homeOnTile != null && tile.homeOnTile.owner != null && tile.homeOnTile.owner != owner)))
+            if (tiles.Any(tile => (tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner) || (tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != null && tile.GetHomeOnTile().owner != owner)))
             {
                 taskPriority = 3;
             }

@@ -109,19 +109,19 @@ public class AI : MonoBehaviour
 
         tileForMove.Remove(unit.aiFromTile);
 
-        if (unit.occupiedTile.homeOnTile != null && unit.occupiedTile.homeOnTile.owner != unit.GetOwner().owner)
+        if (unit.occupiedTile.GetHomeOnTile() != null && unit.occupiedTile.GetHomeOnTile().owner != unit.GetOwner().owner)
         {
             var inVal = 0f;
             _unitsActionSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.1f));
-            OccupyVillage(unit.occupiedTile.homeOnTile);
+            OccupyVillage(unit.occupiedTile.GetHomeOnTile());
             return _unitsActionSeq;
         }
         
         if (tileForMove.Count > 0)
         {
-            var tileWithHome = tileForMove.Find(tile => tile.homeOnTile);
+            var tileWithHome = tileForMove.Find(tile => tile.GetHomeOnTile());
 
-            if (tileWithHome != null && tileWithHome.homeOnTile.owner != unit.GetOwner().owner)
+            if (tileWithHome != null && tileWithHome.GetHomeOnTile().owner != unit.GetOwner().owner)
             {
                 if(!tileWithHome.IsTileFree() && tileWithHome.unitOnTile.GetOwner().owner != unit.GetOwner().owner)
                 {
@@ -135,9 +135,9 @@ public class AI : MonoBehaviour
                     if (unit.occupiedTile.isOpened || tileWithHome.isOpened)
                         dur = 0.2f;
                     _unitsActionSeq.Append(unit.MoveToTile(tileWithHome, dur));
-                    if (unit.occupiedTile.homeOnTile != null && unit.occupiedTile.homeOnTile.owner != unit.GetOwner().owner)
+                    if (unit.occupiedTile.GetHomeOnTile() != null && unit.occupiedTile.GetHomeOnTile().owner != unit.GetOwner().owner)
                     {
-                        OccupyVillage(unit.occupiedTile.homeOnTile);
+                        OccupyVillage(unit.occupiedTile.GetHomeOnTile());
                     }
                  
                     return _unitsActionSeq;
@@ -244,7 +244,7 @@ public class AI : MonoBehaviour
 
         if (unit.aiHomeExploring.homeTile.pos == unit.occupiedTile.pos)
         {
-            OccupyVillage(unit.occupiedTile.homeOnTile);
+            OccupyVillage(unit.occupiedTile._homeOnTile);
             unit.aiHomeExploring.exploringUnit = null;
             unit.aiHomeExploring = null;
             return unit.occupiedTile;

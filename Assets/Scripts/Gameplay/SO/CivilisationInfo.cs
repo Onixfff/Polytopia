@@ -18,54 +18,55 @@ public class CivilisationInfo : BaseCivilisationInfo
     public string civilisationName => civilName;
     
     [SerializeField] private Color civilColor;
-    public Color civilisationColor => civilColor;
+    public Color CivilisationColor => civilColor;
     
     [SerializeField] private Sprite head;
-    public Sprite headSprite => head;
+    public Sprite HeadSprite => head;
     
     [SerializeField] private Sprite ground;
-    public Sprite groundSprite => ground;
+    public Sprite GroundSprite => ground;
     public string groundName => GroundName;
     
     [SerializeField] private Sprite fruit;
-    public Sprite fruitSprite => fruit;
+    public Sprite FruitSprite => fruit;
     public string fruitName => FruitName;
     
     [SerializeField] private Sprite tree;
-    public Sprite treeSprite => tree;
+    public Sprite TreeSprite => tree;
     public string treeName => TreeName;
 
     [SerializeField] private Sprite animal;
-    public Sprite animalSprite => animal;
+    public Sprite AnimalSprite => animal;
     public string animalName => AnimalName;
     
     [SerializeField] private Sprite mountain;
-    public Sprite mountainSprite => mountain;
+    public Sprite MountainSprite => mountain;
     public string mountainName => MountainName;
     
     [SerializeField] private Sprite mining;
-    public Sprite miningSprite => mining;
+    public Sprite MiningSprite => mining;
     
     [SerializeField] private Sprite church;
-    public Sprite churchSprite => church;
-    
+    public Sprite ChurchSprite => church;
     
     [SerializeField] private Sprite port;
-    public Sprite portSprite => port;
+    public Sprite PortSprite => port;
     
     [SerializeField] private Sprite farm;
-    public Sprite farmSprite => farm;
+    public Sprite FarmSprite => farm;
 
     [SerializeField] private HomeInfo homeInfo;
-    public HomeInfo home => homeInfo;
-    
+    public HomeInfo Home => homeInfo;
     
     [SerializeField] private List<UnitInfo> unitInfo;
-    public List<UnitInfo> units => unitInfo;
+    public List<UnitInfo> Units => unitInfo;
     
     [SerializeField] private List<UnitInfo> shipUnitInfo;
-    public List<UnitInfo> ships => shipUnitInfo;
+    public List<UnitInfo> Ships => shipUnitInfo;
     
+    [SerializeField] private int startUnitIndex;
+    public int StartUnitIndex => startUnitIndex;
+
     [SerializeField] private TechInfo techInfo;
     public TechInfo technology => techInfo;
 }

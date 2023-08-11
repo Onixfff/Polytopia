@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Gameplay.SO;
-using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
+using Sequence = DG.Tweening.Sequence;
 
 public class Tile : MonoBehaviour
 {
@@ -19,7 +19,6 @@ public class Tile : MonoBehaviour
     public bool isSelected = false;
     public bool isHasMountain = false;
     public TileType tileType = TileType.Ground;
-    public Home homeOnTile;
 
     public bool isOpened = false;
     public bool isExplored = false;
@@ -51,19 +50,24 @@ public class Tile : MonoBehaviour
 
     private string _tileName = "Ground";
     private bool _isHomeOnTile = false;
+    private Home _homeOnTile;
     private Home _owner;
     private List<GameplayWindow.OpenedTechType> _techTypes;
-    private Sequence _timeTargetSeq;
+    private Tween _timeTargetSeq;
 
     public Home GetOwner()
     {
         return _owner;
     }
     
+    public Home GetHomeOnTile()
+    {
+        return _homeOnTile;
+    }
+    
     public void SetOwner(Home home)
     {
         _owner = home;
-        homeOnTile = _owner;
     }
     
     public void ChangeTileVisual(Home home)
@@ -73,11 +77,11 @@ public class Tile : MonoBehaviour
             var civilisationInfo = home.owner.civilisationInfo;
             if (tileType == TileType.Ground)
             {
-                if (groundImage != null) groundImage.sprite = civilisationInfo.groundSprite;
-                if (animalTileImage != null) animalTileImage.sprite = civilisationInfo.animalSprite;
-                if (treeTileImage != null) treeTileImage.sprite = civilisationInfo.treeSprite;
-                if (fruitTileImage != null) fruitTileImage.sprite = civilisationInfo.fruitSprite;
-                if (mountainTileImage != null) mountainTileImage.sprite = civilisationInfo.mountainSprite;
+                if (groundImage != null) groundImage.sprite = civilisationInfo.GroundSprite;
+                if (animalTileImage != null) animalTileImage.sprite = civilisationInfo.AnimalSprite;
+                if (treeTileImage != null) treeTileImage.sprite = civilisationInfo.TreeSprite;
+                if (fruitTileImage != null) fruitTileImage.sprite = civilisationInfo.FruitSprite;
+                if (mountainTileImage != null) mountainTileImage.sprite = civilisationInfo.MountainSprite;
             }
         }
     }
@@ -104,14 +108,13 @@ public class Tile : MonoBehaviour
         groundImage.enabled = true;
         if(isHasMountain && mountainTileImage != null) 
             mountainTileImage.gameObject.SetActive(true);
-        if(homeOnTile != null)
-            homeOnTile.gameObject.SetActive(true);
+        if(_homeOnTile != null)
+            _homeOnTile.gameObject.SetActive(true);
         if(unitOnTile != null)
             unitOnTile.gameObject.SetActive(true);
         ChangeHomeBoards();
     }
     
-    [Button()]
     public void ChangeHomeBoards()
     {
         if(_owner == null || _owner.owner == null)
@@ -126,25 +129,37 @@ public class Tile : MonoBehaviour
         var UpLeft = board.GetTile(new Vector2Int(pos.x - 1, pos.y));
         var DownRight = board.GetTile(new Vector2Int(pos.x, pos.y + 1));
         var UpRight = board.GetTile(new Vector2Int(pos.x, pos.y - 1));
-        if (DownLeft == null || DownLeft._owner == null)
+        if (DownLeft == null || DownLeft._owner == null || DownLeft._owner.owner == null || (_owner != null && _owner.owner != null && DownLeft._owner.owner != _owner.owner))
         {
-            if(isOpened)
+            if (isOpened)
+            {
                 downLeft.SetActive(true);
+                downLeft.GetComponent<Image>().color = _owner.owner.civilisationInfo.CivilisationColor;
+            }
         }
-        if (UpLeft == null || UpLeft._owner == null)
+        if (UpLeft == null || UpLeft._owner == null || UpLeft._owner.owner == null || (_owner != null && _owner.owner != null && UpLeft._owner.owner != _owner.owner))
         {
-            if(isOpened)
+            if (isOpened)
+            {
                 upRight.SetActive(true);
+                upRight.GetComponent<Image>().color = _owner.owner.civilisationInfo.CivilisationColor;
+            }
         }
-        if (DownRight == null || DownRight._owner == null)
+        if (DownRight == null || DownRight._owner == null || DownRight._owner.owner == null || (_owner != null && _owner.owner != null && DownRight._owner.owner != _owner.owner))
         {
-            if(isOpened) 
+            if (isOpened)
+            {
                 downRight.SetActive(true);
+                downRight.GetComponent<Image>().color = _owner.owner.civilisationInfo.CivilisationColor;
+            }
         }
-        if (UpRight == null || UpRight._owner == null)
+        if (UpRight == null || UpRight._owner == null || UpRight._owner.owner == null || (_owner != null && _owner.owner != null && UpRight._owner.owner != _owner.owner))
         {
-            if(isOpened) 
+            if (isOpened)
+            {
                 upLeft.SetActive(true);
+                upLeft.GetComponent<Image>().color = _owner.owner.civilisationInfo.CivilisationColor;
+            }
         }
     }
     
@@ -204,17 +219,25 @@ public class Tile : MonoBehaviour
         blueTargetImage.gameObject.SetActive(true);
     }
 
-    public void ShowRedTarget()
+    public void ShowRedTarget(UnitController unit)
     {
         if(unitOnTile == null || fog.activeSelf) 
             return;
         redTargetImage.gameObject.SetActive(true);
+        if (unitOnTile.CheckForKill(unit.GetDmg()))
+        {
+            unitOnTile.SweatingAnimationEnable();
+        }
     }
     
     public void HideTargets()
     {
         blueTargetImage.gameObject.SetActive(false);
         redTargetImage.gameObject.SetActive(false);
+        if (unitOnTile != null)
+        {
+            unitOnTile.SweatingAnimationDisable();
+        }
     }
     
     public bool IsTileFree()
@@ -252,7 +275,7 @@ public class Tile : MonoBehaviour
 
     public void BuildHome(Home home)
     {
-        homeOnTile = home;
+        _homeOnTile = home;
         SetOwner(home);
         ChangeTileVisual(home);
         
@@ -262,7 +285,7 @@ public class Tile : MonoBehaviour
         if (animalTileImage != null) Destroy(animalTileImage.gameObject);
         if (mountainTileImage != null) Destroy(mountainTileImage.gameObject);
         if (_owner.owner != null) 
-            groundImage.sprite = _owner.owner.civilisationInfo.groundSprite;
+            groundImage.sprite = _owner.owner.civilisationInfo.GroundSprite;
         tileType = TileType.Ground;
         _isHomeOnTile = true;
         _tileName = "Home";
@@ -270,13 +293,12 @@ public class Tile : MonoBehaviour
 
     public void HideTargetsTime()
     {
-        _timeTargetSeq = DOTween.Sequence();
         var inValY = 0;
-        _timeTargetSeq.Append(DOTween.To(() => inValY, x => inValY = x, 0, 0.01f).OnComplete((() =>
+        _timeTargetSeq = DOTween.To(() => inValY, x => inValY = x, 0, 0.01f).OnComplete((() =>
         {
             blueTargetImage.gameObject.SetActive(false);
             redTargetImage.gameObject.SetActive(false);   
-        })));
+        }));
     }
     
     private void Start()
@@ -380,7 +402,7 @@ public class Tile : MonoBehaviour
                     EconomicManager.Instance.BuySomething(10);
                     if (animalTileImage != null) Destroy(animalTileImage.gameObject);
                     if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.churchSprite;
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.ChurchSprite;
                     freeTileImage.enabled = true;
                     freeTileImage.gameObject.SetActive(true);
                     _tileName = "Ground";
@@ -395,7 +417,7 @@ public class Tile : MonoBehaviour
                         return;
                     EconomicManager.Instance.BuySomething(10);
                     if (fishTileImage != null) Destroy(fishTileImage.gameObject);
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.portSprite;
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.PortSprite;
                     freeTileImage.enabled = true;
                     freeTileImage.gameObject.SetActive(true);
                     _tileName = "Port";
@@ -410,7 +432,7 @@ public class Tile : MonoBehaviour
                     EconomicManager.Instance.BuySomething(10);
                     if (animalTileImage != null) Destroy(animalTileImage.gameObject);
                     if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.farmSprite;
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.FarmSprite;
                     freeTileImage.enabled = true;
                     freeTileImage.gameObject.SetActive(true);
                     _tileName = "Ground";
@@ -425,7 +447,7 @@ public class Tile : MonoBehaviour
                     EconomicManager.Instance.BuySomething(5);
                     if (animalTileImage != null) Destroy(animalTileImage.gameObject);
                     if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    miningImage.sprite = _owner.owner.civilisationInfo.miningSprite;
+                    miningImage.sprite = _owner.owner.civilisationInfo.MiningSprite;
                     _tileName = "Ground";
                     _owner.GetFood(2);
                 }
@@ -438,14 +460,14 @@ public class Tile : MonoBehaviour
     {
         var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(this, waterRad);
         
-        if (homeOnTile != null)
+        if (_homeOnTile != null)
             return;
         
         tileType = TileType.Water;
         
         foreach (var tile in tiles)
         {
-            if(tile.homeOnTile == null)
+            if(tile._owner == null)
                 tile.tileType = TileType.Water;
         }
 
@@ -453,7 +475,7 @@ public class Tile : MonoBehaviour
         
         foreach (var tile in tiles)
         {
-            if(tile.homeOnTile == null)
+            if(tile._owner == null)
                 tile.SetWaterTile();
         }
     }

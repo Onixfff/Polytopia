@@ -23,7 +23,8 @@ namespace Gameplay.SO
             Diplomacy,
             Forge,
             Philosophy,
-            Mathematics
+            Mathematics,
+            Meditation
         }
 
         [SerializeField] private List<Technology> technologiesList;

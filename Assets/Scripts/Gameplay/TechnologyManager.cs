@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Gameplay.SO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,46 +35,35 @@ public class TechnologyManager : MonoBehaviour
     [SerializeField] private Button archeryButton;
     [SerializeField] private Button spiritualismButton;
     
-    [SerializeField] private int priseFirstTier = 5;
-    [SerializeField] private int priseTwoTier = 10;
-    [SerializeField] private int priseThreeTier = 15;
+    [SerializeField] private int priceFirstTier = 5;
+    [SerializeField] private int priceTwoTier = 10;
+    [SerializeField] private int priceThreeTier = 15;
 
-
-    private void Awake()
+    private void Start()
     {
+        
         #region Rider
         ridingButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priseFirstTier))
+            if(TryBuyTech(priceFirstTier))
             {
-                RidingTech();    
+                UnlockButtons(ridingButton, new List<Button>(){freeSpiritButton, roadsButton});
+                RidingTech();
             }
         });
-        /*roadsButton.onClick.AddListener(() =>
-        {
-            if(TryBuyTech(priseTwoTier))
-            {
-                RoadsTech();    
-            }
-        });*/
-        /*tradeButton.onClick.AddListener(() =>
-        {
-            if(TryBuyTech(priseTwoTier))
-            {
-                RoadsTech();    
-            }
-        });*/
         freeSpiritButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priseTwoTier))
+            if(TryBuyTech(priceTwoTier))
             {
-                FreeSpiritTech();    
+                UnlockButtons(freeSpiritButton, new List<Button>(){chivalryButton});
+                FreeSpiritTech();
             }
         });
         chivalryButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priseThreeTier))
+            if(TryBuyTech(priceThreeTier))
             {
+                UnlockButtons(chivalryButton);
                 ChivalryTech();    
             }
         });
@@ -81,29 +71,33 @@ public class TechnologyManager : MonoBehaviour
         #region Gathering
         gatheringButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priseFirstTier))
+            if(TryBuyTech(priceFirstTier))
             {
+                UnlockButtons(gatheringButton, new List<Button>(){farmingButton, strategyButton});
                 GatheringTech();    
             }
         });
         farmingButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priseTwoTier))
+            if(TryBuyTech(priceTwoTier))
             {
+                UnlockButtons(farmingButton, new List<Button>(){constructButton});
                 FarmingTech();    
             }
         });
         strategyButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseTwoTier))
+            if(TryBuyTech(priceTwoTier))
             {
+                UnlockButtons(strategyButton, new List<Button>(){diplomacyButton});
                 StrategyTech();
             }
         }));
         diplomacyButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseThreeTier))
+            if(TryBuyTech(priceThreeTier))
             {
+                UnlockButtons(diplomacyButton);
                 DiplomacyTech();
             }
         }));
@@ -112,29 +106,41 @@ public class TechnologyManager : MonoBehaviour
         #region Mountain
         mountainButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseFirstTier))
+            if(TryBuyTech(priceFirstTier))
             {
+                UnlockButtons(mountainButton, new List<Button>(){miningButton, meditationButton});
                 MountainTech();
             }
         }));
         miningButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseTwoTier))
+            if(TryBuyTech(priceTwoTier))
             {
+                UnlockButtons(miningButton, new List<Button>(){forgeButton});
                 MiningTech();
             }
         }));
         forgeButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseThreeTier))
+            if(TryBuyTech(priceThreeTier))
             {
+                UnlockButtons(forgeButton);
                 ForgeTech();
+            }
+        }));
+        meditationButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priceThreeTier))
+            {
+                UnlockButtons(meditationButton, new List<Button>(){philosophyButton});
+                MeditationTech();
             }
         }));
         philosophyButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseThreeTier))
+            if(TryBuyTech(priceThreeTier))
             {
+                UnlockButtons(philosophyButton);
                 PhilosophyTech();
             }
         }));
@@ -142,15 +148,17 @@ public class TechnologyManager : MonoBehaviour
         #region Fish
         fishingButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseFirstTier))
+            if(TryBuyTech(priceFirstTier))
             {
+                UnlockButtons(fishingButton, new List<Button>(){sailingButton, whalingButton});
                 FishingTech();
             }
         }));
         sailingButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseTwoTier))
+            if(TryBuyTech(priceTwoTier))
             {
+                UnlockButtons(sailingButton, new List<Button>(){navigationButton});
                 SailingTech();
             }
         }));
@@ -158,26 +166,42 @@ public class TechnologyManager : MonoBehaviour
         #region Hunt
         huntingButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseFirstTier))
+            if(TryBuyTech(priceFirstTier))
             {
+                UnlockButtons(huntingButton, new List<Button>(){archeryButton, forestryButton});
                 HuntingTech();
             }
         }));
         archeryButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseTwoTier))
+            if(TryBuyTech(priceTwoTier))
             {
+                UnlockButtons(archeryButton, new List<Button>(){mathematicsButton});
                 ArcheryTech();
             }
         }));
         mathematicsButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priseThreeTier))
+            if(TryBuyTech(priceThreeTier))
             {
+                UnlockButtons(mathematicsButton);
                 MathematicsTech();
             }
         }));
         #endregion
+    }
+
+    private void UnlockButtons(Button thisButton, List<Button> buttons = null)
+    {
+        thisButton.GetComponent<TechIcon>().BuyTech();
+        if (buttons == null)
+            return;
+        
+        foreach (var button in buttons)
+        {
+            var techIcon = button.GetComponent<TechIcon>();
+            techIcon.UnlockTech();
+        }
     }
 
     private bool TryBuyTech(int price)
@@ -193,28 +217,20 @@ public class TechnologyManager : MonoBehaviour
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Rider);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(3);
-        ridingButton.image.color = Color.green;
-        Destroy(ridingButton);
     }
     /*private void RoadsTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Rider);
-        ridingButton.image.color = Color.green;
-        Destroy(ridingButton);
     }*/
     private void FreeSpiritTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.FreeSpirit);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(3);
-        freeSpiritButton.image.color = Color.green;
-        Destroy(freeSpiritButton);
     }
     private void ChivalryTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Chivalry);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(8);
-        chivalryButton.image.color = Color.green;
-        Destroy(chivalryButton);
     }
     
     #endregion
@@ -223,29 +239,21 @@ public class TechnologyManager : MonoBehaviour
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Gather);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(1);
-        gatheringButton.image.color = Color.green;
-        Destroy(gatheringButton);
     }
     private void FarmingTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Farming);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(5);
-        farmingButton.image.color = Color.green;
-        Destroy(farmingButton);
     }
     private void StrategyTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Strategy);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(2);
-        strategyButton.image.color = Color.green;
-        Destroy(strategyButton);
     }
     private void DiplomacyTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Diplomacy);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(4);
-        diplomacyButton.image.color = Color.green;
-        Destroy(diplomacyButton);
     }
 
     #endregion
@@ -254,29 +262,26 @@ public class TechnologyManager : MonoBehaviour
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Mountain);
         LevelManager.Instance.gameBoardWindow.ShowAllOre();
-        mountainButton.image.color = Color.green;
-        Destroy(mountainButton);
     }
     private void MiningTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Mining);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(6);
-        miningButton.image.color = Color.green;
-        Destroy(miningButton);
     }
     private void ForgeTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Forge);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(6);
-        forgeButton.image.color = Color.green;
-        Destroy(forgeButton);
+    }
+    private void MeditationTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Meditation);
+        //LevelManager.Instance.gameplayWindow.UnlockTileTech(7);
     }
     private void PhilosophyTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Philosophy);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(5);
-        philosophyButton.image.color = Color.green;
-        Destroy(philosophyButton);
     }
     #endregion
     #region Fish
@@ -284,15 +289,11 @@ public class TechnologyManager : MonoBehaviour
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Fish);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(2);
-        fishingButton.image.color = Color.green;
-        Destroy(fishingButton);
     }
     private void SailingTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Sailing);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(4);
-        sailingButton.image.color = Color.green;
-        Destroy(sailingButton);
     }
     #endregion
     #region Hunt
@@ -300,22 +301,16 @@ public class TechnologyManager : MonoBehaviour
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Hunt);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(1);
-        huntingButton.image.color = Color.green;
-        Destroy(huntingButton);
     }
     private void ArcheryTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Archery);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(1);
-        archeryButton.image.color = Color.green;
-        Destroy(archeryButton);
     }
     private void MathematicsTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Mathematics);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(7);
-        mathematicsButton.image.color = Color.green;
-        Destroy(mathematicsButton);
     }
     #endregion
 }

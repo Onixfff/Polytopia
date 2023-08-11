@@ -51,9 +51,9 @@ public class CaptureTask : BaseTask
     private Tween CaptureCloseHome(UnitController unit)
     {
         _captureSeq = DOTween.Sequence();
-        if (unit.occupiedTile.homeOnTile != null && unit.occupiedTile.homeOnTile.owner != unit.GetOwner().owner)
+        if (unit.occupiedTile.GetHomeOnTile() != null && unit.occupiedTile.GetHomeOnTile().owner != unit.GetOwner().owner)
         {
-            unit.occupiedTile.homeOnTile.OccupyHome();
+            unit.occupiedTile.GetHomeOnTile().OccupyHome();
             _isHomeCapture = true;
             return _captureSeq;
         }
@@ -77,20 +77,20 @@ public class CaptureTask : BaseTask
         closeTile.RemoveAll(tile => tile == null);
         closeTile.RemoveAll(tile => !tile.IsTileFree());
         
-        var home = closeTile.FirstOrDefault(tile => tile.homeOnTile != null && tile.homeOnTile.owner != unit.GetOwner().owner);
+        var home = closeTile.FirstOrDefault(tile => tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner);
         return home;
     }
     
     private bool CheckInterestingPlace(UnitController unit)
     {
         var owner = unit.GetOwner().owner;
-        if (unit.occupiedTile.homeOnTile != null && unit.occupiedTile.homeOnTile.owner != owner)
+        if (unit.occupiedTile.GetHomeOnTile() != null && unit.occupiedTile.GetHomeOnTile().owner != owner)
             return true;
         
         var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().moveRad);
         foreach (var tile in tiles)
         {
-            if (tile.homeOnTile != null && tile.homeOnTile.owner != owner)
+            if (tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != owner)
             {
                 return true;
             }
