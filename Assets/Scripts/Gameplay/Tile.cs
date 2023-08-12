@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Gameplay.SO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using Sequence = DG.Tweening.Sequence;
 
 public class Tile : MonoBehaviour
 {
@@ -16,13 +16,10 @@ public class Tile : MonoBehaviour
     
     public Action<Tile> OnClickOnTile;
     public UnitController unitOnTile;
-    public bool isSelected = false;
     public bool isHasMountain = false;
     public TileType tileType = TileType.Ground;
 
-    public bool isOpened = false;
-    public bool isExplored = false;
-    public Tile isExploredFrom;
+    public bool isOpened;
 
     [SerializeField] private Image groundImage;
     [SerializeField] private Image fruitTileImage;
@@ -49,12 +46,21 @@ public class Tile : MonoBehaviour
     [SerializeField] private Button getInfoButton;
 
     private string _tileName = "Ground";
-    private bool _isHomeOnTile = false;
+    private bool _isHomeOnTile;
+    private bool _isSelected;
+    private bool _isUnitSelected;
+    private bool _isHomeSelected;
     private Home _homeOnTile;
     private Home _owner;
     private List<GameplayWindow.OpenedTechType> _techTypes;
     private Tween _timeTargetSeq;
+    
+    public bool IsSelected()
+    {
+        return _isSelected;
+    }
 
+    
     public Home GetOwner()
     {
         return _owner;
@@ -88,17 +94,127 @@ public class Tile : MonoBehaviour
     
     public void SelectTile()
     {
-        if (fog.activeSelf || isSelected)
+        if (fog.activeSelf)
         {
-            LevelManager.Instance.SelectObject(null);
+            LevelManager.Instance.gameBoardWindow.DeselectAllTile();
             return;
         }
-        isSelected = true;
+        if (_isSelected || _isUnitSelected || _isHomeSelected)
+        {
+            /*if (unitOnTile != null && _homeOnTile != null)
+            {
+                if (_isUnitSelected)
+                {
+                    DeselectedUnitOnTile();
+                    _isSelected = true;
+                    _isHomeSelected = true;
+                    _homeOnTile.SelectHome();
+                    return;
+                }
+                if (_isHomeSelected)
+                {
+                    DeselectedHomeOnTile();
+                    _isSelected = true;
+                    _isUnitSelected = true;
+                    unitOnTile.SelectUnit();
+                    return;
+                }
+            }*/
+            LevelManager.Instance.SelectObject(null);
+            DeselectedTile();
+            return;
+        }
         LevelManager.Instance.currentName = _tileName;
-        LevelManager.Instance.SelectObject(gameObject);
         selectedOutlineImage.gameObject.SetActive(true);
+        if (unitOnTile != null)
+        {
+            _isSelected = true;
+            _isUnitSelected = true;
+            unitOnTile.SelectUnit();
+        }
+        else if(_homeOnTile != null)
+        {
+            _isSelected = true;
+            _isHomeSelected = true;
+            LevelManager.Instance.SelectObject(gameObject);
+            _homeOnTile.SelectHome();
+        }
+        else
+        {
+            _isSelected = true;
+            LevelManager.Instance.SelectObject(gameObject);
+        }
 
         GetInfoTile();
+    }
+    
+    private void SelectEvent(GameObject pastO, GameObject currO)
+    {
+        if (currO == null || currO.TryGetComponent(out Tile tile))
+        {
+            HideTargetsTime();
+        }
+        
+        if(!_isSelected && !_isUnitSelected && !_isHomeSelected) 
+            return;
+        
+        if(pastO == gameObject || (unitOnTile != null && pastO == unitOnTile.gameObject))
+            DeselectedTile();
+        
+        /*if(unitOnTile != null && pastO == unitOnTile.gameObject && (_homeOnTile == null || currO != _homeOnTile.gameObject))
+            DeselectedUnitOnTile();
+        
+        if(_homeOnTile != null && pastO == _homeOnTile.gameObject && (unitOnTile == null || currO != unitOnTile.gameObject))
+            DeselectedHomeOnTile();*/
+        
+        if (_owner != null && currO == gameObject)
+        {
+            
+            _techTypes = new List<GameplayWindow.OpenedTechType>();
+            if(fruitTileImage != null && fruitTileImage.enabled)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Fruit);
+            
+            if(treeTileImage != null && treeTileImage.enabled)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Tree);
+            
+            if(animalTileImage != null && animalTileImage.enabled)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Animal);
+            
+            if(fishTileImage != null && fishTileImage.enabled)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Fish);
+
+            if(tileType == TileType.Water)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Water);
+            
+            if(tileType == TileType.Ground)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Ground);
+            
+            if(freeTileImage.enabled)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Construct);
+            
+            LevelManager.Instance.gameplayWindow.ShowTileButton(_techTypes, this);
+        }
+    }
+    
+    public void DeselectedTile()
+    {
+        selectedOutlineImage.gameObject.SetActive(false);
+        HideTargets();
+        _isSelected = false;
+        _isHomeSelected = false;
+        _isUnitSelected = false;
+    }
+    
+    public void DeselectedUnitOnTile()
+    {
+        selectedOutlineImage.gameObject.SetActive(false);
+        _isUnitSelected = false;
+    }
+    
+    public void DeselectedHomeOnTile()
+    {
+        selectedOutlineImage.gameObject.SetActive(false);
+        _isHomeSelected = false;
     }
     
     public void UnlockTile()
@@ -315,49 +431,7 @@ public class Tile : MonoBehaviour
         _timeTargetSeq.Kill();
     }
 
-    private void SelectEvent(GameObject pastO, GameObject currO)
-    {
-        if(currO == null || currO.TryGetComponent(out Tile tile))
-            HideTargetsTime();
-        
-        if(isSelected == false) return;
-        if(pastO == gameObject)
-            DeselectedTile();
-
-        if (_owner != null && currO == gameObject)
-        {
-            
-            _techTypes = new List<GameplayWindow.OpenedTechType>();
-            if(fruitTileImage != null && fruitTileImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Fruit);
-            
-            if(treeTileImage != null && treeTileImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Tree);
-            
-            if(animalTileImage != null && animalTileImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Animal);
-            
-            if(fishTileImage != null && fishTileImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Fish);
-
-            if(tileType == TileType.Water)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Water);
-            
-            if(tileType == TileType.Ground)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Ground);
-            
-            if(freeTileImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Construct);
-            
-            LevelManager.Instance.gameplayWindow.ShowTileButton(_techTypes, this);
-        }
-    }
-
-    private void DeselectedTile()
-    {
-        selectedOutlineImage.gameObject.SetActive(false);
-        isSelected = false;
-    }
+    
 
     private void GetInfoTile()
     {

@@ -198,6 +198,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Visual
       objectReference: {fileID: 0}
+    - target: {fileID: 4398374193463550061, guid: cc98713a31777b94fb78dcaffd58443e, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4665240298276697250, guid: cc98713a31777b94fb78dcaffd58443e, type: 3}
       propertyPath: m_SizeDelta.x
       value: 23.9559
@@ -442,6 +446,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7044207071896117506}
     m_Modifications:
+    - target: {fileID: 2610650790097515129, guid: 442ca00a3d3867f4ca829813a0007cdf, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685909196421129639, guid: 442ca00a3d3867f4ca829813a0007cdf, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8347134771048714849, guid: 442ca00a3d3867f4ca829813a0007cdf, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8355996348953955963, guid: 442ca00a3d3867f4ca829813a0007cdf, type: 3}
       propertyPath: m_Name
       value: Head

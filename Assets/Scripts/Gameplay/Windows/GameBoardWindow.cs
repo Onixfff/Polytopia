@@ -26,6 +26,14 @@ public class GameBoardWindow : BaseWindow
     private Dictionary<Vector2Int ,Tile> _generatedTiles;
     private Sequence _generateSeq;
 
+    public void DeselectAllTile()
+    {
+        foreach (var tile in _generatedTiles.Values.ToList())
+        {
+            tile.DeselectedTile();
+        }
+    }
+    
     public Transform GetUIParent()
     {
         return uiParent;

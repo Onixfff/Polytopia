@@ -15,7 +15,6 @@ public class Home : MonoBehaviour
     public CivilisationController owner;
     public int homeRad = 1;
     public HomeType homeType = HomeType.City;
-    [SerializeField] private Button homeButton;
     [SerializeField] private Button occupyButton;
     [SerializeField] private Image homeImage;
     [SerializeField] private List<UnitController> unitPrefabs;
@@ -32,6 +31,7 @@ public class Home : MonoBehaviour
     private int _foodCount;
     private int _unitCapacity = 2;
     private int _homeIncome = 1;
+    private bool _isCapital = true;
     
     public void Init(CivilisationController controller, Tile tile)
     {
@@ -45,10 +45,8 @@ public class Home : MonoBehaviour
             SetOwner(controller);
             blockScrollView.transform.SetParent(LevelManager.Instance.gameBoardWindow.GetUIParent());
             blockScrollView.SetActive(true);
-
             if(controller.civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
                 blockScrollView.SetActive(false);
-            
             if(!controller.homes.Contains(this))
                 controller.homes.Add(this);
             if (_homeLevel >= 0 && _homeLevel < _homeInfo.homeSprites.Count)
@@ -71,21 +69,26 @@ public class Home : MonoBehaviour
                 til1e.ChangeHomeBoards();
             }
             LevelManager.Instance.gameplayWindow.OnUnitSpawn += BuyUnit;
-            homeTile.isSelected = true;
             BuyStartUnit();
-            homeTile.isSelected = false;
         }
         else
         {
+            _isCapital = false;
             homeTile.BuildHome(this);
             blockScrollView.SetActive(false);
-
         }
 
-        homeButton.onClick.RemoveAllListeners();
-        homeButton.onClick.AddListener(HomeOnClick);
         occupyButton.onClick.RemoveAllListeners();
         occupyButton.onClick.AddListener(OccupyHome);
+    }
+    
+    public void SelectHome()
+    {
+        if (owner == null) return;
+        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+        {
+            LevelManager.Instance.gameplayWindow.ShowHomeButton();
+        }
     }
     
     public void GetFood(int count)
@@ -216,18 +219,10 @@ public class Home : MonoBehaviour
     {
         _homeIncome += value;
     }
-
-    private void HomeOnClick()
-    {
-        homeTile.SelectTile();
-        if (owner == null) return;
-        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
-            LevelManager.Instance.gameplayWindow.ShowHomeButton();
-    }
     
     private void BuyStartUnit()
     {
-        if(!homeTile.IsTileFree() || !homeTile.isSelected || _unitList.Count >= _unitCapacity)
+        if(!homeTile.IsTileFree() || _unitList.Count >= _unitCapacity)
             return;
         var stIndex = owner.civilisationInfo.StartUnitIndex;
         var unitObject = Instantiate(unitPrefabs[stIndex], LevelManager.Instance.gameBoardWindow.GetUnitParent());
@@ -239,7 +234,7 @@ public class Home : MonoBehaviour
     
     private void BuyUnit(int unitIndex)
     {
-        if(!homeTile.IsTileFree() || !homeTile.isSelected || _unitList.Count >= _unitCapacity)
+        if(!homeTile.IsTileFree() || !homeTile.IsSelected() || _unitList.Count >= _unitCapacity)
             return;
 
         if (!EconomicManager.Instance.IsCanBuy(owner.civilisationInfo.Units[unitIndex].price)) 
@@ -292,5 +287,6 @@ public class Home : MonoBehaviour
         unit.Init(this, homeTile, 0);
         AddUnit(unit);
     }
+    
     public UnitController exploringUnit;
 }

@@ -29,7 +29,6 @@ public class UnitController : MonoBehaviour
     [SerializeField] private Image headImage;
     [SerializeField] private Image horseImage;
     [SerializeField] private TextMeshProUGUI unitHpTMPro;
-    [SerializeField] private Button selectUnitButton;
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private UnitController shipUnit;
     [SerializeField] private UnitType unitType;
@@ -61,8 +60,6 @@ public class UnitController : MonoBehaviour
         var anchorPos = occupiedTile.GetComponent<RectTransform>().anchoredPosition;
         GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorPos.x, anchorPos.y + 30);
         SetOwner(owner);
-        selectUnitButton.onClick.RemoveAllListeners();
-        selectUnitButton.onClick.AddListener(SelectUnit);
         LevelManager.Instance.OnObjectSelect += SelectEvent;
         LevelManager.Instance.OnTurnEnd += () =>
         {
@@ -146,75 +143,44 @@ public class UnitController : MonoBehaviour
     private Vector3 sv1;
     private Vector3 sv2;
     
-    [Button()]
-    private void SetSweatPos()
+    public void SelectUnit()
     {
-        sv0 = sweats[0].localPosition;
-        sv1 = sweats[1].localPosition;
-        sv2 = sweats[2].localPosition;
-    }
-    
-    [Button()]
-    public void SweatingAnimationEnable()
-    {
-        _isSweaty = true;
-        var startPoses = new List<Vector3>()
+        if(!_isCanSelected) return;
+
+        _isSelected = true;
+        LevelManager.Instance.SelectObject(gameObject);
+        if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI) 
+            return;
+
+        var gameBoard = LevelManager.Instance.gameBoardWindow;
+        var allTile = gameBoard.GetAllTile();
+        var closeTilesForMove = gameBoard.GetCloseTile(occupiedTile, unitInfo.moveRad);
+        var closeTilesForAttack = gameBoard.GetCloseTile(occupiedTile, unitInfo.rad);
+        foreach (var vector2Int in allTile.Keys.ToList())
         {
-            sv0, sv1, sv2
-        };
-        SweatyAnimation();
-        void SweatyAnimation()
+            var tile = allTile[vector2Int];
+            tile.HideTargets();
+        }
+        foreach (var closeTile in closeTilesForMove)
         {
-            if(!_isSweaty)
-                return;
+            if(_moveThisTurn <= 0) break;
+            if(closeTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
+                continue;
+            
+            if(unitType != UnitType.Ship && closeTile.tileType == Tile.TileType.Water && !closeTile.IsTileHasPort())
+                continue;
+            closeTile.ShowBlueTarget();
+        }
 
-            for (var i = 0; i < sweats.Count; i++)
-            {
-                var sweat = sweats[i];
-                sweat.gameObject.SetActive(true);
-                var normVector = new Vector3(1, 1, 1);
-                var posVector = new Vector3(sweat.position.x, sweat.position.y, 0);
-                switch (i)
-                {
-                    case 0:
-                        posVector += v0;
-                        break;
-                    case 1:
-                        posVector += v1;
-                        break;
-                    case 2:
-                        posVector += v2;
-                        break;
-                }
-
-                sweat.localPosition = startPoses[i];
-                sweat.transform.localScale = Vector3.zero;
-                sweat.DOLocalMove(posVector, sweatyDur);
-                sweat.DOScale(normVector, sweatyDur / 2).OnComplete((() =>
-                {
-                    sweat.DOScale(Vector3.zero, sweatyDur / 2);
-                }));
-            }
-
-            var inVAl = 0f;
-            DOTween.To(() => inVAl, x => x = inVAl, 1, sweatyDur + 0.1f).OnComplete((() =>
-            {
-                foreach (var sweat in sweats)
-                {
-                    sweat.gameObject.SetActive(false);
-                }
-                if(_isSweaty)
-                    SweatyAnimation();
-            }));
+        foreach (var tile in closeTilesForAttack)
+        {
+            if(_attackThisTurn <= 0) break;
+            if(tile.unitOnTile != null && tile.unitOnTile.IsThisUnitAlly(_owner.owner))
+                continue;
+            tile.ShowRedTarget(this);
         }
     }
-    
-    [Button()]
-    public void SweatingAnimationDisable()
-    {
-        _isSweaty = false;
-    }
-    
+
     public int GetDmg()
     {
         var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
@@ -381,7 +347,7 @@ public class UnitController : MonoBehaviour
 
             if (_moveThisTurn > 0)
             {
-                if (currO != null && currO.TryGetComponent(out Tile tile))
+                if (currO != null && (currO.TryGetComponent(out Tile tile) || currO.TryGetComponent(out Home home)))
                 {
                     if (tile.IsTileFree() && tile.IsCanMoveTo())
                         MoveToTile(tile);
@@ -571,49 +537,6 @@ public class UnitController : MonoBehaviour
         return bonus;
     }
     
-    private void SelectUnit()
-    {
-        if(!_isCanSelected) return;
-        if (_isSelected)
-        {
-            occupiedTile.SelectTile();
-            return;
-        }
-        
-        _isSelected = true;
-        LevelManager.Instance.SelectObject(gameObject);
-        if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI) 
-            return;
-
-        var gameBoard = LevelManager.Instance.gameBoardWindow;
-        var allTile = gameBoard.GetAllTile();
-        var closeTilesForMove = gameBoard.GetCloseTile(occupiedTile, unitInfo.moveRad);
-        var closeTilesForAttack = gameBoard.GetCloseTile(occupiedTile, unitInfo.rad);
-        foreach (var vector2Int in allTile.Keys.ToList())
-        {
-            var tile = allTile[vector2Int];
-            tile.HideTargets();
-        }
-        foreach (var closeTile in closeTilesForMove)
-        {
-            if(_moveThisTurn <= 0) break;
-            if(closeTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
-                continue;
-            
-            if(unitType != UnitType.Ship && closeTile.tileType == Tile.TileType.Water && !closeTile.IsTileHasPort())
-                continue;
-            closeTile.ShowBlueTarget();
-        }
-
-        foreach (var tile in closeTilesForAttack)
-        {
-            if(_attackThisTurn <= 0) break;
-            if(tile.unitOnTile != null && tile.unitOnTile.IsThisUnitAlly(_owner.owner))
-                continue;
-            tile.ShowRedTarget(this);
-        }
-    }
-
     private void DeselectUnit()
     {
         _isSelected = false;
@@ -627,6 +550,80 @@ public class UnitController : MonoBehaviour
             _owner.RemoveUnit(this);
         Destroy(gameObject);
     }
+    
+    #region SweatAnim
+    
+    [Button()]
+    private void SetSweatPos()
+    {
+        sv0 = sweats[0].localPosition;
+        sv1 = sweats[1].localPosition;
+        sv2 = sweats[2].localPosition;
+    }
+    
+    [Button()]
+    public void SweatingAnimationEnable()
+    {
+        _isSweaty = true;
+        var startPoses = new List<Vector3>()
+        {
+            sv0, sv1, sv2
+        };
+        SweatyAnimation();
+        void SweatyAnimation()
+        {
+            if(!_isSweaty)
+                return;
+
+            for (var i = 0; i < sweats.Count; i++)
+            {
+                var sweat = sweats[i];
+                sweat.gameObject.SetActive(true);
+                var normVector = new Vector3(1, 1, 1);
+                var posVector = new Vector3(sweat.position.x, sweat.position.y, 0);
+                switch (i)
+                {
+                    case 0:
+                        posVector += v0;
+                        break;
+                    case 1:
+                        posVector += v1;
+                        break;
+                    case 2:
+                        posVector += v2;
+                        break;
+                }
+
+                sweat.localPosition = startPoses[i];
+                sweat.transform.localScale = Vector3.zero;
+                sweat.DOLocalMove(posVector, sweatyDur);
+                sweat.DOScale(normVector, sweatyDur / 2).OnComplete((() =>
+                {
+                    sweat.DOScale(Vector3.zero, sweatyDur / 2);
+                }));
+            }
+
+            var inVAl = 0f;
+            DOTween.To(() => inVAl, x => x = inVAl, 1, sweatyDur + 0.1f).OnComplete((() =>
+            {
+                foreach (var sweat in sweats)
+                {
+                    sweat.gameObject.SetActive(false);
+                }
+                if(_isSweaty)
+                    SweatyAnimation();
+            }));
+        }
+    }
+    
+    [Button()]
+    public void SweatingAnimationDisable()
+    {
+        _isSweaty = false;
+    }
+
+    #endregion
+
 
     public string aiName = "unit1";
     public Home aiHomeExploring;
