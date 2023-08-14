@@ -23,6 +23,9 @@ public class CivilisationInfo : BaseCivilisationInfo
     [SerializeField] private Sprite head;
     public Sprite HeadSprite => head;
     
+    [SerializeField] private Sprite battleShipHead;
+    public Sprite BattleShipHeadSprite => battleShipHead;
+    
     [SerializeField] private Sprite ground;
     public Sprite GroundSprite => ground;
     public string groundName => GroundName;

@@ -16,6 +16,7 @@ MonoBehaviour:
   civilName: Bardur
   civilColor: {r: 0.6509804, g: 0.63942957, b: 0.15686272, a: 1}
   head: {fileID: 21300000, guid: ac63ee0928b0684419730424d7d23300, type: 3}
+  battleShipHead: {fileID: 21300000, guid: 8458ece7e6e2620498d0e5ed2a276b8a, type: 3}
   ground: {fileID: 21300000, guid: 90d833e210c72bd4bb240a7e23cea96c, type: 3}
   fruit: {fileID: 21300000, guid: 4711599654fdc4c4b9e4b1bb920e8535, type: 3}
   tree: {fileID: 21300000, guid: bb880765f69fa844c9714a0de9acaa3f, type: 3}
@@ -37,4 +38,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aa3230d2e94c83042881b34f157b2778, type: 2}
   - {fileID: 11400000, guid: f59e0b3e53a7e334297dfcde7e46bd71, type: 2}
   shipUnitInfo: []
+  startUnitIndex: 0
   techInfo: {fileID: 11400000, guid: ce96175793943314c9f4bcd3592a0c52, type: 2}

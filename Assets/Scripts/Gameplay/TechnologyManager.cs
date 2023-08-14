@@ -238,7 +238,7 @@ public class TechnologyManager : MonoBehaviour
     private void GatheringTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Gather);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(1);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(0);
     }
     private void FarmingTech()
     {

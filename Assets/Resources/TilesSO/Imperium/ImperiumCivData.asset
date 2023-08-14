@@ -16,6 +16,7 @@ MonoBehaviour:
   civilName: Imperium
   civilColor: {r: 0.15659486, g: 0.2557022, b: 0.6509434, a: 1}
   head: {fileID: 21300000, guid: a0741d6b867942c49884ce89465f7f7d, type: 3}
+  battleShipHead: {fileID: 21300000, guid: 67e25984597e04846a7afedcfd423374, type: 3}
   ground: {fileID: 21300000, guid: 2db910abdac9ad7488da68d33abe6a72, type: 3}
   fruit: {fileID: 21300000, guid: b48993052b2582143a334439b7f4cf89, type: 3}
   tree: {fileID: 21300000, guid: 1e61421c3153f124eac2c06502a9369f, type: 3}
@@ -37,4 +38,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aa3230d2e94c83042881b34f157b2778, type: 2}
   - {fileID: 11400000, guid: f59e0b3e53a7e334297dfcde7e46bd71, type: 2}
   shipUnitInfo: []
+  startUnitIndex: 0
   techInfo: {fileID: 11400000, guid: 9f41a74702c7dcc40a6d282438f4d207, type: 2}

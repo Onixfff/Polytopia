@@ -173,12 +173,18 @@ public class GameplayWindow : BaseWindow
                     unitButtons[type].onClick.AddListener((() =>
                     {
                         unit.Heal(2);
+                        HideDownBar();
                     }));
                     break;
                 case 1:
                     unitButtons[type].gameObject.SetActive(true);
                     unitButtons[type].onClick.RemoveAllListeners();
-                    unitButtons[type].onClick.AddListener((unit.DisbandTheSquad)); break;
+                    unitButtons[type].onClick.AddListener((() =>
+                    {
+                        unit.DisbandTheSquad();
+                        HideDownBar();
+                    }));
+                    break;
                 case 2:
                     unitButtons[type].gameObject.SetActive(true);
                     unitButtons[type].onClick.RemoveAllListeners();
@@ -190,12 +196,38 @@ public class GameplayWindow : BaseWindow
                             if(tile != null && tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner == unit.GetOwner().owner)
                                 tile.unitOnTile.Heal(5);
                         }
+                        HideDownBar();
                     }));  
                     break;
                 case 3:
                     unitButtons[type].gameObject.SetActive(true);
                     unitButtons[type].onClick.RemoveAllListeners();
-                    unitButtons[type].onClick.AddListener((unit.LevelUp));  
+                    unitButtons[type].onClick.AddListener((() =>
+                    {
+                        unit.LevelUp();
+                        HideDownBar();
+                    }));  
+                    break;
+                case 4:
+                    unitButtons[type].gameObject.SetActive(true);
+                    if (unit.GetUnitType() == UnitController.UnitType.Boat)
+                    {
+                        unitButtons[type].transform.GetChild(1).GetChild(1).gameObject.SetActive(false);
+                        unitButtons[type].transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
+                    }
+                        
+                    if (unit.GetUnitType() == UnitController.UnitType.Ship)
+                    {
+                        unitButtons[type].transform.GetChild(1).GetChild(1).gameObject.SetActive(true);
+                        unitButtons[type].transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
+                    }
+                    unitButtons[type].onClick.RemoveAllListeners();
+                    unitButtons[type].onClick.AddListener((() =>
+                    {
+                        unit.ShipLevelUp();
+                        unitButtons[type].gameObject.SetActive(false);
+                        HideDownBar();
+                    })); 
                     break;
             }
         }

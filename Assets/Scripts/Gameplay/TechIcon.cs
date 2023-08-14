@@ -18,7 +18,11 @@ public class TechIcon : MonoBehaviour
     private bool _isPastTechUnlock;
     void Start()
     {
-        if (lockObject != null) lockObject.SetActive(true);
+        if (lockObject != null)
+        {
+            lockObject.SetActive(true);
+            techButton.enabled = false;
+        }
         lineObject.SetActive(true);
         lineObject.transform.SetParent(transform.parent.parent.GetChild(0).transform);
         var inVal = 0;
@@ -36,6 +40,7 @@ public class TechIcon : MonoBehaviour
     {
         lineObject.GetComponent<Image>().color = unlockColor;
         if (lockObject != null) lockObject.SetActive(false);
+        techButton.enabled = false;
     }
 
     public void BuyTech()

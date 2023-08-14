@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class CivilisationCustomizer : MonoBehaviour
 {
     [SerializeField] private List<Image> heads;
+    [SerializeField] private List<Image> battleShipHeads;
     [SerializeField] private List<Image> animals;
     [SerializeField] private List<Image> fruits;
     [SerializeField] private List<Image> trees;
@@ -29,6 +30,7 @@ public class CivilisationCustomizer : MonoBehaviour
     private void Customize()
     {
         heads ??= new List<Image>(); 
+        battleShipHeads ??= new List<Image>(); 
         animals ??= new List<Image>(); 
         fruits ??= new List<Image>(); 
         trees ??= new List<Image>(); 
@@ -42,6 +44,10 @@ public class CivilisationCustomizer : MonoBehaviour
         foreach (var image in heads)
         {
             image.sprite = _civilisationInfo.HeadSprite;
+        }
+        foreach (var image in battleShipHeads)
+        {
+            image.sprite = _civilisationInfo.BattleShipHeadSprite;
         }
         foreach (var image in fruits)
         {

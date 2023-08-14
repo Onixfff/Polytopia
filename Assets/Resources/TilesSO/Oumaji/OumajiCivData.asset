@@ -16,6 +16,7 @@ MonoBehaviour:
   civilName: Oumaji
   civilColor: {r: 0.764151, g: 0.69702023, b: 0.29196337, a: 1}
   head: {fileID: 21300000, guid: 62e7675766fae464889308a10e0477d8, type: 3}
+  battleShipHead: {fileID: 21300000, guid: 77a0c80d2b59c664bae19e8c9c6006d4, type: 3}
   ground: {fileID: 21300000, guid: c54aa1f4fae535a459a8f7d3b2c05eea, type: 3}
   fruit: {fileID: 21300000, guid: 9d7c8da7683348f4aab297ead5c7ad19, type: 3}
   tree: {fileID: 21300000, guid: 255703d7b89c52749b2dafe61c05dcc7, type: 3}

@@ -16,6 +16,7 @@ MonoBehaviour:
   civilName: China
   civilColor: {r: 0.7075472, g: 0.377136, b: 0.377136, a: 1}
   head: {fileID: 21300000, guid: a2b21a34c7d37624c83a0d579351c617, type: 3}
+  battleShipHead: {fileID: 21300000, guid: 39026cd626ea19c4aa46178f03c7da4f, type: 3}
   ground: {fileID: 21300000, guid: 2db910abdac9ad7488da68d33abe6a72, type: 3}
   fruit: {fileID: 21300000, guid: 6a814775af8944941a83f3f59ab52b9d, type: 3}
   tree: {fileID: 21300000, guid: 7aed32d6828bda54da6166f315101c8c, type: 3}
@@ -37,4 +38,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aa3230d2e94c83042881b34f157b2778, type: 2}
   - {fileID: 11400000, guid: f59e0b3e53a7e334297dfcde7e46bd71, type: 2}
   shipUnitInfo: []
+  startUnitIndex: 0
   techInfo: {fileID: 11400000, guid: 98e583aec755f0447a2813360b540a42, type: 2}

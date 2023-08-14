@@ -12,7 +12,9 @@ public class UnitController : MonoBehaviour
     public enum UnitType
     {
         Unit,
-        Ship
+        Boat,
+        Ship,
+        BattleShip
     }
 
     public enum AttackType
@@ -27,10 +29,11 @@ public class UnitController : MonoBehaviour
     [SerializeField] private UnitInfo unitInfo;
     [SerializeField] private List<Image> unitBackGrounds;
     [SerializeField] private Image headImage;
+    [SerializeField] private Image battleShipHeadImage;
     [SerializeField] private Image horseImage;
     [SerializeField] private TextMeshProUGUI unitHpTMPro;
     [SerializeField] private RectTransform rectTransform;
-    [SerializeField] private UnitController shipUnit;
+    [SerializeField] private List<UnitController> shipUnits;
     [SerializeField] private UnitType unitType;
     [SerializeField] private AttackType attackType;
     [SerializeField] private GameObject projectilePrefab;
@@ -127,6 +130,20 @@ public class UnitController : MonoBehaviour
         _hp += 5;
     }
     
+    public void ShipLevelUp()
+    {
+        _hp = _unitInTheShip.GetUnitInfo().hp;
+        if (unitType == UnitType.Boat)
+        {
+            TurnIntoAShip(1);
+        }
+
+        if (unitType == UnitType.Ship)
+        {
+            TurnIntoAShip(2);
+        }        
+    }
+    
     public void DisbandTheSquad()
     {
         EconomicManager.Instance.AddMoney(Mathf.CeilToInt(unitInfo.price/2));
@@ -165,7 +182,7 @@ public class UnitController : MonoBehaviour
             if(closeTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                 continue;
             
-            if(unitType != UnitType.Ship && closeTile.tileType == Tile.TileType.Water && !closeTile.IsTileHasPort())
+            if((unitType != UnitType.Boat || unitType != UnitType.Ship || unitType != UnitType.BattleShip) && closeTile.tileType == Tile.TileType.Water && !closeTile.IsTileHasPort())
                 continue;
             closeTile.ShowBlueTarget();
         }
@@ -208,6 +225,7 @@ public class UnitController : MonoBehaviour
     {
         _owner = controller;
         if (headImage != null && controller != null) headImage.sprite = controller.owner.civilisationInfo.HeadSprite;
+        if (battleShipHeadImage != null && controller != null) battleShipHeadImage.sprite = controller.owner.civilisationInfo.BattleShipHeadSprite;
         if (horseImage != null && controller != null) horseImage.sprite = controller.owner.civilisationInfo.AnimalSprite;
         foreach (var unitBackGround in unitBackGrounds)
         {
@@ -230,7 +248,12 @@ public class UnitController : MonoBehaviour
     {
         return unitInfo;
     }
-
+    
+    public UnitType GetUnitType()
+    {
+        return unitType;
+    }
+    
     public void SetUnitInShip(UnitController unitController)
     {
         _unitInTheShip = unitController;
@@ -252,8 +275,11 @@ public class UnitController : MonoBehaviour
             gameObject.SetActive(false);
         _moveSeq = DOTween.Sequence();
         aiFromTile = occupiedTile;
-        _moveThisTurn = 0; 
-        _attackThisTurn = 0; 
+        _moveThisTurn = 0;
+        if (_attackThisTurn != 0 && !CheckAbility(UnitInfo.AbilityType.Dash))
+            _attackThisTurn = 0;
+        else if(CheckAbility(UnitInfo.AbilityType.Dash))
+            _attackThisTurn = 1;
         if(CheckAbility(UnitInfo.AbilityType.Persist)) 
             _attackThisTurn = 1;
         var anchorPos = to.GetComponent<RectTransform>().anchoredPosition;
@@ -290,10 +316,10 @@ public class UnitController : MonoBehaviour
 
             if (unitType == UnitType.Unit && to.IsTileHasPort())
             {
-                TurnIntoAShip();
+                TurnIntoAShip(0);
             }
 
-            if (unitType == UnitType.Ship && to.tileType == Tile.TileType.Ground)
+            if ((unitType == UnitType.Boat || unitType == UnitType.Ship || unitType == UnitType.BattleShip) && to.tileType == Tile.TileType.Ground)
             {
                 TurnIntoAUnit();
             }
@@ -324,6 +350,8 @@ public class UnitController : MonoBehaviour
                 ints.Add(2);
             if(_killCount == 3 && _lvl == 1)
                 ints.Add(3);
+            if(unitType == UnitType.Boat || unitType == UnitType.Ship)
+                ints.Add(4);
             LevelManager.Instance.gameplayWindow.ShowUnitButton(ints, this);
         }
         
@@ -498,14 +526,21 @@ public class UnitController : MonoBehaviour
         return _counterstrikeSeq;
     }
 
-    private void TurnIntoAShip()
+    private void TurnIntoAShip(int index)
     {
         LevelManager.Instance.SelectObject(null);
       
-        var ship = Instantiate(shipUnit, transform.parent);
+        var ship = Instantiate(shipUnits[index], transform.parent);
         ship.Init(_owner, occupiedTile, 0);
-        ship.SetUnitInShip(this);
+        if(_unitInTheShip == null)
+            ship.SetUnitInShip(this);
+        else
+            ship.SetUnitInShip(_unitInTheShip);
+        
+        
         gameObject.SetActive(false);
+        if(unitType is UnitType.Ship or UnitType.BattleShip)
+            Destroy(gameObject);
     }
     
     private void TurnIntoAUnit()
@@ -618,8 +653,7 @@ public class UnitController : MonoBehaviour
     }
 
     #endregion
-
-
+    
     public string aiName = "unit1";
     public Home aiHomeExploring;
     public Tile aiFromTile;
