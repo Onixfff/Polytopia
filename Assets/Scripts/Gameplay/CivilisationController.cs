@@ -67,10 +67,6 @@ public class CivilisationController : MonoBehaviour
         technologies.Add(technology);
     }
 
-    private void OnDestroy()
-    {
-    }
-
     private void CreateHome()
     {
         var allTile = _gameBoardWindow.GetAllTile();

@@ -262,6 +262,26 @@ public class Home : MonoBehaviour
         }
     }
 
+    private void CheckPriceForLevel()
+    {
+        if (_homeLevel == 1)
+        {
+            
+        }
+        if (_homeLevel == 2)
+        {
+            
+        }
+        if (_homeLevel == 3)
+        {
+            
+        }
+        if (_homeLevel >= 4)
+        {
+            
+        }
+    }
+    
     private void ChangeUnitBlock(bool isAdd)
     {
         if (isAdd)

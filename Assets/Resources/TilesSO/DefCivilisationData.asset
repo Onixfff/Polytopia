@@ -16,6 +16,7 @@ MonoBehaviour:
   civilName: Def
   civilColor: {r: 0, g: 0, b: 0, a: 0}
   head: {fileID: 0}
+  battleShipHead: {fileID: 0}
   ground: {fileID: 21300000, guid: 2db910abdac9ad7488da68d33abe6a72, type: 3}
   fruit: {fileID: 21300000, guid: b48993052b2582143a334439b7f4cf89, type: 3}
   tree: {fileID: 21300000, guid: 7aed32d6828bda54da6166f315101c8c, type: 3}
@@ -28,4 +29,5 @@ MonoBehaviour:
   homeInfo: {fileID: 11400000, guid: 27cc87ca6f663644ea83d8638ef7201f, type: 2}
   unitInfo: []
   shipUnitInfo: []
+  startUnitIndex: 0
   techInfo: {fileID: 0}

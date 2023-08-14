@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Gameplay.SO;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,12 +10,15 @@ public class Tile : MonoBehaviour
     public enum TileType
     {
         Ground,
-        Water
+        Water,
+        DeepWater
     }
     
     public Action<Tile> OnClickOnTile;
     public UnitController unitOnTile;
     public bool isHasMountain = false;
+    public bool isHasRuins = false;
+    public bool isHasWhale = false;
     public TileType tileType = TileType.Ground;
 
     public bool isOpened;
@@ -26,6 +28,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Image treeTileImage;
     [SerializeField] private Image animalTileImage;
     [SerializeField] private Image mountainTileImage;
+    [SerializeField] private Image ruinsTileImage;
     [SerializeField] private Image miningImage;
     [SerializeField] private Image freeTileImage;
     [SerializeField] private Image fishTileImage;
@@ -50,16 +53,27 @@ public class Tile : MonoBehaviour
     private bool _isSelected;
     private bool _isUnitSelected;
     private bool _isHomeSelected;
+    private int _groundDefense = 0;
     private Home _homeOnTile;
     private Home _owner;
     private List<GameplayWindow.OpenedTechType> _techTypes;
     private Tween _timeTargetSeq;
+
+    public int GetGroundDefense()
+    {
+        _groundDefense = 0;
+        if (_homeOnTile != null)
+            _groundDefense++;
+        if (isHasMountain)
+            _groundDefense++;
+        
+        return _groundDefense;
+    }
     
     public bool IsSelected()
     {
         return _isSelected;
     }
-
     
     public Home GetOwner()
     {
@@ -224,6 +238,8 @@ public class Tile : MonoBehaviour
         groundImage.enabled = true;
         if(isHasMountain && mountainTileImage != null) 
             mountainTileImage.gameObject.SetActive(true);
+        if(isHasRuins && ruinsTileImage != null) 
+            ruinsTileImage.gameObject.SetActive(true);
         if(_homeOnTile != null)
             _homeOnTile.gameObject.SetActive(true);
         if(unitOnTile != null)
@@ -327,6 +343,17 @@ public class Tile : MonoBehaviour
         else
             _tileName = tileName;
     }
+    
+    public void SetRuinsSprite(Sprite sprite, string tileName)
+    {
+        ruinsTileImage.gameObject.SetActive(false);
+        ruinsTileImage.enabled = true;
+        isHasRuins = true;
+        if (_tileName != "Ground")
+            _tileName = _tileName + ", " + tileName;
+        else
+            _tileName = tileName;
+    }
 
     public void ShowBlueTarget()
     {
@@ -399,6 +426,7 @@ public class Tile : MonoBehaviour
         if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
         if (animalTileImage != null) Destroy(animalTileImage.gameObject);
         if (mountainTileImage != null) Destroy(mountainTileImage.gameObject);
+        if (ruinsTileImage != null) Destroy(ruinsTileImage.gameObject);
         if (_owner.owner != null) 
             groundImage.sprite = _owner.owner.civilisationInfo.GroundSprite;
         tileType = TileType.Ground;
@@ -554,7 +582,6 @@ public class Tile : MonoBehaviour
     public void SetWaterTile()
     {
         isHasMountain = false;
-        _tileName = "Water";
         if (treeTileImage != null) treeTileImage.gameObject.SetActive(false);
         if (fruitTileImage != null) fruitTileImage.gameObject.SetActive(false);
         if (animalTileImage != null) animalTileImage.gameObject.SetActive(false);
@@ -562,17 +589,34 @@ public class Tile : MonoBehaviour
         var board = LevelManager.Instance.gameBoardWindow;
         var tiles = board.GetSideTile(this, 1);
 
-        if(tiles.TrueForAll(tile => tile.tileType == TileType.Water))
+        if (tiles.TrueForAll(tile => tile.tileType == TileType.Water || tile.tileType == TileType.DeepWater))
+        {
+            _tileName = "DeepWater";
+            tileType = TileType.DeepWater;
             groundImage.sprite = LevelManager.Instance.waterSprites[1];
+        }
         else
+        {
+            _tileName = "Water";
             groundImage.sprite = LevelManager.Instance.waterSprites[0];
+        }
         
         var randomFish = UnityEngine.Random.Range(0, 6);
         switch (randomFish)
         {
             case 1:
-                fishTileImage.gameObject.SetActive(true);
-                fishTileImage.enabled = true;
+                if (tileType == TileType.Water)
+                {
+                    fishTileImage.gameObject.SetActive(true);
+                    fishTileImage.enabled = true;
+                }
+                if (tileType == TileType.DeepWater)
+                {
+                    fishTileImage.gameObject.SetActive(true);
+                    fishTileImage.enabled = false;
+                    fishTileImage.transform.GetChild(0).gameObject.SetActive(true);
+                    isHasWhale = true;
+                }
                 break;
         }
     }

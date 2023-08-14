@@ -124,8 +124,6 @@ public class GameBoardWindow : BaseWindow
                 sideTiles.Add(sideTile);
             }
         }
-        if(radius == 1)
-            Debug.Log(sideTiles.Count);
         return sideTiles;
     }
 
@@ -152,6 +150,8 @@ public class GameBoardWindow : BaseWindow
         GenerateBoard();
         var inVal = 0f;
         _generateSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.1f).OnComplete((GenerateEnvironment)));
+        var inVal4 = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal4, x => x = inVal4, 0f, 0.1f).OnComplete((GenerateRuins)));
         var inVal1 = 0f;
         _generateSeq.Append(DOTween.To(() => inVal1, x => x = inVal1, 0f, 0.1f).OnComplete((CreateCivilisations)));
         var inVal2 = 0f;
@@ -226,6 +226,16 @@ public class GameBoardWindow : BaseWindow
     }
     
     [Button()]
+    private void GenerateRuins()
+    {
+        for (var i = 0; i < countWaterZone-3; i++)
+        {
+            var randomTile = _generatedTiles[_generatedTiles.Keys.ToList()[Random.Range(0, _generatedTiles.Keys.ToList().Count)]];
+            randomTile.SetRuinsSprite(null, "Ruins");
+        }
+    }
+    
+    [Button()]
     private void GenerateWater()
     {
         for (var i = 0; i < countWaterZone; i++)
@@ -240,7 +250,7 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void UpdateWaterVisual()
     {
-        foreach (var tile in _generatedTiles.Values.ToList().Where(tile => tile.tileType == Tile.TileType.Water))
+        foreach (var tile in _generatedTiles.Values.ToList().Where(tile => tile.tileType == Tile.TileType.Water || tile.tileType == Tile.TileType.DeepWater))
         {
             tile.SetWaterTile();
         }
@@ -249,7 +259,6 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void CreateCivilisations()
     {
-        
         var randomCiv = Random.Range(0, gameInfo.playerCivilisationInfoLists.Count);
         var listCiv = new List<int> { randomCiv };
         var civilisationController = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
@@ -279,6 +288,15 @@ public class GameBoardWindow : BaseWindow
     }
     
     [Button()]
+    private void UpdateRuinsVisual()
+    {
+        foreach (var tile in _generatedTiles.Values.ToList().Where(tile => tile.tileType == Tile.TileType.Water || tile.tileType == Tile.TileType.DeepWater))
+        {
+            tile.SetWaterTile();
+        }
+    }
+    
+    [Button()]
     private void GenerateVillage()
     {
         for (var i = 0; i < 6; i++)
@@ -290,7 +308,7 @@ public class GameBoardWindow : BaseWindow
                     return;
                 
                 randomTile = _generatedTiles[_generatedTiles.Keys.ToList()[Random.Range(0, _generatedTiles.Keys.ToList().Count)]];
-                if(randomTile.tileType == Tile.TileType.Water)
+                if(randomTile.tileType == Tile.TileType.Water || randomTile.tileType == Tile.TileType.DeepWater)
                     continue;
                 if(randomTile.unitOnTile != null)
                     continue;

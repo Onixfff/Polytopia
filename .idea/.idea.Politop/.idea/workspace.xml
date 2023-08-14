@@ -3,11 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/DefCivilisationData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/DefCivilisationData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Tile.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Tile.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Fish.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/Fish.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Fish.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/Fish.png.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameBoardWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameBoardWindow.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -119,7 +122,7 @@
       <workItem from="1691653689470" duration="17361000" />
       <workItem from="1691739434950" duration="18612000" />
       <workItem from="1691826350821" duration="18065000" />
-      <workItem from="1692002365475" duration="17709000" />
+      <workItem from="1692002365475" duration="21508000" />
     </task>
     <servers />
   </component>

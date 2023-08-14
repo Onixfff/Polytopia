@@ -575,4 +575,4 @@ MonoBehaviour:
   defaultCiv: {fileID: 5349752406243517778, guid: 7e78944b78ec0f04987cefad6b44646d, type: 3}
   village: {fileID: 8004393146802062611, guid: 7c4594764c3b69944850276018cdec26, type: 3}
   gameInfo: {fileID: 11400000, guid: ebbdd51bcea3f2443be52158d15f64bf, type: 2}
-  countWaterZone: 10
+  countWaterZone: 7
