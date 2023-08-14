@@ -70,6 +70,7 @@ public class AI : MonoBehaviour
 
     private void EndTurn()
     {
+        aiQuestGiver.OnTaskAreDistributed -= EndTurn;
         AIController.Instance.OnAITurnEnded?.Invoke(aiNumber+1);
     }
 

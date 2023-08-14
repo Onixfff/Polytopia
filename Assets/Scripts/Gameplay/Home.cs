@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.SO;
 using NaughtyAttributes;
 using UnityEngine;
@@ -140,6 +141,12 @@ public class Home : MonoBehaviour
             LevelManager.Instance.gameplayWindow.ShowHomeButton();
         }
     }
+
+    [Button()]
+    private void AddFood()
+    {
+        GetFood(1);
+    }
     
     public void GetFood(int count)
     {
@@ -218,8 +225,22 @@ public class Home : MonoBehaviour
     private void LeveUp()
     {
         var block = Instantiate(centerBlockPrefab, blockParent);
-        block.transform.SetSiblingIndex(blockParent.childCount-1);
-        homeFoodBlocks.Insert(homeFoodBlocks.Count - 2, block);
+        block.transform.SetSiblingIndex(blockParent.childCount-2);
+        homeFoodBlocks.Insert(homeFoodBlocks.Count - 1, block);
+        if (homeFoodBlocks.Count > 3)
+        {
+            var scale = 2;
+            if (homeFoodBlocks.Count < 7)
+                scale = 1;
+            if (homeFoodBlocks.Count > 10)
+                scale = 0;
+            var sizeDelta = homeFoodBlocks.First().GetComponent<RectTransform>().sizeDelta;
+            sizeDelta -= new Vector2(scale, 0);
+            foreach (var foodBlock in homeFoodBlocks)
+            {
+                foodBlock.GetComponent<RectTransform>().sizeDelta = sizeDelta;
+            }
+        }
         RemoveAllFood();
         _foodCount = 0;
         _foodFromNextLvl++;

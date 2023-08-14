@@ -551,21 +551,22 @@ public class Tile : MonoBehaviour
         }
     }
     
-    private void SetWaterTile()
+    public void SetWaterTile()
     {
         isHasMountain = false;
         _tileName = "Water";
-        treeTileImage.gameObject.SetActive(false);
-        fruitTileImage.gameObject.SetActive(false);
-        animalTileImage.gameObject.SetActive(false);
-        mountainTileImage.gameObject.SetActive(false);
+        if (treeTileImage != null) treeTileImage.gameObject.SetActive(false);
+        if (fruitTileImage != null) fruitTileImage.gameObject.SetActive(false);
+        if (animalTileImage != null) animalTileImage.gameObject.SetActive(false);
+        if (mountainTileImage != null) mountainTileImage.gameObject.SetActive(false);
+        var board = LevelManager.Instance.gameBoardWindow;
+        var tiles = board.GetSideTile(this, 1);
 
-        var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(this, 1);
-        
         if(tiles.TrueForAll(tile => tile.tileType == TileType.Water))
             groundImage.sprite = LevelManager.Instance.waterSprites[1];
         else
             groundImage.sprite = LevelManager.Instance.waterSprites[0];
+        
         var randomFish = UnityEngine.Random.Range(0, 6);
         switch (randomFish)
         {

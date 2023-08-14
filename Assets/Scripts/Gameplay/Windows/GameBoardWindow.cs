@@ -92,6 +92,42 @@ public class GameBoardWindow : BaseWindow
         
         return closeTiles;
     }
+    
+    public List<Tile> GetSideTile(Tile tile, int radius)
+    {
+        var sideTiles = new List<Tile>();
+
+        var tilePos = tile.pos;
+
+        var minX = tilePos.x - radius;
+        var minY = tilePos.y - radius;
+        var maxX = tilePos.x + radius;
+        var maxY = tilePos.y + radius;
+
+        for (var x = minX; x <= maxX; x++)
+        {
+            for (var y = minY; y <= maxY; y++)
+            {
+                if(x == minX && y == minY)
+                    continue;
+                if(x == minX && y == maxY)
+                    continue;
+                if(x == maxX && y == minY)
+                    continue;
+                if(x == maxX && y == maxY)
+                    continue;
+                if(!_generatedTiles.ContainsKey(new Vector2Int(x, y)))
+                    continue;
+                var sideTile = _generatedTiles[new Vector2Int(x, y)];
+                if(sideTile.pos == tile.pos)
+                    continue;
+                sideTiles.Add(sideTile);
+            }
+        }
+        if(radius == 1)
+            Debug.Log(sideTiles.Count);
+        return sideTiles;
+    }
 
     public bool IsThisTheNearestTile(Tile tile1, Tile tile2, int rad)
     {
@@ -192,31 +228,21 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void GenerateWater()
     {
-        /*foreach (var vector2Int in _generatedTiles.Keys.ToList())
-        {
-            var tile = _generatedTiles[vector2Int];
-            if(!tile.IsTileFree() || tile._homeOnTile != null)
-                continue;
-            
-            var a = Random.Range(0, countWaterZone);
-            switch (a)
-            {
-                case 0:
-                    tile.CreateWaterArea(0);
-                    break;
-                case 1:
-                    tile.CreateWaterArea(1);
-                    break;
-                case 2:
-                    tile.CreateWaterArea(2);
-                    break;
-            }
-        }*/
-
         for (var i = 0; i < countWaterZone; i++)
         {
             var randomTile = _generatedTiles[_generatedTiles.Keys.ToList()[Random.Range(0, _generatedTiles.Keys.ToList().Count)]];
             randomTile.CreateWaterArea(Random.Range(0, 2));
+        }
+        
+        UpdateWaterVisual();
+    }
+    
+    [Button()]
+    private void UpdateWaterVisual()
+    {
+        foreach (var tile in _generatedTiles.Values.ToList().Where(tile => tile.tileType == Tile.TileType.Water))
+        {
+            tile.SetWaterTile();
         }
     }
 
