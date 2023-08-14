@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Gameplay.SO;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +25,7 @@ public class Home : MonoBehaviour
     [SerializeField] private Transform blockParent;
     private List<UnitController> _unitList;
     private HomeInfo _homeInfo;
+    private HomeCreator _homeCreator;
     private int _boardRad;
     
     private int _homeLevel = 0;
@@ -36,27 +38,76 @@ public class Home : MonoBehaviour
     public void Init(CivilisationController controller, Tile tile)
     {
         homeTile = tile;
-        transform.position = homeTile.GetRectTransform().position;
-        transform.SetSiblingIndex(transform.GetSiblingIndex()-2);
-        _unitList = new List<UnitController>();
+        SetHomePos();
+        
+        _unitList ??= new List<UnitController>();
         if (controller != null)
         {
             _homeInfo = controller.civilisationInfo.Home;
+            InitHomeCreator();
+            
             SetOwner(controller);
+            
+            InitBlockScrollView();
+            
+            if(!controller.homes.Contains(this))
+                controller.homes.Add(this);
+            
+            UpdateVisual();
+            
+            InitHome();
+            
+            LevelManager.Instance.gameplayWindow.OnUnitSpawn += BuyUnit;
+            BuyStartUnit();
+        }
+        else
+        {
+            InitVillage();
+        }
+
+        occupyButton.onClick.RemoveAllListeners();
+        occupyButton.onClick.AddListener(OccupyHome);
+
+        #region InitFunc
+        
+        void SetHomePos()
+        {
+            transform.position = homeTile.GetRectTransform().position;
+            transform.SetSiblingIndex(transform.GetSiblingIndex()-2);
+        }
+
+        void InitHomeCreator()
+        {
+            _homeCreator = GetComponent<HomeCreator>();
+            GetComponent<Image>().enabled = false;
+            if (_isCapital)
+            {
+                _homeCreator.CreateCapital();
+                UpdateVisual();
+            }
+            else
+            {
+                _homeCreator.CreateHome();
+                UpdateVisual();
+            }
+        }
+
+        void InitBlockScrollView()
+        {
             blockScrollView.transform.SetParent(LevelManager.Instance.gameBoardWindow.GetUIParent());
             blockScrollView.SetActive(true);
             if(controller.civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
                 blockScrollView.SetActive(false);
-            if(!controller.homes.Contains(this))
-                controller.homes.Add(this);
-            if (_homeLevel >= 0 && _homeLevel < _homeInfo.homeSprites.Count)
-                UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
+        }
+
+        void InitHome()
+        {
             _boardRad = 1;
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, _boardRad);
             homeTile.BuildHome(this);
             foreach (var ti in tiles)
             {
-                if(ti.GetOwner() != null)
+                if(ti.GetOwner() != null && ti.GetOwner() != this)
                     continue;
                 ti.SetOwner(this);
                 ti.ChangeTileVisual(this);
@@ -68,18 +119,17 @@ public class Home : MonoBehaviour
             {
                 til1e.ChangeHomeBoards();
             }
-            LevelManager.Instance.gameplayWindow.OnUnitSpawn += BuyUnit;
-            BuyStartUnit();
         }
-        else
+
+        void InitVillage()
         {
+            GetComponent<Image>().enabled = true;
             _isCapital = false;
             homeTile.BuildHome(this);
             blockScrollView.SetActive(false);
         }
-
-        occupyButton.onClick.RemoveAllListeners();
-        occupyButton.onClick.AddListener(OccupyHome);
+        
+        #endregion
     }
     
     public void SelectHome()
@@ -135,6 +185,7 @@ public class Home : MonoBehaviour
         for (var i = _unitList.Count - 1; i >= 0; i--)
         {
             var unit = _unitList[i];
+            unit.SetOwner(null);
             RemoveUnit(unit);
         }
 
@@ -148,22 +199,22 @@ public class Home : MonoBehaviour
         AddUnit(homeTile.unitOnTile);
     }
 
-    public void UpdateVisual(Sprite sprite)
+    public void UpdateVisual()
     {
-        homeImage.sprite = sprite;
-        
+        _homeCreator.UpdateVisual(_homeInfo);
     }
 
     public List<UnitController> GetUnitList()
     {
         return _unitList;
     }
-
+    
     private void OnDestroy()
     {
         LevelManager.Instance.gameplayWindow.OnUnitSpawn -= BuyUnit;
     }
     
+    [Button()]
     private void LeveUp()
     {
         var block = Instantiate(centerBlockPrefab, blockParent);
@@ -172,11 +223,14 @@ public class Home : MonoBehaviour
         RemoveAllFood();
         _foodCount = 0;
         _foodFromNextLvl++;
+        
         _homeLevel++;
-        _unitCapacity++;
         ChangeIncome(1);
-        if (_homeLevel < _homeInfo.homeSprites.Count)
-            UpdateVisual(_homeInfo.homeSprites[_homeLevel]);
+        
+        _unitCapacity++;
+        
+        _homeCreator.LevelUpHome();
+        UpdateVisual();
         
         void RemoveAllFood()
         {
@@ -281,7 +335,8 @@ public class Home : MonoBehaviour
         
         
         var unitObject = Instantiate(unitPrefabs[randUnit], LevelManager.Instance.gameBoardWindow.GetUnitParent());
-        unitObject.gameObject.SetActive(false);
+        if(!homeTile.isOpened)
+            unitObject.gameObject.SetActive(false);
         var unit = unitObject.GetComponent<UnitController>();
         unit.aiName = "unit" + Random.Range(0, 1000000);
         unit.Init(this, homeTile, 0);

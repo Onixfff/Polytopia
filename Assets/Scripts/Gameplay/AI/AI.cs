@@ -63,7 +63,8 @@ public class AI : MonoBehaviour
 
         if (_allUnits.Count == 0)
         {
-            EndTurn();
+            var val = 0;
+            DOTween.To(() => val, x => x = val, 1, 0.01f).OnComplete(EndTurn);
         }
     }
 

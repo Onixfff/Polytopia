@@ -15,3 +15,6 @@ MonoBehaviour:
   homes:
   - {fileID: 21300000, guid: f0649e15a34f58f46aca2f8d6211c9ac, type: 3}
   - {fileID: 21300000, guid: f673e6f9a76cdd84cb8c91f760c57c9f, type: 3}
+  capitalHomePrefab: {fileID: 21300000, guid: 1b4d53f7e15193f49970667cf89f1599, type: 3}
+  home1Prefab: {fileID: 21300000, guid: 6cb628afc821aa94eb47a26bebcfbac4, type: 3}
+  home2Prefab: {fileID: 21300000, guid: bedd417b658e49c4fb8c2a12d37013be, type: 3}

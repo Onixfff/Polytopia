@@ -395,7 +395,6 @@ public class Tile : MonoBehaviour
         SetOwner(home);
         ChangeTileVisual(home);
         
-
         if (treeTileImage != null) Destroy(treeTileImage.gameObject);
         if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
         if (animalTileImage != null) Destroy(animalTileImage.gameObject);
@@ -430,9 +429,7 @@ public class Tile : MonoBehaviour
         LevelManager.Instance.gameplayWindow.OnTileTech -= BuyTileTech;
         _timeTargetSeq.Kill();
     }
-
     
-
     private void GetInfoTile()
     {
         OnClickOnTile?.Invoke(this);

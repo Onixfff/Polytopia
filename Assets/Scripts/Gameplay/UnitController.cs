@@ -39,7 +39,6 @@ public class UnitController : MonoBehaviour
     private UnitController _unitInTheShip;
     private Home _owner;
     private bool _isCanSelected = true;
-    private bool _isSelected;
     private int _moveThisTurn = 1;
     private int _attackThisTurn = 1;
     private float _hp;
@@ -76,7 +75,7 @@ public class UnitController : MonoBehaviour
         _hp = unitInfo.hp;
         unitHpTMPro.text = _hp.ToString();
         
-        if(owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
+        if(owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI && !occupiedTile.isOpened)
             gameObject.SetActive(false);
     }
 
@@ -147,7 +146,6 @@ public class UnitController : MonoBehaviour
     {
         if(!_isCanSelected) return;
 
-        _isSelected = true;
         LevelManager.Instance.SelectObject(gameObject);
         if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI) 
             return;
@@ -209,8 +207,8 @@ public class UnitController : MonoBehaviour
     public void SetOwner(Home controller)
     {
         _owner = controller;
-        if (headImage != null) headImage.sprite = controller.owner.civilisationInfo.HeadSprite;
-        if (horseImage != null) horseImage.sprite = controller.owner.civilisationInfo.AnimalSprite;
+        if (headImage != null && controller != null) headImage.sprite = controller.owner.civilisationInfo.HeadSprite;
+        if (horseImage != null && controller != null) horseImage.sprite = controller.owner.civilisationInfo.AnimalSprite;
         foreach (var unitBackGround in unitBackGrounds)
         {
             unitBackGround.color = controller.owner.civColor;
@@ -331,7 +329,6 @@ public class UnitController : MonoBehaviour
         
         if (pastO == gameObject)
         {
-            DeselectUnit();
             if (_attackThisTurn > 0)
             {
                 if (currO != null && pastO != null && currO.TryGetComponent(out UnitController unit1) && pastO.TryGetComponent(out UnitController unit2) && pastO != currO)
@@ -362,7 +359,6 @@ public class UnitController : MonoBehaviour
         if (unitToAttack._owner.owner == _owner.owner)
             return _attSeq;
         var pos = transform.position;
-        DeselectUnit();
         var rad = 1;
         if (attackType == AttackType.Range)
             rad = unitInfo.rad;
@@ -536,11 +532,6 @@ public class UnitController : MonoBehaviour
         }
         return bonus;
     }
-    
-    private void DeselectUnit()
-    {
-        _isSelected = false;
-    }
 
     private void KillUnit()
     {
@@ -560,6 +551,8 @@ public class UnitController : MonoBehaviour
         sv1 = sweats[1].localPosition;
         sv2 = sweats[2].localPosition;
     }
+
+    private Tween _sweatDot;
     
     [Button()]
     public void SweatingAnimationEnable()
@@ -604,8 +597,10 @@ public class UnitController : MonoBehaviour
             }
 
             var inVAl = 0f;
-            DOTween.To(() => inVAl, x => x = inVAl, 1, sweatyDur + 0.1f).OnComplete((() =>
+            _sweatDot = DOTween.To(() => inVAl, x => x = inVAl, 1, sweatyDur + 0.1f).OnComplete((() =>
             {
+                if(_sweatDot == null)
+                    _sweatDot.Kill();
                 foreach (var sweat in sweats)
                 {
                     sweat.gameObject.SetActive(false);

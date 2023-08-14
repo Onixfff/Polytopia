@@ -277,6 +277,7 @@ public class GameplayWindow : BaseWindow
 
     private void TurnBegin()
     {
+        Debug.Log("TurnBegin");
         BlockInput(false);
         ShowTurnBegin();
         currentTurnUGUI.text = "Ход: " + LevelManager.Instance.currentTurn;
@@ -284,6 +285,7 @@ public class GameplayWindow : BaseWindow
     
     private void TurnEnd()
     {
+        Debug.Log("TurnEnd");
         BlockInput(true);
         ShowTurnEnd();
         HideDownBar();

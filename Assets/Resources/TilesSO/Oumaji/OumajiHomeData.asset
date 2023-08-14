@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   homes:
   - {fileID: 21300000, guid: 6b30465fd65fcee4daae9bd6fe7bd3e1, type: 3}
+  capitalHomePrefab: {fileID: 21300000, guid: b48d4f14fe10ab5428c1d9ad93327e00, type: 3}
+  home1Prefab: {fileID: 21300000, guid: 3edbfadd966ef684ebb53d426ff34962, type: 3}
+  home2Prefab: {fileID: 21300000, guid: 5c67f1f2aa4cdc5469d745f1ef161eef, type: 3}

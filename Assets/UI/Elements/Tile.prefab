@@ -415,7 +415,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.8, y: 18.5}
+  m_AnchoredPosition: {x: 0, y: 25}
   m_SizeDelta: {x: 70, y: 54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2192175119692300218
@@ -773,10 +773,10 @@ RectTransform:
   - {fileID: 2932965677815097784}
   - {fileID: 2179674895143730189}
   - {fileID: 8952264373384130873}
-  - {fileID: 365094536065073522}
-  - {fileID: 189744754186906519}
   - {fileID: 8215788148224867196}
   - {fileID: 894828274119266989}
+  - {fileID: 365094536065073522}
+  - {fileID: 189744754186906519}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -836,13 +836,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitOnTile: {fileID: 0}
-  isSelected: 0
   isHasMountain: 0
   tileType: 0
-  homeOnTile: {fileID: 0}
   isOpened: 0
-  isExplored: 0
-  isExploredFrom: {fileID: 0}
   groundImage: {fileID: 2212580032476123589}
   fruitTileImage: {fileID: 5319610085945656495}
   treeTileImage: {fileID: 8530587118219721790}
