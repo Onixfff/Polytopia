@@ -3,19 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurHomeData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurHomeData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaHome.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaHome.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumHomeData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumHomeData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiHomeData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiHomeData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/EconomicManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/EconomicManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/HomeCreator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/HomeCreator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/LevelManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/LevelManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/HomeInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/HomeInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/AlertWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/AlertWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Center.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Center.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/AlertWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/AlertWindow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +117,7 @@
       <workItem from="1691739434950" duration="18612000" />
       <workItem from="1691826350821" duration="18065000" />
       <workItem from="1692002365475" duration="21509000" />
-      <workItem from="1692085296485" duration="4771000" />
+      <workItem from="1692085296485" duration="5467000" />
     </task>
     <servers />
   </component>

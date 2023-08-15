@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,13 @@ public class AlertWindow : BaseWindow
 
     public void HomeLevelUp(Home home, int level)
     {
-        homeLevelUp[level].SetActive(true);
+        if(level < homeLevelUp.Count)
+            homeLevelUp[level].SetActive(true);
+        else
+        {
+            homeLevelUp.Last().SetActive(true);
+            level = homeLevelUp.Count - 1;
+        }
 
         homeLevelUp[level].transform.GetChild(0).GetComponent<Button>().onClick.RemoveAllListeners();
         homeLevelUp[level].transform.GetChild(0).GetComponent<Button>().onClick.AddListener((() =>
@@ -34,6 +41,7 @@ public class AlertWindow : BaseWindow
             {
                 home.BuildPark();
             }
+            HideWindow();
         }));
         homeLevelUp[level].transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
         homeLevelUp[level].transform.GetChild(1).GetComponent<Button>().onClick.AddListener((() =>
@@ -54,6 +62,7 @@ public class AlertWindow : BaseWindow
             {
                 home.CreateSuperUnit();
             }
+            HideWindow();
         }));
     }
 }

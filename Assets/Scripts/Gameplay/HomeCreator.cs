@@ -52,7 +52,7 @@ public class HomeCreator : MonoBehaviour
     public void CreateForge()
     {
         var randParent = Random.Range(0, homePositions.Count);
-        var parent = homePositions[randParent].GetComponent<RectTransform>();
+        var parent = homePositions[7].GetComponent<RectTransform>();
         var forge = Instantiate(forgeHomePrefab, parent).GetComponent<RectTransform>();
         forge.anchoredPosition = Vector2.zero;
         if (parent.childCount > 1)
@@ -66,7 +66,7 @@ public class HomeCreator : MonoBehaviour
     public void CreatePark()
     {
         var randParent = Random.Range(0, homePositions.Count);
-        var parent = homePositions[randParent].GetComponent<RectTransform>();
+        var parent = homePositions[6].GetComponent<RectTransform>();
         var park = Instantiate(parkHomePrefab, parent).GetComponent<RectTransform>();
         park.anchoredPosition = Vector2.zero;
         if (parent.childCount > 1)

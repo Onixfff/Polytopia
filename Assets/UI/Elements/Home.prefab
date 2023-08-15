@@ -1455,7 +1455,6 @@ MonoBehaviour:
   centerBlockPrefab: {fileID: 3735034503627028181, guid: 36ee220bd64e54a46b32d3265b5ae1f2, type: 3}
   blockScrollView: {fileID: 3871750023425239144}
   blockParent: {fileID: 5830053041257017267}
-  exploringUnit: {fileID: 0}
 --- !u!114 &7381656535337510055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1479,6 +1478,8 @@ MonoBehaviour:
   - {fileID: 1159973172544693014}
   - {fileID: 9013562332971369639}
   capitalHomePrefab: {fileID: 5067666577338710947, guid: e9e9e4521aeaae94abfd7c311204c70f, type: 3}
+  forgeHomePrefab: {fileID: 5067666577338710947, guid: 5a8c50ee08b3dac45b1cef16181209b9, type: 3}
+  parkHomePrefab: {fileID: 5067666577338710947, guid: e24cb17f1f002644a83c1b7684d7dae7, type: 3}
   home1Prefab: {fileID: 4806034508240114545, guid: 947e5fc5242adb240bd7cd6c826b72bb, type: 3}
   home2Prefab: {fileID: 6482281747120493085, guid: 7c4f2ae7fbeb9764e93f3089ea10154a, type: 3}
 --- !u!1 &6728218314678830947
