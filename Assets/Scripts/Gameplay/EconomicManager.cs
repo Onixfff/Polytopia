@@ -4,7 +4,10 @@ public class EconomicManager : Singleton<EconomicManager>
 {
     private int _money;
     private int _aiMoney;
+    private int _point;
+    private int _aiPoint;
     public event Action OnMoneyChanged;
+    public event Action OnPointChanged;
     
     public int Money
     {
@@ -22,6 +25,22 @@ public class EconomicManager : Singleton<EconomicManager>
         private set => _aiMoney = value;
     }
     
+    public int Point
+    {
+        get => _point;
+        private set
+        {
+            _point = value;
+            OnPointChanged?.Invoke();
+        }
+    }
+    
+    public int AIPoint
+    {
+        get => _aiPoint;
+        private set => _aiPoint = value;
+    }
+    
     public void BuySomething(int cost)
     {
         Money -= cost;
@@ -37,6 +56,11 @@ public class EconomicManager : Singleton<EconomicManager>
         Money += count;
     }
     
+    public void AddPoint(int count)
+    {
+        Point += count;
+    }
+    
     public bool IsAICanBuy(int cost)
     {
         return AIMoney >= cost;
@@ -50,5 +74,10 @@ public class EconomicManager : Singleton<EconomicManager>
     public void AddAIMoney(int count)
     {
         AIMoney += count;
+    }
+    
+    public void AddAIPoint(int count)
+    {
+        AIPoint += count;
     }
 }

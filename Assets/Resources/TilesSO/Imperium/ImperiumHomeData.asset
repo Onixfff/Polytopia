@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e3e618ee714af094a4192b12030719, type: 3}
   m_Name: ImperiumHomeData
   m_EditorClassIdentifier: 
-  homes:
-  - {fileID: 21300000, guid: 547983bd53935dc4e933e5db4c18642f, type: 3}
-  - {fileID: 21300000, guid: f673e6f9a76cdd84cb8c91f760c57c9f, type: 3}
-  capitalHomePrefab: {fileID: 21300000, guid: 36553c81662bfd24494f7dde45d365e4, type: 3}
-  home1Prefab: {fileID: 21300000, guid: 2e4c3af1e6c977c479985607fde4d8a5, type: 3}
-  home2Prefab: {fileID: 21300000, guid: 36eb07168eaad7a4da534933fc4c5acf, type: 3}
+  capitalHomeSprite: {fileID: 21300000, guid: 36553c81662bfd24494f7dde45d365e4, type: 3}
+  forgeHomeSprite: {fileID: 21300000, guid: 9b7f98eccba976543ac0d23226b39b24, type: 3}
+  parkHomeSprite: {fileID: 21300000, guid: 89c9bd72264e5d344a82db3dedcd380e, type: 3}
+  home1Sprite: {fileID: 21300000, guid: 2e4c3af1e6c977c479985607fde4d8a5, type: 3}
+  home2Sprite: {fileID: 21300000, guid: 36eb07168eaad7a4da534933fc4c5acf, type: 3}

@@ -4,14 +4,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "HomeData", menuName = "ScriptableObjects/CreateHomeData", order = 0)] 
 public class HomeInfo : ScriptableObject
 {
-    [SerializeField] private List<Sprite> homes;
-    public List<Sprite> homeSprites => homes;
+    [SerializeField] private Sprite capitalHomeSprite;
+    [SerializeField] private Sprite forgeHomeSprite;
+    [SerializeField] private Sprite parkHomeSprite;
+    [SerializeField] private Sprite home1Sprite;
+    [SerializeField] private Sprite home2Sprite;
     
-    [SerializeField] private Sprite capitalHomePrefab;
-    [SerializeField] private Sprite home1Prefab;
-    [SerializeField] private Sprite home2Prefab;
-    
-    public Sprite CapitalHomePrefab => capitalHomePrefab;
-    public Sprite Home1Prefab => home1Prefab;
-    public Sprite Home2Prefab => home2Prefab;
+    public Sprite CapitalHomeSprite => capitalHomeSprite;
+    public Sprite ForgeHomeSprite => forgeHomeSprite;
+    public Sprite ParkHomeSprite => parkHomeSprite;
+    public Sprite Home1Sprite => home1Sprite;
+    public Sprite Home2Sprite => home2Sprite;
 }

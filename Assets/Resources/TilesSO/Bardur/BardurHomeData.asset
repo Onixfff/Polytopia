@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e3e618ee714af094a4192b12030719, type: 3}
   m_Name: BardurHomeData
   m_EditorClassIdentifier: 
-  homes:
-  - {fileID: 21300000, guid: 6775c3d2c84cc984fa54732831a0ccb8, type: 3}
-  capitalHomePrefab: {fileID: 21300000, guid: dda5bb6665ab47b4da8f7dd482b851fc, type: 3}
-  home1Prefab: {fileID: 21300000, guid: 2e594d8521d18cb41af9f78f8d5ad872, type: 3}
-  home2Prefab: {fileID: 21300000, guid: 7c2c8d5092dbdaf458eb050c9b1f746a, type: 3}
+  capitalHomeSprite: {fileID: 21300000, guid: dda5bb6665ab47b4da8f7dd482b851fc, type: 3}
+  forgeHomeSprite: {fileID: 21300000, guid: 9b7f98eccba976543ac0d23226b39b24, type: 3}
+  parkHomeSprite: {fileID: 21300000, guid: 89c9bd72264e5d344a82db3dedcd380e, type: 3}
+  home1Sprite: {fileID: 21300000, guid: 2e594d8521d18cb41af9f78f8d5ad872, type: 3}
+  home2Sprite: {fileID: 21300000, guid: 7c2c8d5092dbdaf458eb050c9b1f746a, type: 3}

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e3e618ee714af094a4192b12030719, type: 3}
   m_Name: OumajiHomeData
   m_EditorClassIdentifier: 
-  homes:
-  - {fileID: 21300000, guid: 6b30465fd65fcee4daae9bd6fe7bd3e1, type: 3}
-  capitalHomePrefab: {fileID: 21300000, guid: b48d4f14fe10ab5428c1d9ad93327e00, type: 3}
-  home1Prefab: {fileID: 21300000, guid: 3edbfadd966ef684ebb53d426ff34962, type: 3}
-  home2Prefab: {fileID: 21300000, guid: 5c67f1f2aa4cdc5469d745f1ef161eef, type: 3}
+  capitalHomeSprite: {fileID: 21300000, guid: b48d4f14fe10ab5428c1d9ad93327e00, type: 3}
+  forgeHomeSprite: {fileID: 21300000, guid: 9b7f98eccba976543ac0d23226b39b24, type: 3}
+  parkHomeSprite: {fileID: 21300000, guid: 89c9bd72264e5d344a82db3dedcd380e, type: 3}
+  home1Sprite: {fileID: 21300000, guid: 3edbfadd966ef684ebb53d426ff34962, type: 3}
+  home2Sprite: {fileID: 21300000, guid: 5c67f1f2aa4cdc5469d745f1ef161eef, type: 3}

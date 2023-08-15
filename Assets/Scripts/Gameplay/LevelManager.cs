@@ -10,6 +10,7 @@ public class LevelManager : SingletonPersistent<LevelManager>
     public Action<TechInfo.Technology> OnUnlockTechnology;
     public Action OnTurnBegin;
     public Action OnTurnEnd;
+    public Action<Home, int> OnHomeLevelUp;
     public int currentTurn = 0;
     
     public GameBoardWindow gameBoardWindow;

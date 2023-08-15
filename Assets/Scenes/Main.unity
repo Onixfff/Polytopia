@@ -263,14 +263,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTurn: 0
-  currentIncome: 2
   gameBoardWindow: {fileID: 0}
   gameplayWindow: {fileID: 0}
-  _selectedObject: {fileID: 0}
   currentName: 
   waterSprites:
   - {fileID: 21300000, guid: ff2bce772e898184089e150d88c4c62f, type: 3}
   - {fileID: 21300000, guid: e8677796cdb81984c8d09cbcddc93032, type: 3}
+  selectedObject: {fileID: 0}
 --- !u!4 &668022219
 Transform:
   m_ObjectHideFlags: 0
@@ -445,6 +444,7 @@ MonoBehaviour:
   - {fileID: 4908208766553431335, guid: 524723e32500343428f8d129c6c17e9f, type: 3}
   - {fileID: 8906737881835571937, guid: 3182526b733f53247814ccaec0dff14f, type: 3}
   - {fileID: 8906737881835571937, guid: 2d9c6c18c68e9e54391d16c38fb23243, type: 3}
+  - {fileID: 4104317846584801518, guid: 1c001b800b29a914ebdf6e5c0c569caa, type: 3}
 --- !u!1 &1144879495
 GameObject:
   m_ObjectHideFlags: 0
