@@ -17,6 +17,7 @@ public class GameplayWindow : BaseWindow
         Animal,
         Tree,
         Fish,
+        Whale,
         Ground,
         Water,
         Construct
@@ -56,7 +57,14 @@ public class GameplayWindow : BaseWindow
     
     public void UnlockTileTech(int techIndex)
     {
-        _openedTileTechButtons ??= new List<Button>(){null, null, null, null, null, null, null, null, null, null};
+        _openedTileTechButtons ??= new List<Button>
+        {
+            null, null, null, null, null, 
+            null, null, null, null, null, 
+            null, null, null, null, null, 
+            null, null, null, null, null, 
+            null, null, null, null, null
+        };
         _openedTileTechButtons.Insert(techIndex, tileTechButtons[techIndex]);
         tileTechButtons[techIndex].gameObject.SetActive(true);
         tileTechButtons[techIndex].onClick.AddListener((() =>

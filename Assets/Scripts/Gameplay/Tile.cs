@@ -480,20 +480,24 @@ public class Tile : MonoBehaviour
                 if (!EconomicManager.Instance.IsCanBuy(2)) 
                     return;
                 EconomicManager.Instance.BuySomething(2);
-                BuyAnimal();
-                _tileName = "Ground";
-
+                BuyFish();
+                _tileName = "Water";
                 break;
             case 2:
                 if (!EconomicManager.Instance.IsCanBuy(2)) 
                     return;
                 EconomicManager.Instance.BuySomething(2);
-                BuyFish();
-                _tileName = "Water";
-
+                BuyAnimal();
+                _tileName = "Ground";
                 break;
             case 3:
-               
+                if (!EconomicManager.Instance.IsCanBuy(2)) 
+                    return;
+                EconomicManager.Instance.BuySomething(2);
+                //BuyAnimal(); Roads
+                
+                break;
+            case 4:
                 if (_techTypes.TrueForAll(tech => tech == GameplayWindow.OpenedTechType.Ground))
                 {
                     if (!EconomicManager.Instance.IsCanBuy(10)) 
@@ -505,21 +509,6 @@ public class Tile : MonoBehaviour
                     freeTileImage.enabled = true;
                     freeTileImage.gameObject.SetActive(true);
                     _tileName = "Ground";
-                    _owner.GetFood(2);
-                }
-                break;
-            case 4:
-                
-                if (_techTypes.Contains(GameplayWindow.OpenedTechType.Water))
-                {
-                    if (!EconomicManager.Instance.IsCanBuy(10)) 
-                        return;
-                    EconomicManager.Instance.BuySomething(10);
-                    if (fishTileImage != null) Destroy(fishTileImage.gameObject);
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.PortSprite;
-                    freeTileImage.enabled = true;
-                    freeTileImage.gameObject.SetActive(true);
-                    _tileName = "Port";
                     _owner.GetFood(2);
                 }
                 break;
@@ -551,8 +540,108 @@ public class Tile : MonoBehaviour
                     _owner.GetFood(2);
                 }
                 break;
+            case 7:
+                if (_techTypes.Contains(GameplayWindow.OpenedTechType.Ground) && isHasMountain)
+                {
+                    if (!EconomicManager.Instance.IsCanBuy(5)) 
+                        return;
+                    EconomicManager.Instance.BuySomething(5);
+                    if (animalTileImage != null) Destroy(animalTileImage.gameObject);
+                    if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
+                    miningImage.sprite = _owner.owner.civilisationInfo.ChurchSprite;
+                    _tileName = "MountainChurch";
+                    _owner.GetFood(1);
+                }
+                break;
+            case 8:
+                if (_techTypes.Contains(GameplayWindow.OpenedTechType.Water))
+                {
+                    if (!EconomicManager.Instance.IsCanBuy(10)) 
+                        return;
+                    EconomicManager.Instance.BuySomething(10);
+                    if (fishTileImage != null) Destroy(fishTileImage.gameObject);
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.PortSprite;
+                    freeTileImage.enabled = true;
+                    freeTileImage.gameObject.SetActive(true);
+                    _tileName = "Port";
+                    _owner.GetFood(2);
+                }
+                break;
+            case 9:
+                
+                if (!EconomicManager.Instance.IsCanBuy(2)) 
+                    return;
+                EconomicManager.Instance.BuySomething(2);
+                BuyFruit();
+                _tileName = "Ground";
+                break;
+            case 10:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
+            case 11:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
+            case 12:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
+            case 13:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
+            case 14:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
+            case 15:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
+            case 16:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
+            case 17:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
+            case 18:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
+            case 19:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
+            case 20:
+                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                    return;
+                EconomicManager.Instance.BuySomething(5);
+                _owner.GetFood(2);
+                break;
         }
-        
     }
 
     public void CreateWaterArea(int waterRad)
@@ -680,5 +769,4 @@ public class Tile : MonoBehaviour
     }
 
     #endregion
-    
 }

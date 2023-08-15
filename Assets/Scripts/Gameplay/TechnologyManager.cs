@@ -41,7 +41,6 @@ public class TechnologyManager : MonoBehaviour
 
     private void Start()
     {
-        
         #region Rider
         ridingButton.onClick.AddListener(() =>
         {
@@ -49,6 +48,22 @@ public class TechnologyManager : MonoBehaviour
             {
                 UnlockButtons(ridingButton, new List<Button>(){freeSpiritButton, roadsButton});
                 RidingTech();
+            }
+        });
+        roadsButton.onClick.AddListener(() =>
+        {
+            if(TryBuyTech(priceTwoTier))
+            {
+                UnlockButtons(roadsButton, new List<Button>(){tradeButton});
+                RoadsTech();
+            }
+        });
+        tradeButton.onClick.AddListener(() =>
+        {
+            if(TryBuyTech(priceThreeTier))
+            {
+                UnlockButtons(tradeButton);
+                TradeTech();
             }
         });
         freeSpiritButton.onClick.AddListener(() =>
@@ -83,6 +98,14 @@ public class TechnologyManager : MonoBehaviour
             {
                 UnlockButtons(farmingButton, new List<Button>(){constructButton});
                 FarmingTech();    
+            }
+        });
+        constructButton.onClick.AddListener(() =>
+        {
+            if(TryBuyTech(priceThreeTier))
+            {
+                UnlockButtons(constructButton);
+                ConstructionTech();    
             }
         });
         strategyButton.onClick.AddListener((() =>
@@ -162,6 +185,30 @@ public class TechnologyManager : MonoBehaviour
                 SailingTech();
             }
         }));
+        navigationButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priceThreeTier))
+            {
+                UnlockButtons(navigationButton);
+                NavigationTech();
+            }
+        }));
+        whalingButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priceTwoTier))
+            {
+                UnlockButtons(whalingButton, new List<Button>(){aquaButton});
+                WhalingTech();
+            }
+        }));
+        aquaButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priceThreeTier))
+            {
+                UnlockButtons(aquaButton);
+                AquatismTech();
+            }
+        }));
         #endregion
         #region Hunt
         huntingButton.onClick.AddListener((() =>
@@ -176,8 +223,24 @@ public class TechnologyManager : MonoBehaviour
         {
             if(TryBuyTech(priceTwoTier))
             {
-                UnlockButtons(archeryButton, new List<Button>(){mathematicsButton});
+                UnlockButtons(archeryButton, new List<Button>(){spiritualismButton});
                 ArcheryTech();
+            }
+        }));
+        spiritualismButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priceThreeTier))
+            {
+                UnlockButtons(spiritualismButton);
+                SpiritualismTech();
+            }
+        }));
+        forestryButton.onClick.AddListener((() =>
+        {
+            if(TryBuyTech(priceTwoTier))
+            {
+                UnlockButtons(forestryButton, new List<Button>(){mathematicsButton});
+                ForestryTech();
             }
         }));
         mathematicsButton.onClick.AddListener((() =>
@@ -218,18 +281,25 @@ public class TechnologyManager : MonoBehaviour
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Rider);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(3);
     }
-    /*private void RoadsTech()
+    private void RoadsTech()
     {
-        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Rider);
-    }*/
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Roads);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(3);
+    }
+    private void TradeTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Trade);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(12);
+    }
     private void FreeSpiritTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.FreeSpirit);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(3);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(4);
     }
     private void ChivalryTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Chivalry);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(13);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(8);
     }
     
@@ -244,6 +314,12 @@ public class TechnologyManager : MonoBehaviour
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Farming);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(5);
+    }
+    private void ConstructionTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Construction);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(14);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(15);
     }
     private void StrategyTech()
     {
@@ -272,11 +348,12 @@ public class TechnologyManager : MonoBehaviour
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Forge);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(6);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(16);
     }
     private void MeditationTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Meditation);
-        //LevelManager.Instance.gameplayWindow.UnlockTileTech(7);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(7);
     }
     private void PhilosophyTech()
     {
@@ -288,12 +365,27 @@ public class TechnologyManager : MonoBehaviour
     private void FishingTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Fish);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(2);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(1);
     }
     private void SailingTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Sailing);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(4);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(8);
+    }
+    private void NavigationTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Navigation);
+        //LevelManager.Instance.gameplayWindow.UnlockTileTech(4);
+    }
+    private void WhalingTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Whaling);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(9);
+    }
+    private void AquatismTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Aquatism);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(17);
     }
     #endregion
     #region Hunt
@@ -307,10 +399,24 @@ public class TechnologyManager : MonoBehaviour
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Archery);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(1);
     }
+    private void SpiritualismTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Spiritualism);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(18);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(19);
+    }
+    private void ForestryTech()
+    {
+        LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Forestry);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(10);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(11);
+
+    }
     private void MathematicsTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Mathematics);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(7);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(20);
     }
     #endregion
 }

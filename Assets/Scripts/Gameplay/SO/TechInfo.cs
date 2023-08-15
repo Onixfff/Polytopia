@@ -24,7 +24,15 @@ namespace Gameplay.SO
             Forge,
             Philosophy,
             Mathematics,
-            Meditation
+            Meditation,
+            Roads,
+            Trade,
+            Construction,
+            Navigation,
+            Whaling,
+            Aquatism,
+            Spiritualism,
+            Forestry
         }
 
         [SerializeField] private List<Technology> technologiesList;

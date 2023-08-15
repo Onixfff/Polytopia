@@ -3,9 +3,42 @@
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/HomeCreator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/HomeCreator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/AlertWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/AlertWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/TechInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/TechInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechnologyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechnologyManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Farming.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Farming.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Fish.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Fish.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/FogTile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/FogTile.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/ForgeIcon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/ForgeIcon.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/GroundTile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/GroundTile.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/MountChurch.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/MountChurch.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Mountain.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Mountain.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Ore.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Ore.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Port.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Port.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Ruins.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Ruins.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/TradeHouseIcon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/TradeHouseIcon.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Village.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Village.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterDeepTile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterDeepTile.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterTile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterTile.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Whale.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Whale.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/AlertWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/AlertWindow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +150,7 @@
       <workItem from="1691739434950" duration="18612000" />
       <workItem from="1691826350821" duration="18065000" />
       <workItem from="1692002365475" duration="21509000" />
-      <workItem from="1692085296485" duration="5467000" />
+      <workItem from="1692085296485" duration="12041000" />
     </task>
     <servers />
   </component>
