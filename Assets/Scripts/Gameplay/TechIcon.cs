@@ -40,7 +40,7 @@ public class TechIcon : MonoBehaviour
     {
         lineObject.GetComponent<Image>().color = unlockColor;
         if (lockObject != null) lockObject.SetActive(false);
-        techButton.enabled = false;
+        techButton.enabled = true;
     }
 
     public void BuyTech()

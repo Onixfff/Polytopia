@@ -20,7 +20,9 @@ public class GameplayWindow : BaseWindow
         Whale,
         Ground,
         Water,
-        Construct
+        Construct,
+        Crop,
+        DeepWater
     }
     
     [SerializeField] private TextMeshProUGUI currentTurnUGUI;
@@ -62,9 +64,10 @@ public class GameplayWindow : BaseWindow
             null, null, null, null, null, 
             null, null, null, null, null, 
             null, null, null, null, null, 
-            null, null, null, null, null, 
-            null, null, null, null, null
+            null, null, null, null, null,
+            null
         };
+        _openedTileTechButtons.RemoveAt(techIndex);
         _openedTileTechButtons.Insert(techIndex, tileTechButtons[techIndex]);
         tileTechButtons[techIndex].gameObject.SetActive(true);
         tileTechButtons[techIndex].onClick.AddListener((() =>
@@ -99,64 +102,146 @@ public class GameplayWindow : BaseWindow
         {
             tile.gameObject.SetActive(false);            
         }
-        
-        if(types.Contains(OpenedTechType.Construct))
-            return;
-        foreach (var type in types)
+
+        if (types.Contains(OpenedTechType.Construct))
         {
-            if (type == OpenedTechType.Animal)
+            if (controller.technologies.Contains(TechInfo.Technology.Construction))
             {
-                if(_openedTileTechButtons[1] != null)
-                    _openedTileTechButtons[1]?.gameObject.SetActive(true);
+                if (_openedTileTechButtons[15] != null)
+                    _openedTileTechButtons[15].gameObject.SetActive(true);
             }
-            if (type == OpenedTechType.Fruit)
+            return;
+        }
+        
+        if(types.Contains(OpenedTechType.Ground))
+        {
+            if (types.Contains(OpenedTechType.Animal))
+            {
+                if(_openedTileTechButtons[2] != null)
+                    _openedTileTechButtons[2]?.gameObject.SetActive(true);
+            }
+            if (types.Contains(OpenedTechType.Fruit))
             {
                 if(_openedTileTechButtons[0] != null)
                     _openedTileTechButtons[0].gameObject.SetActive(true);
             }
-            if (type == OpenedTechType.Fish)
+            if (types.Contains(OpenedTechType.Fish))
             {
-                if (_openedTileTechButtons[2] != null) 
-                    _openedTileTechButtons[2].gameObject.SetActive(true);
+                if (_openedTileTechButtons[1] != null) 
+                    _openedTileTechButtons[1].gameObject.SetActive(true);
             }
-            if(type == OpenedTechType.Ground)
+            if(types.TrueForAll(ty => ty == OpenedTechType.Ground))
             {
-                if (!tileC.isHasMountain)
+                if (controller.technologies.Contains(TechInfo.Technology.FreeSpirit))
                 {
-                    if(controller.technologies.Contains(TechInfo.Technology.FreeSpirit))
-                    {
-                        if(_openedTileTechButtons[3] != null)
-                            _openedTileTechButtons[3].gameObject.SetActive(true);
-                    }
-                    if(controller.technologies.Contains(TechInfo.Technology.Farming))
-                    {
-                        if (_openedTileTechButtons[5] != null) 
-                            _openedTileTechButtons[5].gameObject.SetActive(true);
-                    }
+                    if (_openedTileTechButtons[4] != null)
+                        _openedTileTechButtons[4].gameObject.SetActive(true);
                 }
-                else
+                if (controller.technologies.Contains(TechInfo.Technology.Trade))
                 {
-                    if(controller.technologies.Contains(TechInfo.Technology.Mining))
-                    {
-                        if(_openedTileTechButtons[6] != null)
-                            _openedTileTechButtons[6].gameObject.SetActive(true);
-                    }
+                    if (_openedTileTechButtons[12] != null)
+                        _openedTileTechButtons[12].gameObject.SetActive(true);
+                }
+                if (controller.technologies.Contains(TechInfo.Technology.Construction))
+                {
+                    if (_openedTileTechButtons[14] != null)
+                        _openedTileTechButtons[14].gameObject.SetActive(true);
+                }
+                if (controller.technologies.Contains(TechInfo.Technology.Forge))
+                {
+                    if (_openedTileTechButtons[16] != null)
+                        _openedTileTechButtons[16].gameObject.SetActive(true);
+                }
+                if (controller.technologies.Contains(TechInfo.Technology.Spiritualism))
+                {
+                    if (_openedTileTechButtons[18] != null)
+                        _openedTileTechButtons[18].gameObject.SetActive(true);
+                }
+                if (controller.technologies.Contains(TechInfo.Technology.Mathematics))
+                {
+                    if (_openedTileTechButtons[20] != null)
+                        _openedTileTechButtons[20].gameObject.SetActive(true);
+                }
+
+            }
+            
+            if (types.Contains(OpenedTechType.Tree))
+            {
+                if (controller.technologies.Contains(TechInfo.Technology.Spiritualism))
+                {
+                    if (_openedTileTechButtons[19] != null)
+                        _openedTileTechButtons[19].gameObject.SetActive(true);
+                }
+                if (controller.technologies.Contains(TechInfo.Technology.Forestry))
+                {
+                    if (_openedTileTechButtons[10] != null)
+                        _openedTileTechButtons[10].gameObject.SetActive(true);
+                    if (_openedTileTechButtons[11] != null)
+                        _openedTileTechButtons[11].gameObject.SetActive(true);
+                }
+                if (controller.technologies.Contains(TechInfo.Technology.Chivalry))
+                {
+                    if (_openedTileTechButtons[13] != null)
+                        _openedTileTechButtons[13].gameObject.SetActive(true);
+                }
+                
+            }
+
+            if (types.Contains(OpenedTechType.Crop))
+            {
+                if (controller.technologies.Contains(TechInfo.Technology.Farming))
+                {
+                    if (_openedTileTechButtons[5] != null)
+                        _openedTileTechButtons[5].gameObject.SetActive(true);
                 }
             }
-            if(type == OpenedTechType.Ground)
+            
+            if (tileC.isHasMountain)
             {
-                if(controller.technologies.Contains(TechInfo.Technology.FreeSpirit) && _openedTileTechButtons[3] != null)
+                if (controller.technologies.Contains(TechInfo.Technology.Mining))
                 {
+                    if (_openedTileTechButtons[6] != null)
+                        _openedTileTechButtons[6].gameObject.SetActive(true);
+                }
+
+                if (controller.technologies.Contains(TechInfo.Technology.Mining))
+                {
+                    if (_openedTileTechButtons[7] != null)
+                        _openedTileTechButtons[7].gameObject.SetActive(true);
+                }
+                return;
+            }
+            
+            if(controller.technologies.Contains(TechInfo.Technology.Roads))
+            {
+                if (_openedTileTechButtons[3] != null)
                     _openedTileTechButtons[3].gameObject.SetActive(true);
-                }
             }
-            if(controller.technologies.Contains(TechInfo.Technology.Sailing) && type == OpenedTechType.Water)
+            return;
+        }
+        if(types.Contains(OpenedTechType.Water))
+        {
+            if (controller.technologies.Contains(TechInfo.Technology.Sailing))
             {
-                if (_openedTileTechButtons[4] != null)
-                {
-                    _openedTileTechButtons[4].gameObject.SetActive(true);
-                }
+                if (_openedTileTechButtons[8] != null)
+                    _openedTileTechButtons[8].gameObject.SetActive(true);
             }
+            if (controller.technologies.Contains(TechInfo.Technology.Aquatism))
+            {
+                if (_openedTileTechButtons[17] != null)
+                    _openedTileTechButtons[17].gameObject.SetActive(true);
+            }
+            return;
+        }
+
+        if (types.Contains(OpenedTechType.DeepWater))
+        {
+            if (controller.technologies.Contains(TechInfo.Technology.Whaling))
+            {
+                if (_openedTileTechButtons[9] != null)
+                    _openedTileTechButtons[9].gameObject.SetActive(true);
+            }
+            return;
         }
     }
     
@@ -258,6 +343,8 @@ public class GameplayWindow : BaseWindow
         LevelManager.Instance.OnTurnBegin += TurnBegin;
 
         LevelManager.Instance.OnObjectSelect += SelectEvent;
+        
+        technologyObject.SetActive(false);
     }
 
     private void OnDestroy()

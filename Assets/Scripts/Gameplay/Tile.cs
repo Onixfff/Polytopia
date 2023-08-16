@@ -17,6 +17,8 @@ public class Tile : MonoBehaviour
     public Action<Tile> OnClickOnTile;
     public UnitController unitOnTile;
     public bool isHasMountain = false;
+    public bool isHasOre = false;
+    public bool isHasCrop = false;
     public bool isHasRuins = false;
     public bool isHasWhale = false;
     public TileType tileType = TileType.Ground;
@@ -26,6 +28,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Image groundImage;
     [SerializeField] private Image fruitTileImage;
     [SerializeField] private Image treeTileImage;
+    [SerializeField] private Image cropTileImage;
     [SerializeField] private Image animalTileImage;
     [SerializeField] private Image mountainTileImage;
     [SerializeField] private Image ruinsTileImage;
@@ -181,9 +184,8 @@ public class Tile : MonoBehaviour
         if(_homeOnTile != null && pastO == _homeOnTile.gameObject && (unitOnTile == null || currO != unitOnTile.gameObject))
             DeselectedHomeOnTile();*/
         
-        if (_owner != null && currO == gameObject)
+        if (_owner != null && currO == gameObject && _homeOnTile == null)
         {
-            
             _techTypes = new List<GameplayWindow.OpenedTechType>();
             if(fruitTileImage != null && fruitTileImage.enabled)
                 _techTypes.Add(GameplayWindow.OpenedTechType.Fruit);
@@ -191,14 +193,23 @@ public class Tile : MonoBehaviour
             if(treeTileImage != null && treeTileImage.enabled)
                 _techTypes.Add(GameplayWindow.OpenedTechType.Tree);
             
+            if(cropTileImage != null && cropTileImage.enabled)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Crop);
+            
             if(animalTileImage != null && animalTileImage.enabled)
                 _techTypes.Add(GameplayWindow.OpenedTechType.Animal);
             
-            if(fishTileImage != null && fishTileImage.enabled)
+            if(fishTileImage != null && fishTileImage.enabled && !isHasWhale)
                 _techTypes.Add(GameplayWindow.OpenedTechType.Fish);
+            
+            if(fishTileImage != null && fishTileImage.enabled && isHasWhale)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Whale);
 
             if(tileType == TileType.Water)
                 _techTypes.Add(GameplayWindow.OpenedTechType.Water);
+            
+            if(tileType == TileType.DeepWater)
+                _techTypes.Add(GameplayWindow.OpenedTechType.DeepWater);
             
             if(tileType == TileType.Ground)
                 _techTypes.Add(GameplayWindow.OpenedTechType.Ground);
@@ -300,11 +311,13 @@ public class Tile : MonoBehaviour
         if(sprite == null || _isHomeOnTile) return;
         treeTileImage.sprite = sprite;
         treeTileImage.enabled = true;
-        
-        if (_tileName != "Ground")
-            _tileName = _tileName + ", " + tileName;
-        else
-            _tileName = tileName;
+    }
+    
+    public void SetCropSprite()
+    {
+        if(_isHomeOnTile) return;
+        cropTileImage.enabled = false;
+        isHasCrop = true;
     }
     
     public void SetPumpkinSprite(Sprite sprite, string tileName)
@@ -312,11 +325,6 @@ public class Tile : MonoBehaviour
         if(sprite == null || _isHomeOnTile) return;
         fruitTileImage.sprite = sprite;
         fruitTileImage.enabled = true;
-        
-        if (_tileName != "Ground")
-            _tileName = _tileName + ", " + tileName;
-        else
-            _tileName = tileName;
     }
     
     public void SetAnimalSprite(Sprite sprite, string tileName)
@@ -324,24 +332,16 @@ public class Tile : MonoBehaviour
         if(sprite == null || _isHomeOnTile) return;
         animalTileImage.sprite = sprite;
         animalTileImage.enabled = true;
-        
-        if (_tileName != "Ground")
-            _tileName = _tileName + ", " + tileName;
-        else
-            _tileName = tileName;
     }
     
-    public void SetMountainSprite(Sprite sprite, string tileName)
+    public void SetMountainSprite(Sprite sprite, string tileName, bool isOre)
     {
         if(sprite == null || _isHomeOnTile) return;
         mountainTileImage.sprite = sprite;
         mountainTileImage.enabled = true;
         mountainTileImage.gameObject.SetActive(false);
         isHasMountain = true;
-        if (_tileName != "Ground")
-            _tileName = _tileName + ", " + tileName;
-        else
-            _tileName = tileName;
+        isHasOre = isOre;
     }
     
     public void SetRuinsSprite(Sprite sprite, string tileName)
@@ -349,10 +349,6 @@ public class Tile : MonoBehaviour
         ruinsTileImage.gameObject.SetActive(false);
         ruinsTileImage.enabled = true;
         isHasRuins = true;
-        if (_tileName != "Ground")
-            _tileName = _tileName + ", " + tileName;
-        else
-            _tileName = tileName;
     }
 
     public void ShowBlueTarget()
@@ -404,6 +400,14 @@ public class Tile : MonoBehaviour
             return;
         miningImage.gameObject.SetActive(true);
         miningImage.enabled = true;
+    }
+    
+    public void ShowCrop()
+    {
+        if (cropTileImage == null) 
+            return;
+        cropTileImage.gameObject.SetActive(true);
+        cropTileImage.enabled = true;
     }
 
     public bool IsCanAttackTo()
@@ -503,11 +507,14 @@ public class Tile : MonoBehaviour
                     if (!EconomicManager.Instance.IsCanBuy(10)) 
                         return;
                     EconomicManager.Instance.BuySomething(10);
+                    
                     if (animalTileImage != null) Destroy(animalTileImage.gameObject);
                     if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.ChurchSprite;
+                    
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[4];
                     freeTileImage.enabled = true;
                     freeTileImage.gameObject.SetActive(true);
+                    
                     _tileName = "Ground";
                     _owner.GetFood(2);
                 }
@@ -518,11 +525,14 @@ public class Tile : MonoBehaviour
                     if (!EconomicManager.Instance.IsCanBuy(10)) 
                         return;
                     EconomicManager.Instance.BuySomething(10);
+                    
                     if (animalTileImage != null) Destroy(animalTileImage.gameObject);
                     if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.FarmSprite;
+                    
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[5];
                     freeTileImage.enabled = true;
                     freeTileImage.gameObject.SetActive(true);
+                    
                     _tileName = "Ground";
                     _owner.GetFood(2);
                 }
@@ -533,9 +543,11 @@ public class Tile : MonoBehaviour
                     if (!EconomicManager.Instance.IsCanBuy(5)) 
                         return;
                     EconomicManager.Instance.BuySomething(5);
+                    
                     if (animalTileImage != null) Destroy(animalTileImage.gameObject);
                     if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    miningImage.sprite = _owner.owner.civilisationInfo.MiningSprite;
+                    miningImage.sprite = _owner.owner.civilisationInfo.BuildSprites[6];
+                    
                     _tileName = "Ground";
                     _owner.GetFood(2);
                 }
@@ -548,7 +560,9 @@ public class Tile : MonoBehaviour
                     EconomicManager.Instance.BuySomething(5);
                     if (animalTileImage != null) Destroy(animalTileImage.gameObject);
                     if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    miningImage.sprite = _owner.owner.civilisationInfo.ChurchSprite;
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[5];
+                    freeTileImage.enabled = true;
+                    freeTileImage.gameObject.SetActive(true);
                     _tileName = "MountainChurch";
                     _owner.GetFood(1);
                 }
@@ -560,7 +574,7 @@ public class Tile : MonoBehaviour
                         return;
                     EconomicManager.Instance.BuySomething(10);
                     if (fishTileImage != null) Destroy(fishTileImage.gameObject);
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.PortSprite;
+                    freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[8];
                     freeTileImage.enabled = true;
                     freeTileImage.gameObject.SetActive(true);
                     _tileName = "Port";
@@ -572,7 +586,13 @@ public class Tile : MonoBehaviour
                 if (!EconomicManager.Instance.IsCanBuy(2)) 
                     return;
                 EconomicManager.Instance.BuySomething(2);
-                BuyFruit();
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[5];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
+                BuyFish();
+                _owner.GetFood(1);
+                _owner.AddStars();
+                _owner.AddStars();
                 _tileName = "Ground";
                 break;
             case 10:
@@ -674,7 +694,18 @@ public class Tile : MonoBehaviour
         if (treeTileImage != null) treeTileImage.gameObject.SetActive(false);
         if (fruitTileImage != null) fruitTileImage.gameObject.SetActive(false);
         if (animalTileImage != null) animalTileImage.gameObject.SetActive(false);
-        if (mountainTileImage != null) mountainTileImage.gameObject.SetActive(false);
+        if (miningImage != null) miningImage.gameObject.SetActive(false);
+        if (mountainTileImage != null)
+        {
+            mountainTileImage.gameObject.SetActive(false);
+            isHasMountain = false;
+            isHasOre = false;
+        }
+        if (cropTileImage != null)
+        {
+            cropTileImage.gameObject.SetActive(false);
+            isHasCrop = false;
+        }
         var board = LevelManager.Instance.gameBoardWindow;
         var tiles = board.GetSideTile(this, 1);
 

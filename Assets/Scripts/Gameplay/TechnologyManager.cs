@@ -309,6 +309,7 @@ public class TechnologyManager : MonoBehaviour
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Gather);
         LevelManager.Instance.gameplayWindow.UnlockTileTech(0);
+        LevelManager.Instance.gameBoardWindow.ShowAllCrop();
     }
     private void FarmingTech()
     {
@@ -392,7 +393,7 @@ public class TechnologyManager : MonoBehaviour
     private void HuntingTech()
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Hunt);
-        LevelManager.Instance.gameplayWindow.UnlockTileTech(1);
+        LevelManager.Instance.gameplayWindow.UnlockTileTech(2);
     }
     private void ArcheryTech()
     {

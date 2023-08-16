@@ -7,13 +7,9 @@ public class AlertWindow : BaseWindow
 {
     [SerializeField] private List<GameObject> homeLevelUp;
     
-    private void Awake()
-    {
-        LevelManager.Instance.OnHomeLevelUp += HomeLevelUp;
-    }
-
     public void HomeLevelUp(Home home, int level)
     {
+        level--;
         if(level < homeLevelUp.Count)
             homeLevelUp[level].SetActive(true);
         else
@@ -25,19 +21,19 @@ public class AlertWindow : BaseWindow
         homeLevelUp[level].transform.GetChild(0).GetComponent<Button>().onClick.RemoveAllListeners();
         homeLevelUp[level].transform.GetChild(0).GetComponent<Button>().onClick.AddListener((() =>
         {
-            if (level == 1)
+            if (level == 0)
             {
                 home.BuildForge();
             }
-            if (level == 2)
+            if (level == 1)
             {
                 home.CreateHomeWall();
             }
-            if (level == 3)
+            if (level == 2)
             {
                 home.AddFood(3);
             }
-            if (level >= 4)
+            if (level >= 3)
             {
                 home.BuildPark();
             }
@@ -46,19 +42,19 @@ public class AlertWindow : BaseWindow
         homeLevelUp[level].transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
         homeLevelUp[level].transform.GetChild(1).GetComponent<Button>().onClick.AddListener((() =>
         {
-            if (level == 1)
+            if (level == 0)
             {
                 home.CreateExplorer();
             }
-            if (level == 2)
+            if (level == 1)
             {
                 home.AddStars();
             }
-            if (level == 3)
+            if (level == 2)
             {
                 home.IncreaseBoarder();
             }
-            if (level >= 4)
+            if (level >= 3)
             {
                 home.CreateSuperUnit();
             }

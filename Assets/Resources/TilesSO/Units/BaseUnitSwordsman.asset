@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fcb8645f3a703d4aa1bdad0f2f276d9, type: 3}
-  m_Name: BaseUnitSwoesman
+  m_Name: BaseUnitSwordsman
   m_EditorClassIdentifier: 
   abilities: 0200000006000000
   unitHp: 15

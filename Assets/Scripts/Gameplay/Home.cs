@@ -18,9 +18,9 @@ public class Home : MonoBehaviour
     public int homeRad = 1;
     public HomeType homeType = HomeType.City;
     [SerializeField] private Button occupyButton;
-    [SerializeField] private Image homeImage;
     [SerializeField] private List<UnitController> unitPrefabs;
     [SerializeField] private List<GameObject> homeFoodBlocks;
+    [SerializeField] private List<GameObject> buildingPrefab;
     [SerializeField] private GameObject centerBlockPrefab;
     [SerializeField] private GameObject blockScrollView;
     [SerializeField] private Transform blockParent;
@@ -162,6 +162,11 @@ public class Home : MonoBehaviour
         return _homeIncomeStars;
     }
 
+    public void BuildABuildingOnATile(Tile tile, int index)
+    {
+        var a = Instantiate(buildingPrefab[index], tile.transform);
+    }
+
     #region LevelUp
     
     public void UpdateVisual()
@@ -223,7 +228,16 @@ public class Home : MonoBehaviour
     
     public void CreateSuperUnit()
     {
-        
+        if (!homeTile.IsTileFree())
+        {
+            var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, 1);
+            var freeTile = closeTile.Find(tile => tile.IsTileFree());
+            homeTile.unitOnTile.MoveToTile(freeTile);
+        }
+        var unitObject = Instantiate(unitPrefabs[9], LevelManager.Instance.gameBoardWindow.GetUnitParent());
+        var unit = unitObject.GetComponent<UnitController>();
+        unit.Init(this, homeTile, 9);
+        AddUnit(unit);
     }
     
     [Button()]

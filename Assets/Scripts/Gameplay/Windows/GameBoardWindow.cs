@@ -44,8 +44,18 @@ public class GameBoardWindow : BaseWindow
         foreach (var vector2Int in _generatedTiles.Keys.ToList())
         {
             var tile = _generatedTiles[vector2Int];
-            if(tile.isHasMountain)
+            if(tile.isHasOre)
                 tile.ShowOre();
+        }
+    }
+    
+    public void ShowAllCrop()
+    {
+        foreach (var vector2Int in _generatedTiles.Keys.ToList())
+        {
+            var tile = _generatedTiles[vector2Int]; 
+            if(tile.isHasCrop)
+                tile.ShowCrop();
         }
     }
 
@@ -197,7 +207,7 @@ public class GameBoardWindow : BaseWindow
             var tile = _generatedTiles[vector2Int];
             if(tile.GetHomeOnTile() != null)
                 continue;
-            var a = Random.Range(0, 9);
+            var a = Random.Range(0, 10);
             switch (a)
             {
                 case 0: 
@@ -214,7 +224,13 @@ public class GameBoardWindow : BaseWindow
                     tile.SetAnimalSprite(defaultCiv.civilisationInfo.AnimalSprite, defaultCiv.civilisationInfo.animalName);
                     break;
                 case 5:
-                    tile.SetMountainSprite(defaultCiv.civilisationInfo.MountainSprite, defaultCiv.civilisationInfo.mountainName);
+                    tile.SetMountainSprite(defaultCiv.civilisationInfo.MountainSprite, defaultCiv.civilisationInfo.mountainName, true);
+                    break;
+                case 6:
+                    tile.SetMountainSprite(defaultCiv.civilisationInfo.MountainSprite, defaultCiv.civilisationInfo.mountainName, false);
+                    break;
+                case 7:
+                    tile.SetCropSprite();
                     break;
                 default:
                     tile.SetTreeSprite(null, defaultCiv.civilisationInfo.groundName);

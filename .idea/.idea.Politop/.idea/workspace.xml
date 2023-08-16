@@ -3,41 +3,48 @@
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/TechInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/TechInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Bardur/BardurPlayerCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaPlayerCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumPlayerCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Oumaji/OumajiPlayerCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitSwoesman.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitSwoesman.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/LevelManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/LevelManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/CivilisationInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/CivilisationInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechIcon.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechIcon.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechnologyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechnologyManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/AlertWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/AlertWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameBoardWindow.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Farming.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Farming.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Fish.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Fish.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/FogTile.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/FogTile.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/ForgeIcon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/ForgeIcon.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/GroundTile.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/GroundTile.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/MountChurch.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/MountChurch.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Mountain.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Mountain.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Ore.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Ore.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Port.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Port.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Ruins.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Ruins.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/TradeHouseIcon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/TradeHouseIcon.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Village.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Village.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterDeepTile.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterDeepTile.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterTile.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/WaterTile.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Whale.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Whale.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/AlertWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/AlertWindow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/BoarderMain.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/BoarderMain.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/CapitalHomeBrick.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/CapitalHomeBrick.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Center.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Center.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/ForgeHomeBrick.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/ForgeHomeBrick.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Home.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/HomeBrick1.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/HomeBrick1.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/HomeBrick2.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/HomeBrick2.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/ParkHomeBrick.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/ParkHomeBrick.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Tile.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Tile.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Village.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Village.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/China/ChinaChurch.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/China/ChinaChurch.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Mining.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Mining.png.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,18 +86,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.1902439&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;rider.run.widget.enabled.cache&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Discover.Launch.Via.Unity": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "XThreadsFramesViewSplitterKey": "0.1902439",
+    "nodejs_package_manager_path": "npm",
+    "rider.run.widget.enabled.cache": "false",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.4f1\Editor\Unity.exe" />
@@ -110,10 +117,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="13184">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="13184" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -150,7 +157,8 @@
       <workItem from="1691739434950" duration="18612000" />
       <workItem from="1691826350821" duration="18065000" />
       <workItem from="1692002365475" duration="21509000" />
-      <workItem from="1692085296485" duration="12041000" />
+      <workItem from="1692085296485" duration="12951000" />
+      <workItem from="1692174475611" duration="13441000" />
     </task>
     <servers />
   </component>
@@ -173,24 +181,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Gameplay/AI/AI.cs</url>
-          <line>73</line>
-          <properties documentPath="C:\Users\Genius_1\Unity\Politop\Assets\Scripts\Gameplay\AI\AI.cs" initialLine="72" containingFunctionPresentation="method 'EndTurn'">
-            <startOffsets>
-              <option value="2122" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2178" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
