@@ -48,7 +48,7 @@ public class AlertWindow : BaseWindow
             }
             if (level == 1)
             {
-                home.AddStars();
+                home.AddStars(5);
             }
             if (level == 2)
             {

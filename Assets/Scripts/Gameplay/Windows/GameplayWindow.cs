@@ -112,9 +112,48 @@ public class GameplayWindow : BaseWindow
             }
             return;
         }
-        
+        if(types.Contains(OpenedTechType.Water))
+        {
+            if (controller.technologies.Contains(TechInfo.Technology.Sailing))
+            {
+                if (_openedTileTechButtons[8] != null)
+                    _openedTileTechButtons[8].gameObject.SetActive(true);
+            }
+            if (controller.technologies.Contains(TechInfo.Technology.Aquatism))
+            {
+                if (_openedTileTechButtons[17] != null)
+                    _openedTileTechButtons[17].gameObject.SetActive(true);
+            }
+            return;
+        }
+
+        if (types.Contains(OpenedTechType.DeepWater))
+        {
+            if (controller.technologies.Contains(TechInfo.Technology.Whaling))
+            {
+                if (_openedTileTechButtons[9] != null)
+                    _openedTileTechButtons[9].gameObject.SetActive(true);
+            }
+            return;
+        }
         if(types.Contains(OpenedTechType.Ground))
         {
+            if (tileC.isHasMountain)
+            {
+                if (controller.technologies.Contains(TechInfo.Technology.Mining))
+                {
+                    if (_openedTileTechButtons[6] != null)
+                        _openedTileTechButtons[6].gameObject.SetActive(true);
+                }
+
+                if (controller.technologies.Contains(TechInfo.Technology.Mining))
+                {
+                    if (_openedTileTechButtons[7] != null)
+                        _openedTileTechButtons[7].gameObject.SetActive(true);
+                }
+                return;
+            }
+
             if (types.Contains(OpenedTechType.Animal))
             {
                 if(_openedTileTechButtons[2] != null)
@@ -162,7 +201,6 @@ public class GameplayWindow : BaseWindow
                     if (_openedTileTechButtons[20] != null)
                         _openedTileTechButtons[20].gameObject.SetActive(true);
                 }
-
             }
             
             if (types.Contains(OpenedTechType.Tree))
@@ -196,21 +234,6 @@ public class GameplayWindow : BaseWindow
                 }
             }
             
-            if (tileC.isHasMountain)
-            {
-                if (controller.technologies.Contains(TechInfo.Technology.Mining))
-                {
-                    if (_openedTileTechButtons[6] != null)
-                        _openedTileTechButtons[6].gameObject.SetActive(true);
-                }
-
-                if (controller.technologies.Contains(TechInfo.Technology.Mining))
-                {
-                    if (_openedTileTechButtons[7] != null)
-                        _openedTileTechButtons[7].gameObject.SetActive(true);
-                }
-                return;
-            }
             
             if(controller.technologies.Contains(TechInfo.Technology.Roads))
             {
@@ -219,30 +242,7 @@ public class GameplayWindow : BaseWindow
             }
             return;
         }
-        if(types.Contains(OpenedTechType.Water))
-        {
-            if (controller.technologies.Contains(TechInfo.Technology.Sailing))
-            {
-                if (_openedTileTechButtons[8] != null)
-                    _openedTileTechButtons[8].gameObject.SetActive(true);
-            }
-            if (controller.technologies.Contains(TechInfo.Technology.Aquatism))
-            {
-                if (_openedTileTechButtons[17] != null)
-                    _openedTileTechButtons[17].gameObject.SetActive(true);
-            }
-            return;
-        }
-
-        if (types.Contains(OpenedTechType.DeepWater))
-        {
-            if (controller.technologies.Contains(TechInfo.Technology.Whaling))
-            {
-                if (_openedTileTechButtons[9] != null)
-                    _openedTileTechButtons[9].gameObject.SetActive(true);
-            }
-            return;
-        }
+        
     }
     
     public void ShowUnitButton(List<int> types, UnitController unit)

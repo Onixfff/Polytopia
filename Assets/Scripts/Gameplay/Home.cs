@@ -15,7 +15,6 @@ public class Home : MonoBehaviour
     
     public Tile homeTile;
     public CivilisationController owner;
-    public int homeRad = 1;
     public HomeType homeType = HomeType.City;
     [SerializeField] private Button occupyButton;
     [SerializeField] private List<UnitController> unitPrefabs;
@@ -27,7 +26,7 @@ public class Home : MonoBehaviour
     private List<UnitController> _unitList;
     private HomeInfo _homeInfo;
     private HomeCreator _homeCreator;
-    private int _boardRad;
+    //private int _boardRad;
     
     private int _homeLevel = 0;
     private int _foodFromNextLvl = 2;
@@ -105,7 +104,7 @@ public class Home : MonoBehaviour
 
         void InitHome()
         {
-            _boardRad = 1;
+            var _boardRad = 1;
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, _boardRad);
             homeTile.BuildHome(this);
             foreach (var ti in tiles)
@@ -190,9 +189,9 @@ public class Home : MonoBehaviour
         
     }
 
-    public void AddStars()
+    public void AddStars(int count)
     {
-        EconomicManager.Instance.AddMoney(5);
+        EconomicManager.Instance.AddMoney(count);
     }
     
     public void AddFood(int count)
@@ -202,7 +201,7 @@ public class Home : MonoBehaviour
     
     public void IncreaseBoarder()
     {
-        _boardRad = 2;
+        var _boardRad = 2;
         var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, _boardRad);
         foreach (var ti in tiles)
         {

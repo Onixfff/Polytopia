@@ -591,19 +591,24 @@ public class Tile : MonoBehaviour
                 freeTileImage.gameObject.SetActive(true);
                 BuyFish();
                 _owner.GetFood(1);
-                _owner.AddStars();
-                _owner.AddStars();
+                _owner.AddStars(10);
                 _tileName = "Ground";
                 break;
             case 10:
                 if (!EconomicManager.Instance.IsCanBuy(5)) 
                     return;
                 EconomicManager.Instance.BuySomething(5);
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[10];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
                 _owner.GetFood(2);
                 break;
             case 11:
                 if (!EconomicManager.Instance.IsCanBuy(5)) 
                     return;
+                treeTileImage.enabled = false;
+                treeTileImage.gameObject.SetActive(false);
+                _owner.AddStars(3);
                 EconomicManager.Instance.BuySomething(5);
                 _owner.GetFood(2);
                 break;
@@ -617,49 +622,65 @@ public class Tile : MonoBehaviour
                 if (!EconomicManager.Instance.IsCanBuy(5)) 
                     return;
                 EconomicManager.Instance.BuySomething(5);
-                _owner.GetFood(2);
+                treeTileImage.enabled = false;
+                treeTileImage.gameObject.SetActive(false);
+                cropTileImage.enabled = true;
+                cropTileImage.gameObject.SetActive(true);
+                isHasCrop = true;
                 break;
             case 14:
                 if (!EconomicManager.Instance.IsCanBuy(5)) 
                     return;
                 EconomicManager.Instance.BuySomething(5);
-                _owner.GetFood(2);
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[14];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
                 break;
             case 15:
                 if (!EconomicManager.Instance.IsCanBuy(5)) 
                     return;
                 EconomicManager.Instance.BuySomething(5);
-                _owner.GetFood(2);
+                freeTileImage.enabled = false;
+                freeTileImage.gameObject.SetActive(false);
                 break;
             case 16:
                 if (!EconomicManager.Instance.IsCanBuy(5)) 
                     return;
                 EconomicManager.Instance.BuySomething(5);
-                _owner.GetFood(2);
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[16];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
                 break;
             case 17:
                 if (!EconomicManager.Instance.IsCanBuy(5)) 
                     return;
                 EconomicManager.Instance.BuySomething(5);
-                _owner.GetFood(2);
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[17];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
                 break;
             case 18:
                 if (!EconomicManager.Instance.IsCanBuy(5)) 
                     return;
+                treeTileImage.gameObject.SetActive(true);
+                treeTileImage.enabled = true;
                 EconomicManager.Instance.BuySomething(5);
-                _owner.GetFood(2);
                 break;
             case 19:
                 if (!EconomicManager.Instance.IsCanBuy(5)) 
                     return;
                 EconomicManager.Instance.BuySomething(5);
-                _owner.GetFood(2);
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[19];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
                 break;
             case 20:
                 if (!EconomicManager.Instance.IsCanBuy(5)) 
                     return;
                 EconomicManager.Instance.BuySomething(5);
-                _owner.GetFood(2);
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[20];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
                 break;
         }
     }
