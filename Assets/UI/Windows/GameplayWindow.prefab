@@ -29156,8 +29156,7 @@ MonoBehaviour:
   - {fileID: 8690781537027522496}
   - {fileID: 7225087878743396467}
   grounds: []
-  mountains:
-  - {fileID: 7935222383736233643}
+  mountains: []
 --- !u!224 &5231336104094966832 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 238534260265249012, guid: aea650016d9d3d14ba35f5f236349cc5, type: 3}
