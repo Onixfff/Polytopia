@@ -27,6 +27,7 @@ public class GameplayWindow : BaseWindow
     
     [SerializeField] private TextMeshProUGUI currentTurnUGUI;
     [SerializeField] private TextMeshProUGUI currentMoneyUGUI;
+    [SerializeField] private TextMeshProUGUI currentPointUGUI;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button technologyOpenButton;
     [SerializeField] private Button technologyCloseButton;
@@ -95,6 +96,7 @@ public class GameplayWindow : BaseWindow
         if(_openedTileTechButtons == null) return;
         downBar.SetActive(true);
         tileTechButtonParent.SetActive(true);
+        var board = LevelManager.Instance.gameBoardWindow;
         var controller = tileC.GetOwner().owner;
         if(controller == null)
             return;
@@ -178,18 +180,21 @@ public class GameplayWindow : BaseWindow
                 }
                 if (controller.technologies.Contains(TechInfo.Technology.Trade))
                 {
-                    if (_openedTileTechButtons[12] != null)
-                        _openedTileTechButtons[12].gameObject.SetActive(true);
+                    if(board.GetCloseTile(tileC, 1).Find(tile => tile.GetBuildingUpgrade() != null && tile.GetBuildingUpgrade().currentType == BuildingUpgrade.BuildType.Port))
+                        if (_openedTileTechButtons[12] != null)
+                            _openedTileTechButtons[12].gameObject.SetActive(true);
                 }
                 if (controller.technologies.Contains(TechInfo.Technology.Construction))
                 {
-                    if (_openedTileTechButtons[14] != null)
-                        _openedTileTechButtons[14].gameObject.SetActive(true);
+                    if(board.GetCloseTile(tileC, 1).Find(tile => tile.GetBuildingUpgrade() != null && tile.GetBuildingUpgrade().currentType == BuildingUpgrade.BuildType.Farm))
+                        if (_openedTileTechButtons[14] != null)
+                            _openedTileTechButtons[14].gameObject.SetActive(true);
                 }
                 if (controller.technologies.Contains(TechInfo.Technology.Forge))
                 {
-                    if (_openedTileTechButtons[16] != null)
-                        _openedTileTechButtons[16].gameObject.SetActive(true);
+                    if(board.GetCloseTile(tileC, 1).Find(tile => tile.GetBuildingUpgrade() != null && tile.GetBuildingUpgrade().currentType == BuildingUpgrade.BuildType.Mine))
+                        if (_openedTileTechButtons[16] != null)
+                            _openedTileTechButtons[16].gameObject.SetActive(true);
                 }
                 if (controller.technologies.Contains(TechInfo.Technology.Spiritualism))
                 {
@@ -198,8 +203,9 @@ public class GameplayWindow : BaseWindow
                 }
                 if (controller.technologies.Contains(TechInfo.Technology.Mathematics))
                 {
-                    if (_openedTileTechButtons[20] != null)
-                        _openedTileTechButtons[20].gameObject.SetActive(true);
+                    if(board.GetCloseTile(tileC, 1).Find(tile => tile.GetBuildingUpgrade() != null && tile.GetBuildingUpgrade().currentType == BuildingUpgrade.BuildType.LumberHut))
+                        if (_openedTileTechButtons[20] != null)
+                           _openedTileTechButtons[20].gameObject.SetActive(true);
                 }
             }
             
@@ -336,7 +342,7 @@ public class GameplayWindow : BaseWindow
         downBarBackButton.onClick.AddListener(HideDownBar);
         UnlockUnitTech(0);
 
-        EconomicManager.Instance.OnMoneyChanged += MoneyChanged;
+        LevelManager.Instance.gameBoardWindow.playerCiv.OnMoneyChanged += MoneyChanged;
 
         LevelManager.Instance.OnTurnEnd += TurnEnd;
 
@@ -349,7 +355,7 @@ public class GameplayWindow : BaseWindow
 
     private void OnDestroy()
     {
-        EconomicManager.Instance.OnMoneyChanged -= MoneyChanged;
+        LevelManager.Instance.gameBoardWindow.playerCiv.OnMoneyChanged -= MoneyChanged;
         LevelManager.Instance.OnTurnEnd -= TurnEnd;
         LevelManager.Instance.OnTurnBegin -= TurnBegin;
         LevelManager.Instance.OnObjectSelect -= SelectEvent;
@@ -420,8 +426,8 @@ public class GameplayWindow : BaseWindow
 
     private void MoneyChanged()
     {
-        currentMoneyUGUI.text = "Звезд: " + EconomicManager.Instance.Money;
-
+        currentMoneyUGUI.text = "Звезд: " + LevelManager.Instance.gameBoardWindow.playerCiv.Money;
+        currentPointUGUI.text = "Очков: " + LevelManager.Instance.gameBoardWindow.playerCiv.Point;
     }
 
     private void ShowTurnEnd()

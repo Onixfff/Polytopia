@@ -48,7 +48,7 @@ public class AlertWindow : BaseWindow
             }
             if (level == 1)
             {
-                home.AddStars(5);
+                home.owner.AddMoney(5);
             }
             if (level == 2)
             {

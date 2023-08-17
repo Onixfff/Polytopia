@@ -146,7 +146,7 @@ public class UnitController : MonoBehaviour
     
     public void DisbandTheSquad()
     {
-        EconomicManager.Instance.AddMoney(Mathf.CeilToInt(unitInfo.price/2));
+        _owner.owner.AddMoney(Mathf.CeilToInt(Mathf.Round(unitInfo.price/2 + 1)));
         KillUnit();
     }
 

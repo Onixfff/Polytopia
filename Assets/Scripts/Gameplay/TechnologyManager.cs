@@ -269,9 +269,9 @@ public class TechnologyManager : MonoBehaviour
 
     private bool TryBuyTech(int price)
     {
-        if (!EconomicManager.Instance.IsCanBuy(price)) 
+        if (!LevelManager.Instance.gameBoardWindow.playerCiv.IsCanBuy(price)) 
             return false;
-        EconomicManager.Instance.BuySomething(price);
+        LevelManager.Instance.gameBoardWindow.playerCiv.BuySomething(price);
         return true;
     }
 

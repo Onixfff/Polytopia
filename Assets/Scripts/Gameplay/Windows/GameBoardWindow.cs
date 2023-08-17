@@ -160,14 +160,14 @@ public class GameBoardWindow : BaseWindow
         GenerateBoard();
         var inVal = 0f;
         _generateSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.1f).OnComplete((GenerateEnvironment)));
-        var inVal4 = 0f;
-        _generateSeq.Append(DOTween.To(() => inVal4, x => x = inVal4, 0f, 0.1f).OnComplete((GenerateRuins)));
         var inVal1 = 0f;
         _generateSeq.Append(DOTween.To(() => inVal1, x => x = inVal1, 0f, 0.1f).OnComplete((CreateCivilisations)));
         var inVal2 = 0f;
         _generateSeq.Append(DOTween.To(() => inVal2, x => x = inVal2, 0f, 0.1f).OnComplete((GenerateWater)));
         var inVal3 = 0f;
         _generateSeq.Append(DOTween.To(() => inVal3, x => x = inVal3, 0f, 0.1f).OnComplete((GenerateVillage)));
+        var inVal4 = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal4, x => x = inVal4, 0f, 0.1f).OnComplete((GenerateRuins)));
     }
 
     private void OnDestroy()
@@ -244,10 +244,32 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void GenerateRuins()
     {
-        for (var i = 0; i < countWaterZone-3; i++)
+        for (var i = 0; i < 5; i++)
         {
-            var randomTile = _generatedTiles[_generatedTiles.Keys.ToList()[Random.Range(0, _generatedTiles.Keys.ToList().Count)]];
-            randomTile.SetRuinsSprite(null, "Ruins");
+            Tile randomTile = null;
+            for(var j = 100; j >= 0; j--)
+            {
+                if (j == 0)
+                    return;
+                
+                randomTile = _generatedTiles[_generatedTiles.Keys.ToList()[Random.Range(0, _generatedTiles.Keys.ToList().Count)]];
+                if(randomTile.tileType == Tile.TileType.Water)
+                    continue;
+                if(randomTile.unitOnTile != null)
+                    continue;
+                if(GetCloseTile(randomTile, 1).Find(tile => tile.GetOwner()))
+                    continue;
+                if(GetCloseTile(randomTile, 1).Find(tile => tile.isHasRuins))
+                    continue;
+                if(randomTile.GetOwner() != null)
+                    continue;
+                break;
+            }
+
+            if (randomTile != null)
+            {
+                randomTile.SetRuinsSprite(null, "Ruins");
+            }
         }
     }
     

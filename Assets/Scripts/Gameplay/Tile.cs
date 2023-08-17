@@ -16,6 +16,7 @@ public class Tile : MonoBehaviour
     
     public Action<Tile> OnClickOnTile;
     public UnitController unitOnTile;
+    public BuildingUpgrade buildingUpgradePrefab;
     public bool isHasMountain = false;
     public bool isHasOre = false;
     public bool isHasCrop = false;
@@ -51,6 +52,8 @@ public class Tile : MonoBehaviour
     
     [SerializeField] private Button getInfoButton;
 
+    private BuildingUpgrade _buildingUpgrade;
+    
     private string _tileName = "Ground";
     private bool _isHomeOnTile;
     private bool _isSelected;
@@ -219,6 +222,11 @@ public class Tile : MonoBehaviour
             
             LevelManager.Instance.gameplayWindow.ShowTileButton(_techTypes, this);
         }
+    }
+
+    public BuildingUpgrade GetBuildingUpgrade()
+    {
+        return _buildingUpgrade;
     }
     
     public void DeselectedTile()
@@ -471,157 +479,184 @@ public class Tile : MonoBehaviour
     {
         if(gameObject != LevelManager.Instance.GetSelectedObject())
             return;
+        BuildingUpgrade building = null;
+        var buildingUpgrades = new List<BuildingUpgrade>();
         switch (index)
         {
             case 0:
-                if (!EconomicManager.Instance.IsCanBuy(2)) 
+                if (!_owner.owner.IsCanBuy(2)) 
                     return;
-                EconomicManager.Instance.BuySomething(2);
+                _owner.owner.BuySomething(2);
                 BuyFruit();
                 _tileName = "Ground";
                 break;
             case 1:
-                if (!EconomicManager.Instance.IsCanBuy(2)) 
+                if (!_owner.owner.IsCanBuy(2)) 
                     return;
-                EconomicManager.Instance.BuySomething(2);
+                _owner.owner.BuySomething(2);
                 BuyFish();
                 _tileName = "Water";
                 break;
             case 2:
-                if (!EconomicManager.Instance.IsCanBuy(2)) 
+                if (!_owner.owner.IsCanBuy(2)) 
                     return;
-                EconomicManager.Instance.BuySomething(2);
+                _owner.owner.BuySomething(2);
                 BuyAnimal();
                 _tileName = "Ground";
                 break;
             case 3:
-                if (!EconomicManager.Instance.IsCanBuy(2)) 
+                if (!_owner.owner.IsCanBuy(2)) 
                     return;
-                EconomicManager.Instance.BuySomething(2);
-                //BuyAnimal(); Roads
-                
+                _owner.owner.BuySomething(2);
+                //Roads
                 break;
             case 4:
-                if (_techTypes.TrueForAll(tech => tech == GameplayWindow.OpenedTechType.Ground))
-                {
-                    if (!EconomicManager.Instance.IsCanBuy(10)) 
-                        return;
-                    EconomicManager.Instance.BuySomething(10);
-                    
-                    if (animalTileImage != null) Destroy(animalTileImage.gameObject);
-                    if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[4];
-                    freeTileImage.enabled = true;
-                    freeTileImage.gameObject.SetActive(true);
-                    
-                    _tileName = "Ground";
-                    _owner.GetFood(2);
-                }
+                if (!_owner.owner.IsCanBuy(10)) 
+                    return;
+                _owner.owner.BuySomething(10);
+                
+                if (animalTileImage != null) Destroy(animalTileImage.gameObject);
+                if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
+
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.Church);
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[4];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
+                
+                _tileName = "Ground";
+                
                 break;
             case 5:
-                if (_techTypes.Contains(GameplayWindow.OpenedTechType.Ground))
+                if (!_owner.owner.IsCanBuy(10)) 
+                    return;
+                _owner.owner.BuySomething(10);
+                
+                if (animalTileImage != null) Destroy(animalTileImage.gameObject);
+                if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[5];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
+                cropTileImage.enabled = false;
+                cropTileImage.gameObject.SetActive(false);
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.Farm);
+                buildingUpgrades = GetCountCloseBuildingOfType(BuildingUpgrade.BuildType.WindMill);
+                foreach (var buildingUpgrade in buildingUpgrades)
                 {
-                    if (!EconomicManager.Instance.IsCanBuy(10)) 
-                        return;
-                    EconomicManager.Instance.BuySomething(10);
-                    
-                    if (animalTileImage != null) Destroy(animalTileImage.gameObject);
-                    if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[5];
-                    freeTileImage.enabled = true;
-                    freeTileImage.gameObject.SetActive(true);
-                    
-                    _tileName = "Ground";
-                    _owner.GetFood(2);
+                    buildingUpgrade.AddLevelToBuilding(1);
                 }
+                
+                _tileName = "Ground";
                 break;
             case 6:
-                if (_techTypes.Contains(GameplayWindow.OpenedTechType.Ground) && isHasMountain)
+                if (!_owner.owner.IsCanBuy(5)) 
+                    return;
+                _owner.owner.BuySomething(5);
+                
+                if (animalTileImage != null) Destroy(animalTileImage.gameObject);
+                if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
+                miningImage.sprite = _owner.owner.civilisationInfo.BuildSprites[6];
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.Mine);
+                buildingUpgrades = GetCountCloseBuildingOfType(BuildingUpgrade.BuildType.Forge);
+                foreach (var buildingUpgrade in buildingUpgrades)
                 {
-                    if (!EconomicManager.Instance.IsCanBuy(5)) 
-                        return;
-                    EconomicManager.Instance.BuySomething(5);
-                    
-                    if (animalTileImage != null) Destroy(animalTileImage.gameObject);
-                    if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    miningImage.sprite = _owner.owner.civilisationInfo.BuildSprites[6];
-                    
-                    _tileName = "Ground";
-                    _owner.GetFood(2);
+                    buildingUpgrade.AddLevelToBuilding(1);
                 }
+                _tileName = "Ground";
                 break;
             case 7:
-                if (_techTypes.Contains(GameplayWindow.OpenedTechType.Ground) && isHasMountain)
-                {
-                    if (!EconomicManager.Instance.IsCanBuy(5)) 
-                        return;
-                    EconomicManager.Instance.BuySomething(5);
-                    if (animalTileImage != null) Destroy(animalTileImage.gameObject);
-                    if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[5];
-                    freeTileImage.enabled = true;
-                    freeTileImage.gameObject.SetActive(true);
-                    _tileName = "MountainChurch";
-                    _owner.GetFood(1);
-                }
+                if (!_owner.owner.IsCanBuy(5)) 
+                    return;
+                _owner.owner.BuySomething(5);
+                if (animalTileImage != null) Destroy(animalTileImage.gameObject);
+                if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[5];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.MountainChurch);
+                _tileName = "MountainChurch";
+                
                 break;
             case 8:
-                if (_techTypes.Contains(GameplayWindow.OpenedTechType.Water))
+                if (!_owner.owner.IsCanBuy(10)) 
+                    return;
+                _owner.owner.BuySomething(10);
+                if (fishTileImage != null) Destroy(fishTileImage.gameObject);
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[8];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.Port);
+                buildingUpgrades = GetCountCloseBuildingOfType(BuildingUpgrade.BuildType.TradeHouse);
+                foreach (var buildingUpgrade in buildingUpgrades)
                 {
-                    if (!EconomicManager.Instance.IsCanBuy(10)) 
-                        return;
-                    EconomicManager.Instance.BuySomething(10);
-                    if (fishTileImage != null) Destroy(fishTileImage.gameObject);
-                    freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[8];
-                    freeTileImage.enabled = true;
-                    freeTileImage.gameObject.SetActive(true);
-                    _tileName = "Port";
-                    _owner.GetFood(2);
+                    buildingUpgrade.AddLevelToBuilding(1);
                 }
+                
+                
+                _tileName = "Port";
                 break;
             case 9:
-                
-                if (!EconomicManager.Instance.IsCanBuy(2)) 
+                if (!_owner.owner.IsCanBuy(2)) 
                     return;
-                EconomicManager.Instance.BuySomething(2);
+                _owner.owner.BuySomething(2);
                 freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[5];
                 freeTileImage.enabled = true;
                 freeTileImage.gameObject.SetActive(true);
                 BuyFish();
-                _owner.GetFood(1);
-                _owner.AddStars(10);
+                _owner.owner.AddMoney(10);
                 _tileName = "Ground";
                 break;
             case 10:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                if (!_owner.owner.IsCanBuy(5)) 
                     return;
-                EconomicManager.Instance.BuySomething(5);
+                _owner.owner.BuySomething(5);
                 freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[10];
                 freeTileImage.enabled = true;
                 freeTileImage.gameObject.SetActive(true);
-                _owner.GetFood(2);
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.LumberHut);
+                buildingUpgrades = GetCountCloseBuildingOfType(BuildingUpgrade.BuildType.SawMill);
+                foreach (var buildingUpgrade in buildingUpgrades)
+                {
+                    _owner.AddFood(1);
+                    buildingUpgrade.AddLevelToBuilding(1);
+                }
                 break;
             case 11:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                if (!_owner.owner.IsCanBuy(5)) 
                     return;
                 treeTileImage.enabled = false;
                 treeTileImage.gameObject.SetActive(false);
-                _owner.AddStars(3);
-                EconomicManager.Instance.BuySomething(5);
-                _owner.GetFood(2);
+                _owner.owner.AddMoney(3);
+                _owner.owner.BuySomething(5);
                 break;
             case 12:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                if (!_owner.owner.IsCanBuy(5)) 
                     return;
-                EconomicManager.Instance.BuySomething(5);
-                _owner.GetFood(2);
+                _owner.owner.BuySomething(5);
+                freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[12];
+                freeTileImage.enabled = true;
+                freeTileImage.gameObject.SetActive(true);
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.TradeHouse);
+                buildingUpgrades = GetCountCloseBuildingOfType(BuildingUpgrade.BuildType.Port);
+                _buildingUpgrade.AddLevelToBuilding(buildingUpgrades.Count);
                 break;
             case 13:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                if (!_owner.owner.IsCanBuy(5)) 
                     return;
-                EconomicManager.Instance.BuySomething(5);
+                _owner.owner.BuySomething(5);
                 treeTileImage.enabled = false;
                 treeTileImage.gameObject.SetActive(false);
                 cropTileImage.enabled = true;
@@ -629,59 +664,96 @@ public class Tile : MonoBehaviour
                 isHasCrop = true;
                 break;
             case 14:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                if (!_owner.owner.IsCanBuy(5)) 
                     return;
-                EconomicManager.Instance.BuySomething(5);
+                _owner.owner.BuySomething(5);
                 freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[14];
                 freeTileImage.enabled = true;
                 freeTileImage.gameObject.SetActive(true);
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.WindMill);
+                buildingUpgrades = GetCountCloseBuildingOfType(BuildingUpgrade.BuildType.Farm);
+                _buildingUpgrade.AddLevelToBuilding(buildingUpgrades.Count);
                 break;
             case 15:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
-                    return;
-                EconomicManager.Instance.BuySomething(5);
-                freeTileImage.enabled = false;
-                freeTileImage.gameObject.SetActive(false);
+
+                if (_buildingUpgrade != null)
+                {
+                    Destroy(_buildingUpgrade.gameObject);
+                    freeTileImage.enabled = false;
+                    freeTileImage.gameObject.SetActive(false);
+                }
                 break;
             case 16:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                if (!_owner.owner.IsCanBuy(5)) 
                     return;
-                EconomicManager.Instance.BuySomething(5);
+                _owner.owner.BuySomething(5);
                 freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[16];
                 freeTileImage.enabled = true;
                 freeTileImage.gameObject.SetActive(true);
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.Forge);
+                buildingUpgrades = GetCountCloseBuildingOfType(BuildingUpgrade.BuildType.Mine);
+                _buildingUpgrade.AddLevelToBuilding(buildingUpgrades.Count);
                 break;
             case 17:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                if (!_owner.owner.IsCanBuy(5)) 
                     return;
-                EconomicManager.Instance.BuySomething(5);
+                _owner.owner.BuySomething(5);
                 freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[17];
                 freeTileImage.enabled = true;
                 freeTileImage.gameObject.SetActive(true);
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.WaterChurch);
                 break;
             case 18:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                if (!_owner.owner.IsCanBuy(5)) 
                     return;
                 treeTileImage.gameObject.SetActive(true);
                 treeTileImage.enabled = true;
-                EconomicManager.Instance.BuySomething(5);
+                _owner.owner.BuySomething(5);
                 break;
             case 19:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                if (!_owner.owner.IsCanBuy(5)) 
                     return;
-                EconomicManager.Instance.BuySomething(5);
+                _owner.owner.BuySomething(5);
                 freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[19];
                 freeTileImage.enabled = true;
                 freeTileImage.gameObject.SetActive(true);
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.ForestChurch);
                 break;
             case 20:
-                if (!EconomicManager.Instance.IsCanBuy(5)) 
+                if (!_owner.owner.IsCanBuy(5)) 
                     return;
-                EconomicManager.Instance.BuySomething(5);
+                _owner.owner.BuySomething(5);
                 freeTileImage.sprite = _owner.owner.civilisationInfo.BuildSprites[20];
                 freeTileImage.enabled = true;
                 freeTileImage.gameObject.SetActive(true);
+                building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                _buildingUpgrade = building;
+                _buildingUpgrade.Init(BuildingUpgrade.BuildType.SawMill);
+                buildingUpgrades = GetCountCloseBuildingOfType(BuildingUpgrade.BuildType.LumberHut);
+                _buildingUpgrade.AddLevelToBuilding(buildingUpgrades.Count);
+                _owner.AddFood(1);
                 break;
+        }
+        
+        List<BuildingUpgrade> GetCountCloseBuildingOfType(BuildingUpgrade.BuildType type)
+        {
+            var buildingUpgrades = new List<BuildingUpgrade>();
+            var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(this, 1);
+            foreach (var tile in closeTile)
+            {
+                if (tile.GetBuildingUpgrade() != null && tile.GetBuildingUpgrade().currentType == type)
+                    buildingUpgrades.Add(tile.GetBuildingUpgrade());
+            }
+            
+            return buildingUpgrades;
         }
     }
 
@@ -772,7 +844,7 @@ public class Tile : MonoBehaviour
             return false;
 
         Destroy(fruitTileImage.gameObject);
-        _owner.GetFood(1);
+        _owner.AddFood(1);
         return true;
     }
     
@@ -786,7 +858,7 @@ public class Tile : MonoBehaviour
             return false;
 
         Destroy(animalTileImage.gameObject);
-        _owner.GetFood(1);
+        _owner.AddFood(1);
         return true;
     }
     
@@ -800,7 +872,7 @@ public class Tile : MonoBehaviour
             return false;
 
         Destroy(fishTileImage.gameObject);
-        _owner.GetFood(1);
+        _owner.AddFood(1);
         return true;
     }
 

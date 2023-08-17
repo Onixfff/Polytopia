@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5697296062761007083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9052984237761949079}
+  - component: {fileID: 6394952415186480389}
+  - component: {fileID: 2878379096602400291}
+  m_Layer: 5
+  m_Name: BuildingUpgrade
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9052984237761949079
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697296062761007083}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6394952415186480389
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697296062761007083}
+  m_CullTransparentMesh: 1
+--- !u!114 &2878379096602400291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697296062761007083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ffcfecae27d744fb0b288009e6b484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  churchSprites:
+  - {fileID: 21300000, guid: b81fa87d182629c4ca46cfc8b73b4a81, type: 3}
+  - {fileID: 21300000, guid: b975bfb8d288f274eb55f6f4959e73f3, type: 3}
+  - {fileID: 21300000, guid: c57226b181e5f764f956dfaee2a11b15, type: 3}
+  - {fileID: 21300000, guid: 20a46f5f9be42f643b1c91eeabdcba23, type: 3}
+  forestChurchSprites:
+  - {fileID: 21300000, guid: 128d761cba0a5854799ab3fd5706019e, type: 3}
+  - {fileID: 21300000, guid: 924e3e66876532e49bb26692e55dbf0c, type: 3}
+  - {fileID: 21300000, guid: 9cc6945858a563445b436052b69bd985, type: 3}
+  - {fileID: 21300000, guid: bb318f4792e7d2c419c112517fb2a265, type: 3}
+  waterChurchSprites:
+  - {fileID: 21300000, guid: fc41c822744443e44aaaeb81add87e28, type: 3}
+  - {fileID: 21300000, guid: 9c7c97c14639c2d46ad8128bc1424a86, type: 3}
+  - {fileID: 21300000, guid: f13f8a3062359eb4dba9d42901ecfcd5, type: 3}
+  - {fileID: 21300000, guid: 6edab5490091904439e63859c6be9c6a, type: 3}
+  mountainChurchSprites:
+  - {fileID: 21300000, guid: 6035e652e3e5da240bb02c51b5a2d191, type: 3}
+  - {fileID: 21300000, guid: 5dee2839e1d435f4cb3891f22a50adb4, type: 3}
+  - {fileID: 21300000, guid: eb67e0509dab54e4589cf339bff0e920, type: 3}
+  - {fileID: 21300000, guid: 6ad6d8dcf9ab83e42a5f9925a6da5ba0, type: 3}
+  sawMillSprites:
+  - {fileID: 21300000, guid: 5bc24b00c80eaaa4692d94e14244d931, type: 3}
+  - {fileID: 21300000, guid: a6a5c5690dea2db46b37f9c12e569fee, type: 3}
+  - {fileID: 21300000, guid: 7d0bee35adc65ed4aa2912d36aef3585, type: 3}
+  - {fileID: 21300000, guid: fae8535339832c24382a78432da5d44d, type: 3}
+  - {fileID: 21300000, guid: 29c934535102b154ca33dc45244395b2, type: 3}
+  - {fileID: 21300000, guid: 56cd1ade685820047af9a3e46e606ba0, type: 3}
+  windMillSprites:
+  - {fileID: 21300000, guid: a2c48010dc7fb1b47b8fcb775942a439, type: 3}
+  - {fileID: 21300000, guid: 233f7cdaba9183f48bc3ea2251162ab3, type: 3}
+  - {fileID: 21300000, guid: 21f57729ea2614249b120426c231f46d, type: 3}
+  - {fileID: 21300000, guid: e5138747ce6898e44be57258006579f7, type: 3}
+  - {fileID: 21300000, guid: b165819fedff0e6438b63046ae7150c0, type: 3}
+  tradeHouseSprites:
+  - {fileID: 21300000, guid: 1090a2e5a0aecea4f972f9665130ee47, type: 3}
+  - {fileID: 21300000, guid: 855c9404217ff3d4299f6586b246d8df, type: 3}
+  - {fileID: 21300000, guid: f95fb9daad880d144abe969938f16fe5, type: 3}
+  - {fileID: 21300000, guid: c8f25d94a6d8c1b4e87134cd74ef09c2, type: 3}
+  forgeSprites:
+  - {fileID: 21300000, guid: a8198d1ba45cc3c41b729b2769793891, type: 3}
+  - {fileID: 21300000, guid: 56e497d95ef35844d87085a72e078740, type: 3}
+  - {fileID: 21300000, guid: 2a6a1a0b91551574493a8b789649162c, type: 3}
+  - {fileID: 21300000, guid: e78e29b52522b4f4aab827e9fb08749f, type: 3}
+  - {fileID: 21300000, guid: b5679e8e2690c0449a18f687d6b09c49, type: 3}
+  - {fileID: 21300000, guid: 3056c2c65c387ac4bbd702039f2b6467, type: 3}
+  - {fileID: 21300000, guid: 0eafbc3b59fc16247900ff375f3dc599, type: 3}

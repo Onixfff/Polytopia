@@ -143,12 +143,25 @@ public class Home : MonoBehaviour
         }
     }
 
-    public void GetFood(int count)
+    public void AddFood(int count)
     {
         for (var i = 0; i < count; i++)
         {
             _foodCount++;
             ChangeFoodBlock(true);
+            if (_foodCount >= _foodFromNextLvl)
+            {
+                LeveUp();
+            }
+        }
+    }
+    
+    public void RemoveFood(int count)
+    {
+        for (var i = 0; i < count; i++)
+        {
+            _foodCount--;
+            ChangeFoodBlock(false);
             if (_foodCount >= _foodFromNextLvl)
             {
                 LeveUp();
@@ -189,16 +202,6 @@ public class Home : MonoBehaviour
         
     }
 
-    public void AddStars(int count)
-    {
-        EconomicManager.Instance.AddMoney(count);
-    }
-    
-    public void AddFood(int count)
-    {
-        GetFood(count);
-    }
-    
     public void IncreaseBoarder()
     {
         var _boardRad = 2;
@@ -222,7 +225,7 @@ public class Home : MonoBehaviour
     public void BuildPark()
     {
         _homeCreator.CreatePark();
-        EconomicManager.Instance.AddPoint(250);
+        owner.AddPoint(250);
     }
     
     public void CreateSuperUnit()
@@ -287,6 +290,55 @@ public class Home : MonoBehaviour
             alert.HomeLevelUp(this, _homeLevel);
         }
     }
+
+    private void LeveDown()
+    {
+        var block = Instantiate(centerBlockPrefab, blockParent);
+        block.transform.SetSiblingIndex(blockParent.childCount-2);
+        homeFoodBlocks.Insert(homeFoodBlocks.Count - 1, block);
+        if (homeFoodBlocks.Count > 3)
+        {
+            var scale = 2;
+            if (homeFoodBlocks.Count < 7)
+                scale = 1;
+            if (homeFoodBlocks.Count > 10)
+                scale = 0;
+            var sizeDelta = homeFoodBlocks.First().GetComponent<RectTransform>().sizeDelta;
+            sizeDelta -= new Vector2(scale, 0);
+            foreach (var foodBlock in homeFoodBlocks)
+            {
+                foodBlock.GetComponent<RectTransform>().sizeDelta = sizeDelta;
+            }
+        }
+        RemoveAllFood();
+        _foodCount = 0;
+        _foodFromNextLvl++;
+        
+        _homeLevel++;
+        ChangeIncome(1);
+        
+        _unitCapacity++;
+        
+        _homeCreator.LevelUpHome();
+        UpdateVisual();
+        
+        void RemoveAllFood()
+        {
+            foreach (var foodBlock in homeFoodBlocks)
+            {
+                foodBlock.transform.GetChild(0).gameObject.SetActive(false);
+            }
+        }
+
+        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+        {
+            var alert = WindowsManager.Instance.CreateWindow<AlertWindow>("AlertWindow");
+            alert.ShowWindow();
+            alert.OnTop();
+            alert.HomeLevelUp(this, _homeLevel);
+        }
+    }
+
     
     private void CheckPriceForLevel()
     {
@@ -417,9 +469,9 @@ public class Home : MonoBehaviour
         if(!homeTile.IsTileFree() || !homeTile.IsSelected() || _unitList.Count >= _unitCapacity)
             return;
 
-        if (!EconomicManager.Instance.IsCanBuy(owner.civilisationInfo.Units[unitIndex].price)) 
+        if (!owner.IsCanBuy(owner.civilisationInfo.Units[unitIndex].price)) 
             return;
-        EconomicManager.Instance.BuySomething(owner.civilisationInfo.Units[unitIndex].price);
+        owner.BuySomething(owner.civilisationInfo.Units[unitIndex].price);
         
         var unitObject = Instantiate(unitPrefabs[unitIndex], LevelManager.Instance.gameBoardWindow.GetUnitParent());
         var unit = unitObject.GetComponent<UnitController>();

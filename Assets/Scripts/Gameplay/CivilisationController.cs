@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.SO;
@@ -6,17 +7,42 @@ using Random = UnityEngine.Random;
 
 public class CivilisationController : MonoBehaviour
 {
-    [SerializeField] private GameObject homePrefab;
+    public event Action OnMoneyChanged;
+    public event Action OnPointChanged;
+    
     public CivilisationInfo civilisationInfo;
     public List<Home> homes;
     public Color civColor;
     public List<TechInfo.Technology> technologies;
-
+    
+    public int Money
+    {
+        get => _money;
+        private set
+        {
+            _money = value;
+            OnMoneyChanged?.Invoke();
+        }
+    }
+    public int Point
+    {
+        get => _point;
+        private set
+        {
+            _point = value;
+            OnPointChanged?.Invoke();
+        }
+    }
+    
+    
+    [SerializeField] private GameObject homePrefab;
     private GameBoardWindow _gameBoardWindow;
+    private int _money;
+    private int _point;
 
     public void Init(CivilisationInfo info)
     {
-        EconomicManager.Instance.AddMoney(5);
+        AddMoney(5);
 
         civilisationInfo = info;
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
@@ -24,7 +50,7 @@ public class CivilisationController : MonoBehaviour
             technologies.AddRange(info.technology.startTechnologies);
         else
         {
-            EconomicManager.Instance.AddMoney(100);
+            AddMoney(100);
             technologies.AddRange(info.technology.startTechnologies);
         }
         civColor = info.CivilisationColor;
@@ -39,7 +65,7 @@ public class CivilisationController : MonoBehaviour
                     continue;
                 income += home.GetIncome();
             }
-            EconomicManager.Instance.AddMoney(income);
+            AddMoney(income);
         };
         LevelManager.Instance.OnUnlockTechnology += AddNewTechnology;
     }
@@ -58,11 +84,31 @@ public class CivilisationController : MonoBehaviour
             {
                 income += home.GetIncome();
             }
-            EconomicManager.Instance.AddAIMoney(income);
+            AddMoney(income);
         };
     }
     
-    public void AddNewTechnology(TechInfo.Technology technology)
+    public void BuySomething(int cost)
+    {
+        Money -= cost;
+    }
+
+    public bool IsCanBuy(int cost)
+    {
+        return Money >= cost;
+    }
+
+    public void AddMoney(int count)
+    {
+        Money += count;
+    }
+    
+    public void AddPoint(int count)
+    {
+        Point += count;
+    }
+
+    private void AddNewTechnology(TechInfo.Technology technology)
     {
         technologies.Add(technology);
     }
