@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -14,6 +13,7 @@ public class CivilisationCustomizer : MonoBehaviour
     [SerializeField] private List<Image> backs;
     [SerializeField] private List<Image> grounds;
     [SerializeField] private List<Image> mountains;
+    [SerializeField] private List<Image> monuments;
 
     private CivilisationInfo _civilisationInfo;
 
@@ -37,6 +37,7 @@ public class CivilisationCustomizer : MonoBehaviour
         backs ??= new List<Image>(); 
         grounds ??= new List<Image>(); 
         mountains ??= new List<Image>(); 
+        monuments ??= new List<Image>(); 
         foreach (var image in animals)
         {
             image.sprite = _civilisationInfo.AnimalSprite;
@@ -68,6 +69,12 @@ public class CivilisationCustomizer : MonoBehaviour
         foreach (var image in mountains)
         {
             image.sprite = _civilisationInfo.MountainSprite;
+        }
+
+        for (var i = 0; i < monuments.Count; i++)
+        {
+            var image = monuments[i];
+            image.sprite = _civilisationInfo.MonumentSprites[i];
         }
     }
 }

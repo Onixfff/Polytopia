@@ -906,7 +906,7 @@ public class Tile : MonoBehaviour
         _owner.owner.GetMonumentBuilder().BlockMonument(type);
         monumentImage.enabled = true;
         monumentImage.gameObject.SetActive(true);
-        miningImage.sprite = _owner.owner.civilisationInfo.MonumentSprites[index];
+        monumentImage.sprite = _owner.owner.civilisationInfo.MonumentSprites[index];
         _owner.AddFood(3);
         _owner.owner.AddPoint(400);
     }

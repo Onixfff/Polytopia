@@ -149,15 +149,6 @@ public class UnitController : MonoBehaviour
         _owner.owner.AddMoney(Mathf.CeilToInt(Mathf.Round(unitInfo.price/2 + 1)));
         KillUnit();
     }
-
-    private bool _isSweaty;
-    public float sweatyDur;
-    public Vector3 v0;
-    public Vector3 v1;
-    public Vector3 v2;
-    private Vector3 sv0;
-    private Vector3 sv1;
-    private Vector3 sv2;
     
     public void SelectUnit()
     {
@@ -578,7 +569,14 @@ public class UnitController : MonoBehaviour
     }
     
     #region SweatAnim
-    
+    private bool _isSweaty;
+    public float sweatyDur;
+    public Vector3 v0;
+    public Vector3 v1;
+    public Vector3 v2;
+    private Vector3 sv0;
+    private Vector3 sv1;
+    private Vector3 sv2;
     [Button()]
     private void SetSweatPos()
     {
