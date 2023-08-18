@@ -44,6 +44,14 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 19971e9477a619a47bb083050a60c077, type: 3}
   - {fileID: 21300000, guid: b5b87c137096a4345b73393ce8c05b91, type: 3}
   - {fileID: 21300000, guid: caa46fc9e5490b64ca7b085cf6c0192c, type: 3}
+  monumentSprites:
+  - {fileID: 21300000, guid: 8f7cc79da0f41904da2c582f2d233389, type: 3}
+  - {fileID: 21300000, guid: 97891397bf0972e4fb0a15a454703ca1, type: 3}
+  - {fileID: 21300000, guid: 8f09e7399e7dcc0488dcc00dcb5866a7, type: 3}
+  - {fileID: 21300000, guid: 423a27ca89c56fd44b2ec60e95547155, type: 3}
+  - {fileID: 21300000, guid: 209b92f09804dd64d9b945f9a73de5cd, type: 3}
+  - {fileID: 21300000, guid: 9bd39839b099b234c9ea57be5c7bec23, type: 3}
+  - {fileID: 21300000, guid: a4de3fc56176ec948a6f742d6e43cf8f, type: 3}
   port: {fileID: 21300000, guid: d5a68ec5673e79a4bb6b421365aeaa5f, type: 3}
   farm: {fileID: 21300000, guid: adda91b60a61f3748a66d00a37088339, type: 3}
   homeInfo: {fileID: 11400000, guid: 3e0817172ad881143b2af03d421ec454, type: 2}

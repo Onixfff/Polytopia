@@ -22,7 +22,8 @@ public class GameplayWindow : BaseWindow
         Water,
         Construct,
         Crop,
-        DeepWater
+        DeepWater,
+        Monument
     }
     
     [SerializeField] private TextMeshProUGUI currentTurnUGUI;
@@ -48,7 +49,15 @@ public class GameplayWindow : BaseWindow
     [SerializeField] private GameObject tileTechButtonParent;
     [SerializeField] private TextMeshProUGUI tileNameUGUI;
     private List<Button> _openedTileTechButtons;
+    private Tween _tween;
+    private CivilisationController _playerCiv;
 
+    public void SetPlayerCiv(CivilisationController civ)
+    {
+        _playerCiv = civ;
+        _playerCiv.OnMoneyChanged += MoneyChanged;
+    }
+    
     public void UnlockUnitTech(int unitIndex)
     {
         unitTechButtons[unitIndex].gameObject.SetActive(true);
@@ -66,7 +75,8 @@ public class GameplayWindow : BaseWindow
             null, null, null, null, null, 
             null, null, null, null, null, 
             null, null, null, null, null,
-            null
+            null, null, null, null, null, 
+            null, null, null
         };
         _openedTileTechButtons.RemoveAt(techIndex);
         _openedTileTechButtons.Insert(techIndex, tileTechButtons[techIndex]);
@@ -104,7 +114,9 @@ public class GameplayWindow : BaseWindow
         {
             tile.gameObject.SetActive(false);            
         }
-
+        if (types.Contains(OpenedTechType.Monument))
+            return;
+        
         if (types.Contains(OpenedTechType.Construct))
         {
             if (controller.technologies.Contains(TechInfo.Technology.Construction))
@@ -116,6 +128,32 @@ public class GameplayWindow : BaseWindow
         }
         if(types.Contains(OpenedTechType.Water))
         {
+            #region Monuments
+
+            if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.AltarOfPeace))
+               if (_openedTileTechButtons[21] != null)
+                    _openedTileTechButtons[21].gameObject.SetActive(true);
+            if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.EmperorTomb))
+                if (_openedTileTechButtons[22] != null)
+                    _openedTileTechButtons[22].gameObject.SetActive(true);
+            if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.EyeOfGod))
+                if (_openedTileTechButtons[23] != null)
+                    _openedTileTechButtons[23].gameObject.SetActive(true);
+            if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.GateOfPower))
+                if (_openedTileTechButtons[24] != null)
+                    _openedTileTechButtons[24].gameObject.SetActive(true);
+            if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.GrandBazaar))
+                if (_openedTileTechButtons[25] != null)
+                  _openedTileTechButtons[25].gameObject.SetActive(true);
+            if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.ParkOfFortune))
+                if (_openedTileTechButtons[26] != null)
+                    _openedTileTechButtons[26].gameObject.SetActive(true);
+            if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.TowerOfWisdom))
+                if (_openedTileTechButtons[27] != null)
+                    _openedTileTechButtons[27].gameObject.SetActive(true);
+
+            #endregion
+            
             if (controller.technologies.Contains(TechInfo.Technology.Sailing))
             {
                 if (_openedTileTechButtons[8] != null)
@@ -173,6 +211,34 @@ public class GameplayWindow : BaseWindow
             }
             if(types.TrueForAll(ty => ty == OpenedTechType.Ground))
             {
+                #region Monuments
+
+                
+                if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.AltarOfPeace))
+                    if (_openedTileTechButtons[21] != null)
+                        _openedTileTechButtons[21].gameObject.SetActive(true);
+                if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.EmperorTomb))
+                    if (_openedTileTechButtons[22] != null)
+                        _openedTileTechButtons[22].gameObject.SetActive(true);
+                if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.EyeOfGod))
+                    if (_openedTileTechButtons[23] != null)
+                        _openedTileTechButtons[23].gameObject.SetActive(true);
+                if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.GateOfPower))
+                    if (_openedTileTechButtons[24] != null)
+                        _openedTileTechButtons[24].gameObject.SetActive(true);
+                if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.GrandBazaar))
+                    if (_openedTileTechButtons[25] != null)
+                        _openedTileTechButtons[25].gameObject.SetActive(true);
+                if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.ParkOfFortune))
+                    if (_openedTileTechButtons[26] != null)
+                        _openedTileTechButtons[26].gameObject.SetActive(true);
+                if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.TowerOfWisdom))
+                    if (_openedTileTechButtons[27] != null)
+                        _openedTileTechButtons[27].gameObject.SetActive(true);
+
+                #endregion
+                
+                
                 if (controller.technologies.Contains(TechInfo.Technology.FreeSpirit))
                 {
                     if (_openedTileTechButtons[4] != null)
@@ -341,8 +407,7 @@ public class GameplayWindow : BaseWindow
         turnEndButton.onClick.AddListener(EndTurn);
         downBarBackButton.onClick.AddListener(HideDownBar);
         UnlockUnitTech(0);
-
-        LevelManager.Instance.gameBoardWindow.playerCiv.OnMoneyChanged += MoneyChanged;
+        var inVal = 0f;
 
         LevelManager.Instance.OnTurnEnd += TurnEnd;
 

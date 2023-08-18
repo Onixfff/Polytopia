@@ -32,9 +32,9 @@ public class Home : MonoBehaviour
     private int _foodFromNextLvl = 2;
     private int _foodCount;
     private int _unitCapacity = 2;
-    private int _homeIncomeStars = 1;
-    private int _homeIncomePoint;
     private bool _isCapital = true;
+    private bool _isWorkshop = false;
+    private bool _isPark = false;
     
     public void Init(CivilisationController controller, Tile tile)
     {
@@ -171,12 +171,29 @@ public class Home : MonoBehaviour
     
     public int GetIncome()
     {
-        return _homeIncomeStars;
-    }
+        var homeIncomeStars = 0;
+        var i = 0;
+        if (_isCapital)
+        {
+            i++;
+        }
 
-    public void BuildABuildingOnATile(Tile tile, int index)
+        if (_isWorkshop)
+        {
+            i++;
+        }
+        
+        homeIncomeStars = 1 + _homeLevel + i;
+        
+        return homeIncomeStars;
+    }
+    public int GetIncomePoint()
     {
-        var a = Instantiate(buildingPrefab[index], tile.transform);
+        var homeIncomePoint = 0;
+        
+        homeIncomePoint = 100 + (50 * _homeLevel);
+        
+        return homeIncomePoint;
     }
 
     #region LevelUp
@@ -189,7 +206,7 @@ public class Home : MonoBehaviour
     public void BuildForge()
     {
         _homeCreator.CreateForge();
-        _homeIncomeStars++;
+        _isWorkshop = true;
     }
 
     public void CreateExplorer()
@@ -226,6 +243,7 @@ public class Home : MonoBehaviour
     {
         _homeCreator.CreatePark();
         owner.AddPoint(250);
+        _isPark = true;
     }
     
     public void CreateSuperUnit()
@@ -267,7 +285,6 @@ public class Home : MonoBehaviour
         _foodFromNextLvl++;
         
         _homeLevel++;
-        ChangeIncome(1);
         
         _unitCapacity++;
         
@@ -291,55 +308,6 @@ public class Home : MonoBehaviour
         }
     }
 
-    private void LeveDown()
-    {
-        var block = Instantiate(centerBlockPrefab, blockParent);
-        block.transform.SetSiblingIndex(blockParent.childCount-2);
-        homeFoodBlocks.Insert(homeFoodBlocks.Count - 1, block);
-        if (homeFoodBlocks.Count > 3)
-        {
-            var scale = 2;
-            if (homeFoodBlocks.Count < 7)
-                scale = 1;
-            if (homeFoodBlocks.Count > 10)
-                scale = 0;
-            var sizeDelta = homeFoodBlocks.First().GetComponent<RectTransform>().sizeDelta;
-            sizeDelta -= new Vector2(scale, 0);
-            foreach (var foodBlock in homeFoodBlocks)
-            {
-                foodBlock.GetComponent<RectTransform>().sizeDelta = sizeDelta;
-            }
-        }
-        RemoveAllFood();
-        _foodCount = 0;
-        _foodFromNextLvl++;
-        
-        _homeLevel++;
-        ChangeIncome(1);
-        
-        _unitCapacity++;
-        
-        _homeCreator.LevelUpHome();
-        UpdateVisual();
-        
-        void RemoveAllFood()
-        {
-            foreach (var foodBlock in homeFoodBlocks)
-            {
-                foodBlock.transform.GetChild(0).gameObject.SetActive(false);
-            }
-        }
-
-        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
-        {
-            var alert = WindowsManager.Instance.CreateWindow<AlertWindow>("AlertWindow");
-            alert.ShowWindow();
-            alert.OnTop();
-            alert.HomeLevelUp(this, _homeLevel);
-        }
-    }
-
-    
     private void CheckPriceForLevel()
     {
         if (_homeLevel == 1)
@@ -359,12 +327,6 @@ public class Home : MonoBehaviour
             
         }
     }
-    
-    private void ChangeIncome(int value)
-    {
-        _homeIncomeStars += value;
-    }
-
     
     #endregion
 
@@ -433,15 +395,36 @@ public class Home : MonoBehaviour
     
     private void ChangeFoodBlock(bool isAdd)
     {
-        if (isAdd)
+        switch (isAdd)
         {
-            var a = homeFoodBlocks[_foodCount-1];
-            a.transform.GetChild(0).gameObject.SetActive(true);
-        }
-        else
-        {
-            var a = homeFoodBlocks[_foodCount-1];
-            a.transform.GetChild(0).gameObject.SetActive(false);
+            case true:
+            {
+                if (_foodCount - 1 < 0)
+                {
+                    var a = homeFoodBlocks[Mathf.Abs(_foodCount) - 1];
+                    a.transform.GetChild(1).gameObject.SetActive(false);
+                }
+                else
+                {
+                    var a = homeFoodBlocks[_foodCount - 1];
+                    a.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                break;
+            }
+            case false:
+            {
+                if (_foodCount - 1 < 0)
+                {
+                    var a = homeFoodBlocks[Mathf.Abs(_foodCount) - 1];
+                    a.transform.GetChild(1).gameObject.SetActive(true);
+                }
+                else
+                {
+                    var a = homeFoodBlocks[_foodCount - 1];
+                    a.transform.GetChild(0).gameObject.SetActive(false);
+                }
+                break;
+            }
         }
     }
     

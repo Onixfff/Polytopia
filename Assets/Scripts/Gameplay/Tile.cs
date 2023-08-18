@@ -31,11 +31,12 @@ public class Tile : MonoBehaviour
     [SerializeField] private Image treeTileImage;
     [SerializeField] private Image cropTileImage;
     [SerializeField] private Image animalTileImage;
+    [SerializeField] private Image fishTileImage;
     [SerializeField] private Image mountainTileImage;
     [SerializeField] private Image ruinsTileImage;
     [SerializeField] private Image miningImage;
     [SerializeField] private Image freeTileImage;
-    [SerializeField] private Image fishTileImage;
+    [SerializeField] private Image monumentImage;
     [SerializeField] private RectTransform centerRect;
     [SerializeField] private Image blueTargetImage;
     [SerializeField] private Image redTargetImage;
@@ -63,7 +64,7 @@ public class Tile : MonoBehaviour
     private Home _homeOnTile;
     private Home _owner;
     private List<GameplayWindow.OpenedTechType> _techTypes;
-    private Tween _timeTargetSeq;
+    private Tween _timeTargetTween;
 
     public int GetGroundDefense()
     {
@@ -219,6 +220,9 @@ public class Tile : MonoBehaviour
             
             if(freeTileImage.enabled)
                 _techTypes.Add(GameplayWindow.OpenedTechType.Construct);
+            
+            if(monumentImage.enabled)
+                _techTypes.Add(GameplayWindow.OpenedTechType.Monument);
             
             LevelManager.Instance.gameplayWindow.ShowTileButton(_techTypes, this);
         }
@@ -449,7 +453,7 @@ public class Tile : MonoBehaviour
     public void HideTargetsTime()
     {
         var inValY = 0;
-        _timeTargetSeq = DOTween.To(() => inValY, x => inValY = x, 0, 0.01f).OnComplete((() =>
+        _timeTargetTween = DOTween.To(() => inValY, x => inValY = x, 0, 0.01f).OnComplete((() =>
         {
             blueTargetImage.gameObject.SetActive(false);
             redTargetImage.gameObject.SetActive(false);   
@@ -467,7 +471,7 @@ public class Tile : MonoBehaviour
     {
         LevelManager.Instance.OnObjectSelect -= SelectEvent;
         LevelManager.Instance.gameplayWindow.OnTileTech -= BuyTileTech;
-        _timeTargetSeq.Kill();
+        _timeTargetTween.Kill();
     }
     
     private void GetInfoTile()
@@ -741,6 +745,27 @@ public class Tile : MonoBehaviour
                 _buildingUpgrade.AddLevelToBuilding(buildingUpgrades.Count);
                 _owner.AddFood(1);
                 break;
+            case 21:
+                BuildMonument(MonumentBuilder.MonumentType.AltarOfPeace, 0);
+                break;
+            case 22:
+                BuildMonument(MonumentBuilder.MonumentType.EmperorTomb, 1);
+                break;
+            case 23:
+                BuildMonument(MonumentBuilder.MonumentType.EyeOfGod, 2);
+                break;
+            case 24:
+                BuildMonument(MonumentBuilder.MonumentType.GateOfPower, 3);
+                break;
+            case 25:
+                BuildMonument(MonumentBuilder.MonumentType.GrandBazaar, 4);
+                break;
+            case 26:
+                BuildMonument(MonumentBuilder.MonumentType.ParkOfFortune, 5);
+                break;
+            case 27:
+                BuildMonument(MonumentBuilder.MonumentType.TowerOfWisdom, 6);
+                break;
         }
         
         List<BuildingUpgrade> GetCountCloseBuildingOfType(BuildingUpgrade.BuildType type)
@@ -874,6 +899,16 @@ public class Tile : MonoBehaviour
         Destroy(fishTileImage.gameObject);
         _owner.AddFood(1);
         return true;
+    }
+
+    private void BuildMonument(MonumentBuilder.MonumentType type, int index)
+    {
+        _owner.owner.GetMonumentBuilder().BlockMonument(type);
+        monumentImage.enabled = true;
+        monumentImage.gameObject.SetActive(true);
+        miningImage.sprite = _owner.owner.civilisationInfo.MonumentSprites[index];
+        _owner.AddFood(3);
+        _owner.owner.AddPoint(400);
     }
 
     #region ForA-star

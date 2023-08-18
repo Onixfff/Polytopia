@@ -156,6 +156,7 @@ public class GameBoardWindow : BaseWindow
     private void Awake()
     {
         LevelManager.Instance.gameBoardWindow = this;
+        
         _generateSeq = DOTween.Sequence();
         GenerateBoard();
         var inVal = 0f;
@@ -301,6 +302,7 @@ public class GameBoardWindow : BaseWindow
         var listCiv = new List<int> { randomCiv };
         var civilisationController = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
         playerCiv = civilisationController;
+        LevelManager.Instance.gameplayWindow.SetPlayerCiv(playerCiv);
         LevelManager.Instance.AddCiv(playerCiv);
         playerCiv.Init(gameInfo.playerCivilisationInfoLists[randomCiv]);
         AIController.Instance.countAi = gameInfo.playersCount - 1;

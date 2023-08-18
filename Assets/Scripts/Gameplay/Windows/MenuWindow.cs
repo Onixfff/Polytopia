@@ -14,8 +14,8 @@ public class MenuWindow : BaseWindow
     {
         WindowsManager.Instance.CloseAllWindows();
         var a = WindowsManager.Instance.CreateWindow<GameplayWindow>("GameplayWindow");
-        a.ShowWindow();
         WindowsManager.Instance.CreateWindow<GameBoardWindow>("GameBoardWindow").ShowWindow();
         a.OnTop();
+        a.ShowWindow();
     }
 }

@@ -934,7 +934,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 3, y: 3}
+  m_SizeDelta: {x: 5, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7436154124013269828
 CanvasRenderer:
@@ -1092,7 +1092,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 10}
+  m_SizeDelta: {x: 30, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8843640554331178148
 CanvasRenderer:
@@ -1170,7 +1170,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 10}
+  m_SizeDelta: {x: 30, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4372086368612577946
 CanvasRenderer:
@@ -1434,10 +1434,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   homeTile: {fileID: 0}
   owner: {fileID: 0}
-  homeRad: 1
   homeType: 1
   occupyButton: {fileID: 4497024037642038627}
-  homeImage: {fileID: 2212580032476123589}
   unitPrefabs:
   - {fileID: 1558370623009764137, guid: fc959d465c068934f8d9860937d5e39e, type: 3}
   - {fileID: 2650723956706019991, guid: 9ee4616aa8ab40f4b80ed385b4c2bc9e, type: 3}
@@ -1452,6 +1450,7 @@ MonoBehaviour:
   homeFoodBlocks:
   - {fileID: 5644238771302880074}
   - {fileID: 5674877726124255862}
+  buildingPrefab: []
   centerBlockPrefab: {fileID: 3735034503627028181, guid: 36ee220bd64e54a46b32d3265b5ae1f2, type: 3}
   blockScrollView: {fileID: 3871750023425239144}
   blockParent: {fileID: 5830053041257017267}
@@ -1594,7 +1593,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0, y: 0}
-  m_SizeDelta: {x: 3, y: 3}
+  m_SizeDelta: {x: 5, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2194144899533200463
 CanvasRenderer:

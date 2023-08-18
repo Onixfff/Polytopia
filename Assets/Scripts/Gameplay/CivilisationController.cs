@@ -8,8 +8,7 @@ using Random = UnityEngine.Random;
 public class CivilisationController : MonoBehaviour
 {
     public event Action OnMoneyChanged;
-    public event Action OnPointChanged;
-    
+
     public CivilisationInfo civilisationInfo;
     public List<Home> homes;
     public Color civColor;
@@ -30,12 +29,13 @@ public class CivilisationController : MonoBehaviour
         private set
         {
             _point = value;
-            OnPointChanged?.Invoke();
+            OnMoneyChanged?.Invoke();
         }
     }
     
     
     [SerializeField] private GameObject homePrefab;
+    [SerializeField] private MonumentBuilder monumentBuilder;
     private GameBoardWindow _gameBoardWindow;
     private int _money;
     private int _point;
@@ -66,6 +66,14 @@ public class CivilisationController : MonoBehaviour
                 income += home.GetIncome();
             }
             AddMoney(income);
+            var incomePoint = 0;
+            foreach (var home in homes)
+            {
+                if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
+                    continue;
+                incomePoint += home.GetIncomePoint();
+            }
+            AddPoint(incomePoint);
         };
         LevelManager.Instance.OnUnlockTechnology += AddNewTechnology;
     }
@@ -86,6 +94,11 @@ public class CivilisationController : MonoBehaviour
             }
             AddMoney(income);
         };
+    }
+
+    public MonumentBuilder GetMonumentBuilder()
+    {
+        return monumentBuilder;
     }
     
     public void BuySomething(int cost)

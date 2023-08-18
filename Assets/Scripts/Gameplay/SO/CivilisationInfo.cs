@@ -49,6 +49,9 @@ public class CivilisationInfo : BaseCivilisationInfo
     [SerializeField] private List<Sprite> buildSprites;
     public List<Sprite> BuildSprites => buildSprites;
     
+    [SerializeField] private List<Sprite> monumentSprites;
+    public List<Sprite> MonumentSprites => monumentSprites;
+    
     [SerializeField] private Sprite port;
     public Sprite PortSprite => port;
     
