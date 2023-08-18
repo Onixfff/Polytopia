@@ -390,7 +390,7 @@ public class GameBoardWindow : BaseWindow
         foreach (var vector2Int in _generatedTiles.Keys.ToList())
         {
             var tile = _generatedTiles[vector2Int];
-            tile.UnlockTile();
+            tile.UnlockTile(playerCiv);
         }
     }
     

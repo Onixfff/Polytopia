@@ -291,6 +291,8 @@ public class Home : MonoBehaviour
         _homeCreator.LevelUpHome();
         UpdateVisual();
         
+        owner.GetCivilisationStats().CheckMaxLevelCity(_homeLevel);
+        
         void RemoveAllFood()
         {
             foreach (var foodBlock in homeFoodBlocks)

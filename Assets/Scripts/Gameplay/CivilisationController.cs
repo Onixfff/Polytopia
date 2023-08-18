@@ -23,6 +23,7 @@ public class CivilisationController : MonoBehaviour
             OnMoneyChanged?.Invoke();
         }
     }
+    
     public int Point
     {
         get => _point;
@@ -32,10 +33,10 @@ public class CivilisationController : MonoBehaviour
             OnMoneyChanged?.Invoke();
         }
     }
-    
-    
+
     [SerializeField] private GameObject homePrefab;
     [SerializeField] private MonumentBuilder monumentBuilder;
+    [SerializeField] private CivilisationStats civilisationStats;
     private GameBoardWindow _gameBoardWindow;
     private int _money;
     private int _point;
@@ -101,6 +102,11 @@ public class CivilisationController : MonoBehaviour
         return monumentBuilder;
     }
     
+    public CivilisationStats GetCivilisationStats()
+    {
+        return civilisationStats;
+    }
+    
     public void BuySomething(int cost)
     {
         Money -= cost;
@@ -114,6 +120,7 @@ public class CivilisationController : MonoBehaviour
     public void AddMoney(int count)
     {
         Money += count;
+        civilisationStats.AddStars(count);
     }
     
     public void AddPoint(int count)
@@ -158,10 +165,10 @@ public class CivilisationController : MonoBehaviour
     private void SetupCivilisation()
     {
         var tiles = _gameBoardWindow.GetCloseTile(homes[0].homeTile, 2).Select(tile => tile.GetComponent<Tile>()).ToList();
-        homes[0].homeTile.UnlockTile();
+        homes[0].homeTile.UnlockTile(this);
         foreach (var tile in tiles)
         {
-            tile.UnlockTile();
+            tile.UnlockTile(this);
         }
     }
     
@@ -207,7 +214,7 @@ public class CivilisationController : MonoBehaviour
             return;
         for (var i = 0; i < allUnits.Count; i++)
         {
-            allUnits[i].TakeDamage(10000);
+            allUnits[i].TakeDamage(null, 10000);
         }
     }
 }

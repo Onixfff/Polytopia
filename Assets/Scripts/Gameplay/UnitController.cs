@@ -102,11 +102,16 @@ public class UnitController : MonoBehaviour
         return false;
     }
     
-    public void TakeDamage(int dmg)
+    public void TakeDamage(UnitController dealer, int dmg)
     {
         _hp -= dmg;
         if (_hp <= 0)
         {
+            if (dealer != null)
+            {
+                dealer.AddKillInCount();
+            }
+
             KillUnit();
         }
         
@@ -302,7 +307,7 @@ public class UnitController : MonoBehaviour
             foreach (var tile in closeTiles)
             {
                 if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
-                    tile.UnlockTile();
+                    tile.UnlockTile(_owner.owner);
             }
 
             if (unitType == UnitType.Unit && to.IsTileHasPort())
@@ -384,8 +389,7 @@ public class UnitController : MonoBehaviour
         var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
         if (unitToAttack.CheckForKill(GetDmg()))
         {
-            unitToAttack.TakeDamage(GetDmg());
-            AddKillInCount();
+            unitToAttack.TakeDamage(this, GetDmg());
             if (isThisTheNearestTile && attackType == AttackType.Melee)
             {
                 _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
@@ -424,7 +428,7 @@ public class UnitController : MonoBehaviour
             {
                 _attSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(GetDmg());
+                    unitToAttack.TakeDamage(this, GetDmg());
                     LevelManager.Instance.SelectObject(null);
                     SelectUnit();
 
@@ -442,7 +446,7 @@ public class UnitController : MonoBehaviour
                 pr.transform.position = transform.position;
                 _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(GetDmg());
+                    unitToAttack.TakeDamage(this, GetDmg());
                     LevelManager.Instance.SelectObject(null);
                     SelectUnit();
                     Destroy(pr.gameObject);
@@ -457,6 +461,7 @@ public class UnitController : MonoBehaviour
     private void AddKillInCount()
     { 
         _killCount++;
+        _owner.owner.GetCivilisationStats().AddKill();
     }
     
     private Tween Counterstrike(UnitController unitToAttack)
@@ -478,7 +483,7 @@ public class UnitController : MonoBehaviour
             {
                 _counterstrikeSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(GetDefDmg());
+                    unitToAttack.TakeDamage(this, GetDefDmg());
                 })));
                 _counterstrikeSeq.Append(transform.DOMove(pos, 0.1f));
             }
@@ -488,7 +493,7 @@ public class UnitController : MonoBehaviour
                 pr.transform.position = transform.position;
                 _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(GetDefDmg());
+                    unitToAttack.TakeDamage(this, GetDefDmg());
                     Destroy(pr.gameObject);
                 })));
             }
@@ -499,7 +504,7 @@ public class UnitController : MonoBehaviour
             {
                 _counterstrikeSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(GetDefDmg());
+                    unitToAttack.TakeDamage(this, GetDefDmg());
                 })));
                 _counterstrikeSeq.Append(transform.DOMove(pos, 0.1f));
             }
@@ -509,7 +514,7 @@ public class UnitController : MonoBehaviour
                 pr.transform.position = transform.position;
                 _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(GetDefDmg());
+                    unitToAttack.TakeDamage(this, GetDefDmg());
                     Destroy(pr.gameObject);
                 })));
             }

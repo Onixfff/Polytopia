@@ -254,7 +254,7 @@ public class Tile : MonoBehaviour
         _isHomeSelected = false;
     }
     
-    public void UnlockTile()
+    public void UnlockTile(CivilisationController explorerCiv)
     {
         isOpened = true;
         fog.SetActive(false);
@@ -268,6 +268,7 @@ public class Tile : MonoBehaviour
         if(unitOnTile != null)
             unitOnTile.gameObject.SetActive(true);
         ChangeHomeBoards();
+        explorerCiv.GetCivilisationStats().AddExploredTile();
     }
     
     public void ChangeHomeBoards()
