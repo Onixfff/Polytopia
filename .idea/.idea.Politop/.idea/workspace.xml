@@ -3,9 +3,31 @@
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitArcher.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitArcher.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitCatapult.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitCatapult.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitKnight.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitKnight.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitRider.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitRider.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitShield.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitShield.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitSwordsman.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitSwordsman.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitWarior.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitWarior.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/BuildingUpgrade.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/BuildingUpgrade.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/UnitInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/SO/UnitInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/AlertWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/AlertWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/WindowsManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/WindowsManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Home/Center.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Home/Center.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Home/Home.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Home/Home.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Dagger.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Dagger.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/SuperUnit.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/SuperUnit.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitCloak.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/UnitCloak.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Tile/Mining.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/Tile/Mining.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Tile/Port.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/Tile/Port.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Units/Cloak.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/Units/Cloak.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,10 +102,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="21136">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="21136" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -125,7 +147,7 @@
       <workItem from="1692259466902" duration="16741000" />
       <workItem from="1692347187581" duration="5657000" />
       <workItem from="1692354664512" duration="10321000" />
-      <workItem from="1692430883182" duration="1516000" />
+      <workItem from="1692430883182" duration="11868000" />
     </task>
     <servers />
   </component>
@@ -148,5 +170,50 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs</url>
+          <line>163</line>
+          <properties documentPath="C:\Users\Genius_1\Unity\Politop\Assets\Scripts\Gameplay\Home.cs" initialLine="163" containingFunctionPresentation="method 'AddFood'">
+            <startOffsets>
+              <option value="4712" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4722" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Gameplay/BuildingUpgrade.cs</url>
+          <line>262</line>
+          <properties documentPath="C:\Users\Genius_1\Unity\Politop\Assets\Scripts\Gameplay\BuildingUpgrade.cs" initialLine="262" containingFunctionPresentation="method 'GivePopulationToOwner'">
+            <startOffsets>
+              <option value="7787" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7819" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs</url>
+          <line>926</line>
+          <properties documentPath="C:\Users\Genius_1\Unity\Politop\Assets\Scripts\Gameplay\Tile.cs" initialLine="925" containingFunctionPresentation="method 'BuildMonument'">
+            <startOffsets>
+              <option value="34199" />
+            </startOffsets>
+            <endOffsets>
+              <option value="34217" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

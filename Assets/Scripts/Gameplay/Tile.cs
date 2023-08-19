@@ -70,10 +70,25 @@ public class Tile : MonoBehaviour
     {
         _groundDefense = 0;
         if (_homeOnTile != null)
+        {
             _groundDefense++;
+            if (_homeOnTile.isHaveWall)
+                _groundDefense++;
+        }
         if (isHasMountain)
             _groundDefense++;
-        
+        if (unitOnTile != null)
+        {
+            if (unitOnTile.GetOwner().owner.technologies.Contains(TechInfo.Technology.Aquatism) && (tileType == TileType.Water || tileType == TileType.DeepWater))
+            {
+                _groundDefense++;
+            }
+            if (unitOnTile.GetOwner().owner.technologies.Contains(TechInfo.Technology.Archery) && treeTileImage != null && treeTileImage.enabled && treeTileImage.gameObject.activeSelf)
+            {
+                _groundDefense++;
+            }
+        }
+
         return _groundDefense;
     }
     
@@ -444,6 +459,7 @@ public class Tile : MonoBehaviour
         if (animalTileImage != null) Destroy(animalTileImage.gameObject);
         if (mountainTileImage != null) Destroy(mountainTileImage.gameObject);
         if (ruinsTileImage != null) Destroy(ruinsTileImage.gameObject);
+        if (cropTileImage != null) Destroy(cropTileImage.gameObject);
         if (_owner.owner != null) 
             groundImage.sprite = _owner.owner.civilisationInfo.GroundSprite;
         tileType = TileType.Ground;

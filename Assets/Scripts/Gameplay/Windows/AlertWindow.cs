@@ -7,7 +7,7 @@ public class AlertWindow : BaseWindow
 {
     [SerializeField] private List<GameObject> homeLevelUp;
     
-    public void HomeLevelUp(Home home, int level)
+    public void HomeLevelUp(Home home, int level, int leftovers)
     {
         level--;
         if(level < homeLevelUp.Count)
@@ -37,7 +37,8 @@ public class AlertWindow : BaseWindow
             {
                 home.BuildPark();
             }
-            HideWindow();
+            home.AddFood(leftovers);
+            CloseWindow();
         }));
         homeLevelUp[level].transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
         homeLevelUp[level].transform.GetChild(1).GetComponent<Button>().onClick.AddListener((() =>
@@ -58,7 +59,8 @@ public class AlertWindow : BaseWindow
             {
                 home.CreateSuperUnit();
             }
-            HideWindow();
+            home.AddFood(leftovers);
+            CloseWindow();
         }));
     }
 }

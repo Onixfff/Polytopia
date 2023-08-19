@@ -81,6 +81,7 @@ public class GameplayWindow : BaseWindow
         _openedTileTechButtons.RemoveAt(techIndex);
         _openedTileTechButtons.Insert(techIndex, tileTechButtons[techIndex]);
         tileTechButtons[techIndex].gameObject.SetActive(true);
+        tileTechButtons[techIndex].onClick.RemoveAllListeners();
         tileTechButtons[techIndex].onClick.AddListener((() =>
         {
             BuyTileTech(techIndex);
@@ -128,6 +129,12 @@ public class GameplayWindow : BaseWindow
         }
         if(types.Contains(OpenedTechType.Water))
         {
+            if (types.Contains(OpenedTechType.Fish))
+            {
+                if (_openedTileTechButtons[1] != null) 
+                    _openedTileTechButtons[1].gameObject.SetActive(true);
+            }
+            
             #region Monuments
 
             if(tileC.GetOwner().owner.GetMonumentBuilder().IsMonumentAvailable(MonumentBuilder.MonumentType.AltarOfPeace))
@@ -204,11 +211,7 @@ public class GameplayWindow : BaseWindow
                 if(_openedTileTechButtons[0] != null)
                     _openedTileTechButtons[0].gameObject.SetActive(true);
             }
-            if (types.Contains(OpenedTechType.Fish))
-            {
-                if (_openedTileTechButtons[1] != null) 
-                    _openedTileTechButtons[1].gameObject.SetActive(true);
-            }
+            
             if(types.TrueForAll(ty => ty == OpenedTechType.Ground))
             {
                 #region Monuments

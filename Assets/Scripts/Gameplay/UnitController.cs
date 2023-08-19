@@ -15,7 +15,8 @@ public class UnitController : MonoBehaviour
         Boat,
         Ship,
         BattleShip,
-        Pirate
+        Pirate,
+        Dinghy
     }
 
     public enum AttackType
@@ -42,18 +43,18 @@ public class UnitController : MonoBehaviour
     
     private UnitController _unitInTheShip;
     private Home _owner;
+    private CivilisationController _civOwner;
     private bool _isCanSelected = true;
     private int _moveThisTurn = 1;
     private int _attackThisTurn = 1;
     private float _hp;
-    private int _unitIndex;
     private Sequence _moveSeq;
     private Sequence _attSeq;
     private Sequence _counterstrikeSeq;
     private int _killCount = 0;
     private int _lvl = 1;
 
-    public void Init(Home owner, Tile tile, int index)
+    public void Init(Home owner, Tile tile)
     {
         SetSweatPos();
         _moveThisTurn = 0;
@@ -74,7 +75,6 @@ public class UnitController : MonoBehaviour
             EnableUnit();
         };
 
-        _unitIndex = index;
         
         _hp = unitInfo.hp;
         unitHpTMPro.text = _hp.ToString();
@@ -220,7 +220,13 @@ public class UnitController : MonoBehaviour
     
     public void SetOwner(Home controller)
     {
-        _owner = controller;
+        if (!unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Independent))
+            _owner = controller;
+        else
+        {
+            _civOwner = controller.owner;
+            _civOwner.independentUnits.Add(this);
+        }
         if (headImage != null && controller != null) headImage.sprite = controller.owner.civilisationInfo.HeadSprite;
         if (battleShipHeadImage != null && controller != null) battleShipHeadImage.sprite = controller.owner.civilisationInfo.BattleShipHeadSprite;
         if (horseImage != null && controller != null) horseImage.sprite = controller.owner.civilisationInfo.AnimalSprite;
@@ -295,11 +301,7 @@ public class UnitController : MonoBehaviour
         var inVal1 = 0;
         _moveSeq.Join(DOTween.To(() => inVal1, x => inVal1 = x, 1, dur)).OnComplete((() =>
         {
-            if (occupiedTile.GetHomeOnTile() != null && (occupiedTile.GetHomeOnTile().owner == null || occupiedTile.GetHomeOnTile().owner != _owner.owner))
-            {
-                if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
-                    occupiedTile.GetHomeOnTile().ShowOccupyButton();
-            }
+            
             var addedRad = 0;
             if (occupiedTile.isHasMountain)
                 addedRad = 1;
@@ -310,7 +312,16 @@ public class UnitController : MonoBehaviour
                 if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
                     tile.UnlockTile(_owner.owner);
             }
-
+            if (occupiedTile.GetHomeOnTile() != null && (occupiedTile.GetHomeOnTile().owner == null || occupiedTile.GetHomeOnTile().owner != _owner.owner))
+            {
+                if (occupiedTile.GetHomeOnTile().owner != null && unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Infiltrate))
+                {
+                    Infiltrate();
+                    return;
+                }
+                if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
+                    occupiedTile.GetHomeOnTile().ShowOccupyButton();
+            }
             if (unitType == UnitType.Unit && to.IsTileHasPort())
             {
                 TurnIntoAShip(0);
@@ -345,7 +356,7 @@ public class UnitController : MonoBehaviour
                 ints.Add(1);
             if(unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Heal))
                 ints.Add(2);
-            if(_killCount == 3 && _lvl == 1)
+            if(unitInfo.IsVeteran && _killCount >= 3 && _lvl == 1)
                 ints.Add(3);
             if(unitType == UnitType.Boat || unitType == UnitType.Ship)
                 ints.Add(4);
@@ -528,7 +539,7 @@ public class UnitController : MonoBehaviour
         LevelManager.Instance.SelectObject(null);
       
         var ship = Instantiate(shipUnits[index], transform.parent);
-        ship.Init(_owner, occupiedTile, 0);
+        ship.Init(_owner, occupiedTile);
         if(_unitInTheShip == null)
             ship.SetUnitInShip(this);
         else
@@ -545,24 +556,21 @@ public class UnitController : MonoBehaviour
         LevelManager.Instance.SelectObject(null);
         
         _unitInTheShip.gameObject.SetActive(true);
-        _unitInTheShip.Init(_owner, occupiedTile, _unitInTheShip._unitIndex);
+        _unitInTheShip.Init(_owner, occupiedTile);
         occupiedTile.unitOnTile = _unitInTheShip;
         KillUnit();
     }
 
     private int GetDefenseBonus()
     {
-        var bonus = 1;
-        if (occupiedTile.isHasMountain)
-        {
-            bonus++;
-        }
-
-        if (occupiedTile.GetHomeOnTile() != null)
-        {
-            bonus++;
-        }
+        var bonus = 0;
+        bonus += occupiedTile.GetGroundDefense();
         return bonus;
+    }
+
+    private void Infiltrate()
+    {
+        
     }
 
     private void KillUnit()

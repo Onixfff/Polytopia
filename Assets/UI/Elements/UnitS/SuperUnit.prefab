@@ -186,6 +186,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SuperUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitInfo
+      value: 
+      objectReference: {fileID: 11400000, guid: b5f5adcd44755e6479e44ab36e13b4dd, type: 2}
     - target: {fileID: 7835748470077977843, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -5.9038944

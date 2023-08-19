@@ -21,6 +21,7 @@ public class UnitInfo : ScriptableObject
         Scout,
         Sneak,
         Surprise,
+        Independent
     }
     
     [SerializeField] private List<AbilityType> abilities;
@@ -43,4 +44,7 @@ public class UnitInfo : ScriptableObject
     
     [SerializeField] private int priceUnit;
     public int price => priceUnit;
+    
+    [SerializeField] private bool isVeteran;
+    public bool IsVeteran => isVeteran;
 }

@@ -60,6 +60,14 @@ PrefabInstance:
       propertyPath: unitInfo
       value: 
       objectReference: {fileID: 11400000, guid: 8183ffb41ef924c45ab9c6b9bd1fd09b, type: 2}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: shipUnits.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: shipUnits.Array.data[0]
+      value: 
+      objectReference: {fileID: 7860760686031920063, guid: e29166ae92641844197db892b9a73f50, type: 3}
     - target: {fileID: 7058361122958696799, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: m_IsActive
       value: 1

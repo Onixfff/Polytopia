@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -43,6 +44,7 @@ public class BuildingUpgrade : MonoBehaviour
     private int _index = 0;
     private int _allAddedStars = 0;
     private int _allAddedPoints = 0;
+    private int _allAddedPopulation = 0;
     
     public void Init(BuildType type)
     {
@@ -54,11 +56,61 @@ public class BuildingUpgrade : MonoBehaviour
         LevelManager.Instance.OnTurnBegin += TurnBegin;
         _allAddedStars = 0;
         _allAddedPoints = 0;
+        _allAddedPopulation = 0;
+        CheckProduces();
     }
 
     public void AddLevelToBuilding(int count)
     {
         UpdateManufactureVisual(count);
+        CheckProduces();
+    }
+
+    public void CheckProduces()
+    {
+        switch (currentType)
+        {
+            case BuildType.Church:
+                GivePopulationToOwner(-_allAddedPopulation + 1);
+                GivePointToOwner(-_allAddedPoints + 100 + 50 * _index);
+                break;
+            case BuildType.ForestChurch:
+                GivePopulationToOwner(-_allAddedPopulation + 1);
+                GivePointToOwner(-_allAddedPoints + 100 + 50 * _index);
+                break;
+            case BuildType.WaterChurch:
+                GivePopulationToOwner(-_allAddedPopulation + 1);
+                GivePointToOwner(-_allAddedPoints + 100 + 50 * _index);
+                break;
+            case BuildType.MountainChurch:
+                GivePopulationToOwner(-_allAddedPopulation + 1);
+                GivePointToOwner(-_allAddedPoints + 100 + 50 * _index);
+                break;
+            case BuildType.SawMill:
+                GivePopulationToOwner(-_allAddedPopulation + 1 + _index);
+                break;
+            case BuildType.WindMill:
+                GivePopulationToOwner(-_allAddedPopulation + 1 + _index);
+                break;
+            case BuildType.TradeHouse:
+                GiveStarsToOwner(2 * _index);
+                break;
+            case BuildType.Forge:
+                GivePopulationToOwner(-_allAddedPopulation + 2 + 2 * _index);
+                break;
+            case BuildType.Farm:
+                GivePopulationToOwner(2);
+                break;
+            case BuildType.Mine:
+                GivePopulationToOwner(2);
+                break;
+            case BuildType.Port:
+                GivePopulationToOwner(2);
+                break;
+            case BuildType.LumberHut:
+                GivePopulationToOwner(1);
+                break;
+        }
     }
 
     private void OnDestroy()
@@ -111,36 +163,8 @@ public class BuildingUpgrade : MonoBehaviour
 
         switch (currentType)
         {
-            case BuildType.Church:
-                
-                break;
-            
-            case BuildType.ForestChurch:
-                
-                break;
-            
-            case BuildType.WaterChurch:
-                
-                break;
-            
-            case BuildType.MountainChurch:
-                
-                break;
-            
-            case BuildType.SawMill:
-                
-                break;
-            
-            case BuildType.WindMill:
-                
-                break;
-            
             case BuildType.TradeHouse:
-                
-                break;
-            
-            case BuildType.Forge:
-                
+                GiveStarsToOwner(2 * _index);
                 break;
         }
     }
@@ -220,5 +244,23 @@ public class BuildingUpgrade : MonoBehaviour
                 break;
         }
         _index += level;
+    }
+
+    private void GiveStarsToOwner(int count)
+    {
+        _tile.GetOwner().owner.AddMoney(count);
+        _allAddedStars += count;
+    }
+    
+    private void GivePointToOwner(int count)
+    {
+        _tile.GetOwner().owner.AddPoint(count);
+        _allAddedPoints += count;
+    }
+    
+    private void GivePopulationToOwner(int count)
+    {
+        _tile.GetOwner().AddFood(count);
+        _allAddedPopulation += count;
     }
 }

@@ -1115,7 +1115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+  m_Color: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1193,7 +1193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+  m_Color: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1435,6 +1435,7 @@ MonoBehaviour:
   homeTile: {fileID: 0}
   owner: {fileID: 0}
   homeType: 1
+  isHaveWall: 0
   occupyButton: {fileID: 4497024037642038627}
   unitPrefabs:
   - {fileID: 1558370623009764137, guid: fc959d465c068934f8d9860937d5e39e, type: 3}
@@ -1447,6 +1448,7 @@ MonoBehaviour:
   - {fileID: 1274775029868630018, guid: a9dd78cf59649384b8c45cc6320beed9, type: 3}
   - {fileID: 8068268424979350263, guid: 522b7cad69d42c14b851f20efbc8a6e0, type: 3}
   - {fileID: 3816937539709675992, guid: a2de744832ca60d4d8aa8dbe155c4342, type: 3}
+  cloakUnitsPrefabs: []
   homeFoodBlocks:
   - {fileID: 5644238771302880074}
   - {fileID: 5674877726124255862}

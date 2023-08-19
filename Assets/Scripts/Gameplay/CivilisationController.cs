@@ -11,6 +11,7 @@ public class CivilisationController : MonoBehaviour
 
     public CivilisationInfo civilisationInfo;
     public List<Home> homes;
+    public List<UnitController> independentUnits;
     public Color civColor;
     public List<TechInfo.Technology> technologies;
     
@@ -43,8 +44,9 @@ public class CivilisationController : MonoBehaviour
 
     public void Init(CivilisationInfo info)
     {
+        independentUnits ??= new List<UnitController>();
+        
         AddMoney(5);
-
         civilisationInfo = info;
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
         if(civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
@@ -175,6 +177,18 @@ public class CivilisationController : MonoBehaviour
     public List<Home> GetAllHome()
     {
         return homes;
+    }
+
+    public List<UnitController> GetAllUnit()
+    {
+        var a = new List<UnitController>();
+        a.AddRange(independentUnits);
+        foreach (var home in homes)
+        {
+            a.AddRange(home.GetUnitList());
+        }
+
+        return a;
     }
 
     public void RemoveHome(Home home, List<UnitController> unitList = null)

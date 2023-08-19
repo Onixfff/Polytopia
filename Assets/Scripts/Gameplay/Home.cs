@@ -16,13 +16,19 @@ public class Home : MonoBehaviour
     public Tile homeTile;
     public CivilisationController owner;
     public HomeType homeType = HomeType.City;
+    public bool isHaveWall = false;
+    
     [SerializeField] private Button occupyButton;
     [SerializeField] private List<UnitController> unitPrefabs;
+    [SerializeField] private List<UnitController> cloakUnitsPrefabs;
     [SerializeField] private List<GameObject> homeFoodBlocks;
     [SerializeField] private List<GameObject> buildingPrefab;
     [SerializeField] private GameObject centerBlockPrefab;
     [SerializeField] private GameObject blockScrollView;
     [SerializeField] private Transform blockParent;
+
+    #region private
+    
     private List<UnitController> _unitList;
     private HomeInfo _homeInfo;
     private HomeCreator _homeCreator;
@@ -35,7 +41,9 @@ public class Home : MonoBehaviour
     private bool _isCapital = true;
     private bool _isWorkshop = false;
     private bool _isPark = false;
-    
+
+    #endregion
+
     public void Init(CivilisationController controller, Tile tile)
     {
         homeTile = tile;
@@ -145,13 +153,16 @@ public class Home : MonoBehaviour
 
     public void AddFood(int count)
     {
+        var a = count;
         for (var i = 0; i < count; i++)
         {
             _foodCount++;
+            a--;
             ChangeFoodBlock(true);
             if (_foodCount >= _foodFromNextLvl)
             {
-                LeveUp();
+                LeveUp(a);
+                return;
             }
         }
     }
@@ -164,7 +175,7 @@ public class Home : MonoBehaviour
             ChangeFoodBlock(false);
             if (_foodCount >= _foodFromNextLvl)
             {
-                LeveUp();
+                
             }
         }
     }
@@ -187,6 +198,7 @@ public class Home : MonoBehaviour
         
         return homeIncomeStars;
     }
+    
     public int GetIncomePoint()
     {
         var homeIncomePoint = 0;
@@ -216,7 +228,7 @@ public class Home : MonoBehaviour
     
     public void CreateHomeWall()
     {
-        
+        isHaveWall = true;
     }
 
     public void IncreaseBoarder()
@@ -259,12 +271,12 @@ public class Home : MonoBehaviour
         }
         var unitObject = Instantiate(unitPrefabs[9], LevelManager.Instance.gameBoardWindow.GetUnitParent());
         var unit = unitObject.GetComponent<UnitController>();
-        unit.Init(this, homeTile, 9);
+        unit.Init(this, homeTile);
         AddUnit(unit);
     }
     
     [Button()]
-    private void LeveUp()
+    private void LeveUp(int leftovers)
     {
         var block = Instantiate(centerBlockPrefab, blockParent);
         block.transform.SetSiblingIndex(blockParent.childCount-2);
@@ -284,6 +296,7 @@ public class Home : MonoBehaviour
             }
         }
         RemoveAllFood();
+        RemoveUnitBlocks();
         _foodCount = 0;
         _foodFromNextLvl++;
         
@@ -295,6 +308,14 @@ public class Home : MonoBehaviour
         UpdateVisual();
         
         owner.GetCivilisationStats().CheckMaxLevelCity(_homeLevel);
+        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+        {
+            var alert = WindowsManager.Instance.CreateWindow<AlertWindow>("AlertWindow");
+            alert.ShowWindow();
+            alert.OnTop();
+            alert.HomeLevelUp(this, _homeLevel, leftovers);
+        }
+        ReturnUnitBlocks();
         
         void RemoveAllFood()
         {
@@ -303,13 +324,19 @@ public class Home : MonoBehaviour
                 foodBlock.transform.GetChild(0).gameObject.SetActive(false);
             }
         }
-
-        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+        void RemoveUnitBlocks()
         {
-            var alert = WindowsManager.Instance.CreateWindow<AlertWindow>("AlertWindow");
-            alert.ShowWindow();
-            alert.OnTop();
-            alert.HomeLevelUp(this, _homeLevel);
+            for (int i = 0; i < _unitList.Count; i++)
+            {
+                ChangeUnitBlock(false);
+            }
+        }
+        void ReturnUnitBlocks()
+        {
+            for (int i = 0; i < _unitList.Count; i++)
+            {
+                ChangeUnitBlock(true);
+            }
         }
     }
 
@@ -388,11 +415,16 @@ public class Home : MonoBehaviour
     {
         if (isAdd)
         {
+            if(_foodCount - 1 < 0)
+                return;
             var a = homeFoodBlocks[_unitList.Count - 1];
             a.transform.GetChild(1).gameObject.SetActive(true);
         }
         else
         {
+            
+            if(_foodCount - 1 < 0)
+                return;
             var a = homeFoodBlocks[_unitList.Count];
             a.transform.GetChild(1).gameObject.SetActive(false);
         }
@@ -440,16 +472,43 @@ public class Home : MonoBehaviour
         return _unitList;
     }
     
+    private void Infiltrate(CivilisationController controller)
+    {
+        for (var i = 0; i < _homeLevel; i++)
+        {
+            var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, 2);
+            closeTile.RemoveAll(tile => !tile.IsTileFree());
+            closeTile.RemoveAll(tile => tile.tileType == Tile.TileType.DeepWater);
+            closeTile.RemoveAll(tile => tile.isHasMountain && !controller.technologies.Contains(TechInfo.Technology.Mountain));
+            if(closeTile.Count <= 0)
+                break;
+            
+            var rand = Random.Range(0, closeTile.Count);
+            var randTile = closeTile[rand];
+            var parent = LevelManager.Instance.gameBoardWindow.GetUnitParent();
+            UnitController unit = null;
+            if (randTile.tileType == Tile.TileType.Ground)
+            {
+                unit = Instantiate(cloakUnitsPrefabs[0], parent);
+            }
+            else
+            {
+                unit = Instantiate(cloakUnitsPrefabs[1], parent);
+            }
+            unit.Init(this, homeTile);
+
+        }
+    }
+    
     private void BuyStartUnit()
     {
         if(!homeTile.IsTileFree() || _unitList.Count >= _unitCapacity)
             return;
         var stIndex = owner.civilisationInfo.StartUnitIndex;
-        var unitObject = Instantiate(unitPrefabs[stIndex], LevelManager.Instance.gameBoardWindow.GetUnitParent());
-        var unit = unitObject.GetComponent<UnitController>();
-        unit.Init(this, homeTile, stIndex);
-        unit.EnableUnit();
-        AddUnit(unit);
+        var unitController = Instantiate(unitPrefabs[stIndex], LevelManager.Instance.gameBoardWindow.GetUnitParent());
+        unitController.Init(this, homeTile);
+        unitController.EnableUnit();
+        AddUnit(unitController);
     }
     
     private void BuyUnit(int unitIndex)
@@ -461,9 +520,8 @@ public class Home : MonoBehaviour
             return;
         owner.BuySomething(owner.civilisationInfo.Units[unitIndex].price);
         
-        var unitObject = Instantiate(unitPrefabs[unitIndex], LevelManager.Instance.gameBoardWindow.GetUnitParent());
-        var unit = unitObject.GetComponent<UnitController>();
-        unit.Init(this, homeTile, unitIndex);
+        var unit = Instantiate(unitPrefabs[unitIndex], LevelManager.Instance.gameBoardWindow.GetUnitParent());
+        unit.Init(this, homeTile);
         AddUnit(unit);
     }
 
@@ -507,7 +565,7 @@ public class Home : MonoBehaviour
             unitObject.gameObject.SetActive(false);
         var unit = unitObject.GetComponent<UnitController>();
         unit.aiName = "unit" + Random.Range(0, 1000000);
-        unit.Init(this, homeTile, 0);
+        unit.Init(this, homeTile);
         AddUnit(unit);
     }
 

@@ -93,6 +93,7 @@ public class WindowsManager : SingletonPersistent<WindowsManager>
     {
         T targetWindow = null;
         _createdWindows ??= new List<BaseWindow>();
+        _createdWindows.RemoveAll(window => window == null);
         foreach (var createdWindow in _createdWindows)
         {
             var createdWindowName = createdWindow.name;

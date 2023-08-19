@@ -19,3 +19,4 @@ MonoBehaviour:
   unitMoveRad: 2
   unitRad: 1
   priceUnit: 3
+  isVeteran: 1
