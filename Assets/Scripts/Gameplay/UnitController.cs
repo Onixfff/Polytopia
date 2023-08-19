@@ -152,8 +152,9 @@ public class UnitController : MonoBehaviour
     
     public void DisbandTheSquad()
     {
+        LevelManager.Instance.SelectObject(null);
         _owner.owner.AddMoney(Mathf.CeilToInt(Mathf.Round(unitInfo.price/2 + 1)));
-        KillUnit();
+        TakeDamage(null, 10000);
     }
     
     public void SelectUnit()
@@ -178,10 +179,20 @@ public class UnitController : MonoBehaviour
             if(_moveThisTurn <= 0) break;
             if(closeTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                 continue;
-            
-            if((unitType != UnitType.Boat || unitType != UnitType.Ship || unitType != UnitType.BattleShip) && closeTile.tileType == Tile.TileType.Water && !closeTile.IsTileHasPort())
-                continue;
-            closeTile.ShowBlueTarget();
+
+            if (unitType is UnitType.Unit or UnitType.Pirate && (closeTile.tileType == Tile.TileType.Ground || (closeTile.tileType == Tile.TileType.Water && closeTile.IsTileHasPort())))
+            {
+                closeTile.ShowBlueTarget();
+            }            
+            if (unitType is UnitType.Boat or UnitType.Ship or UnitType.Dinghy && closeTile.tileType is Tile.TileType.Water or Tile.TileType.Ground)
+            {
+                closeTile.ShowBlueTarget();
+            }
+
+            if (unitType == UnitType.BattleShip)
+            {
+                closeTile.ShowBlueTarget();
+            }
         }
 
         foreach (var tile in closeTilesForAttack)
