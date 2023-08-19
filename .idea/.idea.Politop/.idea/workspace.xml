@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitCloak.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Units/BaseUnitCloak.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/UnitController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Home/Home.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Home/Home.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,18 +51,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.1902439&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;rider.run.widget.enabled.cache&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Discover.Launch.Via.Unity": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "XThreadsFramesViewSplitterKey": "0.19026549",
+    "nodejs_package_manager_path": "npm",
+    "rider.run.widget.enabled.cache": "false",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.4f1\Editor\Unity.exe" />
@@ -124,7 +127,8 @@
       <workItem from="1692259466902" duration="16741000" />
       <workItem from="1692347187581" duration="5657000" />
       <workItem from="1692354664512" duration="10321000" />
-      <workItem from="1692430883182" duration="13317000" />
+      <workItem from="1692430883182" duration="18642000" />
+      <workItem from="1692453664635" duration="825000" />
     </task>
     <servers />
   </component>
@@ -165,30 +169,30 @@
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Gameplay/BuildingUpgrade.cs</url>
-          <line>262</line>
-          <properties documentPath="C:\Users\Genius_1\Unity\Politop\Assets\Scripts\Gameplay\BuildingUpgrade.cs" initialLine="262" containingFunctionPresentation="method 'GivePopulationToOwner'">
-            <startOffsets>
-              <option value="7787" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7819" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Gameplay/Tile.cs</url>
           <line>926</line>
           <properties documentPath="C:\Users\Genius_1\Unity\Politop\Assets\Scripts\Gameplay\Tile.cs" initialLine="925" containingFunctionPresentation="method 'BuildMonument'">
             <startOffsets>
-              <option value="34199" />
+              <option value="34283" />
             </startOffsets>
             <endOffsets>
-              <option value="34217" />
+              <option value="34301" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs</url>
+          <line>504</line>
+          <properties documentPath="C:\Users\Genius_1\Unity\Politop\Assets\Scripts\Gameplay\Home.cs" initialLine="500" containingFunctionPresentation="method 'Infiltrate'">
+            <startOffsets>
+              <option value="13841" />
+            </startOffsets>
+            <endOffsets>
+              <option value="13858" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

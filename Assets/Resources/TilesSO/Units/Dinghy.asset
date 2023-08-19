@@ -15,7 +15,7 @@ MonoBehaviour:
   abilities: 0000000004000000080000000c0000000900000002000000
   unitHp: 5
   unitDmg: 0
-  unitDef: 0.5
+  unitDef: 0
   unitMoveRad: 2
   unitRad: 1
   priceUnit: 8

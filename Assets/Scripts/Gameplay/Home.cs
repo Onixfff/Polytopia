@@ -274,8 +274,12 @@ public class Home : MonoBehaviour
         unit.Init(this, homeTile);
         AddUnit(unit);
     }
-    
+
     [Button()]
+    private void aLevelUp()
+    {
+        LeveUp(0);
+    }
     private void LeveUp(int leftovers)
     {
         var block = Instantiate(centerBlockPrefab, blockParent);
@@ -380,6 +384,7 @@ public class Home : MonoBehaviour
         HideOccupyButton();
         Init(homeTile.unitOnTile.GetOwner().owner, homeTile);
         homeTile.unitOnTile.SetOwner(this);
+        ChangeUnitBlock(true);
         AddUnit(homeTile.unitOnTile);
     }
 
@@ -415,18 +420,19 @@ public class Home : MonoBehaviour
     {
         if (isAdd)
         {
-            if(_foodCount - 1 < 0)
-                return;
-            var a = homeFoodBlocks[_unitList.Count - 1];
-            a.transform.GetChild(1).gameObject.SetActive(true);
+            if (_unitList.Count-1 >= 0 && _unitList.Count-1 < homeFoodBlocks.Count)
+            {
+                var a = homeFoodBlocks[_unitList.Count-1];
+                a.transform.GetChild(1).gameObject.SetActive(true);
+            }
         }
         else
         {
-            
-            if(_foodCount - 1 < 0)
-                return;
-            var a = homeFoodBlocks[_unitList.Count];
-            a.transform.GetChild(1).gameObject.SetActive(false);
+            if (_unitList.Count-1 >= 0 && _unitList.Count-1 < homeFoodBlocks.Count)
+            {
+                var a = homeFoodBlocks[_unitList.Count-1];
+                a.transform.GetChild(1).gameObject.SetActive(false);
+            }
         }
     }
     
@@ -472,9 +478,9 @@ public class Home : MonoBehaviour
         return _unitList;
     }
     
-    private void Infiltrate(CivilisationController controller)
+    public void Infiltrate(CivilisationController controller)
     {
-        for (var i = 0; i < _homeLevel; i++)
+        for (var i = 0; i <= _homeLevel; i++)
         {
             var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, 2);
             closeTile.RemoveAll(tile => !tile.IsTileFree());
@@ -491,12 +497,13 @@ public class Home : MonoBehaviour
             {
                 unit = Instantiate(cloakUnitsPrefabs[0], parent);
             }
-            else
+            else if(randTile.tileType == Tile.TileType.Water)
             {
                 unit = Instantiate(cloakUnitsPrefabs[1], parent);
             }
-            unit.Init(this, homeTile);
 
+            if (unit != null) 
+                unit.InitIndependent(controller, randTile);
         }
     }
     

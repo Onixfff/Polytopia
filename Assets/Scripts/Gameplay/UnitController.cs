@@ -83,6 +83,31 @@ public class UnitController : MonoBehaviour
             gameObject.SetActive(false);
     }
 
+    public void InitIndependent(CivilisationController controller, Tile tile)
+    {
+        SetSweatPos();
+        _moveThisTurn = 0;
+        _attackThisTurn = 0;
+        transform.SetSiblingIndex(transform.parent.childCount);
+        OccupyTile(tile);
+        controller.independentUnits.Add(this);
+        var anchorPos = occupiedTile.GetComponent<RectTransform>().anchoredPosition;
+        GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorPos.x, anchorPos.y + 30);
+        LevelManager.Instance.OnObjectSelect += SelectEvent;
+        LevelManager.Instance.OnTurnEnd += () =>
+        {
+            _isCanSelected = false;
+        };
+        LevelManager.Instance.OnTurnBegin += () =>
+        {
+            _isCanSelected = true;
+            EnableUnit();
+        };
+        
+        _hp = unitInfo.hp;
+        unitHpTMPro.text = _hp.ToString();
+    }
+
     public void EnableUnit()
     {
         _moveThisTurn = 1;
@@ -231,19 +256,14 @@ public class UnitController : MonoBehaviour
     
     public void SetOwner(Home controller)
     {
-        if (!unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Independent))
-            _owner = controller;
-        else
-        {
-            _civOwner = controller.owner;
-            _civOwner.independentUnits.Add(this);
-        }
+        _owner = controller;
         if (headImage != null && controller != null) headImage.sprite = controller.owner.civilisationInfo.HeadSprite;
         if (battleShipHeadImage != null && controller != null) battleShipHeadImage.sprite = controller.owner.civilisationInfo.BattleShipHeadSprite;
         if (horseImage != null && controller != null) horseImage.sprite = controller.owner.civilisationInfo.AnimalSprite;
         foreach (var unitBackGround in unitBackGrounds)
         {
-            unitBackGround.color = controller.owner.civColor;
+            if(controller != null && controller.owner != null)
+                unitBackGround.color = controller.owner.civColor;
         }
     }
     
@@ -312,7 +332,6 @@ public class UnitController : MonoBehaviour
         var inVal1 = 0;
         _moveSeq.Join(DOTween.To(() => inVal1, x => inVal1 = x, 1, dur)).OnComplete((() =>
         {
-            
             var addedRad = 0;
             if (occupiedTile.isHasMountain)
                 addedRad = 1;
@@ -327,7 +346,8 @@ public class UnitController : MonoBehaviour
             {
                 if (occupiedTile.GetHomeOnTile().owner != null && unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Infiltrate))
                 {
-                    Infiltrate();
+                    Infiltrate(occupiedTile.GetHomeOnTile());
+                    TakeDamage(null, 10000);
                     return;
                 }
                 if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
@@ -354,26 +374,31 @@ public class UnitController : MonoBehaviour
         _moveSeq.Kill();
         _attSeq.Kill();
         _counterstrikeSeq.Kill();
+        _sweatDot.Kill();
     }
 
     private void SelectEvent(GameObject pastO, GameObject currO)
     {
-        if (currO != null && currO == gameObject && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+        if (currO != null && currO == gameObject)
         {
-            var ints = new List<int>();
-            if(_hp < unitInfo.hp)
-                ints.Add(0);
-            if(_owner.owner.technologies.Contains(TechInfo.Technology.FreeSpirit))
-                ints.Add(1);
-            if(unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Heal))
-                ints.Add(2);
-            if(unitInfo.IsVeteran && _killCount >= 3 && _lvl == 1)
-                ints.Add(3);
-            if(unitType == UnitType.Boat || unitType == UnitType.Ship)
-                ints.Add(4);
-            LevelManager.Instance.gameplayWindow.ShowUnitButton(ints, this);
+            if (_owner != null && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player || _civOwner != null &&
+                _civOwner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+            {
+                var ints = new List<int>();
+                if (_hp < unitInfo.hp)
+                    ints.Add(0);
+                if (_owner.owner.technologies.Contains(TechInfo.Technology.FreeSpirit))
+                    ints.Add(1);
+                if (unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Heal))
+                    ints.Add(2);
+                if (unitInfo.IsVeteran && _killCount >= 3 && _lvl == 1)
+                    ints.Add(3);
+                if (unitType == UnitType.Boat || unitType == UnitType.Ship)
+                    ints.Add(4);
+                LevelManager.Instance.gameplayWindow.ShowUnitButton(ints, this);
+            }
         }
-        
+
         if (pastO == gameObject)
         {
             if (_attackThisTurn > 0)
@@ -579,9 +604,9 @@ public class UnitController : MonoBehaviour
         return bonus;
     }
 
-    private void Infiltrate()
+    private void Infiltrate(Home home)
     {
-        
+        home.Infiltrate(_owner.owner);
     }
 
     private void KillUnit()
@@ -626,6 +651,9 @@ public class UnitController : MonoBehaviour
             if(!_isSweaty)
                 return;
 
+            if(_sweatDot != null) 
+                return;
+            
             for (var i = 0; i < sweats.Count; i++)
             {
                 var sweat = sweats[i];
@@ -647,18 +675,20 @@ public class UnitController : MonoBehaviour
 
                 sweat.localPosition = startPoses[i];
                 sweat.transform.localScale = Vector3.zero;
-                sweat.DOLocalMove(posVector, sweatyDur);
+                sweat.DOLocalMove(posVector, sweatyDur); // <------------------------------------------------------------ убери заЛупы
                 sweat.DOScale(normVector, sweatyDur / 2).OnComplete((() =>
                 {
                     sweat.DOScale(Vector3.zero, sweatyDur / 2);
                 }));
             }
-
+            
+            
             var inVAl = 0f;
             _sweatDot = DOTween.To(() => inVAl, x => x = inVAl, 1, sweatyDur + 0.1f).OnComplete((() =>
             {
-                if(_sweatDot == null)
-                    _sweatDot.Kill();
+                _sweatDot.Kill();
+                _sweatDot = null;
+                    
                 foreach (var sweat in sweats)
                 {
                     sweat.gameObject.SetActive(false);

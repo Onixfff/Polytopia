@@ -17,5 +17,6 @@ MonoBehaviour:
   unitDmg: 0
   unitDef: 0
   unitMoveRad: 2
-  unitRad: 1
+  unitRad: 2
   priceUnit: 8
+  isVeteran: 0
