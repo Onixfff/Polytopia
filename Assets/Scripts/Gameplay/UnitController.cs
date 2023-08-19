@@ -14,7 +14,8 @@ public class UnitController : MonoBehaviour
         Unit,
         Boat,
         Ship,
-        BattleShip
+        BattleShip,
+        Pirate
     }
 
     public enum AttackType

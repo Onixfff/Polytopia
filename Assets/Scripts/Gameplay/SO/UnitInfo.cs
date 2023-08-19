@@ -20,6 +20,7 @@ public class UnitInfo : ScriptableObject
         Persist,
         Scout,
         Sneak,
+        Surprise,
     }
     
     [SerializeField] private List<AbilityType> abilities;

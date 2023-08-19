@@ -252,7 +252,10 @@ public class Home : MonoBehaviour
         {
             var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, 1);
             var freeTile = closeTile.Find(tile => tile.IsTileFree());
-            homeTile.unitOnTile.MoveToTile(freeTile);
+            if (freeTile != null)
+                homeTile.unitOnTile.MoveToTile(freeTile);
+            else
+                homeTile.unitOnTile.TakeDamage(null, 10000);
         }
         var unitObject = Instantiate(unitPrefabs[9], LevelManager.Instance.gameBoardWindow.GetUnitParent());
         var unit = unitObject.GetComponent<UnitController>();
