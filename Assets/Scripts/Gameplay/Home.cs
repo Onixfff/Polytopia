@@ -4,6 +4,7 @@ using Gameplay.SO;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class Home : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class Home : MonoBehaviour
     public CivilisationController owner;
     public HomeType homeType = HomeType.City;
     public bool isHaveWall = false;
-    
+    public bool isIndependent = false;
     [SerializeField] private Button occupyButton;
     [SerializeField] private List<UnitController> unitPrefabs;
     [SerializeField] private List<UnitController> cloakUnitsPrefabs;
@@ -46,37 +47,46 @@ public class Home : MonoBehaviour
 
     public void Init(CivilisationController controller, Tile tile)
     {
-        homeTile = tile;
-        SetHomePos();
-        
-        _unitList ??= new List<UnitController>();
-        if (controller != null)
+        if (!isIndependent)
         {
-            _homeInfo = controller.civilisationInfo.Home;
-            InitHomeCreator();
+            homeTile = tile;
+            SetHomePos();
             
-            SetOwner(controller);
+            _unitList ??= new List<UnitController>();
+            if (controller != null)
+            {
+                _homeInfo = controller.civilisationInfo.Home;
+                InitHomeCreator();
             
-            InitBlockScrollView();
+                SetOwner(controller);
             
-            if(!controller.homes.Contains(this))
-                controller.homes.Add(this);
+                InitBlockScrollView();
             
-            UpdateVisual();
+                if(!controller.homes.Contains(this))
+                    controller.homes.Add(this);
             
-            InitHome();
+                UpdateVisual();
             
-            LevelManager.Instance.gameplayWindow.OnUnitSpawn += BuyUnit;
-            BuyStartUnit();
+                InitHome();
+            
+                LevelManager.Instance.gameplayWindow.OnUnitSpawn += BuyUnit;
+                BuyStartUnit();
+            }
+            else
+            {
+                InitVillage();
+            }
+
+            occupyButton.onClick.RemoveAllListeners();
+            occupyButton.onClick.AddListener(OccupyHome);
         }
         else
         {
-            InitVillage();
+            SetOwner(controller);
+            _homeInfo = controller.civilisationInfo.Home;
+            _unitList ??= new List<UnitController>();
         }
-
-        occupyButton.onClick.RemoveAllListeners();
-        occupyButton.onClick.AddListener(OccupyHome);
-
+        
         #region InitFunc
         
         void SetHomePos()
@@ -271,7 +281,7 @@ public class Home : MonoBehaviour
         }
         var unitObject = Instantiate(unitPrefabs[9], LevelManager.Instance.gameBoardWindow.GetUnitParent());
         var unit = unitObject.GetComponent<UnitController>();
-        unit.Init(this, homeTile);
+        unit.Init(owner.independentHome, homeTile, true);
         AddUnit(unit);
     }
 
@@ -477,15 +487,15 @@ public class Home : MonoBehaviour
     {
         return _unitList;
     }
-    
-    public void Infiltrate(CivilisationController controller)
+
+    public void Infiltrate(Home home)
     {
         for (var i = 0; i <= _homeLevel; i++)
         {
             var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, 2);
             closeTile.RemoveAll(tile => !tile.IsTileFree());
             closeTile.RemoveAll(tile => tile.tileType == Tile.TileType.DeepWater);
-            closeTile.RemoveAll(tile => tile.isHasMountain && !controller.technologies.Contains(TechInfo.Technology.Mountain));
+            closeTile.RemoveAll(tile => tile.isHasMountain && !home.owner.technologies.Contains(TechInfo.Technology.Mountain));
             if(closeTile.Count <= 0)
                 break;
             
@@ -502,8 +512,11 @@ public class Home : MonoBehaviour
                 unit = Instantiate(cloakUnitsPrefabs[1], parent);
             }
 
-            if (unit != null) 
-                unit.InitIndependent(controller, randTile);
+            if (unit != null)
+            {
+                unit.Init(home.owner.independentHome, randTile, true);
+                home.owner.independentHome.AddUnit(unit);
+            }
         }
     }
     
@@ -513,7 +526,7 @@ public class Home : MonoBehaviour
             return;
         var stIndex = owner.civilisationInfo.StartUnitIndex;
         var unitController = Instantiate(unitPrefabs[stIndex], LevelManager.Instance.gameBoardWindow.GetUnitParent());
-        unitController.Init(this, homeTile);
+        unitController.Init(this, homeTile, false);
         unitController.EnableUnit();
         AddUnit(unitController);
     }
@@ -528,7 +541,7 @@ public class Home : MonoBehaviour
         owner.BuySomething(owner.civilisationInfo.Units[unitIndex].price);
         
         var unit = Instantiate(unitPrefabs[unitIndex], LevelManager.Instance.gameBoardWindow.GetUnitParent());
-        unit.Init(this, homeTile);
+        unit.Init(this, homeTile, false);
         AddUnit(unit);
     }
 
@@ -572,7 +585,7 @@ public class Home : MonoBehaviour
             unitObject.gameObject.SetActive(false);
         var unit = unitObject.GetComponent<UnitController>();
         unit.aiName = "unit" + Random.Range(0, 1000000);
-        unit.Init(this, homeTile);
+        unit.Init(this, homeTile, false);
         AddUnit(unit);
     }
 

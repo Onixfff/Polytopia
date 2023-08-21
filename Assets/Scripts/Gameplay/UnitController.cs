@@ -54,7 +54,7 @@ public class UnitController : MonoBehaviour
     private int _killCount = 0;
     private int _lvl = 1;
 
-    public void Init(Home owner, Tile tile)
+    public void Init(Home owner, Tile tile, bool isIndependent)
     {
         SetSweatPos();
         _moveThisTurn = 0;
@@ -63,7 +63,10 @@ public class UnitController : MonoBehaviour
         OccupyTile(tile);
         var anchorPos = occupiedTile.GetComponent<RectTransform>().anchoredPosition;
         GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorPos.x, anchorPos.y + 30);
-        SetOwner(owner);
+        if(!isIndependent)
+            SetOwner(owner);
+        else
+            SetIndependentOwner(owner);
         LevelManager.Instance.OnObjectSelect += SelectEvent;
         LevelManager.Instance.OnTurnEnd += () =>
         {
@@ -79,33 +82,8 @@ public class UnitController : MonoBehaviour
         _hp = unitInfo.hp;
         unitHpTMPro.text = _hp.ToString();
         
-        if(owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI && !occupiedTile.isOpened)
+        if(owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI && !occupiedTile.isOpened) 
             gameObject.SetActive(false);
-    }
-
-    public void InitIndependent(CivilisationController controller, Tile tile)
-    {
-        SetSweatPos();
-        _moveThisTurn = 0;
-        _attackThisTurn = 0;
-        transform.SetSiblingIndex(transform.parent.childCount);
-        OccupyTile(tile);
-        controller.independentUnits.Add(this);
-        var anchorPos = occupiedTile.GetComponent<RectTransform>().anchoredPosition;
-        GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorPos.x, anchorPos.y + 30);
-        LevelManager.Instance.OnObjectSelect += SelectEvent;
-        LevelManager.Instance.OnTurnEnd += () =>
-        {
-            _isCanSelected = false;
-        };
-        LevelManager.Instance.OnTurnBegin += () =>
-        {
-            _isCanSelected = true;
-            EnableUnit();
-        };
-        
-        _hp = unitInfo.hp;
-        unitHpTMPro.text = _hp.ToString();
     }
 
     public void EnableUnit()
@@ -267,6 +245,19 @@ public class UnitController : MonoBehaviour
         }
     }
     
+    public void SetIndependentOwner(Home controller)
+    {
+        _owner = controller.owner.independentHome;
+        if (headImage != null && controller != null) headImage.sprite = controller.owner.civilisationInfo.HeadSprite;
+        if (battleShipHeadImage != null && controller != null) battleShipHeadImage.sprite = controller.owner.civilisationInfo.BattleShipHeadSprite;
+        if (horseImage != null && controller != null) horseImage.sprite = controller.owner.civilisationInfo.AnimalSprite;
+        foreach (var unitBackGround in unitBackGrounds)
+        {
+            if(controller != null && controller.owner != null)
+                unitBackGround.color = controller.owner.civColor;
+        }
+    }
+    
     public Home GetOwner()
     {
         return _owner;
@@ -320,6 +311,7 @@ public class UnitController : MonoBehaviour
         transform.SetSiblingIndex(transform.parent.childCount);
         var inValX = rectTransform.anchoredPosition.x;
         OccupyTile(to);
+        LevelManager.Instance.SelectObject(null);
         _moveSeq.Append(DOTween.To(() => inValX, x => inValX = x, anchorPos.x, dur).OnUpdate((() =>
         {
             rectTransform.anchoredPosition = new Vector2(inValX, rectTransform.anchoredPosition.y);
@@ -336,7 +328,6 @@ public class UnitController : MonoBehaviour
             if (occupiedTile.isHasMountain)
                 addedRad = 1;
             var closeTiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(to, unitInfo.rad + addedRad);
-            LevelManager.Instance.SelectObject(null);
             foreach (var tile in closeTiles)
             {
                 if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
@@ -344,12 +335,6 @@ public class UnitController : MonoBehaviour
             }
             if (occupiedTile.GetHomeOnTile() != null && (occupiedTile.GetHomeOnTile().owner == null || occupiedTile.GetHomeOnTile().owner != _owner.owner))
             {
-                if (occupiedTile.GetHomeOnTile().owner != null && unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Infiltrate))
-                {
-                    Infiltrate(occupiedTile.GetHomeOnTile());
-                    TakeDamage(null, 10000);
-                    return;
-                }
                 if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
                     occupiedTile.GetHomeOnTile().ShowOccupyButton();
             }
@@ -407,8 +392,18 @@ public class UnitController : MonoBehaviour
                 {
                     if (unit2 == this)
                     {
-                        if(!unit1.IsThisUnitAlly(_owner.owner) && unit1.occupiedTile.IsCanAttackTo())
+                        if (!unit1.IsThisUnitAlly(_owner.owner) && unit1.occupiedTile.IsCanAttackTo())
+                        {
+                            if (unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Infiltrate) && 
+                                unit1.occupiedTile.GetHomeOnTile() != null && 
+                                unit1.occupiedTile.GetHomeOnTile().owner != null && 
+                                unit1.occupiedTile.GetHomeOnTile().owner != _owner.owner)
+                            {
+                                Infiltrate(unit1.occupiedTile.GetHomeOnTile());
+                                return;
+                            }
                             AttackUnitOnTile(unit1);
+                        }
                         return;
                     }
                 }
@@ -418,6 +413,14 @@ public class UnitController : MonoBehaviour
             {
                 if (currO != null && (currO.TryGetComponent(out Tile tile) || currO.TryGetComponent(out Home home)))
                 {
+                    if (unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Infiltrate) && 
+                        tile.GetHomeOnTile() != null && 
+                        tile.GetHomeOnTile().owner != null && 
+                        tile.GetHomeOnTile().owner != _owner.owner)
+                    {
+                        Infiltrate(tile.GetHomeOnTile());
+                        return;
+                    }
                     if (tile.IsTileFree() && tile.IsCanMoveTo())
                         MoveToTile(tile);
                 }
@@ -435,6 +438,7 @@ public class UnitController : MonoBehaviour
         if (attackType == AttackType.Range)
             rad = unitInfo.rad;
         var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
+        
         if (unitToAttack.CheckForKill(GetDmg()))
         {
             unitToAttack.TakeDamage(this, GetDmg());
@@ -575,8 +579,11 @@ public class UnitController : MonoBehaviour
         LevelManager.Instance.SelectObject(null);
       
         var ship = Instantiate(shipUnits[index], transform.parent);
-        ship.Init(_owner, occupiedTile);
-        if(_unitInTheShip == null)
+        if(ship.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Independent))
+            ship.Init(_owner.owner.independentHome, occupiedTile, true);
+        else
+            ship.Init(_owner, occupiedTile, false);
+        if(ship == null)
             ship.SetUnitInShip(this);
         else
             ship.SetUnitInShip(_unitInTheShip);
@@ -592,7 +599,10 @@ public class UnitController : MonoBehaviour
         LevelManager.Instance.SelectObject(null);
         
         _unitInTheShip.gameObject.SetActive(true);
-        _unitInTheShip.Init(_owner, occupiedTile);
+        if(_unitInTheShip.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Independent))
+            _unitInTheShip.Init(_owner.owner.independentHome, occupiedTile, true);
+        else
+            _unitInTheShip.Init(_owner, occupiedTile, false);
         occupiedTile.unitOnTile = _unitInTheShip;
         KillUnit();
     }
@@ -606,7 +616,34 @@ public class UnitController : MonoBehaviour
 
     private void Infiltrate(Home home)
     {
-        home.Infiltrate(_owner.owner);
+        _moveSeq = DOTween.Sequence();
+        var anchorPos = home.homeTile.GetComponent<RectTransform>().anchoredPosition;
+        var inValX = 0f;
+        LevelManager.Instance.SelectObject(null);
+
+        _moveSeq.Append(DOTween.To(() => inValX, x => inValX = x, anchorPos.x, 0.2f).OnUpdate((() =>
+        {
+            rectTransform.anchoredPosition = new Vector2(inValX, rectTransform.anchoredPosition.y);
+        })));
+        var inValY = rectTransform.anchoredPosition.y;
+        _moveSeq.Join(DOTween.To(() => inValY, x => inValY = x, anchorPos.y + 30, 0.2f).OnUpdate((() =>
+        {
+            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, inValY);
+        })));
+        var inVal1 = 0f;
+        _moveSeq.Join(DOTween.To(() => inVal1, x => inVal1 = x, 1, 0.2f)).OnComplete((() =>
+        {
+            var closeTiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(home.homeTile, unitInfo.rad);
+            foreach (var tile in closeTiles)
+            {
+                if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+                    tile.UnlockTile(_owner.owner);
+            }
+            
+            TakeDamage(null, 10000);
+            home.Infiltrate(_owner);
+        }));
+
     }
 
     private void KillUnit()

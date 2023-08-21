@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5349752406243517778}
   - component: {fileID: 678440106140558662}
   - component: {fileID: 1789822117842824388}
+  - component: {fileID: 4738581413254395163}
   m_Layer: 5
   m_Name: Civilisation
   m_TagString: Untagged
@@ -62,6 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   civilisationInfo: {fileID: 11400000, guid: 715557d38e026514f9e339bf4c5f589b, type: 2}
   homes: []
+  independentHome: {fileID: 4738581413254395163}
   civColor: {r: 1, g: 0, b: 0, a: 1}
   technologies: 
   homePrefab: {fileID: 5697296062761007083, guid: bb5da2bfb2475ad4aadd81645304c540, type: 3}
@@ -94,3 +96,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   civilisationController: {fileID: 5349752406243517778}
+--- !u!114 &4738581413254395163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697296062761007083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e6e5c647346d5f4da2ca555bc6d6844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  homeTile: {fileID: 0}
+  owner: {fileID: 5349752406243517778}
+  homeType: 1
+  isHaveWall: 0
+  isIndependent: 1
+  occupyButton: {fileID: 0}
+  unitPrefabs: []
+  cloakUnitsPrefabs: []
+  homeFoodBlocks: []
+  buildingPrefab: []
+  centerBlockPrefab: {fileID: 0}
+  blockScrollView: {fileID: 0}
+  blockParent: {fileID: 0}

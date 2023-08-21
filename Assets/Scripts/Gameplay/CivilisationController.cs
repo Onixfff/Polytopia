@@ -11,7 +11,7 @@ public class CivilisationController : MonoBehaviour
 
     public CivilisationInfo civilisationInfo;
     public List<Home> homes;
-    public List<UnitController> independentUnits;
+    public Home independentHome;
     public Color civColor;
     public List<TechInfo.Technology> technologies;
     
@@ -44,8 +44,6 @@ public class CivilisationController : MonoBehaviour
 
     public void Init(CivilisationInfo info)
     {
-        independentUnits ??= new List<UnitController>();
-        
         AddMoney(5);
         civilisationInfo = info;
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
@@ -79,6 +77,11 @@ public class CivilisationController : MonoBehaviour
             AddPoint(incomePoint);
         };
         LevelManager.Instance.OnUnlockTechnology += AddNewTechnology;
+
+        void InitIndependentHome()
+        {
+            independentHome.Init(this, null);
+        }
     }
     
     public void AIInit(CivilisationInfo info)
@@ -182,7 +185,6 @@ public class CivilisationController : MonoBehaviour
     public List<UnitController> GetAllUnit()
     {
         var a = new List<UnitController>();
-        a.AddRange(independentUnits);
         foreach (var home in homes)
         {
             a.AddRange(home.GetUnitList());
