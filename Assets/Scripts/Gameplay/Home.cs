@@ -27,6 +27,7 @@ public class Home : MonoBehaviour
     [SerializeField] private List<GameObject> buildingPrefab;
     [SerializeField] private GameObject centerBlockPrefab;
     [SerializeField] private GameObject blockScrollView;
+    [SerializeField] private GameObject wallObject;
     [SerializeField] private Transform blockParent;
 
     #region private
@@ -244,6 +245,7 @@ public class Home : MonoBehaviour
     public void CreateHomeWall()
     {
         isHaveWall = true;
+        wallObject.SetActive(true);
     }
 
     public void IncreaseBoarder()

@@ -23,12 +23,11 @@ public class Scout : MonoBehaviour
                 return;
             }
             var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(startTile, 3);
-            var allClosedTile = closeTile.FindAll(tile1 => !tile1.isOpened);
-            allClosedTile.RemoveAll(tile1 => tile1.tileType is Tile.TileType.Water);
-            allClosedTile.RemoveAll(tile1 => tile1.tileType is Tile.TileType.DeepWater);
-            allClosedTile.RemoveAll(tile1 => !tile1.IsTileFree());
-            allClosedTile.RemoveAll(tile1 =>
+            closeTile.RemoveAll(tile1 => tile1.tileType == Tile.TileType.Water && !home.owner.technologies.Contains(TechInfo.Technology.Sailing));
+            closeTile.RemoveAll(tile1 => tile1.tileType is Tile.TileType.DeepWater && !home.owner.technologies.Contains(TechInfo.Technology.Navigation));
+            closeTile.RemoveAll(tile1 =>
                 tile1.isHasMountain && !home.owner.technologies.Contains(TechInfo.Technology.Mountain));
+            var allClosedTile = closeTile.FindAll(tile1 => !tile1.isOpened);
             if(allClosedTile.Count == 0)
                 return;
             var rand = Random.Range(0, allClosedTile.Count);
