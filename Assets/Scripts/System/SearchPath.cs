@@ -53,10 +53,18 @@ public static class AStarAlgorithm
                     continue;
                 if(!tiles[neighborPosition].IsTileFree())
                     continue;
-                if(tiles[neighborPosition].isHasMountain && !unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain))
-                    continue;
-                if(tiles[neighborPosition].tileType == Tile.TileType.Water && !unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float))
-                    continue;
+                if (unit != null)
+                {
+                    if(tiles[neighborPosition].isHasMountain && !unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain))
+                        continue;
+                    if(tiles[neighborPosition].tileType == Tile.TileType.Water && !unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float))
+                        continue;
+                }
+                else
+                {
+                    if(tiles[neighborPosition].isHasMountain && !LevelManager.Instance.gameBoardWindow.playerCiv.technologies.Contains(TechInfo.Technology.Mountain))
+                        continue;
+                }
 
                 var neighborTile = tiles[neighborPosition];
                 var newGCost = currentTile.gCost + 1;

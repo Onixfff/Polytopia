@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilities: 080000000c00000009000000020000000b000000
   unitHp: 5
-  unitDmg: 0
+  unitDmg: 1
   unitDef: 0
   unitMoveRad: 2
   unitRad: 2

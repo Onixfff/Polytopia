@@ -1436,6 +1436,7 @@ MonoBehaviour:
   owner: {fileID: 0}
   homeType: 1
   isHaveWall: 0
+  isIndependent: 0
   occupyButton: {fileID: 4497024037642038627}
   unitPrefabs:
   - {fileID: 1558370623009764137, guid: fc959d465c068934f8d9860937d5e39e, type: 3}
@@ -1451,6 +1452,7 @@ MonoBehaviour:
   cloakUnitsPrefabs:
   - {fileID: 8520821261616408510, guid: f9d415d23a7ab924e98a2aef88df6f26, type: 3}
   - {fileID: 7860760686031920063, guid: e29166ae92641844197db892b9a73f50, type: 3}
+  scoutPrefab: {fileID: 2999952633784228825, guid: afc21974a3682594d81ae94a7a7f66d3, type: 3}
   homeFoodBlocks:
   - {fileID: 5644238771302880074}
   - {fileID: 5674877726124255862}

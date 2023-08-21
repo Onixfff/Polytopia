@@ -22,6 +22,7 @@ public class Home : MonoBehaviour
     [SerializeField] private Button occupyButton;
     [SerializeField] private List<UnitController> unitPrefabs;
     [SerializeField] private List<UnitController> cloakUnitsPrefabs;
+    [SerializeField] private Scout scoutPrefab;
     [SerializeField] private List<GameObject> homeFoodBlocks;
     [SerializeField] private List<GameObject> buildingPrefab;
     [SerializeField] private GameObject centerBlockPrefab;
@@ -218,6 +219,15 @@ public class Home : MonoBehaviour
         return homeIncomePoint;
     }
 
+    public void CreateScout()
+    {
+        var scout = Instantiate(scoutPrefab, transform);
+        scout.rectTransform.anchoredPosition = new Vector2(centerBlockPrefab.GetComponent<RectTransform>().anchoredPosition.x, centerBlockPrefab.GetComponent<RectTransform>().anchoredPosition.y);
+        scout.transform.SetParent(LevelManager.Instance.gameBoardWindow.GetUnitParent());
+        scout.gameObject.SetActive(true);
+        scout.StartExploring(this);
+    }
+
     #region LevelUp
     
     public void UpdateVisual()
@@ -231,11 +241,6 @@ public class Home : MonoBehaviour
         _isWorkshop = true;
     }
 
-    public void CreateExplorer()
-    {
-        
-    }
-    
     public void CreateHomeWall()
     {
         isHaveWall = true;

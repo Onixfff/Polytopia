@@ -45,7 +45,7 @@ public class AlertWindow : BaseWindow
         {
             if (level == 0)
             {
-                home.CreateExplorer();
+                home.CreateScout();
             }
             if (level == 1)
             {
