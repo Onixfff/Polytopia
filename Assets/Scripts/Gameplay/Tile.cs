@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour
     public Action<Tile> OnClickOnTile;
     public UnitController unitOnTile;
     public BuildingUpgrade buildingUpgradePrefab;
+    public Roads roads;
     public bool isHasMountain = false;
     public bool isHasOre = false;
     public bool isHasCrop = false;
@@ -529,7 +530,8 @@ public class Tile : MonoBehaviour
                 if (!_owner.owner.IsCanBuy(2)) 
                     return;
                 _owner.owner.BuySomething(2);
-                //Roads
+                roads.isRoad = true;
+                roads.CheckCloseTile();
                 break;
             case 4:
                 if (!_owner.owner.IsCanBuy(10)) 
