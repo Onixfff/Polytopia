@@ -957,9 +957,9 @@ public class Tile : MonoBehaviour
         ruinsTileImage.enabled = false;
         ruinsTileImage.gameObject.SetActive(false);
         isHasRuins = false;
-        var rand = Random.Range(0, 6);
         for (var i = 0; i < 30; i++)
         {
+            var rand = Random.Range(0, 6);
             if (tileType == TileType.Ground)
             {
                 if (rand == 0)
@@ -1003,7 +1003,6 @@ public class Tile : MonoBehaviour
                     return;
                 }
             }
-            rand = Random.Range(0, 6);
         }
     }
     

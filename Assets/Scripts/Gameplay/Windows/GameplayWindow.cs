@@ -410,6 +410,7 @@ public class GameplayWindow : BaseWindow
         if(icons.Count == 0)
             return;
         var rand = Random.Range(0, icons.Count);
+        Debug.Log(icons[rand].type.ToString());
         icons[rand].OpenTech();
     }
     

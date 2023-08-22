@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class TechIcon : MonoBehaviour
 {
-    [SerializeField] private TechInfo.Technology type;
     [SerializeField] private Button techButton; 
     [SerializeField] private GameObject lockObject; 
     [SerializeField] private GameObject lineObject;
@@ -15,6 +14,7 @@ public class TechIcon : MonoBehaviour
     [SerializeField] private Color unlockColor;
     [SerializeField] private Color buyColor;
 
+    public TechInfo.Technology type;
     public bool isTechUnlock = false;
 
     public void OpenTech()
@@ -57,6 +57,7 @@ public class TechIcon : MonoBehaviour
 
     public void BuyTech()
     {
+        isTechUnlock = false;
         lineObject.GetComponent<Image>().color = buyColor;
         buyObject.SetActive(true);
         Destroy(techButton);
