@@ -583,6 +583,16 @@ public class UnitController : MonoBehaviour
         LevelManager.Instance.SelectObject(null);
       
         var ship = Instantiate(shipUnits[index], transform.parent);
+
+        if (unitType is UnitType.Boat or UnitType.Ship)
+        {
+            ship.SetUnitInShip(_unitInTheShip);
+        }
+        else if(unitType is UnitType.Unit)
+        {
+            ship.SetUnitInShip(this);
+        }
+        
         if (ship.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Independent))
         {
             ship.Init(_owner.owner.independentHome, occupiedTile, true);
@@ -591,16 +601,6 @@ public class UnitController : MonoBehaviour
         {
             ship.Init(_owner, occupiedTile, false);
         }
-
-        if (ship._unitInTheShip == null)
-        {
-            ship.SetUnitInShip(this);
-        }
-        else
-        {
-            ship.SetUnitInShip(_unitInTheShip);
-        }
-        
         
         gameObject.SetActive(false);
         if(unitType is UnitType.Ship or UnitType.BattleShip)
