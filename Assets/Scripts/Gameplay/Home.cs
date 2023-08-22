@@ -302,9 +302,10 @@ public class Home : MonoBehaviour
         if (!tile.IsTileFree())
         {
             var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(tile, 1);
-            var freeTile = closeTile.Find(tile => tile.IsTileFree() && tile.tileType is not Tile.TileType.Water and Tile.TileType.DeepWater);
-            if (freeTile != null)
-                tile.unitOnTile.MoveToTile(freeTile);
+            var freeTile = closeTile.FindAll(tile => tile.IsTileFree());
+            freeTile.RemoveAll(til => til.tileType is Tile.TileType.Water or Tile.TileType.DeepWater);
+            if (freeTile[0] != null)
+                tile.unitOnTile.MoveToTile(freeTile[0]);
             else
                 tile.unitOnTile.TakeDamage(null, 10000);
         }
