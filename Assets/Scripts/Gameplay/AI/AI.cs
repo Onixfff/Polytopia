@@ -27,20 +27,8 @@ public class AI : MonoBehaviour
         var values = type.GetEnumValues();
         var techIndex = random.Next(values.Length);
         var tech = (TechInfo.Technology)values.GetValue(techIndex);
-        _controller.technologies.Add(tech);
+        //_controller.technologies.Add(tech);
         homes.RemoveAll(home => home.owner != _controller);
-
-        /*foreach (var home in homes)
-        {
-            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(home.homeTile, home.homeRad);
-            foreach (var tile in tiles)
-            {
-                if(tile.BuyAnimal())
-                    break;
-                if(tile.BuyFruit())
-                    break;
-            }
-        }*/
 
         _allUnits ??= new List<UnitController>();
         foreach (var home in homes)
@@ -57,6 +45,7 @@ public class AI : MonoBehaviour
             UnitAction(_allUnits);
         foreach (var home in homes)
         {
+            continue;
             if(LevelManager.Instance.currentTurn % 2 == 0)
                 home.AIBuyUnit(_controller);
         }
