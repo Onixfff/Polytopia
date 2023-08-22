@@ -12,6 +12,7 @@ public class CivilisationController : MonoBehaviour
     public CivilisationInfo civilisationInfo;
     public List<Home> homes;
     public Home independentHome;
+    public Home capitalHome;
     public Color civColor;
     public List<TechInfo.Technology> technologies;
     

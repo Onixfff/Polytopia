@@ -403,7 +403,8 @@ MonoBehaviour:
   lineObject: {fileID: 5563026719955612864}
   buyObject: {fileID: 7509144867959317854}
   unlockColor: {r: 1, g: 1, b: 1, a: 1}
-  buyColor: {r: 0.454902, g: 1, b: 0.30588236, a: 1}
+  buyColor: {r: 0.35915682, g: 1, b: 0.18396229, a: 1}
+  isTechUnlock: 0
 --- !u!1 &4703131778947855182
 GameObject:
   m_ObjectHideFlags: 0

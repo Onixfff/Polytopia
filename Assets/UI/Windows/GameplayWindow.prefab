@@ -31435,6 +31435,7 @@ MonoBehaviour:
   - {fileID: 9184567121804406517}
   tileTechButtonParent: {fileID: 569950033813831662}
   tileNameUGUI: {fileID: 8840055819174496977}
+  techIcons: []
 --- !u!114 &1328071457111795385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31475,6 +31476,7 @@ MonoBehaviour:
   priceFirstTier: 5
   priceTwoTier: 10
   priceThreeTier: 15
+  techObject: {fileID: 6559465604060929757}
 --- !u!114 &5498114860188523933
 MonoBehaviour:
   m_ObjectHideFlags: 0

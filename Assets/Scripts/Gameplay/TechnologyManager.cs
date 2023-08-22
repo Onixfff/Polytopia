@@ -38,13 +38,15 @@ public class TechnologyManager : MonoBehaviour
     [SerializeField] private int priceFirstTier = 5;
     [SerializeField] private int priceTwoTier = 10;
     [SerializeField] private int priceThreeTier = 15;
+    
+    [SerializeField] private GameObject techObject;
 
     private void Start()
     {
         #region Rider
         ridingButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priceFirstTier))
+            if(!techObject.activeSelf || TryBuyTech(priceFirstTier))
             {
                 UnlockButtons(ridingButton, new List<Button>(){freeSpiritButton, roadsButton});
                 RidingTech();
@@ -52,7 +54,7 @@ public class TechnologyManager : MonoBehaviour
         });
         roadsButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priceTwoTier))
+            if(!techObject.activeSelf || TryBuyTech(priceTwoTier))
             {
                 UnlockButtons(roadsButton, new List<Button>(){tradeButton});
                 RoadsTech();
@@ -60,7 +62,7 @@ public class TechnologyManager : MonoBehaviour
         });
         tradeButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(tradeButton);
                 TradeTech();
@@ -68,7 +70,7 @@ public class TechnologyManager : MonoBehaviour
         });
         freeSpiritButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priceTwoTier))
+            if(!techObject.activeSelf || TryBuyTech(priceTwoTier))
             {
                 UnlockButtons(freeSpiritButton, new List<Button>(){chivalryButton});
                 FreeSpiritTech();
@@ -76,7 +78,7 @@ public class TechnologyManager : MonoBehaviour
         });
         chivalryButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(chivalryButton);
                 ChivalryTech();    
@@ -86,7 +88,7 @@ public class TechnologyManager : MonoBehaviour
         #region Gathering
         gatheringButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priceFirstTier))
+            if(!techObject.activeSelf || TryBuyTech(priceFirstTier))
             {
                 UnlockButtons(gatheringButton, new List<Button>(){farmingButton, strategyButton});
                 GatheringTech();    
@@ -94,7 +96,7 @@ public class TechnologyManager : MonoBehaviour
         });
         farmingButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priceTwoTier))
+            if(!techObject.activeSelf || TryBuyTech(priceTwoTier))
             {
                 UnlockButtons(farmingButton, new List<Button>(){constructButton});
                 FarmingTech();    
@@ -102,7 +104,7 @@ public class TechnologyManager : MonoBehaviour
         });
         constructButton.onClick.AddListener(() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(constructButton);
                 ConstructionTech();    
@@ -110,7 +112,7 @@ public class TechnologyManager : MonoBehaviour
         });
         strategyButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceTwoTier))
+            if(!techObject.activeSelf || TryBuyTech(priceTwoTier))
             {
                 UnlockButtons(strategyButton, new List<Button>(){diplomacyButton});
                 StrategyTech();
@@ -118,7 +120,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         diplomacyButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(diplomacyButton);
                 DiplomacyTech();
@@ -129,7 +131,7 @@ public class TechnologyManager : MonoBehaviour
         #region Mountain
         mountainButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceFirstTier))
+            if(!techObject.activeSelf || TryBuyTech(priceFirstTier))
             {
                 UnlockButtons(mountainButton, new List<Button>(){miningButton, meditationButton});
                 MountainTech();
@@ -137,7 +139,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         miningButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceTwoTier))
+            if(!techObject.activeSelf || TryBuyTech(priceTwoTier))
             {
                 UnlockButtons(miningButton, new List<Button>(){forgeButton});
                 MiningTech();
@@ -145,7 +147,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         forgeButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(forgeButton);
                 ForgeTech();
@@ -153,7 +155,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         meditationButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(meditationButton, new List<Button>(){philosophyButton});
                 MeditationTech();
@@ -161,7 +163,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         philosophyButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(philosophyButton);
                 PhilosophyTech();
@@ -171,7 +173,7 @@ public class TechnologyManager : MonoBehaviour
         #region Fish
         fishingButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceFirstTier))
+            if(!techObject.activeSelf || TryBuyTech(priceFirstTier))
             {
                 UnlockButtons(fishingButton, new List<Button>(){sailingButton, whalingButton});
                 FishingTech();
@@ -179,7 +181,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         sailingButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceTwoTier))
+            if(!techObject.activeSelf || TryBuyTech(priceTwoTier))
             {
                 UnlockButtons(sailingButton, new List<Button>(){navigationButton});
                 SailingTech();
@@ -187,7 +189,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         navigationButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(navigationButton);
                 NavigationTech();
@@ -195,7 +197,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         whalingButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceTwoTier))
+            if(!techObject.activeSelf || TryBuyTech(priceTwoTier))
             {
                 UnlockButtons(whalingButton, new List<Button>(){aquaButton});
                 WhalingTech();
@@ -203,7 +205,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         aquaButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(aquaButton);
                 AquatismTech();
@@ -213,7 +215,7 @@ public class TechnologyManager : MonoBehaviour
         #region Hunt
         huntingButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceFirstTier))
+            if(!techObject.activeSelf || TryBuyTech(priceFirstTier))
             {
                 UnlockButtons(huntingButton, new List<Button>(){archeryButton, forestryButton});
                 HuntingTech();
@@ -221,7 +223,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         archeryButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceTwoTier))
+            if(!techObject.activeSelf || TryBuyTech(priceTwoTier))
             {
                 UnlockButtons(archeryButton, new List<Button>(){spiritualismButton});
                 ArcheryTech();
@@ -229,7 +231,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         spiritualismButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(spiritualismButton);
                 SpiritualismTech();
@@ -237,7 +239,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         forestryButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceTwoTier))
+            if(!techObject.activeSelf || TryBuyTech(priceTwoTier))
             {
                 UnlockButtons(forestryButton, new List<Button>(){mathematicsButton});
                 ForestryTech();
@@ -245,7 +247,7 @@ public class TechnologyManager : MonoBehaviour
         }));
         mathematicsButton.onClick.AddListener((() =>
         {
-            if(TryBuyTech(priceThreeTier))
+            if(!techObject.activeSelf || TryBuyTech(priceThreeTier))
             {
                 UnlockButtons(mathematicsButton);
                 MathematicsTech();

@@ -22,6 +22,7 @@ public class GameBoardWindow : BaseWindow
     [SerializeField] private Home village;
     [SerializeField] private GameInfo gameInfo;
     [SerializeField] private int countWaterZone = 6;
+    [SerializeField] private int countRuin = 5;
 
     private Dictionary<Vector2Int ,Tile> _generatedTiles;
     private Sequence _generateSeq;
@@ -245,7 +246,7 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void GenerateRuins()
     {
-        for (var i = 0; i < 5; i++)
+        for (var i = 0; i < countRuin; i++)
         {
             Tile randomTile = null;
             for(var j = 100; j >= 0; j--)

@@ -10,10 +10,10 @@ public class Scout : MonoBehaviour
     private Sequence _moveSeq;
     public RectTransform rectTransform;
     
-    public void StartExploring(Home home)
+    public void StartExploring(Home home, Tile t)
     {
         var anchoredPosition = home.GetComponent<RectTransform>().anchoredPosition;
-        Circle(home.homeTile, 0);
+        Circle(t, 0);
 
         void Circle(Tile startTile, int index)
         {
@@ -28,18 +28,20 @@ public class Scout : MonoBehaviour
             closeTile.RemoveAll(tile1 =>
                 tile1.isHasMountain && !home.owner.technologies.Contains(TechInfo.Technology.Mountain));
             var allClosedTile = closeTile.FindAll(tile1 => !tile1.isOpened);
-            if(allClosedTile.Count == 0)
+            if (allClosedTile.Count == 0)
+            {
+                Destroy(gameObject);
                 return;
+            }
             var rand = Random.Range(0, allClosedTile.Count);
             var randomTile = allClosedTile[rand];
             if (randomTile != null)
             {
-                var vector2Int = new List<Vector2Int>();
                 for (var j = 0; j < 20; j++)
                 {
                     rand = Random.Range(0, allClosedTile.Count);
                     randomTile = allClosedTile[rand];
-                    vector2Int = AStarAlgorithm.FindPath(startTile.pos, randomTile.pos);
+                    var vector2Int = AStarAlgorithm.FindPath(startTile.pos, randomTile.pos);
                     if (vector2Int != null)
                     {
                         randomTile = LevelManager.Instance.gameBoardWindow.GetTile(vector2Int[0]);

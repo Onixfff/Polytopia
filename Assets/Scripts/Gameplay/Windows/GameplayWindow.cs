@@ -5,6 +5,7 @@ using Gameplay.SO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class GameplayWindow : BaseWindow
 {
@@ -48,6 +49,8 @@ public class GameplayWindow : BaseWindow
     [SerializeField] private List<Button> unitButtons;
     [SerializeField] private GameObject tileTechButtonParent;
     [SerializeField] private TextMeshProUGUI tileNameUGUI;
+    [SerializeField] private List<TechIcon> techIcons;
+    
     private List<Button> _openedTileTechButtons;
     private Tween _tween;
     private CivilisationController _playerCiv;
@@ -399,6 +402,15 @@ public class GameplayWindow : BaseWindow
                     break;
             }
         }
+    }
+
+    public void OpenRandomTechnology()
+    {
+        var icons = techIcons.FindAll(tech => tech.isTechUnlock);
+        if(icons.Count == 0)
+            return;
+        var rand = Random.Range(0, icons.Count);
+        icons[rand].OpenTech();
     }
     
     private void Awake()

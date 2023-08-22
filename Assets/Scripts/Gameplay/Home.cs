@@ -57,11 +57,12 @@ public class Home : MonoBehaviour
             _unitList ??= new List<UnitController>();
             if (controller != null)
             {
+                SetOwner(controller);
+                if(owner.capitalHome != null)
+                    _isCapital = false;
                 _homeInfo = controller.civilisationInfo.Home;
                 InitHomeCreator();
-            
-                SetOwner(controller);
-            
+                
                 InitBlockScrollView();
             
                 if(!controller.homes.Contains(this))
@@ -84,6 +85,7 @@ public class Home : MonoBehaviour
         }
         else
         {
+            _isCapital = false;
             SetOwner(controller);
             _homeInfo = controller.civilisationInfo.Home;
             _unitList ??= new List<UnitController>();
@@ -124,6 +126,10 @@ public class Home : MonoBehaviour
 
         void InitHome()
         {
+            if (_isCapital)
+            {
+                owner.capitalHome = this;
+            }
             var _boardRad = 1;
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(homeTile, _boardRad);
             homeTile.BuildHome(this);
@@ -220,13 +226,13 @@ public class Home : MonoBehaviour
         return homeIncomePoint;
     }
 
-    public void CreateScout()
+    public void CreateScout(Tile tile)
     {
         var scout = Instantiate(scoutPrefab, transform);
-        scout.rectTransform.anchoredPosition = new Vector2(centerBlockPrefab.GetComponent<RectTransform>().anchoredPosition.x, centerBlockPrefab.GetComponent<RectTransform>().anchoredPosition.y);
+        scout.rectTransform.anchoredPosition = new Vector2(tile.GetRectTransform().anchoredPosition.x, tile.GetRectTransform().anchoredPosition.y);
         scout.transform.SetParent(LevelManager.Instance.gameBoardWindow.GetUnitParent());
         scout.gameObject.SetActive(true);
-        scout.StartExploring(this);
+        scout.StartExploring(this, tile);
     }
 
     #region LevelUp
@@ -289,7 +295,24 @@ public class Home : MonoBehaviour
         var unitObject = Instantiate(unitPrefabs[9], LevelManager.Instance.gameBoardWindow.GetUnitParent());
         var unit = unitObject.GetComponent<UnitController>();
         unit.Init(owner.independentHome, homeTile, true);
-        AddUnit(unit);
+        owner.independentHome.AddUnit(unit);
+    }
+    public UnitController CreateIndependentUnit(Tile tile, int index)
+    {
+        if (!tile.IsTileFree())
+        {
+            var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(tile, 1);
+            var freeTile = closeTile.Find(tile => tile.IsTileFree());
+            if (freeTile != null)
+                tile.unitOnTile.MoveToTile(freeTile);
+            else
+                tile.unitOnTile.TakeDamage(null, 10000);
+        }
+        var unitObject = Instantiate(unitPrefabs[index], LevelManager.Instance.gameBoardWindow.GetUnitParent());
+        var unit = unitObject.GetComponent<UnitController>();
+        unit.Init(owner.independentHome, tile, true);
+        owner.independentHome.AddUnit(unit);
+        return unit;
     }
 
     [Button()]
@@ -390,12 +413,16 @@ public class Home : MonoBehaviour
         for (var i = _unitList.Count - 1; i >= 0; i--)
         {
             var unit = _unitList[i];
-            unit.SetOwner(null);
+            unit.SetOwner(owner.independentHome);
             RemoveUnit(unit);
         }
 
-        if(owner != null)
+
+        if (owner != null)
+        {
             owner.RemoveHome(this, _unitList);
+        }
+        
         homeType = HomeType.City;
         homeTile.unitOnTile.GetOwner().RemoveUnit(homeTile.unitOnTile);
         HideOccupyButton();
@@ -554,14 +581,18 @@ public class Home : MonoBehaviour
 
     public void AddUnit(UnitController unit)
     {
+        _unitList ??= new List<UnitController>();
         _unitList.Add(unit);
         ChangeUnitBlock(true);
     }
     
     public void RemoveUnit(UnitController unit)
     {
-        _unitList.Remove(unit);
-        ChangeUnitBlock(false);
+        if (_unitList != null)
+        {
+            _unitList.Remove(unit);
+            ChangeUnitBlock(false);
+        }
     }
 
     public void AIBuyUnit(CivilisationController controller)

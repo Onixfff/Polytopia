@@ -4,6 +4,7 @@ using DG.Tweening;
 using Gameplay.SO;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour
 {
@@ -956,9 +957,54 @@ public class Tile : MonoBehaviour
         ruinsTileImage.enabled = false;
         ruinsTileImage.gameObject.SetActive(false);
         isHasRuins = false;
+        var rand = Random.Range(0, 6);
+        for (var i = 0; i < 30; i++)
+        {
+            if (tileType == TileType.Ground)
+            {
+                if (rand == 0)
+                {
+                    unitOnTile.GetOwner().owner.AddMoney(10);
+                    return;
+                }
+                if (unitOnTile.GetOwner().owner.capitalHome.owner == unitOnTile.GetOwner().owner)
+                {
+                    if (rand == 1)
+                    {
+                        unitOnTile.GetOwner().owner.capitalHome.CreateIndependentUnit(this, 6);
+                        return;
+                    }
 
-        if (unitOnTile != null) 
-            unitOnTile.GetOwner().owner.AddMoney(5);
+                    if (rand == 2)
+                    {
+                        unitOnTile.GetOwner().owner.capitalHome.AddFood(3);
+                        return;
+                    }
+                }
+
+                if (rand == 3)
+                {
+                    unitOnTile.GetOwner().CreateScout(this);
+                    return;
+                }
+            }
+
+            if (rand == 4)
+            {
+                LevelManager.Instance.gameplayWindow.OpenRandomTechnology();
+                return;
+            }
+            if (tileType is TileType.Water or TileType.DeepWater)
+            {
+                if (rand == 5)
+                {
+                    var unit = unitOnTile.GetOwner().owner.capitalHome.CreateIndependentUnit(this, 0);
+                    unit.TurnIntoAShip(2);
+                    return;
+                }
+            }
+            rand = Random.Range(0, 6);
+        }
     }
     
     #region ForA-star

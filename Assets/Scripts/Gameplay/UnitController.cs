@@ -141,7 +141,6 @@ public class UnitController : MonoBehaviour
     
     public void ShipLevelUp()
     {
-        _hp = _unitInTheShip.GetUnitInfo().hp;
         if (unitType == UnitType.Boat)
         {
             TurnIntoAShip(1);
@@ -579,19 +578,28 @@ public class UnitController : MonoBehaviour
         return _counterstrikeSeq;
     }
 
-    private void TurnIntoAShip(int index)
+    public void TurnIntoAShip(int index)
     {
         LevelManager.Instance.SelectObject(null);
       
         var ship = Instantiate(shipUnits[index], transform.parent);
-        if(ship.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Independent))
+        if (ship.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Independent))
+        {
             ship.Init(_owner.owner.independentHome, occupiedTile, true);
+        }
         else
+        {
             ship.Init(_owner, occupiedTile, false);
-        if(ship == null)
+        }
+
+        if (ship._unitInTheShip == null)
+        {
             ship.SetUnitInShip(this);
+        }
         else
+        {
             ship.SetUnitInShip(_unitInTheShip);
+        }
         
         
         gameObject.SetActive(false);

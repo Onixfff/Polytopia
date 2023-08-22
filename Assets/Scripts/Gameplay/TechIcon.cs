@@ -15,14 +15,25 @@ public class TechIcon : MonoBehaviour
     [SerializeField] private Color unlockColor;
     [SerializeField] private Color buyColor;
 
-    private bool _isPastTechUnlock;
-    void Start()
+    public bool isTechUnlock = false;
+
+    public void OpenTech()
+    {
+        techButton.onClick?.Invoke();
+    }
+    
+    private void Start()
     {
         if (lockObject != null)
         {
             lockObject.SetActive(true);
             techButton.enabled = false;
         }
+        else
+        {
+            isTechUnlock = true;
+        }
+        
         lineObject.SetActive(true);
         lineObject.transform.SetParent(transform.parent.parent.GetChild(0).transform);
         var inVal = 0;
@@ -38,6 +49,7 @@ public class TechIcon : MonoBehaviour
 
     public void UnlockTech()
     {
+        isTechUnlock = true;
         lineObject.GetComponent<Image>().color = unlockColor;
         if (lockObject != null) lockObject.SetActive(false);
         techButton.enabled = true;
