@@ -53,6 +53,7 @@ public class Tile : MonoBehaviour
     
     
     [SerializeField] private Button getInfoButton;
+    [SerializeField] private Button ruinButton;
 
     private BuildingUpgrade _buildingUpgrade;
     
@@ -187,6 +188,11 @@ public class Tile : MonoBehaviour
     
     private void SelectEvent(GameObject pastO, GameObject currO)
     {
+        if (ruinButton.gameObject.activeSelf && unitOnTile == null)
+        {
+            ruinButton.gameObject.SetActive(false);
+        }
+        
         if (currO == null || currO.TryGetComponent(out Tile tile))
         {
             HideTargetsTime();
@@ -378,6 +384,8 @@ public class Tile : MonoBehaviour
         ruinsTileImage.gameObject.SetActive(false);
         ruinsTileImage.enabled = true;
         isHasRuins = true;
+        ruinButton.onClick.RemoveAllListeners();
+        ruinButton.onClick.AddListener(ExploreRuins);
     }
 
     public void ShowBlueTarget()
@@ -395,6 +403,17 @@ public class Tile : MonoBehaviour
         if (unitOnTile.CheckForKill(unit.GetDmg()))
         {
             unitOnTile.SweatingAnimationEnable();
+        }
+    }
+    
+    public void ShowRuinButton()
+    {
+        LevelManager.Instance.OnTurnBegin += Show;
+
+        void Show()
+        {
+            ruinButton.gameObject.SetActive(true);
+            LevelManager.Instance.OnTurnBegin -= Show;
         }
     }
     
@@ -930,6 +949,18 @@ public class Tile : MonoBehaviour
         _owner.owner.AddPoint(400);
     }
 
+    private void ExploreRuins()
+    {
+        ruinButton.onClick.RemoveAllListeners();
+        ruinButton.gameObject.SetActive(false);
+        ruinsTileImage.enabled = false;
+        ruinsTileImage.gameObject.SetActive(false);
+        isHasRuins = false;
+
+        if (unitOnTile != null) 
+            unitOnTile.GetOwner().owner.AddMoney(5);
+    }
+    
     #region ForA-star
 
     public Vector2Int pos;

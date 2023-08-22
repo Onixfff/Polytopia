@@ -338,6 +338,11 @@ public class UnitController : MonoBehaviour
                 if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
                     occupiedTile.GetHomeOnTile().ShowOccupyButton();
             }
+            if (occupiedTile.isHasRuins)
+            {
+                if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
+                    occupiedTile.ShowRuinButton();
+            }
             if (unitType == UnitType.Unit && to.IsTileHasPort())
             {
                 TurnIntoAShip(0);
