@@ -68,7 +68,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0422\u0435\u043A\u0441\u0442"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ee1bd55c4847dec4b842f5873e7b8372, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 561831d91e63c6a4eb1a8669b861820d, type: 2}
   m_sharedMaterial: {fileID: -4845339492734674732, guid: ee1bd55c4847dec4b842f5873e7b8372, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &381386432015156134
@@ -397,13 +397,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c09838ddf3abc3439dea9a741f9f086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
   techButton: {fileID: 7691657273434917505}
   lockObject: {fileID: 5539232686050958617}
   lineObject: {fileID: 5563026719955612864}
   buyObject: {fileID: 7509144867959317854}
   unlockColor: {r: 1, g: 1, b: 1, a: 1}
   buyColor: {r: 0.35915682, g: 1, b: 0.18396229, a: 1}
+  type: 0
   isTechUnlock: 0
 --- !u!1 &4703131778947855182
 GameObject:
@@ -855,8 +855,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0422\u0435\u043A\u0441\u0442\n\u0422\u0435\u043A\u0441\u0442"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ee1bd55c4847dec4b842f5873e7b8372, type: 2}
-  m_sharedMaterial: {fileID: -4845339492734674732, guid: ee1bd55c4847dec4b842f5873e7b8372, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 561831d91e63c6a4eb1a8669b861820d, type: 2}
+  m_sharedMaterial: {fileID: 2752675264807169439, guid: 561831d91e63c6a4eb1a8669b861820d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

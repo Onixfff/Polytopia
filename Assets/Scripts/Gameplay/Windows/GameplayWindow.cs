@@ -26,6 +26,8 @@ public class GameplayWindow : BaseWindow
         DeepWater,
         Monument
     }
+
+    public AlertWindow alertWindow;
     
     [SerializeField] private TextMeshProUGUI currentTurnUGUI;
     [SerializeField] private TextMeshProUGUI currentMoneyUGUI;

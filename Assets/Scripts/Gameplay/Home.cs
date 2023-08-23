@@ -358,9 +358,7 @@ public class Home : MonoBehaviour
         owner.GetCivilisationStats().CheckMaxLevelCity(_homeLevel);
         if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
-            var alert = WindowsManager.Instance.CreateWindow<AlertWindow>("AlertWindow");
-            alert.ShowWindow();
-            alert.OnTop();
+            var alert = LevelManager.Instance.gameplayWindow.alertWindow;
             alert.HomeLevelUp(this, _homeLevel, leftovers);
         }
         ReturnUnitBlocks();

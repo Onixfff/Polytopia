@@ -48,6 +48,11 @@ public class LevelManager : SingletonPersistent<LevelManager>
         }
     }
 
+    public List<CivilisationController> GetCivilisationControllers()
+    {
+        return _civilisationControllers;
+    }
+
     public void AddCiv(CivilisationController civ)
     {
         _civilisationControllers ??= new List<CivilisationController>();

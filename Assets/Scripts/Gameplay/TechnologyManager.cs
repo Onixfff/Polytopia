@@ -333,6 +333,10 @@ public class TechnologyManager : MonoBehaviour
     {
         LevelManager.Instance.OnUnlockTechnology?.Invoke(TechInfo.Technology.Diplomacy);
         LevelManager.Instance.gameplayWindow.UnlockUnitTech(4);
+        foreach (var civ in LevelManager.Instance.GetCivilisationControllers())
+        {
+            civ.capitalHome.homeTile.UnlockTile(LevelManager.Instance.gameBoardWindow.playerCiv);
+        }
     }
 
     #endregion

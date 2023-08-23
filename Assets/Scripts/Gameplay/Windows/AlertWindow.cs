@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AlertWindow : BaseWindow
+public class AlertWindow : MonoBehaviour
 {
     [SerializeField] private List<GameObject> homeLevelUp;
     
@@ -38,7 +38,7 @@ public class AlertWindow : BaseWindow
                 home.BuildPark();
             }
             home.AddFood(leftovers);
-            CloseWindow();
+            homeLevelUp[level].SetActive(false);
         }));
         homeLevelUp[level].transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
         homeLevelUp[level].transform.GetChild(1).GetComponent<Button>().onClick.AddListener((() =>
@@ -60,7 +60,7 @@ public class AlertWindow : BaseWindow
                 home.CreateSuperUnit();
             }
             home.AddFood(leftovers);
-            CloseWindow();
+            homeLevelUp[level].SetActive(false);
         }));
     }
 }
