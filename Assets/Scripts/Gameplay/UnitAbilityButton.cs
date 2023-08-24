@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TileContentButton : MonoBehaviour
+public class UnitAbilityButton : MonoBehaviour
 {
     [SerializeField] private Image image;
     [SerializeField] private Button button;
@@ -14,7 +14,7 @@ public class TileContentButton : MonoBehaviour
     [SerializeField] private Color disableColor;
     private void OnEnable()
     {
-        var curMoney = LevelManager.Instance.gameBoardWindow.playerCiv.Money;
+        /*var curMoney = LevelManager.Instance.gameBoardWindow.playerCiv.Money;
         tileCoastUGUI.text = coast.ToString();
         if(coast == 0)
             tileCoastUGUI.transform.parent.gameObject.SetActive(false);
@@ -27,6 +27,6 @@ public class TileContentButton : MonoBehaviour
         {
             button.enabled = true;
             image.color = enableColor;
-        }
+        }*/
     }
 }

@@ -26,22 +26,23 @@ public class GameplayWindow : BaseWindow
         DeepWater,
         Monument
     }
-
+    #region Alert
     public AlertWindow alertWindow;
-    
-    [SerializeField] private TextMeshProUGUI currentTurnUGUI;
-    [SerializeField] private TextMeshProUGUI currentMoneyUGUI;
-    [SerializeField] private TextMeshProUGUI currentPointUGUI;
-    [SerializeField] private Button menuButton;
-    [SerializeField] private Button technologyOpenButton;
-    [SerializeField] private Button technologyCloseButton;
-    [SerializeField] private Button turnEndButton;
-    [SerializeField] private GameObject technologyObject;
-    [SerializeField] private GameObject inputBlockObject;
     
     [SerializeField] private GameObject turnEnd;
     [SerializeField] private GameObject turnBegin;
-    
+    #endregion
+    #region UpBar
+    [SerializeField] private TextMeshProUGUI currentTurnUGUI;
+    [SerializeField] private TextMeshProUGUI currentIncomeUGUI;
+    [SerializeField] private TextMeshProUGUI currentMoneyUGUI;
+    [SerializeField] private TextMeshProUGUI currentPointUGUI;
+    #endregion
+    #region MainInfo
+    [SerializeField] private Button menuButton;
+    [SerializeField] private Button turnEndButton;
+    #endregion
+    #region DownBar
     [SerializeField] private GameObject downBar;
     [SerializeField] private Button downBarBackButton;
     [SerializeField] private List<Button> unitTechButtons;
@@ -52,7 +53,11 @@ public class GameplayWindow : BaseWindow
     [SerializeField] private GameObject tileTechButtonParent;
     [SerializeField] private TextMeshProUGUI tileNameUGUI;
     [SerializeField] private List<TechIcon> techIcons;
-    
+    #endregion
+     
+    [SerializeField] private GameObject technologyObject;
+    [SerializeField] private GameObject inputBlockObject;
+
     private List<Button> _openedTileTechButtons;
     private Tween _tween;
     private CivilisationController _playerCiv;
@@ -61,6 +66,7 @@ public class GameplayWindow : BaseWindow
     {
         _playerCiv = civ;
         _playerCiv.OnMoneyChanged += MoneyChanged;
+        MoneyChanged();
     }
     
     public void UnlockUnitTech(int unitIndex)
@@ -420,8 +426,6 @@ public class GameplayWindow : BaseWindow
     {
         LevelManager.Instance.gameplayWindow = this;
         menuButton.onClick.AddListener(LoadMenuScene);
-        technologyOpenButton.onClick.AddListener(OpenTechnologyWindow);
-        technologyCloseButton.onClick.AddListener(CloseTechnologyWindow);
         turnEndButton.onClick.AddListener(EndTurn);
         downBarBackButton.onClick.AddListener(HideDownBar);
         UnlockUnitTech(0);
@@ -508,6 +512,7 @@ public class GameplayWindow : BaseWindow
 
     private void MoneyChanged()
     {
+        currentIncomeUGUI.text = $"Звёзды (+{LevelManager.Instance.gameBoardWindow.playerCiv.GetCurrentIncome()})";
         currentMoneyUGUI.text = LevelManager.Instance.gameBoardWindow.playerCiv.Money.ToString();
         currentPointUGUI.text = LevelManager.Instance.gameBoardWindow.playerCiv.Point.ToString();
     }
@@ -553,16 +558,6 @@ public class GameplayWindow : BaseWindow
     {
         OnTileTech?.Invoke(index);
         HideDownBar();
-    }
-    
-    private void OpenTechnologyWindow()
-    {
-        technologyObject.SetActive(!technologyObject.activeSelf);
-    }
-    
-    private void CloseTechnologyWindow()
-    {
-        technologyObject.SetActive(false);
     }
     
     private void EndTurn()

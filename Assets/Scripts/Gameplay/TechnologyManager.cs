@@ -43,6 +43,8 @@ public class TechnologyManager : MonoBehaviour
 
     private void Start()
     {
+        techObject.SetActive(true);
+        techObject.SetActive(false);
         #region Rider
         ridingButton.onClick.AddListener(() =>
         {

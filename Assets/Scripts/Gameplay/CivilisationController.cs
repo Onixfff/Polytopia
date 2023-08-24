@@ -60,14 +60,8 @@ public class CivilisationController : MonoBehaviour
         SetupCivilisation();
         LevelManager.Instance.OnTurnBegin += () =>
         {
-            var income = 0;
-            foreach (var home in homes)
-            {
-                if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
-                    continue;
-                income += home.GetIncome();
-            }
-            AddMoney(income);
+            
+            AddMoney(GetCurrentIncome());
             var incomePoint = 0;
             foreach (var home in homes)
             {
@@ -83,6 +77,19 @@ public class CivilisationController : MonoBehaviour
         {
             independentHome.Init(this, null);
         }
+    }
+
+    public int GetCurrentIncome()
+    {
+        var income = 0;
+        foreach (var home in homes)
+        {
+            if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
+                continue;
+            income += home.GetIncome();
+        }
+
+        return income;
     }
     
     public void AIInit(CivilisationInfo info)
