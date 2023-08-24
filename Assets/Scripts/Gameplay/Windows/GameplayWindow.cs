@@ -425,7 +425,6 @@ public class GameplayWindow : BaseWindow
         turnEndButton.onClick.AddListener(EndTurn);
         downBarBackButton.onClick.AddListener(HideDownBar);
         UnlockUnitTech(0);
-        var inVal = 0f;
 
         LevelManager.Instance.OnTurnEnd += TurnEnd;
 
@@ -509,8 +508,8 @@ public class GameplayWindow : BaseWindow
 
     private void MoneyChanged()
     {
-        currentMoneyUGUI.text = "Звезд: " + LevelManager.Instance.gameBoardWindow.playerCiv.Money;
-        currentPointUGUI.text = "Очков: " + LevelManager.Instance.gameBoardWindow.playerCiv.Point;
+        currentMoneyUGUI.text = LevelManager.Instance.gameBoardWindow.playerCiv.Money.ToString();
+        currentPointUGUI.text = LevelManager.Instance.gameBoardWindow.playerCiv.Point.ToString();
     }
 
     private void ShowTurnEnd()

@@ -2,48 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d77d667-9fca-4140-a789-7f65a06fce43" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/UI/UISprites/Gradient.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/UI/UISprites/Gradient.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/UI/UISprites/GradientDown.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/UI/UISprites/GradientDown.png.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Politop/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Plugins/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/DiplomacyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/DiplomacyManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/China/ChinaPlayerCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumPlayerCivData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/TilesSO/Imperium/ImperiumPlayerCivData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Home.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/LevelManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/LevelManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/RelationOfCivilisation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/RelationOfCivilisation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechnologyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TechnologyManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/AlertWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/AlertWindow.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/GameplayWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/TechIcon.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/TechIcon.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Unit.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/UnitS/Unit.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Black SDF.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Black SDF.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Black.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Black.ttf.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-BlackItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-BlackItalic.ttf.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-MediumItalic.ttf.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Bold.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Bold.ttf.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-BoldItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-BoldItalic.ttf.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-VariableFont_wght.ttf.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Italic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Italic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Italic.ttf.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Italic.ttf.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Light SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Light SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Light.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Light.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Light.ttf.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Light.ttf.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-LightItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-LightItalic.ttf.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Medium.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Medium.ttf.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-MediumItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-MediumItalic.ttf.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Regular.ttf.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Thin.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-Thin.ttf.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-ThinItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Roboto-ThinItalic.ttf.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Elements/Tile.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Elements/Tile.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-Italic-VariableFont_wght SDF.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-Italic-VariableFont_wght SDF.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-Italic-VariableFont_wght.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-Italic-VariableFont_wght.ttf.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-MediumItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-MediumItalic.ttf.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-VariableFont_wght SDF.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-VariableFont_wght SDF.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-VariableFont_wght.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Font/Montserrat-VariableFont_wght.ttf.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Bardur/BardurMountain.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/Bardur/BardurMountain.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/MountainIcon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/MountainIcon.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Oumaji/OumajiMountain.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UISprites/Oumaji/OumajiMountain.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Tile/Mountain.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/UISprites/Tile/Mountain.png.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Windows/GameplayWindow.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -72,11 +56,13 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/CivilisationStats.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/DiplomacyManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/HomeCreator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/HomeUnitButton.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/MonumentBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/RelationOfCivilisation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/Roads.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/Scout.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/TechIcon.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/TileContentButton.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gameplay/Windows/VictoryWindow.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/System/Loader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Text.cs" root0="SKIP_HIGHLIGHTING" />
@@ -174,6 +160,7 @@
       <workItem from="1692689803190" duration="584000" />
       <workItem from="1692690893289" duration="15307000" />
       <workItem from="1692772848114" duration="11570000" />
+      <workItem from="1692865124432" duration="3970000" />
     </task>
     <servers />
   </component>

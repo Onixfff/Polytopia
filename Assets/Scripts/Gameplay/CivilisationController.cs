@@ -78,7 +78,7 @@ public class CivilisationController : MonoBehaviour
             AddPoint(incomePoint);
         };
         LevelManager.Instance.OnUnlockTechnology += AddNewTechnology;
-
+        InitIndependentHome();
         void InitIndependentHome()
         {
             independentHome.Init(this, null);

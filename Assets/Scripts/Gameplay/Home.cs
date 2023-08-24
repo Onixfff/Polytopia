@@ -43,7 +43,6 @@ public class Home : MonoBehaviour
     private int _unitCapacity = 2;
     private bool _isCapital = true;
     private bool _isWorkshop = false;
-    private bool _isPark = false;
 
     #endregion
 
@@ -278,7 +277,6 @@ public class Home : MonoBehaviour
     {
         _homeCreator.CreatePark();
         owner.AddPoint(250);
-        _isPark = true;
     }
     
     public void CreateSuperUnit()
