@@ -68,9 +68,11 @@ MonoBehaviour:
   capitalHome: {fileID: 0}
   civColor: {r: 1, g: 0, b: 0, a: 1}
   technologies: 
+  civilName: civil
   homePrefab: {fileID: 5697296062761007083, guid: bb5da2bfb2475ad4aadd81645304c540, type: 3}
   monumentBuilder: {fileID: 678440106140558662}
   civilisationStats: {fileID: 1789822117842824388}
+  relationOfCivilisation: {fileID: 724060493717725874}
 --- !u!114 &678440106140558662
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,7 +10,9 @@ public class CivilisationInfoWindow : MonoBehaviour
     [SerializeField] private Transform civInfoButtonParent;
     [SerializeField] private TextMeshProUGUI relationText;
     [SerializeField] private List<TextMeshProUGUI> opinionsText;
-    
+    [SerializeField] private Button peaceButton;
+    [SerializeField] private Button embassyButton;
+
     private Dictionary<CivButtonInfo, CivilisationController> _civInfoButtons;
 
     public void ChangeRelation(string value)
@@ -49,7 +51,28 @@ public class CivilisationInfoWindow : MonoBehaviour
         var relationType = relationOfCivilisation.GetCivilisationRelation()[LevelManager.Instance.gameBoardWindow.playerCiv];
         ChangeRelation(relationType.ToString());
         civDetailObject.GetComponent<DetailCivInfoWindow>().Open(controller);
+        
+        peaceButton.onClick.RemoveAllListeners();
+        peaceButton.onClick.AddListener(() =>
+        {
+            MakePeace(controller);
+        });
+        embassyButton.onClick.RemoveAllListeners();
+        embassyButton.onClick.AddListener(() =>
+        {
+            SendAnEmbassy(controller);
+        });
         //ChangeOpinion();
+    }
+
+    private void MakePeace(CivilisationController controller)
+    {
+        controller.ProposeAnAlliance(LevelManager.Instance.gameBoardWindow.playerCiv);
+    }
+    
+    private void SendAnEmbassy(CivilisationController controller)
+    {
+        
     }
 
     private void CreateCivilizationInfoButton()
@@ -62,4 +85,6 @@ public class CivilisationInfoWindow : MonoBehaviour
             _civInfoButtons.Add(button, controller);
         }
     }
+    
+    
 }

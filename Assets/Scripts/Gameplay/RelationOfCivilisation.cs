@@ -267,6 +267,17 @@ public class RelationOfCivilisation : MonoBehaviour
     #endregion
 
     #region Relation
+
+    public void SetRelation(CivilisationController controller, DiplomacyManager.RelationType type)
+    {
+        _civilisationRelation[controller] = type;
+        DiplomacyManager.Instance.OnRelationChange?.Invoke();
+    }
+    
+    public DiplomacyManager.RelationType GetRelation(CivilisationController controller)
+    {
+        return _civilisationRelation[controller];
+    }
     
     private DiplomacyManager.RelationType CheckRelation(CivilisationController civ)
     {

@@ -1,6 +1,11 @@
 
+using System;
+using JetBrains.Annotations;
+
 public class DiplomacyManager : Singleton<DiplomacyManager>
 {
+    public Action OnRelationChange;
+    
     public enum RelationType
     {
         War,

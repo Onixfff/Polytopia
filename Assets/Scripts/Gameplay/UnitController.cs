@@ -228,7 +228,17 @@ public class UnitController : MonoBehaviour
     
     public bool IsThisUnitAlly(CivilisationController controller)
     {
-        return _owner.owner == controller;
+        var isAlly = false;
+
+        if (_owner.owner == controller)
+        {
+            isAlly = true;
+        }
+        else if (_owner.owner.CheckAlly(controller))
+        {
+            isAlly = true;
+        }
+        return isAlly;
     }
     
     public void SetOwner(Home controller)
@@ -443,6 +453,8 @@ public class UnitController : MonoBehaviour
             rad = unitInfo.rad;
         var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
         
+        unitToAttack.GetOwner().owner.ChangeAnotherCivRelationAfterAttack(_owner.owner, true);
+        
         if (unitToAttack.CheckForKill(GetDmg()))
         {
             unitToAttack.TakeDamage(this, GetDmg());
@@ -450,18 +462,20 @@ public class UnitController : MonoBehaviour
             {
                 _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
                 _attackThisTurn = 0; 
+                _moveThisTurn = 0;
                 if(CheckAbility(UnitInfo.AbilityType.Persist)) 
                     _attackThisTurn = 1;
-                if(!CheckAbility(UnitInfo.AbilityType.Escape))
-                    _moveThisTurn = 0;
+                if(CheckAbility(UnitInfo.AbilityType.Escape))
+                    _moveThisTurn = 1;
             }
             else
             {
                 _attackThisTurn = 0; 
+                _moveThisTurn = 0;
                 if(CheckAbility(UnitInfo.AbilityType.Persist)) 
                     _attackThisTurn = 1;
-                if(!CheckAbility(UnitInfo.AbilityType.Escape))
-                   _moveThisTurn = 0;
+                if(CheckAbility(UnitInfo.AbilityType.Escape))
+                    _moveThisTurn = 1;
                 
                 var pr = Instantiate(projectilePrefab, transform.parent);
                 pr.transform.position = transform.position;
@@ -476,10 +490,11 @@ public class UnitController : MonoBehaviour
         else
         {
             _attackThisTurn = 0;
+            _moveThisTurn = 0;
             if(CheckAbility(UnitInfo.AbilityType.Persist)) 
                 _attackThisTurn = 1;
-            if(!CheckAbility(UnitInfo.AbilityType.Escape))
-                _moveThisTurn = 0;
+            if(CheckAbility(UnitInfo.AbilityType.Escape))
+                _moveThisTurn = 1;
             if (attackType == AttackType.Melee)
             {
                 _attSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
@@ -510,6 +525,8 @@ public class UnitController : MonoBehaviour
             } 
             _attSeq.Append(unitToAttack.Counterstrike(this));
         }
+        
+        
         
         return _attSeq;
     }

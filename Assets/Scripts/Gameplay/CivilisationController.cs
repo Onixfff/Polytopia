@@ -15,7 +15,8 @@ public class CivilisationController : MonoBehaviour
     public Home capitalHome;
     public Color civColor;
     public List<TechInfo.Technology> technologies;
-    public string civilName = "civil";
+    public RelationOfCivilisation relationOfCivilisation;
+    public string civilName = "";
     
     public int Money
     {
@@ -49,13 +50,11 @@ public class CivilisationController : MonoBehaviour
         AddMoney(5);
         civilisationInfo = info;
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
-        if(civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
-            technologies.AddRange(info.technology.startTechnologies);
-        else
-        {
-            AddMoney(100);
-            technologies.AddRange(info.technology.startTechnologies);
-        }
+        
+        civilName = "Player";
+        AddMoney(100);
+        technologies.AddRange(info.technology.startTechnologies);
+        
         civColor = info.CivilisationColor;
         CreateHome();
         SetupCivilisation();
@@ -95,6 +94,7 @@ public class CivilisationController : MonoBehaviour
     
     public void AIInit(CivilisationInfo info)
     {
+        civilName = info.civilisationName + " " + Random.Range(10000, 99999).ToString();
         civilisationInfo = info;
         technologies.AddRange(info.technology.startTechnologies);
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
@@ -142,6 +142,57 @@ public class CivilisationController : MonoBehaviour
         Point += count;
     }
 
+    public bool CheckAlly(CivilisationController controller)
+    {
+        return relationOfCivilisation.GetRelation(controller) == DiplomacyManager.RelationType.Peace;
+    }
+    
+    public void ChangeAnotherCivRelationAfterAttack(CivilisationController controller, bool isAttack)
+    {
+        if (isAttack)
+        {
+            Relation(0);
+        }
+
+        void Relation(int index)
+        {
+            Req();
+            LevelManager.Instance.OnTurnBegin -= Req;
+            LevelManager.Instance.OnTurnBegin += Req;
+
+            void Req()
+            {
+                
+                DiplomacyManager.RelationType relationType;
+                if (index <= 2)
+                {
+                    relationType = DiplomacyManager.RelationType.War;
+                    
+                }
+                else
+                {
+                    relationType = DiplomacyManager.RelationType.Neutral;
+                    LevelManager.Instance.OnTurnBegin -= Req;
+                }
+                index += 1;
+                
+                Debug.Log(civilName + " relation to " + controller.civilName + " how - " + relationType);
+                ChangeRelation(controller, relationType);
+            }
+        }
+    }
+
+    public void ProposeAnAlliance(CivilisationController controller)
+    {
+        ChangeRelation(controller, DiplomacyManager.RelationType.Peace);
+    }
+
+    public void ChangeRelation(CivilisationController controller, DiplomacyManager.RelationType relationType)
+    {
+        relationOfCivilisation.SetRelation(controller, relationType);
+        controller.relationOfCivilisation.SetRelation(this, relationType);
+    }
+    
     private void AddNewTechnology(TechInfo.Technology technology)
     {
         technologies.Add(technology);

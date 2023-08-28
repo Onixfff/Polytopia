@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.02745098}
+  m_Color: {r: 0, g: 0.5968418, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -139,10 +139,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   head: {fileID: 3952188989506895248}
   colorImage: {fileID: 1500921403626384577}
+  backImage: {fileID: 4508639752339214454}
   civPoint: {fileID: 2928097278847273875}
   civInfo: {fileID: 7490021528628846270}
   peaceIcon: {fileID: 7077866438706895835}
   warIcon: {fileID: 1931866159962740561}
+  backColorDef: {r: 0, g: 0, b: 0, a: 0.019607844}
+  backColorPlayer: {r: 0, g: 0.59607846, b: 1, a: 1}
 --- !u!1 &2791134886596817820
 GameObject:
   m_ObjectHideFlags: 0
