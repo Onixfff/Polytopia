@@ -8,13 +8,16 @@ public class RelationOfCivilisation : MonoBehaviour
     
     private Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>> _civilisationOpinions;
     private Dictionary<CivilisationController, DiplomacyManager.RelationType> _civilisationRelation;
-    
+
     public void AddNewCivilisation(CivilisationController civ)
     {
         if (!_civilisationOpinions.ContainsKey(civ))
         {
             _civilisationOpinions.Add(civ, CheckOpinions(civ));
             _civilisationRelation.Add(civ, CheckRelation(civ));
+            if (civ.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+            {
+            }
         }
     }
 
@@ -94,20 +97,58 @@ public class RelationOfCivilisation : MonoBehaviour
         
         bool WiseOpinion()
         {
-            return true;
-        }
+            if (_civilisationRelation.ContainsValue(DiplomacyManager.RelationType.Peace))
+            {
+                foreach (var keyValuePair in _civilisationRelation)
+                {
+                    if (keyValuePair.Value == DiplomacyManager.RelationType.Peace)
+                    {
+                        if (keyValuePair.Key.relationOfCivilisation.CheckRelation(controller) == DiplomacyManager.RelationType.Peace)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            
+            if (_civilisationRelation.ContainsValue(DiplomacyManager.RelationType.War))
+            {
+                foreach (var keyValuePair in _civilisationRelation)
+                {
+                    if (keyValuePair.Value == DiplomacyManager.RelationType.War)
+                    {
+                        if (keyValuePair.Key.relationOfCivilisation.CheckRelation(controller) == DiplomacyManager.RelationType.War)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            
+            
+            return false;
+        } //
 
         bool CharmingOpinion()
         {
-            return true;
-    
-        }
+            if(GameManager.Instance.difficult == GameManager.Difficult.Easy)
+                return true;
+            return false;
+        } //
 
         bool PeacefulOpinion()
         {
-            return true;
+            if (civilisationController.TurnWhenIWasAttack.ContainsKey(controller))
+            {
+                if (LevelManager.Instance.currentTurn - civilisationController.TurnWhenIWasAttack[controller] >= 2)
+                {
+                    return true;
+                }
+                return false;
+            }
 
-        }
+            return true;
+        } //
 
         bool DiplomaticOpinion()
         {
@@ -117,15 +158,23 @@ public class RelationOfCivilisation : MonoBehaviour
 
         bool PowerfulOpinion()
         {
-            return true;
-
-        }
+            if (civilisationController.GetAllUnit().Count < controller.GetAllUnit().Count)
+                return true;
+            return false;
+        } //
 
         bool BraveOpinion()
         {
-            return true;
-
-        }
+            var powerFoolCiv = LevelManager.Instance.GetCivilisationControllers().OrderBy(civ => civ.Point).Last();
+            foreach (var keyValuePair in controller.relationOfCivilisation._civilisationRelation)
+            {
+                if (keyValuePair.Value == DiplomacyManager.RelationType.War && keyValuePair.Key == powerFoolCiv)
+                {
+                    return true;
+                }
+            }
+            return false;
+        } //
       
         #endregion
     }
@@ -169,45 +218,109 @@ public class RelationOfCivilisation : MonoBehaviour
 
         bool ViolentOpinion()
         {
-            return true;
-   
-        }
+            if (civilisationController.TurnWhenIWasAttack.ContainsKey(controller))
+            {
+                if (LevelManager.Instance.currentTurn - civilisationController.TurnWhenIWasAttack[controller] < 2)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+            return false;
+        } //
 
         bool ThreateningOpinion()
         {
-            return true;
-        
-        }
+            var board = LevelManager.Instance.gameBoardWindow;
+            var allTile = board.GetAllTile().Values.ToList();
+            var controlledTiles = allTile.FindAll(tile => tile.GetOwner() != null && tile.GetOwner().owner == civilisationController);
+            foreach (var tile in controlledTiles)
+            {
+                var close = board.GetCloseTile(tile, 1);
+                if (close.Any(til => til.unitOnTile != null && til.unitOnTile.GetOwner().owner == controller))
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        } //
 
         bool WeakOpinion()
         {
-            return true;
-        
-        }
+            if (civilisationController.GetAllUnit().Count >= controller.GetAllUnit().Count)
+                return true;
+            return false;
+        } //
 
         bool AnnoyingOpinion()
         {
-            return true;
-        
-        }
+            if(GameManager.Instance.difficult == GameManager.Difficult.Hard)
+                return true;
+            return false;
+        } //
 
         bool FoolishOpinion()
         {
-            return true;
-        
-        }
+            if (_civilisationRelation.ContainsValue(DiplomacyManager.RelationType.Peace))
+            {
+                foreach (var keyValuePair in _civilisationRelation)
+                {
+                    if (keyValuePair.Value == DiplomacyManager.RelationType.Peace)
+                    {
+                        if (keyValuePair.Key.relationOfCivilisation.CheckRelation(controller) == DiplomacyManager.RelationType.War)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            
+            if (_civilisationRelation.ContainsValue(DiplomacyManager.RelationType.War))
+            {
+                foreach (var keyValuePair in _civilisationRelation)
+                {
+                    if (keyValuePair.Value == DiplomacyManager.RelationType.War)
+                    {
+                        if (keyValuePair.Key.relationOfCivilisation.CheckRelation(controller) == DiplomacyManager.RelationType.Peace)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            
+            
+            return false;
+        } //
 
         bool IntrusiveOpinion()
         {
-            return true;
-        
-        }
+            var board = LevelManager.Instance.gameBoardWindow;
+            var allTile = board.GetAllTile().Values.ToList();
+            var controlledTiles = allTile.FindAll(tile => tile.GetOwner() != null && tile.GetOwner().owner == civilisationController);
+            foreach (var tile in controlledTiles)
+            {
+                var close = board.GetCloseTile(tile, 1);
+                if (close.Any(til => til.GetOwner() != null && til.GetOwner().owner == controller))
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        } //
         
         bool DominatingOpinion()
         {
-            return true;
-        
-        }
+            if (LevelManager.Instance.GetCivilisationControllers().Count == 2 && controller.GetAllUnit().Count > civilisationController.GetAllUnit().Count)
+            {
+                return true;
+            }
+
+            return false;
+        } //
 
         #endregion
     }

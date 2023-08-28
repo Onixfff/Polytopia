@@ -15,6 +15,7 @@ public class CivilisationController : MonoBehaviour
     public Home capitalHome;
     public Color civColor;
     public List<TechInfo.Technology> technologies;
+    public Dictionary<CivilisationController, int> TurnWhenIWasAttack;
     public RelationOfCivilisation relationOfCivilisation;
     public string civilName = "";
     
@@ -54,7 +55,7 @@ public class CivilisationController : MonoBehaviour
         civilName = "Player";
         AddMoney(100);
         technologies.AddRange(info.technology.startTechnologies);
-        
+        TurnWhenIWasAttack = new Dictionary<CivilisationController, int>();
         civColor = info.CivilisationColor;
         CreateHome();
         SetupCivilisation();
@@ -94,6 +95,7 @@ public class CivilisationController : MonoBehaviour
     
     public void AIInit(CivilisationInfo info)
     {
+        TurnWhenIWasAttack = new Dictionary<CivilisationController, int>();
         civilName = info.civilisationName + " " + Random.Range(10000, 99999).ToString();
         civilisationInfo = info;
         technologies.AddRange(info.technology.startTechnologies);
@@ -152,6 +154,7 @@ public class CivilisationController : MonoBehaviour
         if (isAttack)
         {
             Relation(0);
+            TurnWhenIWasAttack.Add(controller, LevelManager.Instance.currentTurn);
         }
 
         void Relation(int index)
