@@ -17,13 +17,15 @@ public class CivilisationCustomizer : MonoBehaviour
 
     private CivilisationInfo _civilisationInfo;
 
-    private void Awake()
+
+    public void Awake()
     {
         var inVal = 0;
         DOTween.To(() => inVal, x => x = inVal, 1, 1).OnComplete(() =>
         {
             _civilisationInfo = LevelManager.Instance.gameBoardWindow.playerCiv.civilisationInfo;
             Customize();
+            
         });
     }
 

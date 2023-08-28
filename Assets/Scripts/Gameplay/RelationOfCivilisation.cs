@@ -7,23 +7,40 @@ public class RelationOfCivilisation : MonoBehaviour
     [SerializeField] private CivilisationController civilisationController;
     
     private Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>> _civilisationOpinions;
-    private Dictionary<CivilisationController, List<DiplomacyManager.RelationType>> _civilisationRelation;
-
-    private void Start()
-    {
-        _civilisationOpinions = new Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>>();
-        _civilisationRelation = new Dictionary<CivilisationController, List<DiplomacyManager.RelationType>>();
-        LevelManager.Instance.OnTurnEnd += UpdateOpinions;
-    }
-
-    #region Opinion
+    private Dictionary<CivilisationController, DiplomacyManager.RelationType> _civilisationRelation;
+    
     public void AddNewCivilisation(CivilisationController civ)
     {
         if (!_civilisationOpinions.ContainsKey(civ))
         {
             _civilisationOpinions.Add(civ, CheckOpinions(civ));
+            _civilisationRelation.Add(civ, CheckRelation(civ));
         }
     }
+
+    public Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>> GetCivilisationOpinion()
+    {
+        return _civilisationOpinions;
+    }
+    
+    public Dictionary<CivilisationController, DiplomacyManager.RelationType> GetCivilisationRelation()
+    {
+        return _civilisationRelation;
+    }
+
+    private void Start()
+    {
+        _civilisationOpinions = new Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>>();
+        _civilisationRelation = new Dictionary<CivilisationController, DiplomacyManager.RelationType>();
+        AddNewCivilisation(civilisationController);
+        foreach (var controller in LevelManager.Instance.GetCivilisationControllers())
+        {
+            AddNewCivilisation(controller);
+        }
+        LevelManager.Instance.OnTurnEnd += UpdateOpinions;
+    }
+
+    #region Opinion
     
     private void UpdateOpinions()
     {
@@ -246,9 +263,17 @@ public class RelationOfCivilisation : MonoBehaviour
         }
         return opinionValue;
     }
+    
     #endregion
 
     #region Relation
+    
+    private DiplomacyManager.RelationType CheckRelation(CivilisationController civ)
+    {
+        var opinions = DiplomacyManager.RelationType.Neutral;
+        return opinions;
+    }
+
     
     #endregion
 }

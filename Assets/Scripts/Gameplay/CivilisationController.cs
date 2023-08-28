@@ -15,6 +15,7 @@ public class CivilisationController : MonoBehaviour
     public Home capitalHome;
     public Color civColor;
     public List<TechInfo.Technology> technologies;
+    public string civilName = "civil";
     
     public int Money
     {
