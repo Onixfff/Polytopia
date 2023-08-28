@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class RelationOfCivilisation : MonoBehaviour
@@ -11,14 +12,8 @@ public class RelationOfCivilisation : MonoBehaviour
 
     public void AddNewCivilisation(CivilisationController civ)
     {
-        if (!_civilisationOpinions.ContainsKey(civ))
-        {
-            _civilisationOpinions.Add(civ, CheckOpinions(civ));
-            _civilisationRelation.Add(civ, CheckRelation(civ));
-            if (civ.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
-            {
-            }
-        }
+        _civilisationOpinions.Add(civ, new List<DiplomacyManager.OpinionType>());
+        _civilisationRelation.Add(civ, DiplomacyManager.RelationType.Neutral);
     }
 
     public Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>> GetCivilisationOpinion()
@@ -35,9 +30,8 @@ public class RelationOfCivilisation : MonoBehaviour
     {
         _civilisationOpinions = new Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>>();
         _civilisationRelation = new Dictionary<CivilisationController, DiplomacyManager.RelationType>();
-        AddNewCivilisation(civilisationController);
         foreach (var controller in LevelManager.Instance.GetCivilisationControllers())
-        {
+        { 
             AddNewCivilisation(controller);
         }
         LevelManager.Instance.OnTurnEnd += UpdateOpinions;
@@ -152,8 +146,7 @@ public class RelationOfCivilisation : MonoBehaviour
 
         bool DiplomaticOpinion()
         {
-            return true;
-
+            return false;
         }
 
         bool PowerfulOpinion()
@@ -324,7 +317,7 @@ public class RelationOfCivilisation : MonoBehaviour
 
         #endregion
     }
-
+    
     private int CalculateOpinion(CivilisationController civ)
     {
         var opinionValue = 0;
@@ -397,7 +390,17 @@ public class RelationOfCivilisation : MonoBehaviour
         var opinions = DiplomacyManager.RelationType.Neutral;
         return opinions;
     }
-
     
     #endregion
+
+
+    [Button()]
+    private void ShowAllRelationAndOpinion()
+    {
+        foreach (var controller in LevelManager.Instance.GetCivilisationControllers())
+        {
+            if(controller != civilisationController)
+                Debug.Log("Civ: " + controller.civilName + " Relation: " + _civilisationRelation[controller] + " Count opinion: " + _civilisationOpinions[controller].Count);
+        }
+    }
 }
