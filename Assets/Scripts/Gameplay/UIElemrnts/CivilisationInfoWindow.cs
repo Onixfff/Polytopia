@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Gameplay.SO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +17,8 @@ public class CivilisationInfoWindow : MonoBehaviour
     [SerializeField] private List<TextMeshProUGUI> opinionsText;
     [SerializeField] private Button peaceButton;
     [SerializeField] private Button embassyButton;
+    [SerializeField] private GameObject questCountObject;
+    [SerializeField] private List<GameObject> quests;
 
     private Dictionary<CivButtonInfo, CivilisationController> _civInfoButtons;
 
@@ -180,6 +184,11 @@ public class CivilisationInfoWindow : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        CheckQuests();
+    }
+
     private void ShowCivDetailedInformation(CivilisationController controller)
     {
         if (controller.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
@@ -243,8 +252,133 @@ public class CivilisationInfoWindow : MonoBehaviour
         foreach (var controller in civilisationControllers)
         {
             var button = Instantiate(civInfoButtonPrefab, civInfoButtonParent);
+            button.transform.SetSiblingIndex(5);
             button.Init(controller);
             _civInfoButtons.Add(button, controller);
         }
+    }
+
+    private void CheckQuests()
+    {
+        var player = LevelManager.Instance.gameBoardWindow.playerCiv;
+        var playerStats = player.GetComponent<CivilisationStats>();
+        
+        for (var i = 0; i < quests.Count; i++)
+        {
+            var quest = quests[i];
+
+            switch (i)
+            {
+                case 0:
+                    if (playerStats.GetCountMaxCityLevel() != 0)
+                    {
+                        if (playerStats.GetCountMaxCityLevel() == 5)
+                        {
+                            quest.SetActive(true);
+                            quest.transform.GetChild(0).gameObject.SetActive(true);
+                            quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"Выполнено";
+                            continue;
+                        }
+                        quest.SetActive(true);
+                        quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{playerStats.GetCountMaxCityLevel()}/5";
+                    }
+                    break;
+                case 1:
+                    if (playerStats.GetCountKilledUnit() != 0)
+                    {
+                        if (playerStats.GetCountKilledUnit() == 10)
+                        {
+                            quest.SetActive(true);
+                            quest.transform.GetChild(0).gameObject.SetActive(true);
+                            quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"Выполнено";
+                            continue;
+                        }
+                        quest.SetActive(true);
+                        quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{playerStats.GetCountKilledUnit()}/10";
+                    }
+                    break;
+                case 2:
+                    if(!player.technologies.Contains(TechInfo.Technology.Meditation))
+                        continue;
+                    if (playerStats.GetCountTurnWithoutAttack() >= 6)
+                        return;
+                    if (playerStats.GetCountTurnWithoutAttack() >= 5)
+                    {
+                        quest.SetActive(true);
+                        quest.transform.GetChild(0).gameObject.SetActive(true);
+                        quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"Выполнено";
+                        continue;
+                    }
+                    quest.SetActive(true);
+                    quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{playerStats.GetCountTurnWithoutAttack()}/5";
+                    break;
+                case 3:
+                    if(!player.technologies.Contains(TechInfo.Technology.Philosophy))
+                        continue;
+                    if (playerStats.GetCountUnlockedTech() != 0)
+                    {
+                        if (playerStats.GetCountUnlockedTech() == 26)
+                        {
+                            quest.SetActive(true);
+                            quest.transform.GetChild(0).gameObject.SetActive(true);
+                            quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"Выполнено";
+                            continue;
+                        }
+                        quest.SetActive(true);
+                        quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{playerStats.GetCountUnlockedTech()}/26";
+                    }
+                    break;
+                case 4:
+                    if(!player.technologies.Contains(TechInfo.Technology.Roads))
+                        continue;
+                    if (playerStats.GetCountConnectedCity() != 0)
+                    {
+                        if (playerStats.GetCountConnectedCity() == 5)
+                        {
+                            quest.SetActive(true);
+                            quest.transform.GetChild(0).gameObject.SetActive(true);
+                            quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"Выполнено";
+                            continue;
+                        }
+                        quest.SetActive(true);
+                        quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{playerStats.GetCountConnectedCity()}/5";
+                    }
+                    break;
+                case 5:
+                    if(!player.technologies.Contains(TechInfo.Technology.Navigation))
+                        continue;
+                    if (playerStats.GetCountExploredTile() != 0)
+                    {
+                        var count = LevelManager.Instance.gameBoardWindow.GetAllTile().Count;
+                        if (playerStats.GetCountExploredTile() == count)
+                        {
+                            quest.SetActive(true);
+                            quest.transform.GetChild(0).gameObject.SetActive(true);
+                            quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"Выполнено";
+                            continue;
+                        }
+                        quest.SetActive(true);
+                        quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{playerStats.GetCountExploredTile()}/{count}";
+                    }
+                    break;
+                case 6:
+                    if(!player.technologies.Contains(TechInfo.Technology.Trade))
+                        continue;
+                    if (playerStats.GetAllStars() != 0)
+                    {
+                        if (playerStats.GetAllStars() == 100)
+                        {
+                            quest.SetActive(true);
+                            quest.transform.GetChild(0).gameObject.SetActive(true);
+                            quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"Выполнено";
+                            continue;
+                        }
+                        quest.SetActive(true);
+                        quest.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{playerStats.GetAllStars()}/100";
+                    }
+                    break;
+            }
+        }
+        questCountObject.GetComponent<TextMeshProUGUI>().text = $"Задание: {quests.FindAll(qu => qu.activeSelf).Count}/7";
     }
 }

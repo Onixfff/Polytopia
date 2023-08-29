@@ -16,6 +16,19 @@ public class CivilisationController : MonoBehaviour
     public Color civColor;
     public List<TechInfo.Technology> technologies;
     public Dictionary<CivilisationController, int> TurnWhenIWasAttack;
+
+    private int _turnWhenIAttack;
+    public int turnWhenIAttack
+    {
+        get => _turnWhenIAttack;
+        
+        set
+        {
+            _turnWhenIAttack = value;
+            civilisationStats.SetTurnWithoutAttack(0);
+        }
+    }
+
     public RelationOfCivilisation relationOfCivilisation;
     public string civilName = "";
     
@@ -74,6 +87,7 @@ public class CivilisationController : MonoBehaviour
         };
         LevelManager.Instance.OnUnlockTechnology += AddNewTechnology;
         InitIndependentHome();
+
         void InitIndependentHome()
         {
             independentHome.Init(this, null);
@@ -198,6 +212,60 @@ public class CivilisationController : MonoBehaviour
     
     private void AddNewTechnology(TechInfo.Technology technology)
     {
+        switch (technology)
+        {
+            case TechInfo.Technology.Mountain:
+                break;
+            case TechInfo.Technology.Hunt:
+                break;
+            case TechInfo.Technology.Rider:
+                break;
+            case TechInfo.Technology.Fish:
+                break;
+            case TechInfo.Technology.Gather:
+                break;
+            case TechInfo.Technology.FreeSpirit:
+                break;
+            case TechInfo.Technology.Farming:
+                break;
+            case TechInfo.Technology.Strategy:
+                break;
+            case TechInfo.Technology.Mining:
+                break;
+            case TechInfo.Technology.Archery:
+                break;
+            case TechInfo.Technology.Sailing:
+                break;
+            case TechInfo.Technology.Chivalry:
+                break;
+            case TechInfo.Technology.Diplomacy:
+                break;
+            case TechInfo.Technology.Forge:
+                break;
+            case TechInfo.Technology.Philosophy:
+                break;
+            case TechInfo.Technology.Mathematics:
+                break;
+            case TechInfo.Technology.Meditation:
+                
+                break;
+            case TechInfo.Technology.Roads:
+                break;
+            case TechInfo.Technology.Trade:
+                break;
+            case TechInfo.Technology.Construction:
+                break;
+            case TechInfo.Technology.Navigation:
+                break;
+            case TechInfo.Technology.Whaling:
+                break;
+            case TechInfo.Technology.Aquatism:
+                break;
+            case TechInfo.Technology.Spiritualism:
+                break;
+            case TechInfo.Technology.Forestry:
+                break;
+        }
         technologies.Add(technology);
     }
 

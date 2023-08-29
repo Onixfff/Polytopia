@@ -454,6 +454,7 @@ public class UnitController : MonoBehaviour
         var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
         
         unitToAttack.GetOwner().owner.ChangeAnotherCivRelationAfterAttack(_owner.owner, true);
+        _owner.owner.turnWhenIAttack = LevelManager.Instance.currentTurn;
         
         if (unitToAttack.CheckForKill(GetDmg()))
         {

@@ -1,4 +1,5 @@
 using System;
+using Gameplay.SO;
 using UnityEngine;
 
 public class CivilisationStats : MonoBehaviour
@@ -22,6 +23,9 @@ public class CivilisationStats : MonoBehaviour
                 AddUnlockedTech();
             };
         }
+
+        LevelManager.Instance.OnTurnBegin -= AddTurnWithoutAttack;
+        LevelManager.Instance.OnTurnBegin += AddTurnWithoutAttack;
     }
 
     public void AddKill()
@@ -79,5 +83,62 @@ public class CivilisationStats : MonoBehaviour
         {
             civilisationController.GetMonumentBuilder().UnlockMonument(MonumentBuilder.MonumentType.ParkOfFortune);
         }
+    }
+    
+    public void AddTurnWithoutAttack()
+    {
+        if(!civilisationController.technologies.Contains(TechInfo.Technology.Meditation))
+            return;
+        _turnWithoutAttack += 1;
+        if (_turnWithoutAttack >= 5)
+        {
+            civilisationController.GetMonumentBuilder().UnlockMonument(MonumentBuilder.MonumentType.AltarOfPeace);
+        }
+    }
+    
+    public void SetTurnWithoutAttack(int countTurn)
+    {
+        if(!civilisationController.technologies.Contains(TechInfo.Technology.Meditation))
+            return;
+        _turnWithoutAttack += countTurn;
+        if (_turnWithoutAttack >= 5)
+        {
+            civilisationController.GetMonumentBuilder().UnlockMonument(MonumentBuilder.MonumentType.AltarOfPeace);
+        }
+    }
+
+    public int GetCountKilledUnit()
+    {
+        return _countKilledUnits;
+    }
+
+    public int GetCountMaxCityLevel()
+    {
+        return _maxCityLevel;
+    }
+    
+    public int GetCountTurnWithoutAttack()
+    {
+        return _turnWithoutAttack;
+    }
+    
+    public int GetCountExploredTile()
+    {
+        return _countExploreTile;
+    }
+    
+    public int GetCountConnectedCity()
+    {
+        return _countConnectedCity;
+    }
+    
+    public int GetCountUnlockedTech()
+    {
+        return _countUnlockedTechnology;
+    }
+
+    public int GetAllStars()
+    {
+        return _countReceivedStars;
     }
 }
