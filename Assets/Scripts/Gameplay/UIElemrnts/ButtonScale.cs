@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using NaughtyAttributes;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,7 +32,6 @@ public class ButtonScale : MonoBehaviour
     public void AutoSize()
     {
         AutoSizeText();
-        Invoke(nameof(AutoSizeButton), time);
     }
 
     private void AutoSizeText()
@@ -44,12 +39,6 @@ public class ButtonScale : MonoBehaviour
         var proUGUI = tmPro.GetComponent<TextMeshProUGUI>();
         proUGUI.autoSizeTextContainer = false;
         proUGUI.autoSizeTextContainer = true;
-    }
-
-    private void AutoSizeButton()
-    {
-        var sizeDelta = tmPro.sizeDelta;
-        button.sizeDelta = new Vector2(sizeDelta.x + 13, sizeDelta.y);
     }
 
     public void AddOffsetByX(float offset)
@@ -60,6 +49,13 @@ public class ButtonScale : MonoBehaviour
         if(anchoredPosition.x < 0)
             anchoredPosition = new Vector2(-50 - offset, anchoredPosition.y);
 
+        button.anchoredPosition = anchoredPosition;
+    }
+    
+    public void SetPosByX(float pos)
+    {
+        var anchoredPosition = button.anchoredPosition; 
+        anchoredPosition = new Vector2(pos, anchoredPosition.y);
         button.anchoredPosition = anchoredPosition;
     }
 }

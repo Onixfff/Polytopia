@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class CivilisationInfoWindow : MonoBehaviour
 {
+    [SerializeField] private GameObject playerCivDetailObject;
     [SerializeField] private GameObject civDetailObject;
     [SerializeField] private CivButtonInfo civInfoButtonPrefab;
     [SerializeField] private Transform civInfoButtonParent;
@@ -33,8 +34,9 @@ public class CivilisationInfoWindow : MonoBehaviour
                 break;
         }
         relationText.text = text;
-        relationText.transform.parent.GetComponent<ButtonScale>().AutoSize();
-        relationText.transform.parent.GetComponent<ButtonScale>().ChangeColor(value);
+        var parent = relationText.transform.parent.GetComponent<ButtonScale>();
+        parent.AutoSize();
+        parent.ChangeColor(value);
     }
 
     public void ChangeOpinion(List<DiplomacyManager.OpinionType> values, int opinionValue)
@@ -67,37 +69,44 @@ public class CivilisationInfoWindow : MonoBehaviour
                     isGood = true;
                     break;
                 case DiplomacyManager.OpinionType.Diplomatic:
-                    isGood = true;
                     text = "дипломатичный";
+                    isGood = true;
                     break;
                 case DiplomacyManager.OpinionType.Powerful:
-                    isGood = true;
                     text = "мощный";
+                    isGood = true;
                     break;
                 case DiplomacyManager.OpinionType.Brave:
-                    isGood = true;
                     text = "храбрый";
+                    isGood = true;
                     break;
                 case DiplomacyManager.OpinionType.Violent:
                     text = "жестокий";
+                    isGood = false;
                     break;
                 case DiplomacyManager.OpinionType.Threatening:
                     text = "угрожающий";
+                    isGood = false;
                     break;
                 case DiplomacyManager.OpinionType.Weak:
                     text = "слабый";
+                    isGood = false;
                     break;
                 case DiplomacyManager.OpinionType.Annoying:
                     text = "раздражающий";
+                    isGood = false;
                     break;
                 case DiplomacyManager.OpinionType.Foolish:
                     text = "глупый";
+                    isGood = false;
                     break;
                 case DiplomacyManager.OpinionType.Intrusive:
                     text = "навязчивый";
+                    isGood = false;
                     break;
                 case DiplomacyManager.OpinionType.Dominating:
                     text = "доминирующий";
+                    isGood = false;
                     break;
             }
             opinion.text = text;
@@ -173,43 +182,49 @@ public class CivilisationInfoWindow : MonoBehaviour
 
     private void ShowCivDetailedInformation(CivilisationController controller)
     {
-        civDetailObject.SetActive(true);
-        var relationOfCivilisation = controller.GetComponent<RelationOfCivilisation>();
-        var relationType = relationOfCivilisation.GetCivilisationRelation()[LevelManager.Instance.gameBoardWindow.playerCiv];
-        ChangeRelation(relationType);
-        
-        
-        var opinionType = relationOfCivilisation.GetCivilisationOpinion()[LevelManager.Instance.gameBoardWindow.playerCiv];
-        var opinionTypes = new List<DiplomacyManager.OpinionType>();
-        var opinionValue = relationOfCivilisation.CalculateOpinion(controller);
-        if (opinionValue < 0)
+        if (controller.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
         {
-            opinionTypes.Add(opinionType[0]);
-            opinionTypes.Add(opinionType[1]);
-            opinionTypes.Add(opinionType[^1]);
+            playerCivDetailObject.SetActive(true);
+            playerCivDetailObject.GetComponent<DetailCivInfoWindow>().Open(controller);
         }
-        if(opinionValue > 0)
+        else
         {
-            opinionTypes.Add(opinionType[0]);
-            opinionTypes.Add(opinionType[^1]);
-            opinionTypes.Add(opinionType[^2]);
+            var relationOfCivilisation = controller.GetComponent<RelationOfCivilisation>();
+            var relationType = relationOfCivilisation.GetCivilisationRelation()[LevelManager.Instance.gameBoardWindow.playerCiv];
+            ChangeRelation(relationType);
+        
+        
+            var opinionType = relationOfCivilisation.GetCivilisationOpinion()[LevelManager.Instance.gameBoardWindow.playerCiv];
+            var opinionTypes = new List<DiplomacyManager.OpinionType>();
+            var opinionValue = relationOfCivilisation.CalculateOpinion(controller);
+            if (opinionValue < 0)
+            {
+                opinionTypes.Add(opinionType[0]);
+                opinionTypes.Add(opinionType[1]);
+                opinionTypes.Add(opinionType[^1]);
+            }
+            if(opinionValue > 0)
+            {
+                opinionTypes.Add(opinionType[0]);
+                opinionTypes.Add(opinionType[^1]);
+                opinionTypes.Add(opinionType[^2]);
+            }
+            ChangeOpinion(opinionTypes, opinionValue);
+            
+            civDetailObject.SetActive(true);
+            civDetailObject.GetComponent<DetailCivInfoWindow>().Open(controller);
+            
+            peaceButton.onClick.RemoveAllListeners();
+            peaceButton.onClick.AddListener(() =>
+            {
+                MakePeace(controller);
+            });
+            embassyButton.onClick.RemoveAllListeners();
+            embassyButton.onClick.AddListener(() =>
+            {
+                SendAnEmbassy(controller);
+            });
         }
-        ChangeOpinion(opinionTypes, opinionValue);
-        
-        
-        civDetailObject.GetComponent<DetailCivInfoWindow>().Open(controller);
-        
-        peaceButton.onClick.RemoveAllListeners();
-        peaceButton.onClick.AddListener(() =>
-        {
-            MakePeace(controller);
-        });
-        embassyButton.onClick.RemoveAllListeners();
-        embassyButton.onClick.AddListener(() =>
-        {
-            SendAnEmbassy(controller);
-        });
-        //ChangeOpinion();
     }
 
     private void MakePeace(CivilisationController controller)

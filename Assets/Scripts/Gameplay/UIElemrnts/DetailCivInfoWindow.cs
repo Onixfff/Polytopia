@@ -21,13 +21,20 @@ public class DetailCivInfoWindow : MonoBehaviour
         head.sprite = controller.civilisationInfo.HeadSprite;
         colorImage.color = controller.civColor;
         civName.text = controller.civilisationInfo.civilisationName;
-        civDescription.text = $"Племя {controller.civilisationInfo.civilisationName} управляется игроком {controller.civilName}({controller.civilisationInfo.controlType.ToString()})";
+        civName.autoSizeTextContainer = false;
+        civName.autoSizeTextContainer = true;
+        if (controller.civilisationInfo.controlType != CivilisationInfo.ControlType.You)
+        {
+            civDescription.text = $"Племя {controller.civilisationInfo.civilisationName} управляется игроком {controller.civilName}({controller.civilisationInfo.controlType.ToString()})";
+            civName.transform.GetChild(0).GetComponent<ButtonScale>().SetPosByX((civName.text.Length+civName.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text.Length) * 9);
+        }
     }
     
     private void ChangeRelationVisual()
     {
         if (_civilisationController != null)
         {
+            if (peaceIcon == null || warIcon == null) return; 
             var player = LevelManager.Instance.gameBoardWindow.playerCiv;
             var relationType = _civilisationController.relationOfCivilisation.GetRelation(player);
             if (relationType == DiplomacyManager.RelationType.Peace)

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 5533634017066355636}
   - component: {fileID: 147059159375993761}
   - component: {fileID: 3177487313054143100}
+  - component: {fileID: 1931209277581851467}
+  - component: {fileID: 4973664200893858019}
   m_Layer: 5
   m_Name: RelationButton
   m_TagString: Untagged
@@ -39,7 +41,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -2.8}
-  m_SizeDelta: {x: 106.78, y: 17.07}
+  m_SizeDelta: {x: 0, y: 17.07}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2048534062458390505
 CanvasRenderer:
@@ -139,6 +141,46 @@ MonoBehaviour:
   tmPro: {fileID: 8431356069983824934}
   image: {fileID: 5533634017066355636}
   time: 0.03
+--- !u!114 &1931209277581851467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2301267964354231850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
+--- !u!114 &4973664200893858019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2301267964354231850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 5
+    m_Right: 5
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &6992019805319779977
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,10 +214,10 @@ RectTransform:
   m_Father: {fileID: 1874406369564054945}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 96.34, y: 17.07}
+  m_SizeDelta: {x: 53.58, y: 17.07}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &158482551915390299
 CanvasRenderer:
@@ -205,7 +247,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u043E\u0431\u043E\u044F\u0442\u0435\u043B\u044C\u043D\u044B\u0439"
+  m_text: afhaskfj
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6092c35e6c9fe0d40a198f77ba682d6d, type: 2}
   m_sharedMaterial: {fileID: 7685835580954191890, guid: 6092c35e6c9fe0d40a198f77ba682d6d, type: 2}
@@ -239,7 +281,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
