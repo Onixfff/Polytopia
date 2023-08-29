@@ -8,8 +8,6 @@ public class DetailCivInfoWindow : MonoBehaviour
     [SerializeField] private Image colorImage;
     [SerializeField] private TextMeshProUGUI civName;
     [SerializeField] private TextMeshProUGUI civDescription;
-    [SerializeField] private TextMeshProUGUI civRelation;
-    [SerializeField] private TextMeshProUGUI civRelation1;
     [SerializeField] private GameObject peaceIcon;
     [SerializeField] private GameObject warIcon;
     private CivilisationController _civilisationController;
@@ -24,8 +22,6 @@ public class DetailCivInfoWindow : MonoBehaviour
         colorImage.color = controller.civColor;
         civName.text = controller.civilisationInfo.civilisationName;
         civDescription.text = $"Племя {controller.civilisationInfo.civilisationName} управляется игроком {controller.civilName}({controller.civilisationInfo.controlType.ToString()})";
-        civRelation.text = $"Ваши отношения: ";
-        civRelation1.text = $"Они считают, чтовы обоятельный, мудрый и дипломатичный правитель";
     }
     
     private void ChangeRelationVisual()

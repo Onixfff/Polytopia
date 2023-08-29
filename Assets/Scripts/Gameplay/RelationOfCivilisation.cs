@@ -125,7 +125,7 @@ public class RelationOfCivilisation : MonoBehaviour
 
         bool CharmingOpinion()
         {
-            if(GameManager.Instance.difficult == GameManager.Difficult.Easy)
+            if(GameManager.Instance.difficult is GameManager.Difficult.Easy or GameManager.Difficult.Normal)
                 return true;
             return false;
         } //
@@ -249,7 +249,7 @@ public class RelationOfCivilisation : MonoBehaviour
 
         bool AnnoyingOpinion()
         {
-            if(GameManager.Instance.difficult == GameManager.Difficult.Hard)
+            if(GameManager.Instance.difficult is GameManager.Difficult.Hard or GameManager.Difficult.Normal)
                 return true;
             return false;
         } //
@@ -318,7 +318,7 @@ public class RelationOfCivilisation : MonoBehaviour
         #endregion
     }
     
-    private int CalculateOpinion(CivilisationController civ)
+    public int CalculateOpinion(CivilisationController civ)
     {
         var opinionValue = 0;
         var opinionsValues = _civilisationOpinions[civ];
@@ -392,7 +392,6 @@ public class RelationOfCivilisation : MonoBehaviour
     }
     
     #endregion
-
 
     [Button()]
     private void ShowAllRelationAndOpinion()
