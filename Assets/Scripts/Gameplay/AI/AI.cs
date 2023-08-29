@@ -20,14 +20,8 @@ public class AI : MonoBehaviour
 
     public void StartTurn()
     {
-        var homes = _controller.GetAllHome();
+        var homes = _controller.homes;
 
-        var random = new System.Random();
-        var type = typeof(TechInfo.Technology);
-        var values = type.GetEnumValues();
-        var techIndex = random.Next(values.Length);
-        var tech = (TechInfo.Technology)values.GetValue(techIndex);
-        //_controller.technologies.Add(tech);
         homes.RemoveAll(home => home.owner != _controller);
 
         _allUnits ??= new List<UnitController>();
@@ -45,9 +39,8 @@ public class AI : MonoBehaviour
             UnitAction(_allUnits);
         foreach (var home in homes)
         {
-            continue;
             if(LevelManager.Instance.currentTurn % 2 == 0)
-                home.AIBuyUnit(_controller);
+                home.BuyUnit(0);
         }
 
         if (_allUnits.Count == 0)

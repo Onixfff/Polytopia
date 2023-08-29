@@ -67,6 +67,7 @@ public class CivilisationController : MonoBehaviour
         
         civilName = "You";
         AddMoney(100);
+        AddPoint(565);
         technologies.AddRange(info.technology.startTechnologies);
         TurnWhenIWasAttack = new Dictionary<CivilisationController, int>();
         civColor = info.CivilisationColor;
@@ -74,7 +75,6 @@ public class CivilisationController : MonoBehaviour
         SetupCivilisation();
         LevelManager.Instance.OnTurnBegin += () =>
         {
-            
             AddMoney(GetCurrentIncome());
             var incomePoint = 0;
             foreach (var home in homes)
@@ -114,6 +114,45 @@ public class CivilisationController : MonoBehaviour
         civilisationInfo = info;
         technologies.AddRange(info.technology.startTechnologies);
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
+        switch (GameManager.Instance.difficult)
+        {
+            case GameManager.Difficult.Easy:
+                AddMoney(5);
+                break;
+            case GameManager.Difficult.Normal:
+                AddMoney(10);
+                break;
+            case GameManager.Difficult.Hard:
+                AddMoney(20);
+                break;
+        }
+
+        
+        AddPoint(565);
+        LevelManager.Instance.OnTurnBegin += () =>
+        {
+            AddMoney(GetCurrentIncome());
+            var incomePoint = 0;
+            foreach (var home in homes)
+            {
+                if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
+                    continue;
+                incomePoint += home.GetIncomePoint();
+            }
+            switch (GameManager.Instance.difficult)
+            {
+                case GameManager.Difficult.Easy:
+                    incomePoint -= 2;
+                    break;
+                case GameManager.Difficult.Normal:
+                    incomePoint += 1;
+                    break;
+                case GameManager.Difficult.Hard:
+                    incomePoint += 3;
+                    break;
+            }
+            AddPoint(incomePoint);
+        };
         civColor = info.CivilisationColor;
         CreateHome();
         LevelManager.Instance.OnTurnBegin += () =>

@@ -565,7 +565,7 @@ public class Home : MonoBehaviour
         AddUnit(unitController);
     }
     
-    private void BuyUnit(int unitIndex)
+    public void BuyUnit(int unitIndex)
     {
         if(!homeTile.IsTileFree() || !homeTile.IsSelected() || _unitList.Count >= _unitCapacity)
             return;
@@ -595,38 +595,6 @@ public class Home : MonoBehaviour
         }
     }
 
-    public void AIBuyUnit(CivilisationController controller)
-    {
-        if(!homeTile.IsTileFree() || _unitList.Count >= _unitCapacity)
-            return;
-        
-        var unitIndexForBuy = new List<int>(){0};
-        
-        if (controller.technologies.Contains(TechInfo.Technology.Rider))
-        {
-            unitIndexForBuy.Add(1);
-        }
-        if (controller.technologies.Contains(TechInfo.Technology.Strategy))
-        {
-            unitIndexForBuy.Add(2);
-        }
-        if (controller.technologies.Contains(TechInfo.Technology.Archery))
-        {
-            unitIndexForBuy.Add(3);
-        }
-        
-        var randUnit = unitIndexForBuy[Random.Range(0, unitIndexForBuy.Count)];
-        
-        
-        var unitObject = Instantiate(unitPrefabs[randUnit], LevelManager.Instance.gameBoardWindow.GetUnitParent());
-        if(!homeTile.isOpened)
-            unitObject.gameObject.SetActive(false);
-        var unit = unitObject.GetComponent<UnitController>();
-        unit.aiName = "unit" + Random.Range(0, 1000000);
-        unit.Init(this, homeTile, false);
-        AddUnit(unit);
-    }
 
-    
     #endregion
 }
