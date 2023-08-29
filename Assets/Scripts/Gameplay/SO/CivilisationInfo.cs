@@ -7,7 +7,7 @@ public class CivilisationInfo : BaseCivilisationInfo
 {
     public enum ControlType
     {
-        Player,
+        You,
         AI
     }
 

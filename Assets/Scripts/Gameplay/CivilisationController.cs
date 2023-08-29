@@ -52,7 +52,7 @@ public class CivilisationController : MonoBehaviour
         civilisationInfo = info;
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
         
-        civilName = "Player";
+        civilName = "You";
         AddMoney(100);
         technologies.AddRange(info.technology.startTechnologies);
         TurnWhenIWasAttack = new Dictionary<CivilisationController, int>();

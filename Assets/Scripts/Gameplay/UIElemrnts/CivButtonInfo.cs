@@ -8,6 +8,7 @@ public class CivButtonInfo : MonoBehaviour
     [SerializeField] private Image head;
     [SerializeField] private Image colorImage;
     [SerializeField] private Image backImage;
+    [SerializeField] private TextMeshProUGUI civName;
     [SerializeField] private TextMeshProUGUI civPoint;
     [SerializeField] private TextMeshProUGUI civInfo;
     [SerializeField] private GameObject peaceIcon;
@@ -21,15 +22,16 @@ public class CivButtonInfo : MonoBehaviour
         _civilisationController = controller;
         head.sprite = controller.civilisationInfo.HeadSprite;
         colorImage.color = controller.civColor;
-        backImage.color = controller.civilisationInfo.controlType == CivilisationInfo.ControlType.Player ? backColorPlayer : backColorDef;
+        backImage.color = controller.civilisationInfo.controlType == CivilisationInfo.ControlType.You ? backColorPlayer : backColorDef;
 
         UpdateInfo();
         LevelManager.Instance.OnTurnBegin += UpdateInfo;
         DiplomacyManager.Instance.OnRelationChange += ChangeRelationVisual;
         void UpdateInfo()
         {
-            civPoint.text = controller.civilisationInfo.civilisationName + "......." + controller.Point;
-            civInfo.text = "Правитель: " + controller.civilName + $"({controller.civilisationInfo.controlType.ToString()})" + $", городов: {controller.homes.Count}";
+            civName.text = controller.civilisationInfo.civilisationName;
+            civPoint.text = controller.Point.ToString();
+            civInfo.text = "Правитель: " + controller.civilName + $"({controller.civilisationInfo.controlType.ToString()}), " + $"Город: {controller.homes.Count}";
         }
     }
 

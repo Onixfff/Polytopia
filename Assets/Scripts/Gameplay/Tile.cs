@@ -211,7 +211,7 @@ public class Tile : MonoBehaviour
         if(_homeOnTile != null && pastO == _homeOnTile.gameObject && (unitOnTile == null || currO != unitOnTile.gameObject))
             DeselectedHomeOnTile();*/
         
-        if (_owner != null && currO == gameObject && _homeOnTile == null && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+        if (_owner != null && currO == gameObject && _homeOnTile == null && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
         {
             _techTypes = new List<GameplayWindow.OpenedTechType>();
             if(fruitTileImage != null && fruitTileImage.enabled)

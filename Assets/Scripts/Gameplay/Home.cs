@@ -162,7 +162,7 @@ public class Home : MonoBehaviour
     public void SelectHome()
     {
         if (owner == null) return;
-        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
         {
             LevelManager.Instance.gameplayWindow.ShowHomeButton();
         }
@@ -354,7 +354,7 @@ public class Home : MonoBehaviour
         UpdateVisual();
         
         owner.GetCivilisationStats().CheckMaxLevelCity(_homeLevel);
-        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
         {
             var alert = LevelManager.Instance.gameplayWindow.alertWindow;
             alert.HomeLevelUp(this, _homeLevel, leftovers);
