@@ -202,12 +202,20 @@ public class CivilisationController : MonoBehaviour
         return relationOfCivilisation.GetRelation(controller) == DiplomacyManager.RelationType.Peace;
     }
     
+    public DiplomacyManager.RelationType GetRelation(CivilisationController controller)
+    {
+        return relationOfCivilisation.GetRelation(controller);
+    }
+    
     public void ChangeAnotherCivRelationAfterAttack(CivilisationController controller, bool isAttack)
     {
         if (isAttack)
         {
             Relation(0);
-            TurnWhenIWasAttack.Add(controller, LevelManager.Instance.currentTurn);
+            if (TurnWhenIWasAttack.ContainsKey(controller))
+                TurnWhenIWasAttack[controller] = LevelManager.Instance.currentTurn;
+            else
+                TurnWhenIWasAttack.Add(controller, LevelManager.Instance.currentTurn);
         }
 
         void Relation(int index)

@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Gameplay.SO;
+using UnityEngine;
 
 public class AttackTask : BaseTask
 {
@@ -15,9 +15,14 @@ public class AttackTask : BaseTask
 
     public override int CalculatePriority(List<UnitController> units)
     {
+        var lastPr = taskPriority;
         if (IsEnemyNearby(units))
         {
             taskPriority = 5;
+            if (taskPriority != lastPr)
+            {
+                
+            }
             return taskPriority;
         }
         
@@ -68,8 +73,9 @@ public class AttackTask : BaseTask
             closeUnits.Add(tile.unitOnTile);
         }
 
+        closeUnits.RemoveAll(unite => unite == null);
         closeUnits.RemoveAll(unite => unite.GetOwner().owner == unit.GetOwner().owner);
-        closeUnits.RemoveAll(unit => unit == null);
+        closeUnits.RemoveAll(unite => unite.GetOwner().owner.CheckAlly(unit.GetOwner().owner));
         if (closeTile.Count == 0)
             return null;
         var minHp = closeUnits.OrderBy(unite => unite.GetHp()).ToList();
@@ -88,7 +94,20 @@ public class AttackTask : BaseTask
                 unit.GetUnitInfo().rad);
             if (tiles.Any(tile => tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner))
             {
-                return true;
+                var relation = tiles
+                    .FindAll(tile => tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner)
+                    .Select(tile => tile.unitOnTile.GetOwner().owner.GetRelation(unit.GetOwner().owner)).ToList();
+                if (relation.Contains(DiplomacyManager.RelationType.War))
+                {
+                    return true;
+                }
+
+                if (relation.Contains(DiplomacyManager.RelationType.Neutral))
+                {
+                    var rand = Random.Range(0, 2);
+                    if (rand == 0)
+                        return true;
+                }
             }
         }
 

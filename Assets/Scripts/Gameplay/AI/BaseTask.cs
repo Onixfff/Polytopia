@@ -49,7 +49,7 @@ public abstract class BaseTask : MonoBehaviour
             UnitsAssignedToTheTask.RemoveAll(unit => unit == null);
             if (UnitsAssignedToTheTask.Count != 0)
             {
-                //Debug.Log("Task: " + name + " starter." + " Count units - " + UnitsAssignedToTheTask.Count);
+                Debug.Log("Task: " + name + " starter." + " Count units - " + UnitsAssignedToTheTask.Count);
                 TaskRealisation();
                 return;
             }
@@ -60,6 +60,7 @@ public abstract class BaseTask : MonoBehaviour
     
     protected virtual void EndTurn()
     { 
+        Debug.Log("Task: " + name + " continue.");
         OnTurnEnded?.Invoke();
     }
     
@@ -67,10 +68,11 @@ public abstract class BaseTask : MonoBehaviour
     {
         if (UnitsAssignedToTheTask != null)
         {
+            Debug.Log("Task: " + name + " ended." + " Count units - " + UnitsAssignedToTheTask.Count);
             OnUnitReturn?.Invoke(this, UnitsAssignedToTheTask);
-            OnTurnEnded?.Invoke();
             UnitsAssignedToTheTask.Clear();
         }
+        OnTurnEnded?.Invoke();
     }
     
     public abstract int CalculatePriority(List<UnitController> units);

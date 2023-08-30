@@ -8,7 +8,6 @@ public class ButtonScale : MonoBehaviour
     [SerializeField] private RectTransform button;
     [SerializeField] private RectTransform tmPro;
     [SerializeField] private Image image;
-    [SerializeField] private float time = 1;
 
     
     

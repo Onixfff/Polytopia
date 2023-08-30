@@ -9,6 +9,11 @@ public class PatrolTask : BaseTask
 
     public override int CalculatePriority(List<UnitController> units)
     {
+        if (CheckEnemyWithUnit())
+        {
+            taskPriority = 0;
+            return taskPriority;
+        }
         taskPriority = 1;
         return taskPriority;
     }
@@ -82,9 +87,11 @@ public class PatrolTask : BaseTask
     
     private bool CheckEnemyWithUnit()
     {
+        if (UnitsAssignedToTheTask == null) return false;
         foreach (var unit in UnitsAssignedToTheTask)
         {
-            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().rad);
+            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile,
+                unit.GetUnitInfo().rad);
             foreach (var tile in tiles)
             {
                 if (tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != unit.GetOwner().owner)

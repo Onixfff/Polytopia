@@ -209,20 +209,20 @@ public class UnitController : MonoBehaviour
     public int GetDmg()
     {
         var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
-        var totalDamage = unitInfo.dmg + unitInfo.def;
-        var a = attackForce / totalDamage;
-        var attackResult = Mathf.Round(a * unitInfo.dmg * 4.5f); 
-
+        var defenseForce = unitInfo.def * (_hp / unitInfo.hp) * GetDefenseBonus();
+        var totalDamage = attackForce + defenseForce;
+        var attackResult = Mathf.Round((attackForce / totalDamage) * unitInfo.dmg * 4.5f); 
+        var defenseResult = Mathf.Round((defenseForce / totalDamage) * unitInfo.def * 4.5f);
         return (int)attackResult;
     }
     
     public int GetDefDmg()
     {
+        var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
         var defenseForce = unitInfo.def * (_hp / unitInfo.hp) * GetDefenseBonus();
-        var totalDamage = unitInfo.dmg + unitInfo.def;
-        var a = defenseForce / totalDamage;
-
-        var defenseResult = Mathf.Round(a * unitInfo.def * 4.5f);
+        var totalDamage = attackForce + defenseForce;
+        var attackResult = Mathf.Round((attackForce / totalDamage) * unitInfo.dmg * 4.5f); 
+        var defenseResult = Mathf.Round((defenseForce / totalDamage) * unitInfo.def * 4.5f);
         return (int)defenseResult;
     }
     

@@ -567,7 +567,7 @@ public class Home : MonoBehaviour
     
     public void BuyUnit(int unitIndex)
     {
-        if(!homeTile.IsTileFree() || !homeTile.IsSelected() || _unitList.Count >= _unitCapacity)
+        if(!homeTile.IsTileFree() || (!homeTile.IsSelected() && owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You) || _unitList.Count >= _unitCapacity)
             return;
 
         if (!owner.IsCanBuy(owner.civilisationInfo.Units[unitIndex].price)) 

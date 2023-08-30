@@ -318,6 +318,8 @@ public class GameBoardWindow : BaseWindow
                 else
                     break;
             }
+            listCiv.Add(randC);
+            
             var civilisation1 = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
             LevelManager.Instance.AddCiv(civilisation1);
             civilisation1.AIInit(gameInfo.civilisationInfoLists[randC]);
