@@ -22,7 +22,7 @@ public class Scout : MonoBehaviour
                 Destroy(gameObject);
                 return;
             }
-            var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(startTile, 3);
+            var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(startTile, 4);
             closeTile.RemoveAll(tile1 => tile1.tileType == Tile.TileType.Water && !home.owner.technologies.Contains(TechInfo.Technology.Sailing));
             closeTile.RemoveAll(tile1 => tile1.tileType is Tile.TileType.DeepWater && !home.owner.technologies.Contains(TechInfo.Technology.Navigation));
             closeTile.RemoveAll(tile1 =>

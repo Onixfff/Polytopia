@@ -24,6 +24,7 @@ public class Tile : MonoBehaviour
     public bool isHasCrop = false;
     public bool isHasRuins = false;
     public bool isHasWhale = false;
+    public bool isHasTree = false;
     public TileType tileType = TileType.Ground;
 
     public bool isOpened;
@@ -347,6 +348,7 @@ public class Tile : MonoBehaviour
         if(sprite == null || _isHomeOnTile) return;
         treeTileImage.sprite = sprite;
         treeTileImage.enabled = true;
+        isHasTree = true;
     }
     
     public void SetCropSprite()
@@ -474,7 +476,12 @@ public class Tile : MonoBehaviour
         _homeOnTile = home;
         SetOwner(home);
         ChangeTileVisual(home);
-        
+
+        isHasMountain = false;
+        isHasCrop = false;
+        isHasTree = false;
+        isHasRuins = false;
+
         if (treeTileImage != null) Destroy(treeTileImage.gameObject);
         if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
         if (animalTileImage != null) Destroy(animalTileImage.gameObject);

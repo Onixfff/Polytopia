@@ -100,7 +100,7 @@ public class GameBoardWindow : BaseWindow
                 closeTiles.Add(closeTile);
             }
         }
-        
+
         return closeTiles;
     }
     

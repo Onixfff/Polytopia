@@ -55,28 +55,102 @@ public class ExploringTask : BaseTask
 
     private Tile ChooseTileForExploring(UnitController unit)
     {
-        var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().moveRad);
+        var gameBoard = LevelManager.Instance.gameBoardWindow;
+        var unitInfo = unit.GetUnitInfo();
         var unitHasMountTech = unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain);
+        var occupiedTile = unit.occupiedTile;
+        var tileForMove = new List<Tile>();
+        if (occupiedTile.tileType == Tile.TileType.Ground)
+        {
+            foreach (var close in gameBoard.GetCloseTile(occupiedTile, 1))
+            {
+                if(close.isHasMountain && !unitHasMountTech)
+                    continue;
+                
+                if(close.tileType == Tile.TileType.Water || close.tileType == Tile.TileType.DeepWater)
+                    continue;
+                
+                tileForMove.Add(close);
+                if(close.isHasMountain || close.isHasTree)
+                    continue;
+                if(unitInfo.moveRad == 1)
+                    continue;
+            
+                var closeTile = gameBoard.GetCloseTile(close, 1);
+                foreach (var tile in closeTile)
+                {
+                    if (tile.isHasMountain && !unitHasMountTech)
+                        continue;
+
+                    tileForMove.Add(tile);
+                    if(tile.isHasMountain || tile.isHasTree || tile.tileType == Tile.TileType.Water || tile.tileType == Tile.TileType.DeepWater)
+                        continue;
+                    if(unitInfo.moveRad < 3)
+                        continue;
+                    var clTile = gameBoard.GetCloseTile(tile, 1);
+                    foreach (var cTile in clTile)
+                    {
+                        if(cTile.isHasMountain && !unitHasMountTech)
+                            continue;
+            
+                        tileForMove.Add(cTile);
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (var close in gameBoard.GetCloseTile(occupiedTile, 1))
+            {
+                if(close.isHasMountain && !unitHasMountTech)
+                    continue;
+            
+                tileForMove.Add(close);
+                if(close.tileType == Tile.TileType.Ground)
+                    continue;
+                if(unitInfo.moveRad == 1)
+                    continue;
+            
+                var closeTile = gameBoard.GetCloseTile(close, 1);
+                foreach (var tile in closeTile)
+                {
+                    if(tile.isHasMountain && !unitHasMountTech)
+                        continue;
+            
+                    tileForMove.Add(tile);
+                    if(close.tileType == Tile.TileType.Ground)
+                        continue;
+                    if(unitInfo.moveRad < 3)
+                        continue;
+                    
+                    var clTile = gameBoard.GetCloseTile(tile, 1);
+                    foreach (var cTile in clTile)
+                    {
+                        if(cTile.isHasMountain && !unitHasMountTech)
+                            continue;
+            
+                        tileForMove.Add(cTile);
+                    }
+                }
+            }
+        }
         
-        closeTile.RemoveAll(tile => tile == null);
-        closeTile.RemoveAll(tile => !tile.IsTileFree());
-        closeTile.RemoveAll(tile => tile.tileType == Tile.TileType.Water);
-        closeTile.RemoveAll(tile => tile.isHasMountain && !unitHasMountTech);
+        tileForMove.RemoveAll(tile => !tile.IsTileFree());
         
         if (unit.aiFromTile == null || unit.occupiedTile == unit.aiFromTile)
         {
-            if (closeTile.Count == 0)
+            if (tileForMove.Count == 0)
                 return unit.occupiedTile;
-            return LevelManager.Instance.gameBoardWindow.GetTile(closeTile[Random.Range(0, closeTile.Count)].pos);
+            return gameBoard.GetTile(tileForMove[Random.Range(0, tileForMove.Count)].pos);
         }
         var forwardDir = (unit.occupiedTile.pos - unit.aiFromTile.pos) + unit.occupiedTile.pos;
-        var nextTile = LevelManager.Instance.gameBoardWindow.GetTile(forwardDir);
-        if(closeTile.Contains(nextTile))
+        var nextTile = gameBoard.GetTile(forwardDir);
+        if(tileForMove.Contains(nextTile))
             return nextTile;
 
-        if (closeTile.Count == 0)
+        if (tileForMove.Count == 0)
             return unit.occupiedTile;
-        return LevelManager.Instance.gameBoardWindow.GetTile(closeTile[Random.Range(0, closeTile.Count)].pos);
+        return gameBoard.GetTile(tileForMove[Random.Range(0, tileForMove.Count)].pos);
     }
 
     private bool CheckInterestingPlace()

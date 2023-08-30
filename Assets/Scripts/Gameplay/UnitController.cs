@@ -169,19 +169,94 @@ public class UnitController : MonoBehaviour
 
         var gameBoard = LevelManager.Instance.gameBoardWindow;
         var allTile = gameBoard.GetAllTile();
-        var closeTilesForMove = gameBoard.GetCloseTile(occupiedTile, unitInfo.moveRad);
+        //var closeTilesForMove = gameBoard.GetCloseTile(occupiedTile, unitInfo.moveRad);
         var closeTilesForAttack = gameBoard.GetCloseTile(occupiedTile, unitInfo.rad);
         foreach (var vector2Int in allTile.Keys.ToList())
         {
             var tile = allTile[vector2Int];
             tile.HideTargets();
         }
-        foreach (var closeTile in closeTilesForMove)
-        {
-            if(_moveThisTurn <= 0) break;
-            if(closeTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
-                continue;
 
+        var tileForMove = new List<Tile>();
+        if (occupiedTile.tileType == Tile.TileType.Ground)
+        {
+            foreach (var close in gameBoard.GetCloseTile(occupiedTile, 1))
+            {
+                if(_moveThisTurn <= 0) break;
+            
+                if(close.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
+                    continue;
+                if(close.tileType == Tile.TileType.Water || close.tileType == Tile.TileType.DeepWater)
+                    continue;
+                tileForMove.Add(close);
+                if(close.isHasMountain || close.isHasTree)
+                    continue;
+                if(unitInfo.moveRad == 1)
+                    continue;
+            
+                var closeTile = gameBoard.GetCloseTile(close, 1);
+                foreach (var tile in closeTile)
+                {
+                    if(tile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
+                        continue;
+            
+                    tileForMove.Add(tile);
+                    if(tile.isHasMountain || tile.isHasTree || tile.tileType == Tile.TileType.Water || tile.tileType == Tile.TileType.DeepWater)
+                        continue;
+                    if(unitInfo.moveRad < 3)
+                        continue;
+                    var clTile = gameBoard.GetCloseTile(tile, 1);
+                    foreach (var cTile in clTile)
+                    {
+                        if(cTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
+                            continue;
+            
+                        tileForMove.Add(cTile);
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (var close in gameBoard.GetCloseTile(occupiedTile, 1))
+            {
+                if(_moveThisTurn <= 0) break;
+            
+                if(close.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
+                    continue;
+            
+                tileForMove.Add(close);
+                if(close.tileType == Tile.TileType.Ground)
+                    continue;
+                if(unitInfo.moveRad == 1)
+                    continue;
+            
+                var closeTile = gameBoard.GetCloseTile(close, 1);
+                foreach (var tile in closeTile)
+                {
+                    if(tile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
+                        continue;
+            
+                    tileForMove.Add(tile);
+                    if(close.tileType == Tile.TileType.Ground)
+                        continue;
+                    if(unitInfo.moveRad < 3)
+                        continue;
+                    var clTile = gameBoard.GetCloseTile(tile, 1);
+                    foreach (var cTile in clTile)
+                    {
+                        if(cTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
+                            continue;
+            
+                        tileForMove.Add(cTile);
+                    }
+                }
+            }
+        }
+        
+        
+        foreach (var closeTile in tileForMove)
+        {
             if (unitType is UnitType.Unit or UnitType.Pirate && (closeTile.tileType == Tile.TileType.Ground || (closeTile.tileType == Tile.TileType.Water && closeTile.IsTileHasPort())))
             {
                 closeTile.ShowBlueTarget();
@@ -221,8 +296,8 @@ public class UnitController : MonoBehaviour
         var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
         var defenseForce = unitInfo.def * (_hp / unitInfo.hp) * GetDefenseBonus();
         var totalDamage = attackForce + defenseForce;
-        var attackResult = Mathf.Round((attackForce / totalDamage) * unitInfo.dmg * 4.5f); 
-        var defenseResult = Mathf.Round((defenseForce / totalDamage) * unitInfo.def * 4.5f);
+        var attackResult = Mathf.Round((attackForce / totalDamage) * unitInfo.dmg * 4.5f) - 1;
+        var defenseResult = Mathf.Round((defenseForce / totalDamage) * unitInfo.def * 4.5f) - 1;
         return (int)defenseResult;
     }
     
