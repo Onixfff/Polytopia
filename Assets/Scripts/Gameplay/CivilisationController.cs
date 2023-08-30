@@ -56,37 +56,86 @@ public class CivilisationController : MonoBehaviour
     [SerializeField] private MonumentBuilder monumentBuilder;
     [SerializeField] private CivilisationStats civilisationStats;
     private GameBoardWindow _gameBoardWindow;
+    private List<Tile> _exploredTiles;
     private int _money;
     private int _point;
 
     public void Init(CivilisationInfo info)
     {
-        AddMoney(5);
-        civilisationInfo = info;
-        _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
-        
-        civilName = "You";
-        AddMoney(100);
-        AddPoint(565);
-        technologies.AddRange(info.technology.startTechnologies);
         TurnWhenIWasAttack = new Dictionary<CivilisationController, int>();
+        
+        civilisationInfo = info;
         civColor = info.CivilisationColor;
+        _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
+        technologies.AddRange(info.technology.startTechnologies);
+
+        AddPoint(565);
         CreateHome();
         SetupCivilisation();
-        LevelManager.Instance.OnTurnBegin += () =>
-        {
-            AddMoney(GetCurrentIncome());
-            var incomePoint = 0;
-            foreach (var home in homes)
-            {
-                if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
-                    continue;
-                incomePoint += home.GetIncomePoint();
-            }
-            AddPoint(incomePoint);
-        };
-        LevelManager.Instance.OnUnlockTechnology += AddNewTechnology;
         InitIndependentHome();
+
+        if (info.controlType == CivilisationInfo.ControlType.Player)
+        {
+            civilName = "Player";
+            AddMoney(5);
+            AddMoney(100);
+            
+            LevelManager.Instance.OnTurnBegin += () =>
+            {
+                AddMoney(GetCurrentIncome());
+                var incomePoint = 0;
+                foreach (var home in homes)
+                {
+                    if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
+                        continue;
+                    incomePoint += home.GetIncomePoint();
+                }
+                AddPoint(incomePoint);
+            };
+            LevelManager.Instance.OnUnlockTechnology += AddNewTechnology;
+        }
+        else
+        {
+            civilName = info.civilisationName + "" + Random.Range(10000, 99999).ToString();
+            switch (GameManager.Instance.difficult)
+            {
+                case GameManager.Difficult.Easy:
+                    AddMoney(5);
+                    break;
+                case GameManager.Difficult.Normal:
+                    AddMoney(10);
+                    break;
+                case GameManager.Difficult.Hard:
+                    AddMoney(20);
+                    break;
+            }
+
+            LevelManager.Instance.OnTurnBegin += () =>
+            {
+                AddMoney(GetCurrentIncome());
+                var incomePoint = 0;
+                foreach (var home in homes)
+                {
+                    if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
+                        continue;
+                    incomePoint += home.GetIncomePoint();
+                }
+                switch (GameManager.Instance.difficult)
+                {
+                    case GameManager.Difficult.Easy:
+                        incomePoint -= 2;
+                        break;
+                    case GameManager.Difficult.Normal:
+                        incomePoint += 1;
+                        break;
+                    case GameManager.Difficult.Hard:
+                        incomePoint += 3;
+                        break;
+                }
+                AddPoint(incomePoint);
+            };
+        }
+        
 
         void InitIndependentHome()
         {
@@ -105,65 +154,6 @@ public class CivilisationController : MonoBehaviour
         }
 
         return income;
-    }
-    
-    public void AIInit(CivilisationInfo info)
-    {
-        TurnWhenIWasAttack = new Dictionary<CivilisationController, int>();
-        civilName = info.civilisationName + " " + Random.Range(10000, 99999).ToString();
-        civilisationInfo = info;
-        technologies.AddRange(info.technology.startTechnologies);
-        _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
-        switch (GameManager.Instance.difficult)
-        {
-            case GameManager.Difficult.Easy:
-                AddMoney(5);
-                break;
-            case GameManager.Difficult.Normal:
-                AddMoney(10);
-                break;
-            case GameManager.Difficult.Hard:
-                AddMoney(20);
-                break;
-        }
-
-        
-        AddPoint(565);
-        LevelManager.Instance.OnTurnBegin += () =>
-        {
-            AddMoney(GetCurrentIncome());
-            var incomePoint = 0;
-            foreach (var home in homes)
-            {
-                if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
-                    continue;
-                incomePoint += home.GetIncomePoint();
-            }
-            switch (GameManager.Instance.difficult)
-            {
-                case GameManager.Difficult.Easy:
-                    incomePoint -= 2;
-                    break;
-                case GameManager.Difficult.Normal:
-                    incomePoint += 1;
-                    break;
-                case GameManager.Difficult.Hard:
-                    incomePoint += 3;
-                    break;
-            }
-            AddPoint(incomePoint);
-        };
-        civColor = info.CivilisationColor;
-        CreateHome();
-        LevelManager.Instance.OnTurnBegin += () =>
-        {
-            var income = 0;
-            foreach (var home in homes)
-            {
-                income += home.GetIncome();
-            }
-            AddMoney(income);
-        };
     }
 
     public MonumentBuilder GetMonumentBuilder()
@@ -202,7 +192,7 @@ public class CivilisationController : MonoBehaviour
         return relationOfCivilisation.GetRelation(controller) == DiplomacyManager.RelationType.Peace;
     }
     
-    public DiplomacyManager.RelationType GetRelation(CivilisationController controller)
+    public DiplomacyManager.RelationType? GetRelation(CivilisationController controller)
     {
         return relationOfCivilisation.GetRelation(controller);
     }
@@ -255,6 +245,52 @@ public class CivilisationController : MonoBehaviour
     {
         relationOfCivilisation.SetRelation(controller, relationType);
         controller.relationOfCivilisation.SetRelation(this, relationType);
+    }
+    
+    public List<Home> GetAllHome()
+    {
+        return homes;
+    }
+
+    public List<UnitController> GetAllUnit()
+    {
+        var a = new List<UnitController>();
+        foreach (var home in homes)
+        {
+            a.AddRange(home.GetUnitList());
+        }
+
+        return a;
+    }
+
+    public void RemoveHome(Home home, List<UnitController> unitList = null)
+    {
+        homes.Remove(home);
+        if (homes.Count == 0)
+        {
+            DestroyCivilisation();
+            return;
+        }
+
+        if (unitList != null && unitList.Count != 0)
+        {
+            foreach (var unit in unitList)
+            {
+                homes[0].AddUnit(unit);
+            }
+        }
+    }
+    
+    public void AddTileInExploreList(Tile tile)
+    {
+        _exploredTiles ??= new List<Tile>();
+        _exploredTiles.Add(tile);
+    }
+    
+    public List<Tile> GetTileInExploreList()
+    {
+        _exploredTiles ??= new List<Tile>();
+        return _exploredTiles;
     }
     
     private void AddNewTechnology(TechInfo.Technology technology)
@@ -347,7 +383,7 @@ public class CivilisationController : MonoBehaviour
     
     private void SetupCivilisation()
     {
-        var tiles = _gameBoardWindow.GetCloseTile(homes[0].homeTile, 2).Select(tile => tile.GetComponent<Tile>()).ToList();
+        var tiles = _gameBoardWindow.GetCloseTile(homes[0].homeTile, 2);
         homes[0].homeTile.UnlockTile(this);
         foreach (var tile in tiles)
         {
@@ -355,40 +391,6 @@ public class CivilisationController : MonoBehaviour
         }
     }
     
-    public List<Home> GetAllHome()
-    {
-        return homes;
-    }
-
-    public List<UnitController> GetAllUnit()
-    {
-        var a = new List<UnitController>();
-        foreach (var home in homes)
-        {
-            a.AddRange(home.GetUnitList());
-        }
-
-        return a;
-    }
-
-    public void RemoveHome(Home home, List<UnitController> unitList = null)
-    {
-        homes.Remove(home);
-        if (homes.Count == 0)
-        {
-            DestroyCivilisation();
-            return;
-        }
-
-        if (unitList != null && unitList.Count != 0)
-        {
-            foreach (var unit in unitList)
-            {
-                homes[0].AddUnit(unit);
-            }
-        }
-    }
-
     private void DestroyCivilisation()
     {
         LevelManager.Instance.RemoveCiv(this);

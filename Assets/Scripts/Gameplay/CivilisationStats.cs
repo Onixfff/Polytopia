@@ -16,7 +16,7 @@ public class CivilisationStats : MonoBehaviour
 
     private void Awake()
     {
-        if (civilisationController.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
+        if (civilisationController.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
             LevelManager.Instance.OnUnlockTechnology += technology =>
             {

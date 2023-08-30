@@ -7,19 +7,33 @@ public class SendTroopsTask : BaseTask
 {
     private Sequence _captureSeq;
     private bool _isEnemyFind;
+
     public override int CalculatePriority(List<UnitController> units)
     {
+        var isHaveEnemy = false;
         foreach (var unit in units)
         {
             var owner = unit.GetOwner().owner;
-            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, Mathf.Max(unit.GetUnitInfo().rad, unit.GetUnitInfo().moveRad));
-            
-            if (tiles.Any(tile => (tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner) || (tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != null && tile.GetHomeOnTile().owner != owner)))
+            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile,
+                Mathf.Max(unit.GetUnitInfo().rad, 1));
+            var haveNoAllyUnit = tiles.Any(tile =>
+                tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner &&
+                tile.unitOnTile.GetOwner().owner.GetRelation(owner) is DiplomacyManager.RelationType.Neutral
+                    or DiplomacyManager.RelationType.War);
+            var haveNoAllyHome = tiles.Any(tile =>
+                tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != null &&
+                tile.GetHomeOnTile().owner != owner &&
+                tile.GetHomeOnTile().owner.GetRelation(owner) is DiplomacyManager.RelationType.Neutral
+                    or DiplomacyManager.RelationType.War);
+            if (haveNoAllyHome || haveNoAllyUnit)
             {
                 taskPriority = 3;
+                isHaveEnemy = true;
             }
         }
-        
+
+        if (!isHaveEnemy)
+            taskPriority = 1;
         return taskPriority;
     }
 
@@ -56,8 +70,8 @@ public class SendTroopsTask : BaseTask
     private Tile FindPath(UnitController unit)
     {
         var allTiles = LevelManager.Instance.gameBoardWindow.GetAllTile();
-        var civHomes = LevelManager.Instance.gameBoardWindow.playerCiv.homes;
-        if (civHomes == null || civHomes.Count == 0)
+        var civHomes = allTiles.Values.ToList().FindAll(tile => tile.GetHomeOnTile() != null).Select(home => home.GetHomeOnTile()).ToList();
+        if (civHomes.Count == 0)
             return unit.occupiedTile;
         var index = Random.Range(0, civHomes.Count);
         var path = AStarAlgorithm.FindPath(unit.occupiedTile.pos, civHomes[index].homeTile.pos, unit);

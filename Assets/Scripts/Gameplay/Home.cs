@@ -162,7 +162,7 @@ public class Home : MonoBehaviour
     public void SelectHome()
     {
         if (owner == null) return;
-        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
+        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
             LevelManager.Instance.gameplayWindow.ShowHomeButton();
         }
@@ -354,7 +354,7 @@ public class Home : MonoBehaviour
         UpdateVisual();
         
         owner.GetCivilisationStats().CheckMaxLevelCity(_homeLevel);
-        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
+        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
             var alert = LevelManager.Instance.gameplayWindow.alertWindow;
             alert.HomeLevelUp(this, _homeLevel, leftovers);
@@ -567,7 +567,7 @@ public class Home : MonoBehaviour
     
     public void BuyUnit(int unitIndex)
     {
-        if(!homeTile.IsTileFree() || (!homeTile.IsSelected() && owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You) || _unitList.Count >= _unitCapacity)
+        if(!homeTile.IsTileFree() || (!homeTile.IsSelected() && owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player) || _unitList.Count >= _unitCapacity)
             return;
 
         if (!owner.IsCanBuy(owner.civilisationInfo.Units[unitIndex].price)) 

@@ -36,6 +36,9 @@ public class CivilisationInfoWindow : MonoBehaviour
             case DiplomacyManager.RelationType.Peace:
                 text = "мир";
                 break;
+            case DiplomacyManager.RelationType.None:
+                text = "нейтральные";
+                break;
         }
         relationText.text = text;
         var parent = relationText.transform.parent.GetComponent<ButtonScale>();
@@ -43,7 +46,7 @@ public class CivilisationInfoWindow : MonoBehaviour
         parent.ChangeColor(value);
     }
 
-    public void ChangeOpinion(List<DiplomacyManager.OpinionType> values, int opinionValue)
+    public void ChangeOpinion(DiplomacyManager.RelationType relationType, List<DiplomacyManager.OpinionType> values, int opinionValue)
     {
         if (values.Count < 3)
         {
@@ -165,14 +168,30 @@ public class CivilisationInfoWindow : MonoBehaviour
                 text = "великолепные";
                 break;
         }
-        
-        civRelation.text = $"Ваши отношения: {text}";
-        civOpinionsText.text = $"Они считают, что вы {texts[0]}, <br>{texts[1]} и {texts[2]} <br>правитель";
+
+        if (relationType == DiplomacyManager.RelationType.None)
+        {
+            foreach (var op in opinionsText)
+            {
+                op.transform.parent.gameObject.SetActive(false);
+            }
+            civRelation.text = "Они пока что о вас не знают";
+            civOpinionsText.text = "";
+        }
+        else
+        {
+            foreach (var op in opinionsText)
+            {
+                op.transform.parent.gameObject.SetActive(true);
+            }
+            civRelation.text = $"Ваши отношения: {text}";
+            civOpinionsText.text = $"Они считают, что вы {texts[0]}, <br>{texts[1]} и {texts[2]} <br>правитель";
+        }
     }
     
     private void Start()
     {
-        _civInfoButtons = new Dictionary<CivButtonInfo, CivilisationController>();
+        _civInfoButtons ??= new Dictionary<CivButtonInfo, CivilisationController>();
         CreateCivilizationInfoButton();
         foreach (var button in _civInfoButtons)
         {
@@ -187,11 +206,16 @@ public class CivilisationInfoWindow : MonoBehaviour
     private void OnEnable()
     {
         CheckQuests();
+        _civInfoButtons ??= new Dictionary<CivButtonInfo, CivilisationController>();
+        foreach (var keyValue in _civInfoButtons)
+        {
+            keyValue.Key.UpdateInfoWindow(keyValue.Value);
+        }
     }
 
     private void ShowCivDetailedInformation(CivilisationController controller)
     {
-        if (controller.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
+        if (controller.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
             playerCivDetailObject.SetActive(true);
             playerCivDetailObject.GetComponent<DetailCivInfoWindow>().Open(controller);
@@ -218,7 +242,7 @@ public class CivilisationInfoWindow : MonoBehaviour
                 opinionTypes.Add(opinionType[^1]);
                 opinionTypes.Add(opinionType[^2]);
             }
-            ChangeOpinion(opinionTypes, opinionValue);
+            ChangeOpinion(relationType, opinionTypes, opinionValue);
             
             civDetailObject.SetActive(true);
             civDetailObject.GetComponent<DetailCivInfoWindow>().Open(controller);

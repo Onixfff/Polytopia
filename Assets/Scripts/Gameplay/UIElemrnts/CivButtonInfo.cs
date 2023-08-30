@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ public class CivButtonInfo : MonoBehaviour
     [SerializeField] private Image backImage;
     [SerializeField] private TextMeshProUGUI civName;
     [SerializeField] private TextMeshProUGUI civPoint;
-    [SerializeField] private TextMeshProUGUI civInfo;
+    [SerializeField] private List<TextMeshProUGUI> civInfos;
     [SerializeField] private GameObject peaceIcon;
     [SerializeField] private GameObject warIcon;
     [SerializeField] private Color backColorDef;
@@ -19,19 +20,43 @@ public class CivButtonInfo : MonoBehaviour
     
     public void Init(CivilisationController controller)
     {
+        colorImage.gameObject.SetActive(false);
+        
         _civilisationController = controller;
         head.sprite = controller.civilisationInfo.HeadSprite;
         colorImage.color = controller.civColor;
-        backImage.color = controller.civilisationInfo.controlType == CivilisationInfo.ControlType.You ? backColorPlayer : backColorDef;
+        backImage.color = controller.civilisationInfo.controlType == CivilisationInfo.ControlType.Player ? backColorPlayer : backColorDef;
 
-        UpdateInfo();
-        LevelManager.Instance.OnTurnBegin += UpdateInfo;
+        UpdateInfoWindow(controller);
         DiplomacyManager.Instance.OnRelationChange += ChangeRelationVisual;
-        void UpdateInfo()
+    }
+    
+    public void UpdateInfoWindow(CivilisationController controller)
+    {
+        var playerCiv = LevelManager.Instance.gameBoardWindow.playerCiv;
+        if (playerCiv.relationOfCivilisation.CheckCivForContain(controller) || controller.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
+            GetComponent<Button>().enabled = true;
+            colorImage.gameObject.SetActive(true);
+            head.transform.parent.gameObject.SetActive(true);
             civName.text = controller.civilisationInfo.civilisationName;
             civPoint.text = controller.Point.ToString();
-            civInfo.text = "Правитель: " + controller.civilName + $"({controller.civilisationInfo.controlType.ToString()}), " + $"Город: {controller.homes.Count}";
+            foreach (var civInfo in civInfos)
+            {
+                civInfo.text = "Правитель: " + controller.civilName + $"({controller.civilisationInfo.controlType.ToString()}), " + $"Город: {controller.homes.Count}";
+            }
+        }
+        else
+        {
+            GetComponent<Button>().enabled = false;
+            head.transform.parent.gameObject.SetActive(false);
+            colorImage.gameObject.SetActive(false);
+            civName.text = "Неизвестное племя";
+            civPoint.text = controller.Point.ToString();
+            foreach (var civInfo in civInfos)
+            {
+                civInfo.text = $"Неизвестный правитель, Город: {controller.homes.Count}";
+            }
         }
     }
 

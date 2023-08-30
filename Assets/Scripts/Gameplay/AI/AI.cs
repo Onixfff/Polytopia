@@ -6,12 +6,12 @@ using UnityEngine;
 public class AI : MonoBehaviour
 {
     public int aiNumber;
+    public AIQuestGiver aiQuestGiver;
 
     private CivilisationController _controller;
     private Sequence _unitsSeq;
     private Sequence _unitsActionSeq;
     private List<UnitController> _allUnits;
-    public AIQuestGiver aiQuestGiver;
     
     private void Start()
     {
@@ -20,6 +20,15 @@ public class AI : MonoBehaviour
 
     public void StartTurn()
     {
+        foreach (var tile in _controller.GetTileInExploreList())
+        {
+            if (tile.unitOnTile != null)
+            {
+                _controller.relationOfCivilisation.AddNewCivilisation(tile.unitOnTile.GetOwner().owner, DiplomacyManager.RelationType.Neutral);
+                tile.unitOnTile.GetOwner().owner.relationOfCivilisation.AddNewCivilisation(_controller, DiplomacyManager.RelationType.None);
+            }
+        }
+
         var homes = _controller.homes;
 
         homes.RemoveAll(home => home.owner != _controller);

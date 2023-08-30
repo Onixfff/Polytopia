@@ -169,7 +169,6 @@ public class UnitController : MonoBehaviour
 
         var gameBoard = LevelManager.Instance.gameBoardWindow;
         var allTile = gameBoard.GetAllTile();
-        //var closeTilesForMove = gameBoard.GetCloseTile(occupiedTile, unitInfo.moveRad);
         var closeTilesForAttack = gameBoard.GetCloseTile(occupiedTile, unitInfo.rad);
         foreach (var vector2Int in allTile.Keys.ToList())
         {
@@ -296,8 +295,8 @@ public class UnitController : MonoBehaviour
         var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
         var defenseForce = unitInfo.def * (_hp / unitInfo.hp) * GetDefenseBonus();
         var totalDamage = attackForce + defenseForce;
-        var attackResult = Mathf.Round((attackForce / totalDamage) * unitInfo.dmg * 4.5f) - 1;
-        var defenseResult = Mathf.Round((defenseForce / totalDamage) * unitInfo.def * 4.5f) - 1;
+        var attackResult = Mathf.Round((attackForce / totalDamage) * unitInfo.dmg * 4.5f);
+        var defenseResult = Mathf.Round((defenseForce / totalDamage) * unitInfo.def * 4.5f);
         return (int)defenseResult;
     }
     
@@ -414,8 +413,7 @@ public class UnitController : MonoBehaviour
             var closeTiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(to, unitInfo.rad + addedRad);
             foreach (var tile in closeTiles)
             {
-                if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
-                    tile.UnlockTile(_owner.owner);
+                tile.UnlockTile(_owner.owner);
             }
             if (occupiedTile.GetHomeOnTile() != null && (occupiedTile.GetHomeOnTile().owner == null || occupiedTile.GetHomeOnTile().owner != _owner.owner))
             {
@@ -455,8 +453,8 @@ public class UnitController : MonoBehaviour
     {
         if (currO != null && currO == gameObject)
         {
-            if (_owner != null && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You || _civOwner != null &&
-                _civOwner.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
+            if (_owner != null && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player || _civOwner != null &&
+                _civOwner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
             {
                 var ints = new List<int>();
                 if (_hp < unitInfo.hp)
@@ -741,9 +739,8 @@ public class UnitController : MonoBehaviour
         {
             var closeTiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(home.homeTile, unitInfo.rad);
             foreach (var tile in closeTiles)
-            {
-                if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
-                    tile.UnlockTile(_owner.owner);
+            { 
+                tile.UnlockTile(_owner.owner);
             }
             
             TakeDamage(null, 10000);

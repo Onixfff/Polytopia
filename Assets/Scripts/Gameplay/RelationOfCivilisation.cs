@@ -10,12 +10,28 @@ public class RelationOfCivilisation : MonoBehaviour
     private Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>> _civilisationOpinions;
     private Dictionary<CivilisationController, DiplomacyManager.RelationType> _civilisationRelation;
 
-    public void AddNewCivilisation(CivilisationController civ)
+    public void AddNewCivilisation(CivilisationController civ, DiplomacyManager.RelationType relationType)
     {
+        if (CheckCivForContain(civ))
+        {
+            _civilisationRelation[civ] = relationType;
+            return;
+        }
+        Debug.LogWarning("Name - " + civilisationController.civilName + " Find new Civ - " + civ.civilName);
         _civilisationOpinions.Add(civ, new List<DiplomacyManager.OpinionType>());
-        _civilisationRelation.Add(civ, DiplomacyManager.RelationType.Neutral);
+        _civilisationRelation.Add(civ, relationType);
     }
 
+    public bool CheckCivForContain(CivilisationController civ)
+    {
+        if (_civilisationOpinions.ContainsKey(civ))
+            return true;
+        if (_civilisationRelation.ContainsKey(civ))
+            return true;
+        
+        return false;
+    }
+    
     public Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>> GetCivilisationOpinion()
     {
         return _civilisationOpinions;
@@ -30,10 +46,6 @@ public class RelationOfCivilisation : MonoBehaviour
     {
         _civilisationOpinions = new Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>>();
         _civilisationRelation = new Dictionary<CivilisationController, DiplomacyManager.RelationType>();
-        foreach (var controller in LevelManager.Instance.GetCivilisationControllers())
-        { 
-            AddNewCivilisation(controller);
-        }
         LevelManager.Instance.OnTurnEnd += UpdateOpinions;
     }
 
@@ -382,7 +394,9 @@ public class RelationOfCivilisation : MonoBehaviour
     
     public DiplomacyManager.RelationType GetRelation(CivilisationController controller)
     {
-        return _civilisationRelation[controller];
+        if(_civilisationRelation.ContainsKey(controller))
+            return _civilisationRelation[controller];
+        return DiplomacyManager.RelationType.None;
     }
     
     private DiplomacyManager.RelationType CheckRelation(CivilisationController civ)

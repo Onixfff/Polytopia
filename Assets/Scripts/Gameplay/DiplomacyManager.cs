@@ -8,6 +8,7 @@ public class DiplomacyManager : Singleton<DiplomacyManager>
     
     public enum RelationType
     {
+        None,
         War,
         Neutral,
         Peace

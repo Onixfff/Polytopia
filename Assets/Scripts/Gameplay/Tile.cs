@@ -72,24 +72,24 @@ public class Tile : MonoBehaviour
 
     public int GetGroundDefense()
     {
-        _groundDefense = 0;
+        _groundDefense = 1;
         if (_homeOnTile != null)
         {
-            _groundDefense++;
+            _groundDefense = 2;
             if (_homeOnTile.isHaveWall)
-                _groundDefense++;
+                _groundDefense = 4;
         }
         if (isHasMountain)
-            _groundDefense++;
+            _groundDefense = 2;
         if (unitOnTile != null)
         {
             if (unitOnTile.GetOwner().owner.technologies.Contains(TechInfo.Technology.Aquatism) && (tileType == TileType.Water || tileType == TileType.DeepWater))
             {
-                _groundDefense++;
+                _groundDefense = 3;
             }
             if (unitOnTile.GetOwner().owner.technologies.Contains(TechInfo.Technology.Archery) && treeTileImage != null && treeTileImage.enabled && treeTileImage.gameObject.activeSelf)
             {
-                _groundDefense++;
+                _groundDefense = 3;
             }
         }
 
@@ -212,7 +212,7 @@ public class Tile : MonoBehaviour
         if(_homeOnTile != null && pastO == _homeOnTile.gameObject && (unitOnTile == null || currO != unitOnTile.gameObject))
             DeselectedHomeOnTile();*/
         
-        if (_owner != null && currO == gameObject && _homeOnTile == null && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.You)
+        if (_owner != null && currO == gameObject && _homeOnTile == null && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
             _techTypes = new List<GameplayWindow.OpenedTechType>();
             if(fruitTileImage != null && fruitTileImage.enabled)
@@ -280,19 +280,35 @@ public class Tile : MonoBehaviour
     
     public void UnlockTile(CivilisationController explorerCiv)
     {
-        isOpened = true;
-        fog.SetActive(false);
-        groundImage.enabled = true;
-        if(isHasMountain && mountainTileImage != null) 
-            mountainTileImage.gameObject.SetActive(true);
-        if(isHasRuins && ruinsTileImage != null) 
-            ruinsTileImage.gameObject.SetActive(true);
-        if(_homeOnTile != null)
-            _homeOnTile.gameObject.SetActive(true);
-        if(unitOnTile != null)
-            unitOnTile.gameObject.SetActive(true);
-        ChangeHomeBoards();
-        explorerCiv.GetCivilisationStats().AddExploredTile();
+        if (explorerCiv.civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
+        {
+            explorerCiv.AddTileInExploreList(this);
+        }
+        else
+        {
+            isOpened = true;
+            fog.SetActive(false);
+            groundImage.enabled = true;
+            if(isHasMountain && mountainTileImage != null) 
+                mountainTileImage.gameObject.SetActive(true);
+            if(isHasRuins && ruinsTileImage != null) 
+                ruinsTileImage.gameObject.SetActive(true);
+            if(_homeOnTile != null)
+                _homeOnTile.gameObject.SetActive(true);
+            if (unitOnTile != null)
+            {
+                unitOnTile.gameObject.SetActive(true);
+                if (explorerCiv != unitOnTile.GetOwner().owner)
+                {
+                    explorerCiv.relationOfCivilisation.AddNewCivilisation(unitOnTile.GetOwner().owner, DiplomacyManager.RelationType.Neutral);
+                    unitOnTile.GetOwner().owner.relationOfCivilisation.AddNewCivilisation(explorerCiv, DiplomacyManager.RelationType.None);
+
+                }
+            }
+            ChangeHomeBoards();
+            explorerCiv.GetCivilisationStats().AddExploredTile();
+        }
+        
     }
     
     public void ChangeHomeBoards()

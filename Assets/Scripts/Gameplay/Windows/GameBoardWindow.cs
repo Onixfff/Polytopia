@@ -322,7 +322,7 @@ public class GameBoardWindow : BaseWindow
             
             var civilisation1 = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
             LevelManager.Instance.AddCiv(civilisation1);
-            civilisation1.AIInit(gameInfo.civilisationInfoLists[randC]);
+            civilisation1.Init(gameInfo.civilisationInfoLists[randC]);
             
             var ai = Instantiate(AIController.Instance.aiPrefab, civilisation1.transform);
             ai.aiNumber = i;

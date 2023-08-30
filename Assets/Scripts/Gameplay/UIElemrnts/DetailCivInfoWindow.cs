@@ -23,7 +23,7 @@ public class DetailCivInfoWindow : MonoBehaviour
         civName.text = controller.civilisationInfo.civilisationName;
         civName.autoSizeTextContainer = false;
         civName.autoSizeTextContainer = true;
-        if (controller.civilisationInfo.controlType != CivilisationInfo.ControlType.You)
+        if (controller.civilisationInfo.controlType != CivilisationInfo.ControlType.Player)
         {
             civDescription.text = $"Племя {controller.civilisationInfo.civilisationName} управляется игроком {controller.civilName}({controller.civilisationInfo.controlType.ToString()})";
             civName.transform.GetChild(0).GetComponent<ButtonScale>().SetPosByX((civName.text.Length+civName.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text.Length) * 9);
