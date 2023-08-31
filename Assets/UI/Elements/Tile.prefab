@@ -1511,6 +1511,7 @@ MonoBehaviour:
   isHasCrop: 0
   isHasRuins: 0
   isHasWhale: 0
+  isHasTree: 0
   tileType: 0
   isOpened: 0
   groundImage: {fileID: 2212580032476123589}

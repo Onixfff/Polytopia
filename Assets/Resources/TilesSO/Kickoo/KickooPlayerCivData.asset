@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e356dc623519a24a8d8fbfa780ea66a, type: 3}
+  m_Name: KickooPlayerCivData
+  m_EditorClassIdentifier: 
+  control: 0
+  civilName: Hoodrick
+  civilColor: {r: 0, g: 1, b: 0.09359622, a: 1}
+  head: {fileID: 21300000, guid: e0fbb6829fb69ff438cbcd4d818ed542, type: 3}
+  battleShipHead: {fileID: 21300000, guid: ab66b970a1bc00e4caf3ee325c270517, type: 3}
+  ground: {fileID: 21300000, guid: 676548809d1011544aa31c77beba8bd5, type: 3}
+  fruit: {fileID: 21300000, guid: c029473d32bf1f04c913fc93d888923e, type: 3}
+  tree: {fileID: 21300000, guid: f25bb9e6250531545aa9be3a3f36bc96, type: 3}
+  animal: {fileID: 21300000, guid: 6fa183bb73dad534aa573d1695c769d8, type: 3}
+  mountain: {fileID: 21300000, guid: d21c6436c4e6fda4f9995149f93dd72b, type: 3}
+  buildSprites:
+  - {fileID: 21300000, guid: c029473d32bf1f04c913fc93d888923e, type: 3}
+  - {fileID: 21300000, guid: fc31b979331a64b4db680038a622720a, type: 3}
+  - {fileID: 21300000, guid: 6fa183bb73dad534aa573d1695c769d8, type: 3}
+  - {fileID: 21300000, guid: c3bec78a7cf066a4dafc571495094789, type: 3}
+  - {fileID: 21300000, guid: c347d9197a9adbe4d9e858db53646c7b, type: 3}
+  - {fileID: 21300000, guid: adda91b60a61f3748a66d00a37088339, type: 3}
+  - {fileID: 21300000, guid: 2ed51bc765e14614598ebcdc9cc50cc2, type: 3}
+  - {fileID: 21300000, guid: f8a6a1f6453e447458fd853f76d110a8, type: 3}
+  - {fileID: 21300000, guid: d5a68ec5673e79a4bb6b421365aeaa5f, type: 3}
+  - {fileID: 21300000, guid: 024a4be85f7665549a2d0ce31b53aa65, type: 3}
+  - {fileID: 21300000, guid: 0373a0948eac19141a104d2236745d04, type: 3}
+  - {fileID: 21300000, guid: 1e8598fdd307841419cee3cc4aa6d2b6, type: 3}
+  - {fileID: 21300000, guid: 56aa36109b3bc2d4c9009a967bf19d6c, type: 3}
+  - {fileID: 21300000, guid: 2e63bcec45cf51041b967b0b48b780d5, type: 3}
+  - {fileID: 21300000, guid: 8eb5922dc48820b43b3c20f9f2790904, type: 3}
+  - {fileID: 21300000, guid: 0ac8de54172b9034e9f825c1fa9c3ca6, type: 3}
+  - {fileID: 21300000, guid: f919f1f5847a07d4593280c368a6fe81, type: 3}
+  - {fileID: 21300000, guid: fd64730b2fb65d547a7d7b52efc8380c, type: 3}
+  - {fileID: 21300000, guid: 19971e9477a619a47bb083050a60c077, type: 3}
+  - {fileID: 21300000, guid: b5b87c137096a4345b73393ce8c05b91, type: 3}
+  - {fileID: 21300000, guid: caa46fc9e5490b64ca7b085cf6c0192c, type: 3}
+  monumentSprites:
+  - {fileID: 21300000, guid: 5018ced19ed51124ea453a777a0a5eaa, type: 3}
+  - {fileID: 21300000, guid: ef2bfe231a52b31428de9b248c7a82a6, type: 3}
+  - {fileID: 21300000, guid: 797faf96aa2aad740b99d5d0e6dbafa7, type: 3}
+  - {fileID: 21300000, guid: 3c4c3bf973c1d0f46b5813163bdd1d25, type: 3}
+  - {fileID: 21300000, guid: 056d47fcf2e91484da6f39c5e4aa69b6, type: 3}
+  - {fileID: 21300000, guid: 9e68ad8336923eb43a2f2f186778fbca, type: 3}
+  - {fileID: 21300000, guid: 02d5f31133e800e4e994347c9496fa27, type: 3}
+  port: {fileID: 21300000, guid: d5a68ec5673e79a4bb6b421365aeaa5f, type: 3}
+  farm: {fileID: 21300000, guid: adda91b60a61f3748a66d00a37088339, type: 3}
+  homeInfo: {fileID: 11400000, guid: 3e884fa79fc07bc46af1ff68fb9138ed, type: 2}
+  unitInfo:
+  - {fileID: 11400000, guid: 8153519a2e8d6954a96c5b58f9ee8ecb, type: 2}
+  - {fileID: 11400000, guid: dd670c25175d7b6428e50e4bb6231fad, type: 2}
+  - {fileID: 11400000, guid: 445a78d4bd7c48e458d0b61da947fd79, type: 2}
+  - {fileID: 11400000, guid: a78c2e9e2fa063348ac9f430715f8169, type: 2}
+  - {fileID: 11400000, guid: 4b75ca21c9be36f4f87bef13c6f88570, type: 2}
+  - {fileID: 11400000, guid: f1f1ccc98e2de8d4fa75881907309226, type: 2}
+  - {fileID: 11400000, guid: 85bb3604b6e83054ca09816acdd0e5ab, type: 2}
+  - {fileID: 11400000, guid: aa3230d2e94c83042881b34f157b2778, type: 2}
+  - {fileID: 11400000, guid: f59e0b3e53a7e334297dfcde7e46bd71, type: 2}
+  - {fileID: 11400000, guid: b5f5adcd44755e6479e44ab36e13b4dd, type: 2}
+  - {fileID: 11400000, guid: b5f5adcd44755e6479e44ab36e13b4dd, type: 2}
+  shipUnitInfo: []
+  startUnitIndex: 0
+  techInfo: {fileID: 11400000, guid: 82c83983a963ff346bd713840730cf41, type: 2}

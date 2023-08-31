@@ -185,7 +185,7 @@ public class UnitController : MonoBehaviour
             
                 if(close.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                     continue;
-                if(close.tileType == Tile.TileType.Water || close.tileType == Tile.TileType.DeepWater)
+                if((close.tileType == Tile.TileType.Water && !close.IsTileHasPort()) || close.tileType == Tile.TileType.DeepWater)
                     continue;
                 tileForMove.Add(close);
                 if(close.isHasMountain || close.isHasTree)

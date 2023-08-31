@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e3e618ee714af094a4192b12030719, type: 3}
+  m_Name: KickooHomeData
+  m_EditorClassIdentifier: 
+  capitalHomeSprite: {fileID: 21300000, guid: 0b5dcf5d38f059547940c50e5a81740c, type: 3}
+  forgeHomeSprite: {fileID: 21300000, guid: 9b7f98eccba976543ac0d23226b39b24, type: 3}
+  parkHomeSprite: {fileID: 21300000, guid: 89c9bd72264e5d344a82db3dedcd380e, type: 3}
+  home1Sprite: {fileID: 21300000, guid: b4a7d2591360fe94a8701f8ee1b42be2, type: 3}
+  home2Sprite: {fileID: 21300000, guid: 974b5a8b5d8698d44af6e4918e26837a, type: 3}

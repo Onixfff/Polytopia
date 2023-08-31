@@ -172,7 +172,7 @@ public class AI : MonoBehaviour
         
         closeTile.RemoveAll(tile => tile == null);
         closeTile.RemoveAll(tile => !tile.IsTileFree());
-        closeTile.RemoveAll(tile => tile.tileType == Tile.TileType.Water);
+        closeTile.RemoveAll(tile => tile.tileType == Tile.TileType.Water && !tile.IsTileHasPort());
         closeTile.RemoveAll(tile => tile.isHasMountain && !unitHasMountTech);
         closeTile.RemoveAll(tile => tile == null);
         
