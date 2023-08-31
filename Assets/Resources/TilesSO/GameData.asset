@@ -20,10 +20,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7430ece415a3b4d44a647a2c35935620, type: 2}
   - {fileID: 11400000, guid: c130ca846b1f3304cb0d1ca4d04cc2ce, type: 2}
   playerCivilisationInfos:
-  - {fileID: 11400000, guid: 5085c89e40f11f143a37965fa558a711, type: 2}
-  - {fileID: 11400000, guid: 78fdf8f005385524b906077ca2f41760, type: 2}
-  - {fileID: 11400000, guid: 04ffe0357263a414c9170c0ba86518b0, type: 2}
-  - {fileID: 11400000, guid: d8fed60508c3a2144b072ad0ba44510f, type: 2}
   - {fileID: 11400000, guid: 6bc58eca628cc114ebafaecdf1ea3b11, type: 2}
   - {fileID: 11400000, guid: 5171fe9d79f17ba4e9b70aa8b5f61124, type: 2}
   countPlayers: 4

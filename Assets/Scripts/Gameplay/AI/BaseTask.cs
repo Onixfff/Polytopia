@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,7 +12,8 @@ public abstract class BaseTask : MonoBehaviour
         Capture,
         Attack,
         SendTroops,
-        Patrol
+        Patrol,
+        MoveToPointOfInterestTask
     }
 
     public TaskType taskType;
@@ -20,18 +22,29 @@ public abstract class BaseTask : MonoBehaviour
     public int taskPriority = 2;
     
     protected List<UnitController> UnitsAssignedToTheTask;
+    protected TaskManager taskManager;
 
+    public void AddTaskManager(TaskManager manager)
+    {
+        if(taskManager == null)
+            taskManager = manager;
+    }
+    
     public int GetCountUnit()
     {
         return UnitsAssignedToTheTask.Count;
     }
 
-    public bool UnitIsOnTask(UnitController unit)
+    public bool UnitIsOnTask(UnitController unit, string taskName)
     {
         if (UnitsAssignedToTheTask == null)
         {
             return false;
         }
+
+        if (unit.aiTaskName == taskName)
+            return true;
+        
         return UnitsAssignedToTheTask.Contains(unit);
     }
     
@@ -74,6 +87,26 @@ public abstract class BaseTask : MonoBehaviour
             UnitsAssignedToTheTask.Clear();
         }
         OnTurnEnded?.Invoke();
+    }
+
+    protected void AddPointOfInteresting(Vector2Int pos)
+    {
+        var boardWindow = LevelManager.Instance.gameBoardWindow;
+        foreach (var tile in boardWindow.GetCloseTile(boardWindow.GetTile(pos), 2))
+        {
+            if (taskManager.pointsOfInteresting.Contains(tile.pos))
+            {
+                return;
+            }
+        }
+        if(!taskManager.pointsOfInteresting.Contains(pos))
+            taskManager.pointsOfInteresting.Add(pos);
+    }
+    
+    protected void TryRemovePointOfInteresting(Vector2Int pos)
+    {
+        if(taskManager.pointsOfInteresting.Contains(pos))
+            taskManager.pointsOfInteresting.Remove(pos);
     }
     
     public abstract int CalculatePriority(List<UnitController> units);

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiNumber: 0
-  aiQuestGiver: {fileID: 355908248291978745}
+  taskManager: {fileID: 355908248291978745}
 --- !u!1001 &7120010650749166204
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57,7 +57,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1412384026213099651, guid: 7b8d4f50866730d4b9bedbec6e285c8c, type: 3}
       propertyPath: m_Name
-      value: QuestGiver
+      value: TakManager
       objectReference: {fileID: 0}
     - target: {fileID: 2348508176611292605, guid: 7b8d4f50866730d4b9bedbec6e285c8c, type: 3}
       propertyPath: m_RootOrder

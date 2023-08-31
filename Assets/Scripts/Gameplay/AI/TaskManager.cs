@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class AIQuestGiver : MonoBehaviour
+public class TaskManager : MonoBehaviour
 {
     public Action OnTaskAreDistributed;
-    
+    public List<Vector2Int> pointsOfInteresting;
+
     [SerializeField] private List<BaseTask> allTasks;
     private Dictionary<UnitController, bool> _allUnits;
-
+    private CivilisationController _civilisationController;
+    
     public void AddUnitsToList(List<UnitController> units)
     {
         _allUnits ??= new Dictionary<UnitController, bool>();
@@ -23,21 +25,24 @@ public class AIQuestGiver : MonoBehaviour
         }
     }
     
-    public void AssignTasks()
+    public void AssignTasks(CivilisationController controller)
     {
+        if (_civilisationController == null)
+            _civilisationController = controller;
         AssignUnits();
         StartTasksExecution(0);
     }
 
     private void AssignUnits()
     {
-        var tasks = new List<BaseTask>();
+        pointsOfInteresting ??= new List<Vector2Int>();
 
         foreach (var task in allTasks)
         {
+            task.AddTaskManager(this);
             task.CalculatePriority(_allUnits.Keys.ToList());
         }
-        tasks = allTasks.OrderBy(or => or.taskPriority).ToList();
+        var tasks = allTasks.OrderBy(or => or.taskPriority).ToList();
         tasks.Reverse();
         var allUnits = _allUnits;
         foreach (var task in tasks)
@@ -107,15 +112,25 @@ public class AIQuestGiver : MonoBehaviour
                         continue;
                     var homeUnits = unit.GetOwner().GetUnitList();
                     homes.Add(unit.GetOwner());
-                    if (homeUnits.Find(task.UnitIsOnTask))
-                        continue;
+                    if (homeUnits.Find(controller => task.UnitIsOnTask(controller, taskType.ToString())))
+                    {
+                        rightUnits.Add(unit);
+                        break;
+                    }
                     var unit1 = units.Find(unit2 => unit2.occupiedTile.GetHomeOnTile() != null && unit2.occupiedTile.GetHomeOnTile() == unit2.GetOwner()); 
                     rightUnits.Add(unit1);
+                    break;
                 }
                 
                 break;
             case BaseTask.TaskType.SendTroops:
-                rightUnits.AddRange(units);
+                break;
+                var civilList = _civilisationController.relationOfCivilisation.GetCivilisationForType(DiplomacyManager.RelationType.War);
+                foreach (var civ in civilList)
+                {
+                    
+                }
+                //rightUnits.AddRange(units);
                 /*foreach (var unit in units)
                 {
                     var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, Mathf.Max(unit.GetUnitInfo().rad, unit.GetUnitInfo().moveRad));
@@ -157,6 +172,24 @@ public class AIQuestGiver : MonoBehaviour
             case BaseTask.TaskType.Exploring:
                 rightUnits.AddRange(units);
                 break;
+            case BaseTask.TaskType.MoveToPointOfInterestTask:
+                if(pointsOfInteresting.Count == 0)
+                    return rightUnits;
+
+                foreach (var unit in units)
+                {
+                    if(unit.aiTaskName == "")
+                        rightUnits.Add(unit);
+                    
+                    /*if(unit.aiTaskName == BaseTask.TaskType.Exploring.ToString())
+                        rightUnits.Add(unit);*/
+                    
+                    
+                }
+                
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
         return rightUnits;

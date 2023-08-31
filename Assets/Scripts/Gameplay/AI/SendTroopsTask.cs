@@ -14,18 +14,10 @@ public class SendTroopsTask : BaseTask
         foreach (var unit in units)
         {
             var owner = unit.GetOwner().owner;
-            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile,
-                Mathf.Max(unit.GetUnitInfo().rad, 1));
-            var haveNoAllyUnit = tiles.Any(tile =>
-                tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner &&
-                tile.unitOnTile.GetOwner().owner.GetRelation(owner) is DiplomacyManager.RelationType.Neutral
-                    or DiplomacyManager.RelationType.War);
-            var haveNoAllyHome = tiles.Any(tile =>
-                tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != null &&
-                tile.GetHomeOnTile().owner != owner &&
-                tile.GetHomeOnTile().owner.GetRelation(owner) is DiplomacyManager.RelationType.Neutral
-                    or DiplomacyManager.RelationType.War);
-            if (haveNoAllyHome || haveNoAllyUnit)
+            var board = LevelManager.Instance.gameBoardWindow;
+            var controlledTiles = board.GetAllTile().Values.ToList().FindAll(tile => tile.GetOwner() != null && tile.GetOwner().owner == owner);
+            var haveNoAllyUnit = controlledTiles.Any(tile => tile.unitOnTile != null && owner.GetRelation(tile.GetOwner().owner) != DiplomacyManager.RelationType.Peace);
+            if (haveNoAllyUnit)
             {
                 taskPriority = 3;
                 isHaveEnemy = true;

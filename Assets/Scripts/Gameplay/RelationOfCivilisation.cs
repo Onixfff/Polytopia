@@ -14,7 +14,8 @@ public class RelationOfCivilisation : MonoBehaviour
     {
         if (CheckCivForContain(civ))
         {
-            _civilisationRelation[civ] = relationType;
+            if(_civilisationRelation[civ] == DiplomacyManager.RelationType.None)
+                _civilisationRelation[civ] = relationType;
             return;
         }
         Debug.LogWarning("Name - " + civilisationController.civilName + " Find new Civ - " + civ.civilName);
@@ -30,6 +31,11 @@ public class RelationOfCivilisation : MonoBehaviour
             return true;
         
         return false;
+    }
+
+    public List<CivilisationController> GetCivilisationForType(DiplomacyManager.RelationType relationType)
+    {
+        return (from keyValue in _civilisationRelation where keyValue.Value == relationType select keyValue.Key).ToList();
     }
     
     public Dictionary<CivilisationController, List<DiplomacyManager.OpinionType>> GetCivilisationOpinion()

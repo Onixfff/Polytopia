@@ -192,7 +192,7 @@ public class CivilisationController : MonoBehaviour
         return relationOfCivilisation.GetRelation(controller) == DiplomacyManager.RelationType.Peace;
     }
     
-    public DiplomacyManager.RelationType? GetRelation(CivilisationController controller)
+    public DiplomacyManager.RelationType GetRelation(CivilisationController controller)
     {
         return relationOfCivilisation.GetRelation(controller);
     }

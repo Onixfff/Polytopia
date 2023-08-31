@@ -54,6 +54,7 @@ public class CaptureTask : BaseTask
         _captureSeq = DOTween.Sequence();
         if (unit.occupiedTile.GetHomeOnTile() != null && unit.occupiedTile.GetHomeOnTile().owner != unit.GetOwner().owner)
         {
+            TryRemovePointOfInteresting(unit.occupiedTile.pos);
             unit.occupiedTile.GetHomeOnTile().OccupyHome();
             _isHomeCapture = true;
             return _captureSeq;
@@ -77,8 +78,13 @@ public class CaptureTask : BaseTask
         
         closeTile.RemoveAll(tile => tile == null);
         closeTile.RemoveAll(tile => !tile.IsTileFree());
-        
-        var home = closeTile.FirstOrDefault(tile => tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner);
+        closeTile.RemoveAll(tile => tile.GetHomeOnTile() == null);
+
+        if (closeTile.Any(tile => tile.GetHomeOnTile().owner == null))
+        {
+            return closeTile.Find(tile => tile.GetHomeOnTile().owner == null);
+        }
+        var home = closeTile.Find(tile => tile.GetHomeOnTile().owner != owner && !tile.GetHomeOnTile().owner.CheckAlly(owner));
         return home;
     }
     
@@ -91,9 +97,17 @@ public class CaptureTask : BaseTask
         var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().moveRad);
         foreach (var tile in tiles)
         {
+            if(!tile.IsTileFree())
+                continue;
+            
+            
             if (tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != owner)
             {
-                return true;
+                if (tile.GetHomeOnTile().owner == null)
+                    return true;
+                var isAlly = tile.GetHomeOnTile().owner.CheckAlly(owner);
+                if(!isAlly)
+                    return true;
             }
         }
 

@@ -92,21 +92,22 @@ public class AttackTask : BaseTask
 
             var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile,
                 unit.GetUnitInfo().rad);
-            if (tiles.Any(tile => tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner))
+            var allClosetUnits = tiles.FindAll(tile => tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner);
+            if (allClosetUnits.Count > 0)
             {
-                var relation = tiles
-                    .FindAll(tile => tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner)
-                    .Select(tile => tile.unitOnTile.GetOwner().owner.GetRelation(unit.GetOwner().owner)).ToList();
-                if (relation.Contains(DiplomacyManager.RelationType.War))
+                if(allClosetUnits.Count > 1) AddPointOfInteresting(unit.occupiedTile.pos);
+
+                var allNonFriendlyUnitTiles = tiles.FindAll(tile => tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner);
+                var relationTypes = allNonFriendlyUnitTiles.Select(tile => tile.unitOnTile.GetOwner().owner.GetRelation(unit.GetOwner().owner)).ToList();
+                
+                if (relationTypes.Contains(DiplomacyManager.RelationType.War))
                 {
                     return true;
                 }
 
-                if (relation.Contains(DiplomacyManager.RelationType.Neutral))
-                {
-                    var rand = Random.Range(0, 2);
-                    if (rand == 0)
-                        return true;
+                if (relationTypes.Contains(DiplomacyManager.RelationType.Neutral))
+                { 
+                    return true;
                 }
             }
         }

@@ -51,22 +51,27 @@ public static class AStarAlgorithm
                 
                 if(tiles[neighborPosition].obstacle)
                     continue;
-                
-                if (unit != null)
-                {
-                    if(tiles[neighborPosition].unitOnTile != null && tiles[neighborPosition].unitOnTile.GetOwner().owner == unit.GetOwner().owner)
-                        continue;
-                    if(tiles[neighborPosition].isHasMountain && !unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain))
-                        continue;
-                    if(tiles[neighborPosition].tileType == Tile.TileType.Water && !unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float))
-                        continue;
-                }
-                else
-                {
-                    if(tiles[neighborPosition].isHasMountain && !LevelManager.Instance.gameBoardWindow.playerCiv.technologies.Contains(TechInfo.Technology.Mountain))
-                        continue;
-                }
 
+                if (neighborPosition != targetPosition)
+                {
+                    if (unit != null)
+                    {
+                        if(!tiles[neighborPosition].IsTileFree() && tiles[neighborPosition].unitOnTile.GetOwner().owner == unit.GetOwner().owner)
+                            continue;
+                        if(tiles[neighborPosition].isHasMountain && !unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain))
+                            continue;
+                        if(tiles[neighborPosition].tileType == Tile.TileType.Water && !unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float))
+                            continue;
+                    }
+                    else
+                    {
+                        if(tiles[neighborPosition].isHasMountain && !LevelManager.Instance.gameBoardWindow.playerCiv.technologies.Contains(TechInfo.Technology.Mountain))
+                            continue;
+                        if(tiles[neighborPosition].tileType is Tile.TileType.Water or Tile.TileType.DeepWater)
+                            continue;
+                    }
+                }
+                
                 var neighborTile = tiles[neighborPosition];
                 var newGCost = currentTile.gCost + 1;
 

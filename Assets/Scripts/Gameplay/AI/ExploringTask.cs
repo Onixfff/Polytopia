@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using Gameplay.SO;
-using NaughtyAttributes;
 using UnityEngine;
 
 public class ExploringTask : BaseTask
@@ -167,6 +166,7 @@ public class ExploringTask : BaseTask
 
                 if (tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner)
                 {
+                    AddPointOfInteresting(tile.pos);
                     return true;
                 }
             }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class AI : MonoBehaviour
 {
     public int aiNumber;
-    public AIQuestGiver aiQuestGiver;
+    public TaskManager taskManager;
 
     private CivilisationController _controller;
     private Sequence _unitsSeq;
@@ -25,7 +25,7 @@ public class AI : MonoBehaviour
             if (tile.unitOnTile != null)
             {
                 _controller.relationOfCivilisation.AddNewCivilisation(tile.unitOnTile.GetOwner().owner, DiplomacyManager.RelationType.Neutral);
-                tile.unitOnTile.GetOwner().owner.relationOfCivilisation.AddNewCivilisation(_controller, DiplomacyManager.RelationType.None);
+                tile.unitOnTile.GetOwner().owner.relationOfCivilisation.AddNewCivilisation(_controller, DiplomacyManager.RelationType.Neutral);
             }
         }
 
@@ -61,15 +61,15 @@ public class AI : MonoBehaviour
 
     private void EndTurn()
     {
-        aiQuestGiver.OnTaskAreDistributed -= EndTurn;
+        taskManager.OnTaskAreDistributed -= EndTurn;
         AIController.Instance.OnAITurnEnded?.Invoke(aiNumber+1);
     }
 
     private void UnitAction(List<UnitController> units)
     {
-        aiQuestGiver.AddUnitsToList(units);
-        aiQuestGiver.AssignTasks();
-        aiQuestGiver.OnTaskAreDistributed += EndTurn;
+        taskManager.AddUnitsToList(units);
+        taskManager.AssignTasks(_controller);
+        taskManager.OnTaskAreDistributed += EndTurn;
     }
     
     private Tween UnitPriority(UnitController unit)
