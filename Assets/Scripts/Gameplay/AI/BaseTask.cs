@@ -55,7 +55,8 @@ public abstract class BaseTask : MonoBehaviour
             }
         }
 
-        EndTurn();
+        EndTask();
+        //EndTurn();
     }
     
     protected virtual void EndTurn()

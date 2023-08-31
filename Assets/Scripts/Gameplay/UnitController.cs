@@ -126,6 +126,14 @@ public class UnitController : MonoBehaviour
     {
         return _hp;
     }
+
+    public void SelfHeal(int heal)
+    {
+        Heal(heal);
+        _moveThisTurn = 0;
+        _attackThisTurn = 0;
+        LevelManager.Instance.SelectObject(null);
+    }
     
     public void Heal(int heal)
     {
@@ -185,6 +193,8 @@ public class UnitController : MonoBehaviour
             
                 if(close.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                     continue;
+                if(!close.IsTileFree())
+                    continue;
                 if((close.tileType == Tile.TileType.Water && !close.IsTileHasPort()) || close.tileType == Tile.TileType.DeepWater)
                     continue;
                 tileForMove.Add(close);
@@ -198,7 +208,8 @@ public class UnitController : MonoBehaviour
                 {
                     if(tile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                         continue;
-            
+                    if(!tile.IsTileFree())
+                        continue;
                     tileForMove.Add(tile);
                     if(tile.isHasMountain || tile.isHasTree || tile.tileType == Tile.TileType.Water || tile.tileType == Tile.TileType.DeepWater)
                         continue;
@@ -209,7 +220,8 @@ public class UnitController : MonoBehaviour
                     {
                         if(cTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                             continue;
-            
+                        if(!cTile.IsTileFree())
+                            continue;
                         tileForMove.Add(cTile);
                     }
                 }
@@ -223,7 +235,10 @@ public class UnitController : MonoBehaviour
             
                 if(close.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                     continue;
-            
+                
+                if(!close.IsTileFree())
+                    continue;
+                
                 tileForMove.Add(close);
                 if(close.tileType == Tile.TileType.Ground)
                     continue;
@@ -235,9 +250,11 @@ public class UnitController : MonoBehaviour
                 {
                     if(tile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
                         continue;
+                    if(!tile.IsTileFree())
+                        continue;
             
                     tileForMove.Add(tile);
-                    if(close.tileType == Tile.TileType.Ground)
+                    if(tile.tileType == Tile.TileType.Ground)
                         continue;
                     if(unitInfo.moveRad < 3)
                         continue;
@@ -245,6 +262,8 @@ public class UnitController : MonoBehaviour
                     foreach (var cTile in clTile)
                     {
                         if(cTile.isHasMountain && !_owner.owner.technologies.Contains(TechInfo.Technology.Mountain))
+                            continue;
+                        if(!cTile.IsTileFree())
                             continue;
             
                         tileForMove.Add(cTile);
@@ -457,7 +476,7 @@ public class UnitController : MonoBehaviour
                 _civOwner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
             {
                 var ints = new List<int>();
-                if (_hp < unitInfo.hp)
+                if (_hp < unitInfo.hp && _moveThisTurn != 0)
                     ints.Add(0);
                 if (_owner.owner.technologies.Contains(TechInfo.Technology.FreeSpirit))
                     ints.Add(1);

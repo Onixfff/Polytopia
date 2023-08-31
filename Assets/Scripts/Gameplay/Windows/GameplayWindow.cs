@@ -50,6 +50,7 @@ public class GameplayWindow : BaseWindow
     [SerializeField] private List<Button> tileTechButtons;
     [SerializeField] private GameObject unitButtonParent;
     [SerializeField] private List<Button> unitButtons;
+    [SerializeField] private List<Transform> shipIconsVisual;
     [SerializeField] private GameObject tileTechButtonParent;
     [SerializeField] private TextMeshProUGUI tileNameUGUI;
     [SerializeField] private List<TechIcon> techIcons;
@@ -333,8 +334,12 @@ public class GameplayWindow : BaseWindow
     
     public void ShowUnitButton(List<int> types, UnitController unit)
     {
-        if(types.Count == 0)
+        
+        if (types.Count == 0)
+        {
+            unitButtonParent.SetActive(false);
             return;
+        }
         downBar.SetActive(true);
         unitButtonParent.SetActive(true);
         foreach (var tile in unitButtons)
@@ -391,14 +396,16 @@ public class GameplayWindow : BaseWindow
                     unitButtons[type].gameObject.SetActive(true);
                     if (unit.GetUnitType() == UnitController.UnitType.Boat)
                     {
-                        unitButtons[type].transform.GetChild(1).GetChild(1).gameObject.SetActive(false);
-                        unitButtons[type].transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
+                        shipIconsVisual[0].gameObject.SetActive(true);
+                        shipIconsVisual[1].gameObject.SetActive(false);
+                        shipIconsVisual[2].GetComponent<TextMeshProUGUI>().text = "10";
                     }
                         
                     if (unit.GetUnitType() == UnitController.UnitType.Ship)
                     {
-                        unitButtons[type].transform.GetChild(1).GetChild(1).gameObject.SetActive(true);
-                        unitButtons[type].transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
+                        shipIconsVisual[0].gameObject.SetActive(false);
+                        shipIconsVisual[1].gameObject.SetActive(true);
+                        shipIconsVisual[2].GetComponent<TextMeshProUGUI>().text = "15";
                     }
                     unitButtons[type].onClick.RemoveAllListeners();
                     unitButtons[type].onClick.AddListener((() =>

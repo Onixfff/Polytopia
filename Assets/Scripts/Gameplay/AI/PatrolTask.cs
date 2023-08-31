@@ -32,7 +32,8 @@ public class PatrolTask : BaseTask
         }
         if (units.Count <= i)
         {
-            EndTurn();
+            EndTask();
+            //EndTurn();
             return;
         }
         

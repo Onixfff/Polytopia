@@ -38,7 +38,8 @@ public class CaptureTask : BaseTask
                 EndTask();
                 return;
             }
-            EndTurn();
+            EndTask();
+            //EndTurn();
             return;
         }
         

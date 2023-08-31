@@ -26513,6 +26513,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1720030670176251130, guid: d78802bf2232f584096a8208e1d871f0, type: 3}
+      propertyPath: m_text
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2047043283130509344, guid: d78802bf2232f584096a8208e1d871f0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5184916698595850477, guid: d78802bf2232f584096a8208e1d871f0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -26616,6 +26624,11 @@ PrefabInstance:
       addedObject: {fileID: 153285024617187383}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d78802bf2232f584096a8208e1d871f0, type: 3}
+--- !u!224 &188461970818192962 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 93166137184244355, guid: d78802bf2232f584096a8208e1d871f0, type: 3}
+  m_PrefabInstance: {fileID: 276816562164303041}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1453305559615761845 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1728360288924789108, guid: d78802bf2232f584096a8208e1d871f0, type: 3}
@@ -35394,6 +35407,10 @@ MonoBehaviour:
   - {fileID: 1360245417579950854}
   - {fileID: 4188037259609290845}
   - {fileID: 1453305559615761845}
+  shipIconsVisual:
+  - {fileID: 2936838026078857791}
+  - {fileID: 153285024617187383}
+  - {fileID: 188461970818192962}
   tileTechButtonParent: {fileID: 569950033813831662}
   tileNameUGUI: {fileID: 8840055819174496977}
   techIcons:

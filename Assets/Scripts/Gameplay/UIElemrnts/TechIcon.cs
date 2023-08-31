@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using Gameplay.SO;
 using UnityEngine;
@@ -61,6 +59,6 @@ public class TechIcon : MonoBehaviour
         if (lockObject != null) lockObject.SetActive(false);
         lineObject.GetComponent<Image>().color = buyColor;
         buyObject.SetActive(true);
-        Destroy(techButton);
+        techButton.enabled = false;
     }
 }
