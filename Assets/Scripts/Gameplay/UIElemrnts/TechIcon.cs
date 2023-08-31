@@ -58,6 +58,7 @@ public class TechIcon : MonoBehaviour
     public void BuyTech()
     {
         isTechUnlock = false;
+        if (lockObject != null) lockObject.SetActive(false);
         lineObject.GetComponent<Image>().color = buyColor;
         buyObject.SetActive(true);
         Destroy(techButton);
