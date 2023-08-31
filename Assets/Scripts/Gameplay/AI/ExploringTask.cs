@@ -161,12 +161,13 @@ public class ExploringTask : BaseTask
             {
                 if (tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != unit.GetOwner().owner)
                 {
+                    TryAddPointOfInteresting(tile.pos);
                     return true;
                 }
 
                 if (tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner)
                 {
-                    AddPointOfInteresting(tile.pos);
+                    TryAddPointOfInteresting(tile.pos);
                     return true;
                 }
             }

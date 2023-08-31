@@ -13,7 +13,7 @@ public abstract class BaseTask : MonoBehaviour
         Attack,
         SendTroops,
         Patrol,
-        MoveToPointOfInterestTask
+        MoveToPoint
     }
 
     public TaskType taskType;
@@ -89,24 +89,14 @@ public abstract class BaseTask : MonoBehaviour
         OnTurnEnded?.Invoke();
     }
 
-    protected void AddPointOfInteresting(Vector2Int pos)
+    protected void TryAddPointOfInteresting(Vector2Int pos)
     {
-        var boardWindow = LevelManager.Instance.gameBoardWindow;
-        foreach (var tile in boardWindow.GetCloseTile(boardWindow.GetTile(pos), 2))
-        {
-            if (taskManager.pointsOfInteresting.Contains(tile.pos))
-            {
-                return;
-            }
-        }
-        if(!taskManager.pointsOfInteresting.Contains(pos))
-            taskManager.pointsOfInteresting.Add(pos);
+        taskManager.TryAddPointOfInteresting(pos);
     }
     
     protected void TryRemovePointOfInteresting(Vector2Int pos)
     {
-        if(taskManager.pointsOfInteresting.Contains(pos))
-            taskManager.pointsOfInteresting.Remove(pos);
+        taskManager.TryRemovePointOfInteresting(pos);
     }
     
     public abstract int CalculatePriority(List<UnitController> units);

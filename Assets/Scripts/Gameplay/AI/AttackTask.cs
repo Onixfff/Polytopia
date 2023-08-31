@@ -95,7 +95,7 @@ public class AttackTask : BaseTask
             var allClosetUnits = tiles.FindAll(tile => tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner);
             if (allClosetUnits.Count > 0)
             {
-                if(allClosetUnits.Count > 1) AddPointOfInteresting(unit.occupiedTile.pos);
+                if(allClosetUnits.Count > 1) TryAddPointOfInteresting(unit.occupiedTile.pos);
 
                 var allNonFriendlyUnitTiles = tiles.FindAll(tile => tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner);
                 var relationTypes = allNonFriendlyUnitTiles.Select(tile => tile.unitOnTile.GetOwner().owner.GetRelation(unit.GetOwner().owner)).ToList();

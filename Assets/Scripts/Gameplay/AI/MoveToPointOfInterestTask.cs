@@ -66,7 +66,7 @@ public class MoveToPointOfInterestTask : BaseTask
             }
         }
         
-        if (!allTiles[path[0]].IsTileFree())
+        if (allTiles.Count == 0 || !allTiles[path[0]].IsTileFree())
             return unit.occupiedTile;
         
         return allTiles[path[0]];

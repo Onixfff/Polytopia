@@ -11,6 +11,33 @@ public class TaskManager : MonoBehaviour
     [SerializeField] private List<BaseTask> allTasks;
     private Dictionary<UnitController, bool> _allUnits;
     private CivilisationController _civilisationController;
+
+    public void TryAddPointOfInteresting(Vector2Int pos)
+    {
+        var boardWindow = LevelManager.Instance.gameBoardWindow;
+        foreach (var tile in boardWindow.GetCloseTile(boardWindow.GetTile(pos), 2))
+        {
+            if (pointsOfInteresting.Contains(tile.pos))
+            {
+                return;
+            }
+        }
+
+        if (!pointsOfInteresting.Contains(pos))
+        {
+            Debug.Log("added new point - " + pos);
+            pointsOfInteresting.Add(pos);
+        }
+    }
+    
+    public void TryRemovePointOfInteresting(Vector2Int pos)
+    {
+        if (pointsOfInteresting.Contains(pos))
+        {
+            Debug.Log("removed point - " + pos);
+            pointsOfInteresting.Remove(pos);
+        }
+    }
     
     public void AddUnitsToList(List<UnitController> units)
     {
@@ -123,24 +150,6 @@ public class TaskManager : MonoBehaviour
                 }
                 
                 break;
-            case BaseTask.TaskType.SendTroops:
-                break;
-                var civilList = _civilisationController.relationOfCivilisation.GetCivilisationForType(DiplomacyManager.RelationType.War);
-                foreach (var civ in civilList)
-                {
-                    
-                }
-                //rightUnits.AddRange(units);
-                /*foreach (var unit in units)
-                {
-                    var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, Mathf.Max(unit.GetUnitInfo().rad, unit.GetUnitInfo().moveRad));
-                    if (tiles.Any(tile => tile.unitOnTile == null || tile._homeOnTile == null))
-                    {
-                        rightUnits.Add(unit);
-                    }
-                }
-                break;*/
-                break;
             case BaseTask.TaskType.Attack:
                 foreach (var unit in units)
                 {
@@ -172,24 +181,32 @@ public class TaskManager : MonoBehaviour
             case BaseTask.TaskType.Exploring:
                 rightUnits.AddRange(units);
                 break;
-            case BaseTask.TaskType.MoveToPointOfInterestTask:
+            case BaseTask.TaskType.MoveToPoint:
                 if(pointsOfInteresting.Count == 0)
                     return rightUnits;
 
                 foreach (var unit in units)
                 {
+                    foreach (var point in pointsOfInteresting)
+                    {
+                        if (board.GetCloseTile(unit.occupiedTile, 1).Contains(board.GetTile(point)))
+                        {
+                            if(!rightUnits.Contains(unit))
+                                rightUnits.Add(unit);
+                        }
+                    }
+                    
                     if(unit.aiTaskName == "")
-                        rightUnits.Add(unit);
+                        if(!rightUnits.Contains(unit))
+                            rightUnits.Add(unit);
                     
-                    /*if(unit.aiTaskName == BaseTask.TaskType.Exploring.ToString())
-                        rightUnits.Add(unit);*/
-                    
-                    
+                    if(unit.aiTaskName == BaseTask.TaskType.MoveToPoint.ToString())
+                        if(!rightUnits.Contains(unit))
+                            rightUnits.Add(unit);
+                   
                 }
                 
                 break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
 
         return rightUnits;
