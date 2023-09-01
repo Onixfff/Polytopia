@@ -10,7 +10,7 @@ public class TaskManager : MonoBehaviour
 
     [SerializeField] private List<BaseTask> allTasks;
     private Dictionary<UnitController, bool> _allUnits;
-    private CivilisationController _civilisationController;
+    public CivilisationController civilisationController;
 
     public void TryAddPointOfInteresting(Vector2Int pos)
     {
@@ -54,8 +54,8 @@ public class TaskManager : MonoBehaviour
     
     public void AssignTasks(CivilisationController controller)
     {
-        if (_civilisationController == null)
-            _civilisationController = controller;
+        if (civilisationController == null)
+            civilisationController = controller;
         AssignUnits();
         StartTasksExecution(0);
     }

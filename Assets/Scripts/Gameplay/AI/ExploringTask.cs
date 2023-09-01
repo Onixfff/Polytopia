@@ -60,7 +60,7 @@ public class ExploringTask : BaseTask
         
         foreach (var tile in board.GetCloseTile(unit.occupiedTile, 3))
         {
-            if(tile.isOpened)
+            if(TaskManager.civilisationController.GetTileInExploreList().Contains(tile))
                 continue;
             
             var findPath = AStarAlgorithm.FindPath(unit.occupiedTile.pos, tile.pos, unit);
@@ -74,7 +74,7 @@ public class ExploringTask : BaseTask
             }
         }
         
-        if (allTiles.Count == 0 || !allTiles[path[0]].IsTileFree())
+        if (path.Count == 0 || !allTiles[path[0]].IsTileFree())
             return unit.occupiedTile;
         
         return allTiles[path[0]];
