@@ -17,7 +17,6 @@ public class TechIcon : MonoBehaviour
     [SerializeField] private Color noMoneyColor;
 
     [SerializeField] private int originalPrice = 5;
-    private int _price = 5;
     
     public TechInfo.Technology type;
     public bool isTechUnlock = false;
@@ -38,7 +37,7 @@ public class TechIcon : MonoBehaviour
         {
             isTechUnlock = true;
         }
-        
+        transform.parent.parent.parent.parent.parent.parent.GetComponent<TechnologyManager>().OnTechBuy += UpdateVisual;
         lineObject.SetActive(true);
         lineObject.transform.SetParent(transform.parent.parent.GetChild(0).transform);
         var inVal = 0;
@@ -48,11 +47,17 @@ public class TechIcon : MonoBehaviour
             {
                 if (techButton != null) 
                     techButton.onClick.Invoke();
+
             }
         });
     }
 
     private void OnEnable()
+    {
+        UpdateVisual();
+    }
+
+    private void UpdateVisual()
     {
         if(!techButton.enabled)
             return;

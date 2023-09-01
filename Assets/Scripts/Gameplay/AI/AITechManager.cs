@@ -1,15 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Gameplay.SO;
 using UnityEngine;
 
 public class AITechManager : Singleton<AITechManager>
 {
-    public override void Awake()
+    public void TryBuyNeededTechnology(CivilisationController controller)
     {
-        base.Awake();
+        var allTech = new List<TechInfo.Technology>();
+        var civTech = controller.technologies;
+        
+        allTech.AddRange(Enum.GetValues(typeof(TechInfo.Technology)).Cast<TechInfo.Technology>());
+
+        foreach (var technology in civTech)
+        {
+            if(allTech.Contains(technology))
+                allTech.Remove(technology);
+        }
+
+        var maxPrice = 0;
+        TechInfo.Technology? techForBuy = null;
+        foreach (var technology in allTech)
+        {
+            var priseTech = CalculateTechPrice(technology, controller);
+            if (priseTech > maxPrice &&
+                priseTech <= controller.Money)
+            {
+                maxPrice = priseTech;
+                techForBuy = technology;
+            }
+        }
+
+        if (techForBuy == null)
+            return;
+
+        controller.AddMoney(-CalculateTechPrice(techForBuy, controller));
+        controller.technologies.Add((TechInfo.Technology)techForBuy);
     }
 
-    public int CalculateTechPrice(TechInfo.Technology techType, CivilisationController controller)
+
+    public int CalculateTechPrice(TechInfo.Technology? techType, CivilisationController controller)
     {
         var priceFirstTier = 1;
         var priceTwoTier = 2;
@@ -97,7 +128,7 @@ public class AITechManager : Singleton<AITechManager>
                 break;
         }
 
-        techPrice = techPrice * controller.homes.Count + 4;
+        techPrice = techPrice + controller.homes.Count - 1;
         if (controller.technologies.Contains(TechInfo.Technology.Philosophy))
             techPrice = Mathf.RoundToInt((techPrice / 3) + 1);
 

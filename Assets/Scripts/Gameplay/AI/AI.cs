@@ -42,12 +42,16 @@ public class AI : MonoBehaviour
 
     private void Building()
     {
-        
+        var homes = _controller.homes;
+        foreach (var home in homes)
+        {
+            
+        }
     }
     
     private void BuyingTech()
     {
-        
+        AITechManager.Instance.TryBuyNeededTechnology(_controller);
     }
     
     private void UnitManagement()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gameplay.SO;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine.UI;
 
 public class TechnologyManager : MonoBehaviour
 {
+    public Action OnTechBuy;
+    
     [SerializeField] private Button ridingButton;
     [SerializeField] private Button roadsButton;
     [SerializeField] private Button tradeButton;
@@ -273,13 +276,17 @@ public class TechnologyManager : MonoBehaviour
     {
         thisButton.GetComponent<TechIcon>().BuyTech();
         if (buttons == null)
+        {
+            OnTechBuy?.Invoke();
             return;
+        }
         
         foreach (var button in buttons)
         {
             var techIcon = button.GetComponent<TechIcon>();
             techIcon.UnlockTech(CalculatePrice(price));
         }
+        OnTechBuy?.Invoke();
     }
 
     private int CalculatePrice(int price)
