@@ -28,6 +28,7 @@ public class TechIcon : MonoBehaviour
     
     private void Start()
     {
+        var player = LevelManager.Instance.gameBoardWindow.playerCiv;
         if (lockObject != null)
         {
             lockObject.SetActive(true);
@@ -37,19 +38,17 @@ public class TechIcon : MonoBehaviour
         {
             isTechUnlock = true;
         }
-        transform.parent.parent.parent.parent.parent.parent.GetComponent<TechnologyManager>().OnTechBuy += UpdateVisual;
         lineObject.SetActive(true);
         lineObject.transform.SetParent(transform.parent.parent.GetChild(0).transform);
-        var inVal = 0;
-        DOTween.To(() => inVal, x => x = inVal, 1, 0.03f).OnComplete(() =>
+        
+        if (player.technologies.Contains(type))
         {
-            if (LevelManager.Instance.gameBoardWindow.playerCiv.technologies.Contains(type))
+            if (techButton.enabled)
             {
-                if (techButton != null) 
-                    techButton.onClick.Invoke();
-
+                OpenTech();
             }
-        });
+        }
+        transform.parent.parent.parent.parent.parent.parent.GetComponent<TechnologyManager>().OnTechBuy += UpdateVisual;
     }
 
     private void OnEnable()

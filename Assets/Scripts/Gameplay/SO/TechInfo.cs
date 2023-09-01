@@ -35,7 +35,7 @@ namespace Gameplay.SO
             Mathematics,
         }
 
-        [SerializeField] private List<Technology> technologiesList;
-        public List<Technology> startTechnologies => technologiesList;
+        [SerializeField] private Technology technologiesList;
+        public Technology startTechnologies => technologiesList;
     }
 }

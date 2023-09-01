@@ -67,7 +67,7 @@ public class CivilisationController : MonoBehaviour
         civilisationInfo = info;
         civColor = info.CivilisationColor;
         _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
-        technologies.AddRange(info.technology.startTechnologies);
+        AddNewTechnology(info.technology.startTechnologies);
 
         AddPoint(565);
         CreateHome();

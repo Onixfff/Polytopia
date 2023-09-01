@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6cc04903d1b44e9bbc380a60b47f9af, type: 3}
   m_Name: OumajiTechData
   m_EditorClassIdentifier: 
-  technologiesList: 02000000
+  technologiesList: 0

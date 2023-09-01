@@ -11,32 +11,29 @@ public class AITechManager : Singleton<AITechManager>
         var allTech = new List<TechInfo.Technology>();
         var availableTech = new List<TechInfo.Technology>();
         var civTech = controller.technologies;
-        
+
         allTech.AddRange(Enum.GetValues(typeof(TechInfo.Technology)).Cast<TechInfo.Technology>());
 
         foreach (var technology in allTech)
         {
+            if (civTech.Contains(technology))
+                continue;
             switch (technology)
             {
                 case TechInfo.Technology.Rider:
-                    if (!civTech.Contains(technology))
-                        availableTech.Add(technology);
+                    availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Gather:
-                    if (!civTech.Contains(technology))
-                        availableTech.Add(technology);
+                    availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Mountain:
-                    if (!civTech.Contains(technology))
-                        availableTech.Add(technology);
+                    availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Fish:
-                    if (!civTech.Contains(technology))
-                        availableTech.Add(technology);
+                    availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Hunt:
-                    if (!civTech.Contains(technology))
-                        availableTech.Add(technology);
+                    availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Roads:
                     if (civTech.Contains(TechInfo.Technology.Rider))
@@ -149,7 +146,7 @@ public class AITechManager : Singleton<AITechManager>
 
         var techPrice = 0;
 
-        
+
         switch (techType)
         {
             case TechInfo.Technology.Rider:
