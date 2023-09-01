@@ -253,6 +253,9 @@ public class Tile : MonoBehaviour
             
         if(monumentImage.enabled)
             _techTypes.Add(GameplayWindow.OpenedTechType.Monument);
+        
+        if(roads.isRoad)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Road);
 
         return _techTypes;
     }

@@ -57,6 +57,7 @@ public class AI : MonoBehaviour
                 if(intTypes.Count == 0)
                     continue;
                 intTypes.Sort();
+                Debug.Log(intTypes[0]);
                 tile.BuyTileTech(intTypes[0]);
             }
 
@@ -302,11 +303,10 @@ public class AI : MonoBehaviour
 
                     if (controller.technologies.Contains(TechInfo.Technology.Roads))
                     {
-
-                        ints.Add(3);
+                        if(!types.Contains(GameplayWindow.OpenedTechType.Road))
+                            ints.Add(3);
                     }
 
-                    return ints;
                 }
 
                 return ints;

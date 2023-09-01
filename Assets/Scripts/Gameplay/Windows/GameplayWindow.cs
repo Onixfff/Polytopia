@@ -24,7 +24,8 @@ public class GameplayWindow : BaseWindow
         Construct,
         Crop,
         DeepWater,
-        Monument
+        Monument,
+        Road
     }
     #region Alert
     public AlertWindow alertWindow;
