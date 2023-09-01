@@ -64,7 +64,10 @@ public class ExploringTask : BaseTask
                 continue;
             
             var findPath = AStarAlgorithm.FindPath(unit.occupiedTile.pos, tile.pos, unit);
-
+            
+            if(findPath == null)
+                continue;
+            
             if (path.Count == 0)
                 path = findPath;
 

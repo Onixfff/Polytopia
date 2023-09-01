@@ -62,6 +62,7 @@ public class GameplayWindow : BaseWindow
     private List<Button> _openedTileTechButtons;
     private Tween _tween;
     private CivilisationController _playerCiv;
+    private Sequence _generateSeq;
 
     public void SetPlayerCiv(CivilisationController civ)
     {
@@ -178,7 +179,7 @@ public class GameplayWindow : BaseWindow
                 if (_openedTileTechButtons[8] != null)
                     _openedTileTechButtons[8].gameObject.SetActive(true);
             }
-            if (controller.technologies.Contains(TechInfo.Technology.Aquatism))
+            if (controller.technologies.Contains(TechInfo.Technology.Aqua))
             {
                 if (_openedTileTechButtons[17] != null)
                     _openedTileTechButtons[17].gameObject.SetActive(true);
@@ -442,8 +443,14 @@ public class GameplayWindow : BaseWindow
         LevelManager.Instance.OnTurnBegin += TurnBegin;
 
         LevelManager.Instance.OnObjectSelect += SelectEvent;
-        
-        technologyObject.SetActive(false);
+        _generateSeq = DOTween.Sequence();
+        var inVal = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.4f).OnComplete(() =>
+        {
+            technologyObject.SetActive(true);
+            GetComponent<TechnologyManager>().Init();
+            technologyObject.SetActive(false);
+        }));
     }
 
     private void OnDestroy()

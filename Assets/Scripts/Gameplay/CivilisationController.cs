@@ -78,7 +78,7 @@ public class CivilisationController : MonoBehaviour
         {
             civilName = "Player";
             AddMoney(5);
-            AddMoney(100);
+            AddMoney(20);
             
             LevelManager.Instance.OnTurnBegin += () =>
             {
@@ -342,7 +342,7 @@ public class CivilisationController : MonoBehaviour
                 break;
             case TechInfo.Technology.Whaling:
                 break;
-            case TechInfo.Technology.Aquatism:
+            case TechInfo.Technology.Aqua:
                 break;
             case TechInfo.Technology.Spiritualism:
                 break;

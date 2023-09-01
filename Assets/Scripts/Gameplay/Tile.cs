@@ -83,7 +83,7 @@ public class Tile : MonoBehaviour
             _groundDefense = 2;
         if (unitOnTile != null)
         {
-            if (unitOnTile.GetOwner().owner.technologies.Contains(TechInfo.Technology.Aquatism) && (tileType == TileType.Water || tileType == TileType.DeepWater))
+            if (unitOnTile.GetOwner().owner.technologies.Contains(TechInfo.Technology.Aqua) && (tileType == TileType.Water || tileType == TileType.DeepWater))
             {
                 _groundDefense = 3;
             }

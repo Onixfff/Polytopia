@@ -8,31 +8,31 @@ namespace Gameplay.SO
     {
         public enum Technology
         {
-            Mountain,
-            Hunt,
             Rider,
-            Fish,
             Gather,
+            Mountain,
+            Fish,
+            Hunt,
+            Roads,
             FreeSpirit,
             Farming,
             Strategy,
             Mining,
-            Archery,
+            Meditation,
             Sailing,
+            Whaling,
+            Archery,
+            Forestry,
+            Trade,
             Chivalry,
+            Construction,
             Diplomacy,
             Forge,
             Philosophy,
-            Mathematics,
-            Meditation,
-            Roads,
-            Trade,
-            Construction,
             Navigation,
-            Whaling,
-            Aquatism,
+            Aqua,
             Spiritualism,
-            Forestry
+            Mathematics,
         }
 
         [SerializeField] private List<Technology> technologiesList;
