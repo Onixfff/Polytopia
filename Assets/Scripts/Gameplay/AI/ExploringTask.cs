@@ -44,7 +44,7 @@ public class ExploringTask : BaseTask
     private Tween ExploreCloseTile(UnitController unit)
     {
         _exploreSeq = DOTween.Sequence();
-        var tile = ChooseTileForExploring(unit);
+        var tile = FindPath(unit);
         var dur = 0f;
         if (unit.occupiedTile.isOpened || tile.isOpened)
             dur = 0.2f;
@@ -52,104 +52,32 @@ public class ExploringTask : BaseTask
         return _exploreSeq;
     }
 
-    private Tile ChooseTileForExploring(UnitController unit)
+    private Tile FindPath(UnitController unit)
     {
-        var gameBoard = LevelManager.Instance.gameBoardWindow;
-        var unitInfo = unit.GetUnitInfo();
-        var unitHasMountTech = unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain);
-        var occupiedTile = unit.occupiedTile;
-        var tileForMove = new List<Tile>();
-        if (occupiedTile.tileType == Tile.TileType.Ground)
+        var board = LevelManager.Instance.gameBoardWindow;
+        var allTiles = board.GetAllTile();
+        var path = new List<Vector2Int>();
+        
+        foreach (var tile in board.GetCloseTile(unit.occupiedTile, 3))
         {
-            foreach (var close in gameBoard.GetCloseTile(occupiedTile, 1))
-            {
-                if(close.isHasMountain && !unitHasMountTech)
-                    continue;
-                
-                if(close.tileType == Tile.TileType.Water || close.tileType == Tile.TileType.DeepWater)
-                    continue;
-                
-                tileForMove.Add(close);
-                if(close.isHasMountain || close.isHasTree)
-                    continue;
-                if(unitInfo.moveRad == 1)
-                    continue;
+            if(tile.isOpened)
+                continue;
             
-                var closeTile = gameBoard.GetCloseTile(close, 1);
-                foreach (var tile in closeTile)
-                {
-                    if (tile.isHasMountain && !unitHasMountTech)
-                        continue;
+            var findPath = AStarAlgorithm.FindPath(unit.occupiedTile.pos, tile.pos, unit);
 
-                    tileForMove.Add(tile);
-                    if(tile.isHasMountain || tile.isHasTree || tile.tileType == Tile.TileType.Water || tile.tileType == Tile.TileType.DeepWater)
-                        continue;
-                    if(unitInfo.moveRad < 3)
-                        continue;
-                    var clTile = gameBoard.GetCloseTile(tile, 1);
-                    foreach (var cTile in clTile)
-                    {
-                        if(cTile.isHasMountain && !unitHasMountTech)
-                            continue;
-            
-                        tileForMove.Add(cTile);
-                    }
-                }
-            }
-        }
-        else
-        {
-            foreach (var close in gameBoard.GetCloseTile(occupiedTile, 1))
+            if (path.Count == 0)
+                path = findPath;
+
+            if (path.Count < findPath.Count)
             {
-                if(close.isHasMountain && !unitHasMountTech)
-                    continue;
-            
-                tileForMove.Add(close);
-                if(close.tileType == Tile.TileType.Ground)
-                    continue;
-                if(unitInfo.moveRad == 1)
-                    continue;
-            
-                var closeTile = gameBoard.GetCloseTile(close, 1);
-                foreach (var tile in closeTile)
-                {
-                    if(tile.isHasMountain && !unitHasMountTech)
-                        continue;
-            
-                    tileForMove.Add(tile);
-                    if(close.tileType == Tile.TileType.Ground)
-                        continue;
-                    if(unitInfo.moveRad < 3)
-                        continue;
-                    
-                    var clTile = gameBoard.GetCloseTile(tile, 1);
-                    foreach (var cTile in clTile)
-                    {
-                        if(cTile.isHasMountain && !unitHasMountTech)
-                            continue;
-            
-                        tileForMove.Add(cTile);
-                    }
-                }
+                path = findPath;
             }
         }
         
-        tileForMove.RemoveAll(tile => !tile.IsTileFree());
-        
-        if (unit.aiFromTile == null || unit.occupiedTile == unit.aiFromTile)
-        {
-            if (tileForMove.Count == 0)
-                return unit.occupiedTile;
-            return gameBoard.GetTile(tileForMove[Random.Range(0, tileForMove.Count)].pos);
-        }
-        var forwardDir = (unit.occupiedTile.pos - unit.aiFromTile.pos) + unit.occupiedTile.pos;
-        var nextTile = gameBoard.GetTile(forwardDir);
-        if(tileForMove.Contains(nextTile))
-            return nextTile;
-
-        if (tileForMove.Count == 0)
+        if (allTiles.Count == 0 || !allTiles[path[0]].IsTileFree())
             return unit.occupiedTile;
-        return gameBoard.GetTile(tileForMove[Random.Range(0, tileForMove.Count)].pos);
+        
+        return allTiles[path[0]];
     }
 
     private bool CheckInterestingPlace()

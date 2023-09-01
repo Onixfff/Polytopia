@@ -18,7 +18,7 @@ public class AttackTask : BaseTask
         var lastPr = taskPriority;
         if (IsEnemyNearby(units))
         {
-            taskPriority = 5;
+            taskPriority = 4;
             if (taskPriority != lastPr)
             {
                 

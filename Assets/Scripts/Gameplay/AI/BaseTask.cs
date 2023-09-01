@@ -11,7 +11,6 @@ public abstract class BaseTask : MonoBehaviour
         Exploring,
         Capture,
         Attack,
-        SendTroops,
         Patrol,
         MoveToPoint
     }
@@ -22,12 +21,12 @@ public abstract class BaseTask : MonoBehaviour
     public int taskPriority = 2;
     
     protected List<UnitController> UnitsAssignedToTheTask;
-    protected TaskManager taskManager;
+    protected TaskManager TaskManager;
 
     public void AddTaskManager(TaskManager manager)
     {
-        if(taskManager == null)
-            taskManager = manager;
+        if(TaskManager == null)
+            TaskManager = manager;
     }
     
     public int GetCountUnit()
@@ -91,12 +90,12 @@ public abstract class BaseTask : MonoBehaviour
 
     protected void TryAddPointOfInteresting(Vector2Int pos)
     {
-        taskManager.TryAddPointOfInteresting(pos);
+        TaskManager.TryAddPointOfInteresting(pos);
     }
     
     protected void TryRemovePointOfInteresting(Vector2Int pos)
     {
-        taskManager.TryRemovePointOfInteresting(pos);
+        TaskManager.TryRemovePointOfInteresting(pos);
     }
     
     public abstract int CalculatePriority(List<UnitController> units);

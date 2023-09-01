@@ -230,7 +230,7 @@ public class CivilisationController : MonoBehaviour
                 }
                 index += 1;
                 
-                Debug.Log(civilName + " relation to " + controller.civilName + " how - " + relationType);
+                //Debug.Log(civilName + " relation to " + controller.civilName + " how - " + relationType);
                 ChangeRelation(controller, relationType);
             }
         }

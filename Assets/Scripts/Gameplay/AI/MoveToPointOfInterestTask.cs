@@ -8,7 +8,7 @@ public class MoveToPointOfInterestTask : BaseTask
 
     public override int CalculatePriority(List<UnitController> units)
     {
-        if (taskManager.pointsOfInteresting.Count == 0)
+        if (TaskManager.pointsOfInteresting.Count == 0)
         {
             taskPriority = 1;
         }
@@ -52,11 +52,15 @@ public class MoveToPointOfInterestTask : BaseTask
     {
         var board = LevelManager.Instance.gameBoardWindow;
         var allTiles = board.GetAllTile();
-        var points = taskManager.pointsOfInteresting;
+        var points = TaskManager.pointsOfInteresting;
         var path = new List<Vector2Int>();
+        
         foreach (var point in points)
         {
             var findPath = AStarAlgorithm.FindPath(unit.occupiedTile.pos, point, unit);
+            if(findPath.Count > 3)
+                continue;
+            
             if (path.Count == 0)
                 path = findPath;
 

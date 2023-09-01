@@ -18,7 +18,7 @@ public class RelationOfCivilisation : MonoBehaviour
                 _civilisationRelation[civ] = relationType;
             return;
         }
-        Debug.LogWarning("Name - " + civilisationController.civilName + " Find new Civ - " + civ.civilName);
+        //Debug.LogWarning("Name - " + civilisationController.civilName + " Find new Civ - " + civ.civilName);
         _civilisationOpinions.Add(civ, new List<DiplomacyManager.OpinionType>());
         _civilisationRelation.Add(civ, relationType);
     }
