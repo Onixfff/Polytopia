@@ -528,8 +528,14 @@ public class Tile : MonoBehaviour
     
     public void BuyTileTech(int index)
     {
-        if(gameObject != LevelManager.Instance.GetSelectedObject())
+        if(_owner == null)
             return;
+        if(_owner.owner == null)
+            return;
+        
+        if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player && gameObject != LevelManager.Instance.GetSelectedObject())
+            return;
+        
         BuildingUpgrade building = null;
         var buildingUpgrades = new List<BuildingUpgrade>();
         switch (index)
