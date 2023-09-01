@@ -214,42 +214,47 @@ public class Tile : MonoBehaviour
         
         if (_owner != null && currO == gameObject && _homeOnTile == null && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
-            _techTypes = new List<GameplayWindow.OpenedTechType>();
-            if(fruitTileImage != null && fruitTileImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Fruit);
-            
-            if(treeTileImage != null && treeTileImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Tree);
-            
-            if(cropTileImage != null && cropTileImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Crop);
-            
-            if(animalTileImage != null && animalTileImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Animal);
-            
-            if(fishTileImage != null && fishTileImage.enabled && !isHasWhale)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Fish);
-            
-            if(fishTileImage != null && fishTileImage.enabled && isHasWhale)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Whale);
-
-            if(tileType == TileType.Water)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Water);
-            
-            if(tileType == TileType.DeepWater)
-                _techTypes.Add(GameplayWindow.OpenedTechType.DeepWater);
-            
-            if(tileType == TileType.Ground)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Ground);
-            
-            if(freeTileImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Construct);
-            
-            if(monumentImage.enabled)
-                _techTypes.Add(GameplayWindow.OpenedTechType.Monument);
-            
-            LevelManager.Instance.gameplayWindow.ShowTileButton(_techTypes, this);
+            LevelManager.Instance.gameplayWindow.ShowTileButton(GetTileTypes(), this);
         }
+    }
+
+    public List<GameplayWindow.OpenedTechType> GetTileTypes()
+    {
+        _techTypes = new List<GameplayWindow.OpenedTechType>();
+        if(fruitTileImage != null && fruitTileImage.enabled)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Fruit);
+            
+        if(treeTileImage != null && treeTileImage.enabled)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Tree);
+            
+        if(cropTileImage != null && cropTileImage.enabled)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Crop);
+            
+        if(animalTileImage != null && animalTileImage.enabled)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Animal);
+            
+        if(fishTileImage != null && fishTileImage.enabled && !isHasWhale)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Fish);
+            
+        if(fishTileImage != null && fishTileImage.enabled && isHasWhale)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Whale);
+
+        if(tileType == TileType.Water)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Water);
+            
+        if(tileType == TileType.DeepWater)
+            _techTypes.Add(GameplayWindow.OpenedTechType.DeepWater);
+            
+        if(tileType == TileType.Ground)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Ground);
+            
+        if(freeTileImage.enabled)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Construct);
+            
+        if(monumentImage.enabled)
+            _techTypes.Add(GameplayWindow.OpenedTechType.Monument);
+
+        return _techTypes;
     }
 
     public BuildingUpgrade GetBuildingUpgrade()
@@ -521,26 +526,7 @@ public class Tile : MonoBehaviour
         }));
     }
     
-    private void Start()
-    {
-        getInfoButton.onClick.AddListener(SelectTile);
-        LevelManager.Instance.OnObjectSelect += SelectEvent;
-        LevelManager.Instance.gameplayWindow.OnTileTech += BuyTileTech;
-    }
-
-    private void OnDestroy()
-    {
-        LevelManager.Instance.OnObjectSelect -= SelectEvent;
-        LevelManager.Instance.gameplayWindow.OnTileTech -= BuyTileTech;
-        _timeTargetTween.Kill();
-    }
-    
-    private void GetInfoTile()
-    {
-        OnClickOnTile?.Invoke(this);
-    }
-    
-    private void BuyTileTech(int index)
+    public void BuyTileTech(int index)
     {
         if(gameObject != LevelManager.Instance.GetSelectedObject())
             return;
@@ -842,6 +828,25 @@ public class Tile : MonoBehaviour
             
             return buildingUpgrades;
         }
+    }
+    
+    private void Start()
+    {
+        getInfoButton.onClick.AddListener(SelectTile);
+        LevelManager.Instance.OnObjectSelect += SelectEvent;
+        LevelManager.Instance.gameplayWindow.OnTileTech += BuyTileTech;
+    }
+
+    private void OnDestroy()
+    {
+        LevelManager.Instance.OnObjectSelect -= SelectEvent;
+        LevelManager.Instance.gameplayWindow.OnTileTech -= BuyTileTech;
+        _timeTargetTween.Kill();
+    }
+    
+    private void GetInfoTile()
+    {
+        OnClickOnTile?.Invoke(this);
     }
 
     public void CreateWaterArea(int waterRad)

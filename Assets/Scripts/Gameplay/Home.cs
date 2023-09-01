@@ -33,6 +33,7 @@ public class Home : MonoBehaviour
     #region private
     
     private List<UnitController> _unitList;
+    private List<Tile> _controlledTiles;
     private HomeInfo _homeInfo;
     private HomeCreator _homeCreator;
     //private int _boardRad;
@@ -54,6 +55,7 @@ public class Home : MonoBehaviour
             SetHomePos();
             
             _unitList ??= new List<UnitController>();
+            _controlledTiles ??= new List<Tile>();
             if (controller != null)
             {
                 SetOwner(controller);
@@ -137,6 +139,7 @@ public class Home : MonoBehaviour
                 if(ti.GetOwner() != null && ti.GetOwner() != this)
                     continue;
                 ti.SetOwner(this);
+                _controlledTiles.Add(ti);
                 ti.ChangeTileVisual(this);
             }
             _boardRad = 2;
@@ -153,12 +156,18 @@ public class Home : MonoBehaviour
             GetComponent<Image>().enabled = true;
             _isCapital = false;
             homeTile.BuildHome(this);
+            _controlledTiles.Add(homeTile);
             blockScrollView.SetActive(false);
         }
         
         #endregion
     }
     
+    public List<Tile> GetControlledTiles()
+    {
+        return _controlledTiles;
+    }
+
     public void SelectHome()
     {
         if (owner == null) return;
@@ -262,6 +271,7 @@ public class Home : MonoBehaviour
             if(ti.GetOwner() != null && ti.GetOwner() != this)
                 continue;
             ti.SetOwner(this);
+            _controlledTiles.Add(ti);
             ti.ChangeTileVisual(this);
         }
         _boardRad = 3;
@@ -322,6 +332,7 @@ public class Home : MonoBehaviour
     {
         LeveUp(0);
     }
+    
     private void LeveUp(int leftovers)
     {
         var block = Instantiate(centerBlockPrefab, blockParent);
