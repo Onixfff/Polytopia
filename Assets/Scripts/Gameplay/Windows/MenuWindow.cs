@@ -3,11 +3,15 @@ using UnityEngine.UI;
 
 public class MenuWindow : BaseWindow
 {
-    [SerializeField] private Button playButton;
+    [SerializeField] private Button classicButton;
+    [SerializeField] private Button occupyButton;
+    [SerializeField] private Button sandBoxButton;
 
     private void Start()
     {
-        playButton.onClick.AddListener(LoadPlayScene);
+        classicButton.onClick.AddListener(LoadPlayScene);
+        occupyButton.onClick.AddListener(LoadPlayScene);
+        sandBoxButton.onClick.AddListener(LoadPlayScene);
     }
 
     private void LoadPlayScene()

@@ -174,7 +174,7 @@ public class UnitController : MonoBehaviour
         LevelManager.Instance.SelectObject(gameObject);
         if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI) 
             return;
-
+        AnimSelect();
         var gameBoard = LevelManager.Instance.gameBoardWindow;
         var allTile = gameBoard.GetAllTile();
         var closeTilesForAttack = gameBoard.GetCloseTile(occupiedTile, unitInfo.rad);
@@ -642,12 +642,13 @@ public class UnitController : MonoBehaviour
         var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
         if (!isThisTheNearestTile)
             return _counterstrikeSeq;
+        var unitToAttackPos = unitToAttack.transform.position;
         
         if (unitToAttack.CheckForKill(GetDefDmg()))
         {
             if (attackType == AttackType.Melee)
             {
-                _counterstrikeSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                _counterstrikeSeq.Append(transform.DOMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDefDmg());
                 })));
@@ -657,7 +658,7 @@ public class UnitController : MonoBehaviour
             {
                 var pr = Instantiate(projectilePrefab, transform.parent);
                 pr.transform.position = transform.position;
-                _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                _attSeq.Append(pr.transform.DOMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDefDmg());
                     Destroy(pr.gameObject);
@@ -668,7 +669,7 @@ public class UnitController : MonoBehaviour
         {
             if (attackType == AttackType.Melee)
             {
-                _counterstrikeSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                _counterstrikeSeq.Append(transform.DOMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDefDmg());
                 })));
@@ -678,7 +679,7 @@ public class UnitController : MonoBehaviour
             {
                 var pr = Instantiate(projectilePrefab, transform.parent);
                 pr.transform.position = transform.position;
-                _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                _attSeq.Append(pr.transform.DOMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDefDmg());
                     Destroy(pr.gameObject);
@@ -777,7 +778,7 @@ public class UnitController : MonoBehaviour
         Destroy(gameObject);
     }
     
-    #region SweatAnim
+    #region UnitAnim
     private bool _isSweaty;
     public float sweatyDur;
     public Vector3 v0;
@@ -863,7 +864,17 @@ public class UnitController : MonoBehaviour
     {
         _isSweaty = false;
     }
+    
+    [SerializeField] private AnimationCurve unitSelectAnimationCurve;
+    [SerializeField] private float unitSelectAnimHeight = 0.5f;
+    [SerializeField] private float unitSelectAnimTime = 0.4f;
 
+    
+    private void AnimSelect()
+    {
+        transform.DOMoveY(transform.position.y + unitSelectAnimHeight, unitSelectAnimTime).SetEase(unitSelectAnimationCurve);
+    }
+    
     #endregion
     
     public string aiName = "unit1";
