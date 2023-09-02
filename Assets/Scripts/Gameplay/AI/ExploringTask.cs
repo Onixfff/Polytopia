@@ -71,9 +71,6 @@ public class ExploringTask : BaseTask
             neededRad++;
         }
         
-        
-        
-        
         foreach (var tile in board.GetCloseTile(unit.occupiedTile, neededRad))
         {
             if(TaskManager.civilisationController.GetTileInExploreList().Contains(tile))
@@ -103,18 +100,19 @@ public class ExploringTask : BaseTask
     {
         foreach (var unit in UnitsAssignedToTheTask)
         {
-            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().rad);
+            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, 1);
             foreach (var tile in tiles)
             {
                 if (tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != unit.GetOwner().owner)
-                {
+                { 
                     TryAddPointOfInteresting(tile.pos);
                     return true;
                 }
 
                 if (tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner)
                 {
-                    TryAddPointOfInteresting(tile.pos);
+                    if(tile.GetHomeOnTile().owner != null)
+                        TryAddPointOfInteresting(tile.pos);
                     return true;
                 }
             }
