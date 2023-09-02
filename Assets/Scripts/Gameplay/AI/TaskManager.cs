@@ -132,6 +132,7 @@ public class TaskManager : MonoBehaviour
         switch (taskType)
         {
             case BaseTask.TaskType.Patrol:
+                break;
                 var homes = new List<Home>();
                 foreach (var unit in units)
                 {

@@ -13,6 +13,7 @@ public class AI : MonoBehaviour
     private Sequence _unitsActionSeq;
     private List<UnitController> _allUnits;
     
+    
     private void Start()
     {
         _controller = GetComponentInParent<CivilisationController>();
@@ -20,6 +21,13 @@ public class AI : MonoBehaviour
 
     public void StartTurn()
     {
+        CheckAssignmentForMoney(_controller.Money, 0);
+    }
+
+    private void CheckAssignmentForMoney(int money, int count)
+    {
+        if(count > 10)
+            return;
         foreach (var tile in _controller.GetTileInExploreList())
         {
             if (tile.unitOnTile != null)
@@ -28,11 +36,29 @@ public class AI : MonoBehaviour
                 tile.unitOnTile.GetOwner().owner.relationOfCivilisation.AddNewCivilisation(_controller, DiplomacyManager.RelationType.Neutral);
             }
         }
-        
-        Building();
-        BuyingTech();
+
         UnitManagement();
-        BuyingUnits();
+        
+        if (money >= 20)
+        {
+            BuyingTech();
+            Building();
+            BuyingUnits(0);
+        }
+        else
+        if (money >= 10)
+        {
+            Building();
+            BuyingUnits(0);
+        }
+        else
+        if (money >= 5)
+        {
+            BuyingTech();
+            BuyingUnits(0);
+        }
+        if(money > 8)
+            CheckAssignmentForMoney(money, count + 1);
     }
 
     private void EndTurn()
@@ -57,8 +83,12 @@ public class AI : MonoBehaviour
                 if(intTypes.Count == 0)
                     continue;
                 intTypes.Sort();
-                Debug.Log(intTypes[0]);
-                tile.BuyTileTech(intTypes[0]);
+                var rand = 0;
+                if (intTypes[rand] > 2)
+                    rand = Random.Range(0, intTypes.Count);
+                Debug.Log(intTypes[rand]);
+                tile.BuyTileTech(intTypes[rand]);
+                return;
             }
 
             List<int> Check(List<GameplayWindow.OpenedTechType> types, Tile tileC)
@@ -168,7 +198,13 @@ public class AI : MonoBehaviour
 
                         return ints;
                     }
-
+                    
+                    if (controller.technologies.Contains(TechInfo.Technology.Roads))
+                    {
+                        if(!types.Contains(GameplayWindow.OpenedTechType.Road))
+                            ints.Add(3);
+                    }
+                    
                     if (types.Contains(GameplayWindow.OpenedTechType.Animal))
                     {
 
@@ -216,8 +252,7 @@ public class AI : MonoBehaviour
                             ints.Add(2);
 
                         #endregion
-
-
+                        
                         if (controller.technologies.Contains(TechInfo.Technology.FreeSpirit))
                         {
 
@@ -299,14 +334,6 @@ public class AI : MonoBehaviour
                             ints.Add(5);
                         }
                     }
-
-
-                    if (controller.technologies.Contains(TechInfo.Technology.Roads))
-                    {
-                        if(!types.Contains(GameplayWindow.OpenedTechType.Road))
-                            ints.Add(3);
-                    }
-
                 }
 
                 return ints;
@@ -350,14 +377,13 @@ public class AI : MonoBehaviour
         taskManager.OnTaskAreDistributed += EndTurn;
     }
     
-    private void BuyingUnits()
+    private void BuyingUnits(int index)
     {
         var homes = _controller.homes;
         homes.RemoveAll(home => home.owner != _controller);
         foreach (var home in homes)
-        {
-            if(LevelManager.Instance.currentTurn % 2 == 0)
-                home.BuyUnit(0);
+        { 
+            home.BuyUnit(index);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.SO;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AITechManager : Singleton<AITechManager>
 {
@@ -118,24 +119,25 @@ public class AITechManager : Singleton<AITechManager>
             }
         }
 
-        var maxPrice = 0;
-        TechInfo.Technology? techForBuy = null;
+        var minPrice = 100;
+        var techs = new List<TechInfo.Technology>();
         foreach (var technology in availableTech)
         {
             var priseTech = CalculateTechPrice(technology, controller);
-            if (priseTech > maxPrice &&
+            if (priseTech <= minPrice &&
                 priseTech <= controller.Money)
             {
-                maxPrice = priseTech;
-                techForBuy = technology;
+                minPrice = priseTech;
+                techs.Add(technology);
             }
         }
 
-        if (techForBuy == null)
+        if (techs.Count == 0)
             return;
-
-        controller.AddMoney(-CalculateTechPrice(techForBuy, controller));
-        controller.technologies.Add((TechInfo.Technology)techForBuy);
+        
+        var rand = Random.Range(0, techs.Count);
+        controller.AddMoney(-CalculateTechPrice(techs[rand], controller));
+        controller.technologies.Add(techs[rand]);
     }
 
     public int CalculateTechPrice(TechInfo.Technology? techType, CivilisationController controller)

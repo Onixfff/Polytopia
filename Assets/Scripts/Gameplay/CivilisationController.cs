@@ -96,7 +96,8 @@ public class CivilisationController : MonoBehaviour
         }
         else
         {
-            civilName = info.civilisationName + "" + Random.Range(10000, 99999).ToString();
+            AddMoney(10);
+            civilName = info.civilisationName + "" + Random.Range(10000, 99999);
             switch (GameManager.Instance.difficult)
             {
                 case GameManager.Difficult.Easy:
