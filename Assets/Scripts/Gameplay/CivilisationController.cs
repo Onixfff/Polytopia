@@ -96,7 +96,6 @@ public class CivilisationController : MonoBehaviour
         }
         else
         {
-            AddMoney(10);
             civilName = info.civilisationName + "" + Random.Range(10000, 99999);
             switch (GameManager.Instance.difficult)
             {
@@ -124,13 +123,13 @@ public class CivilisationController : MonoBehaviour
                 switch (GameManager.Instance.difficult)
                 {
                     case GameManager.Difficult.Easy:
-                        incomePoint -= 2;
+                        incomePoint -= 0;
                         break;
                     case GameManager.Difficult.Normal:
-                        incomePoint += 1;
+                        incomePoint += 3;
                         break;
                     case GameManager.Difficult.Hard:
-                        incomePoint += 3;
+                        incomePoint += 5;
                         break;
                 }
                 AddPoint(incomePoint);

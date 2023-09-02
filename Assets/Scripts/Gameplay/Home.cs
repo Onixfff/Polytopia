@@ -305,6 +305,7 @@ public class Home : MonoBehaviour
         unit.Init(owner.independentHome, homeTile, true);
         owner.independentHome.AddUnit(unit);
     }
+    
     public UnitController CreateIndependentUnit(Tile tile, int index)
     {
         if (!tile.IsTileFree())
@@ -370,6 +371,40 @@ public class Home : MonoBehaviour
             var alert = LevelManager.Instance.gameplayWindow.alertWindow;
             alert.HomeLevelUp(this, _homeLevel, leftovers);
         }
+        else
+        {
+            var rand = Random.Range(0, 3);
+            if (_homeLevel == 1)
+            {
+                BuildForge();
+            }
+
+            if (_homeLevel == 2)
+            {
+                if (rand == 0)
+                    owner.AddMoney(5);
+                else
+                    CreateHomeWall();
+            }
+
+            if (_homeLevel == 3)
+            {
+                if (rand == 0)
+                    AddFood(3);
+                else
+                    IncreaseBoarder();
+            }
+
+            if (_homeLevel >= 4)
+            {
+                if (rand == 0)
+                    BuildPark();
+                else
+                    CreateSuperUnit();
+            }
+            AddFood(leftovers);
+        }
+
         ReturnUnitBlocks();
         
         void RemoveAllFood()
