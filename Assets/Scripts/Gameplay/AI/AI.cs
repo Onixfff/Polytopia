@@ -21,6 +21,7 @@ public class AI : MonoBehaviour
 
     public void StartTurn()
     {
+        UnitManagement();
         CheckAssignmentForMoney(_controller.Money, 0);
     }
 
@@ -37,7 +38,6 @@ public class AI : MonoBehaviour
             }
         }
 
-        UnitManagement();
         
         if (money >= 20)
         {
