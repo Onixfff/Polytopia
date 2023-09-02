@@ -25,7 +25,7 @@ public class TaskManager : MonoBehaviour
 
         if (!pointsOfInteresting.Contains(pos))
         {
-            Debug.Log("added new point - " + pos);
+            //Debug.Log("added new point - " + pos);
             pointsOfInteresting.Add(pos);
         }
     }
@@ -34,7 +34,7 @@ public class TaskManager : MonoBehaviour
     {
         if (pointsOfInteresting.Contains(pos))
         {
-            Debug.Log("removed point - " + pos);
+            //Debug.Log("removed point - " + pos);
             pointsOfInteresting.Remove(pos);
         }
     }
@@ -171,7 +171,7 @@ public class TaskManager : MonoBehaviour
                         rightUnits.Add(unit);
                         continue;
                     }
-                    var closeTile = board.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().moveRad);
+                    var closeTile = board.GetCloseTile(unit.occupiedTile, 1);
                     if (closeTile.Any(tile => tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner))
                     {
                         rightUnits.Add(unit);

@@ -611,9 +611,11 @@ public class Home : MonoBehaviour
         AddUnit(unitController);
     }
     
-    public void BuyUnit(int unitIndex)
+    public void BuyUnit(int unitIndex, CivilisationInfo.ControlType controlType)
     {
-        if(!homeTile.IsTileFree() || (!homeTile.IsSelected() && owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player) || _unitList.Count >= _unitCapacity)
+        if(!homeTile.IsTileFree() || _unitList.Count >= _unitCapacity)
+            return;
+        if(!homeTile.IsSelected() && controlType == CivilisationInfo.ControlType.Player)
             return;
 
         if (!owner.IsCanBuy(owner.civilisationInfo.Units[unitIndex].price)) 

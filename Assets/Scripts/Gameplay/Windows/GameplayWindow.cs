@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 public class GameplayWindow : BaseWindow
 {
-    public Action<int> OnUnitSpawn;
+    public Action<int, CivilisationInfo.ControlType> OnUnitSpawn;
     public Action<int> OnTileTech;
 
     public enum OpenedTechType
@@ -565,7 +565,7 @@ public class GameplayWindow : BaseWindow
 
     private void BuyUnit(int index)
     {
-        OnUnitSpawn?.Invoke(index);
+        OnUnitSpawn?.Invoke(index, CivilisationInfo.ControlType.Player);
         HideDownBar();
     }
     

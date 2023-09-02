@@ -55,13 +55,13 @@ public abstract class BaseTask : MonoBehaviour
     
     public virtual void StartTask()
     {
-        //Debug.Log("Task: " + name);
+        Debug.Log("Task: " + name);
         if (UnitsAssignedToTheTask != null)
         {
             UnitsAssignedToTheTask.RemoveAll(unit => unit == null);
             if (UnitsAssignedToTheTask.Count != 0)
             {
-                //Debug.Log("Task: " + name + " starter." + " Count units - " + UnitsAssignedToTheTask.Count);
+                Debug.Log("Task: " + name + " starter." + " Count units - " + UnitsAssignedToTheTask.Count);
                 TaskRealisation();
                 return;
             }
@@ -73,7 +73,7 @@ public abstract class BaseTask : MonoBehaviour
     
     protected virtual void EndTurn()
     { 
-        //Debug.Log("Task: " + name + " continue.");
+        Debug.Log("Task: " + name + " continue.");
         OnTurnEnded?.Invoke();
     }
     

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Gameplay.SO;
 using UnityEngine;
@@ -57,8 +58,23 @@ public class ExploringTask : BaseTask
         var board = LevelManager.Instance.gameBoardWindow;
         var allTiles = board.GetAllTile();
         var path = new List<Vector2Int>();
+
+        var neededRad = 1;
+
+        for (var i = 0; i <= 6; i++)
+        {
+            if (board.GetCloseTile(unit.occupiedTile, neededRad).Any(tile =>
+                    !TaskManager.civilisationController.GetTileInExploreList().Contains(tile)))
+            {
+                break;
+            } 
+            neededRad++;
+        }
         
-        foreach (var tile in board.GetCloseTile(unit.occupiedTile, 3))
+        
+        
+        
+        foreach (var tile in board.GetCloseTile(unit.occupiedTile, neededRad))
         {
             if(TaskManager.civilisationController.GetTileInExploreList().Contains(tile))
                 continue;

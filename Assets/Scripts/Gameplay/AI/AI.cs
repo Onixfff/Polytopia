@@ -41,8 +41,8 @@ public class AI : MonoBehaviour
         
         if (money >= 20)
         {
-            BuyingTech();
             Building();
+            BuyingTech();
             BuyingUnits(0);
         }
         else
@@ -54,7 +54,7 @@ public class AI : MonoBehaviour
         else
         if (money >= 5)
         {
-            BuyingTech();
+            Building();
             BuyingUnits(0);
         }
         if(money > 8)
@@ -86,7 +86,7 @@ public class AI : MonoBehaviour
                 var rand = 0;
                 if (intTypes[rand] > 2)
                     rand = Random.Range(0, intTypes.Count);
-                Debug.Log(intTypes[rand]);
+                //Debug.Log(intTypes[rand]);
                 tile.BuyTileTech(intTypes[rand]);
                 return;
             }
@@ -383,7 +383,7 @@ public class AI : MonoBehaviour
         homes.RemoveAll(home => home.owner != _controller);
         foreach (var home in homes)
         { 
-            home.BuyUnit(index);
+            home.BuyUnit(index, CivilisationInfo.ControlType.AI);
         }
     }
 }
