@@ -133,7 +133,7 @@ public class TaskManager : MonoBehaviour
         {
             case BaseTask.TaskType.Patrol:
                 break;
-                var homes = new List<Home>();
+                /*var homes = new List<Home>();
                 foreach (var unit in units)
                 {
                     if(homes.Contains(unit.GetOwner()))
@@ -150,7 +150,7 @@ public class TaskManager : MonoBehaviour
                     break;
                 }
                 
-                break;
+                break;*/
             case BaseTask.TaskType.Attack:
                 foreach (var unit in units)
                 {

@@ -284,7 +284,7 @@ public class TechnologyManager : MonoBehaviour
         foreach (var button in buttons)
         {
             var techIcon = button.GetComponent<TechIcon>();
-            techIcon.UnlockTech(CalculatePrice(price));
+            techIcon.UnlockTech();
         }
         OnTechBuy?.Invoke();
     }

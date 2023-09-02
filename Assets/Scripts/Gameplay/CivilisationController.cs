@@ -66,9 +66,9 @@ public class CivilisationController : MonoBehaviour
         
         civilisationInfo = info;
         civColor = info.CivilisationColor;
-        _gameBoardWindow = LevelManager.Instance.gameBoardWindow;
-        AddNewTechnology(info.technology.startTechnologies);
-
+        _gameBoardWindow = LevelManager.Instance.gameBoardWindow; 
+        if (info.controlType == CivilisationInfo.ControlType.AI)
+            AddNewTechnology(info.technology.startTechnologies);
         AddPoint(565);
         CreateHome();
         SetupCivilisation();
@@ -349,7 +349,10 @@ public class CivilisationController : MonoBehaviour
             case TechInfo.Technology.Forestry:
                 break;
         }
-        technologies.Add(technology);
+        if (civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+            technologies.Add(technology);
+        else
+            technologies.Add(technology);
     }
 
     private void CreateHome()

@@ -9027,6 +9027,10 @@ PrefabInstance:
       propertyPath: lockObject
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8407635731152724248, guid: 4ffc891f72033c34b9ddb0909c217b81, type: 3}
+      propertyPath: isTechUnlock
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5539232686050958617, guid: 4ffc891f72033c34b9ddb0909c217b81, type: 3}
@@ -10394,6 +10398,10 @@ PrefabInstance:
       propertyPath: lockObject
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8407635731152724248, guid: 4ffc891f72033c34b9ddb0909c217b81, type: 3}
+      propertyPath: isTechUnlock
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5539232686050958617, guid: 4ffc891f72033c34b9ddb0909c217b81, type: 3}
@@ -10588,6 +10596,10 @@ PrefabInstance:
     - target: {fileID: 8407635731152724248, guid: 4ffc891f72033c34b9ddb0909c217b81, type: 3}
       propertyPath: lockObject
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407635731152724248, guid: 4ffc891f72033c34b9ddb0909c217b81, type: 3}
+      propertyPath: isTechUnlock
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -11717,6 +11729,10 @@ PrefabInstance:
     - target: {fileID: 8407635731152724248, guid: 4ffc891f72033c34b9ddb0909c217b81, type: 3}
       propertyPath: lockObject
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407635731152724248, guid: 4ffc891f72033c34b9ddb0909c217b81, type: 3}
+      propertyPath: isTechUnlock
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -13450,6 +13466,10 @@ PrefabInstance:
     - target: {fileID: 8407635731152724248, guid: 4ffc891f72033c34b9ddb0909c217b81, type: 3}
       propertyPath: lockObject
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407635731152724248, guid: 4ffc891f72033c34b9ddb0909c217b81, type: 3}
+      propertyPath: isTechUnlock
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

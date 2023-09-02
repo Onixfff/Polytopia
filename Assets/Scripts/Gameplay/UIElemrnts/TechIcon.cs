@@ -29,9 +29,9 @@ public class TechIcon : MonoBehaviour
     private void Start()
     {
         var player = LevelManager.Instance.gameBoardWindow.playerCiv;
-        if (lockObject != null)
+        if (isTechUnlock == false)
         {
-            lockObject.SetActive(true);
+            if (lockObject != null) lockObject.SetActive(true);
             techButton.enabled = false;
         }
         else
@@ -41,12 +41,10 @@ public class TechIcon : MonoBehaviour
         lineObject.SetActive(true);
         lineObject.transform.SetParent(transform.parent.parent.GetChild(0).transform);
         
-        if (player.technologies.Contains(type))
+        if (player.civilisationInfo.technology.startTechnologies == type)
         {
-            if (techButton.enabled)
-            {
-                OpenTech();
-            }
+            techButton.enabled = true;
+            OpenTech();
         }
         transform.parent.parent.parent.parent.parent.parent.GetComponent<TechnologyManager>().OnTechBuy += UpdateVisual;
     }
@@ -84,19 +82,19 @@ public class TechIcon : MonoBehaviour
         }
     }
 
-    public void UnlockTech(int price)
+    public void UnlockTech()
     {
         isTechUnlock = true;
-        lineObject.GetComponent<Image>().color = unlockColor;
-        if (lockObject != null) lockObject.SetActive(false);
         techButton.enabled = true;
+        lineObject.GetComponent<Image>().color = unlockColor;
+        Destroy(lockObject);
     }
 
     public void BuyTech()
     {
         priceText.transform.parent.gameObject.SetActive(false);
         isTechUnlock = false;
-        if (lockObject != null) lockObject.SetActive(false);
+        if(lockObject != null) Destroy(lockObject);
         lineObject.GetComponent<Image>().color = buyColor;
         buyObject.SetActive(true);
         techButton.enabled = false;
