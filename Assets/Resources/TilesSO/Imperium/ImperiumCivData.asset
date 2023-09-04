@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ImperiumCivData
   m_EditorClassIdentifier: 
   control: 1
-  civilName: Imperium
+  civilType: 1
   civilColor: {r: 0.15659486, g: 0.2557022, b: 0.6509434, a: 1}
   head: {fileID: 21300000, guid: a0741d6b867942c49884ce89465f7f7d, type: 3}
   battleShipHead: {fileID: 21300000, guid: 67e25984597e04846a7afedcfd423374, type: 3}

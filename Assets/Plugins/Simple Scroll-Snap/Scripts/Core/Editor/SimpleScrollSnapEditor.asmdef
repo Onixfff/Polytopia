@@ -1,0 +1,24 @@
+{
+    "name": "SimpleScrollSnapEditor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:029025e1205b66b4c8a934409337eed0",
+        "GUID:8ba351204c3a6df4aa826ac3f0423d50",
+        "GUID:8a8c5dc53dc04e0448389944602a225f",
+        "GUID:343deaaf83e0cee4ca978e7df0b80d21",
+        "GUID:2bafac87e7f4b9b418d9448d219b01ab",
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -14,8 +14,18 @@ public class CivilisationInfo : BaseCivilisationInfo
     [SerializeField] private ControlType control;
     public ControlType controlType => control;
     
-    [SerializeField] private string civilName;
-    public string civilisationName => civilName;
+    public enum CivilisationType
+    {
+        China,
+        Imperium,
+        Bardur,
+        Oumaji,
+        Kickoo,
+        Hoodrick
+    }
+    
+    [SerializeField] private CivilisationType civilType;
+    public CivilisationType civilisationType => civilType;
     
     [SerializeField] private Color civilColor;
     public Color CivilisationColor => civilColor;

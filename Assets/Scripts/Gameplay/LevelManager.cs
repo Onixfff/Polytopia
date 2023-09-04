@@ -61,27 +61,31 @@ public class LevelManager : SingletonPersistent<LevelManager>
     
     public void RemoveCiv(CivilisationController civ)
     {
+        if (civ.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+        {
+            ShowLoseWindow();
+            return;
+        }
         _civilisationControllers?.Remove(civ);
+        
+        if(_civilisationControllers?.Count == 1)
+            ShowWinWindow();
     }
     
-    public void CheckWin()
+    public void ShowWinWindow()
+    {
+        var a = WindowsManager.Instance.CreateWindow<VictoryWindow>("VictoryWindow");
+        a.ShowWindow();
+        a.OnTop();
+    }
+    
+    public void ShowLoseWindow()
     {
         if(_civilisationControllers.Count == 0)
             return;
-        if (_civilisationControllers.Count == 1)
-        {
-            if (_civilisationControllers.First().civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
-            {
-                var a = WindowsManager.Instance.CreateWindow<GameOverWindow>("GameOverWindow");
-                a.ShowWindow();
-                a.OnTop();
-            }
-            else
-            {
-                var a = WindowsManager.Instance.CreateWindow<VictoryWindow>("VictoryWindow");
-                a.ShowWindow();
-                a.OnTop();
-            }
-        }
+        
+        var a = WindowsManager.Instance.CreateWindow<GameOverWindow>("GameOverWindow");
+        a.ShowWindow();
+        a.OnTop();
     }
 }

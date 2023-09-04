@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using NaughtyAttributes;
@@ -26,7 +27,7 @@ public class GameBoardWindow : BaseWindow
 
     private Dictionary<Vector2Int ,Tile> _generatedTiles;
     private Sequence _generateSeq;
-
+    
     public void DeselectAllTile()
     {
         foreach (var tile in _generatedTiles.Values.ToList())
@@ -158,6 +159,7 @@ public class GameBoardWindow : BaseWindow
     {
         LevelManager.Instance.gameBoardWindow = this;
         
+        
         _generateSeq = DOTween.Sequence();
         GenerateBoard();
         var inVal = 0f;
@@ -182,6 +184,8 @@ public class GameBoardWindow : BaseWindow
     {
         if(_generatedTiles != null) RemoveBoard();
         _generatedTiles ??= new Dictionary<Vector2Int, Tile>();
+        var gameManager = GameManager.Instance;
+        mapSize = gameManager.mapSize * gameManager.mapSize;
         var width = (int)(mapSize / Mathf.Sqrt(mapSize));
         for (var i = width; i > 0; i--)
         {
@@ -299,30 +303,35 @@ public class GameBoardWindow : BaseWindow
     [Button()]
     private void CreateCivilisations()
     {
-        var randomCiv = Random.Range(0, gameInfo.playerCivilisationInfoLists.Count);
-        var listCiv = new List<int> { randomCiv };
+        var gameManager = GameManager.Instance;
+        var randomCiv = gameInfo.playerCivilisationInfoLists[Random.Range(0, gameInfo.playerCivilisationInfoLists.Count)];
+        
+        if(gameManager.playerCivInfo != null)
+            randomCiv = gameManager.playerCivInfo;
+        
+        var listCiv = new List<CivilisationInfo.CivilisationType> { randomCiv.civilisationType };
         var civilisationController = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
         playerCiv = civilisationController;
         LevelManager.Instance.gameplayWindow.SetPlayerCiv(playerCiv);
         LevelManager.Instance.AddCiv(playerCiv);
-        playerCiv.Init(gameInfo.playerCivilisationInfoLists[randomCiv]);
-        AIController.Instance.countAi = gameInfo.playersCount - 1;
+        playerCiv.Init(randomCiv);
+        AIController.Instance.countAi = gameManager.countEnemy;
         
-        for (var i = 0; i < gameInfo.playersCount - 1; i++)
+        for (var i = 0; i < gameManager.countEnemy; i++)
         {
-            var randC = Random.Range(0, gameInfo.civilisationInfoLists.Count);
+            var randC = gameInfo.civilisationInfoLists[Random.Range(0, gameInfo.civilisationInfoLists.Count)];
             while (true)
             {
-                if(listCiv.Contains(randC))
-                    randC = Random.Range(0, gameInfo.civilisationInfoLists.Count);
+                if(listCiv.Contains(randC.civilisationType))
+                    randC = gameInfo.civilisationInfoLists[Random.Range(0, gameInfo.civilisationInfoLists.Count)];
                 else
                     break;
             }
-            listCiv.Add(randC);
+            listCiv.Add(randC.civilisationType);
             
             var civilisation1 = Instantiate(civilisationPrefab, DynamicManager.Instance.transform);
             LevelManager.Instance.AddCiv(civilisation1);
-            civilisation1.Init(gameInfo.civilisationInfoLists[randC]);
+            civilisation1.Init(randC);
             
             var ai = Instantiate(AIController.Instance.aiPrefab, civilisation1.transform);
             ai.aiNumber = i;
@@ -374,7 +383,7 @@ public class GameBoardWindow : BaseWindow
             }
         }
     }
-    
+
     [Button()]
     private void RemoveBoard()
     {

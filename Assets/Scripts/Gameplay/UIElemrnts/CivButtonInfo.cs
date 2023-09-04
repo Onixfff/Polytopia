@@ -39,7 +39,7 @@ public class CivButtonInfo : MonoBehaviour
             GetComponent<Button>().enabled = true;
             colorImage.gameObject.SetActive(true);
             head.transform.parent.gameObject.SetActive(true);
-            civName.text = controller.civilisationInfo.civilisationName;
+            civName.text = controller.civilisationInfo.civilisationType.ToString();
             civPoint.text = controller.Point.ToString();
             foreach (var civInfo in civInfos)
             {

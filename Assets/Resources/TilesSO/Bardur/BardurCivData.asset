@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BardurCivData
   m_EditorClassIdentifier: 
   control: 1
-  civilName: Bardur
+  civilType: 2
   civilColor: {r: 0.6509804, g: 0.63942957, b: 0.15686272, a: 1}
   head: {fileID: 21300000, guid: ac63ee0928b0684419730424d7d23300, type: 3}
   battleShipHead: {fileID: 21300000, guid: 8458ece7e6e2620498d0e5ed2a276b8a, type: 3}

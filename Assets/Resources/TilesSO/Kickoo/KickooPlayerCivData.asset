@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: KickooPlayerCivData
   m_EditorClassIdentifier: 
   control: 0
-  civilName: Hoodrick
+  civilType: 4
   civilColor: {r: 0, g: 1, b: 0.09359622, a: 1}
   head: {fileID: 21300000, guid: e0fbb6829fb69ff438cbcd4d818ed542, type: 3}
   battleShipHead: {fileID: 21300000, guid: ab66b970a1bc00e4caf3ee325c270517, type: 3}

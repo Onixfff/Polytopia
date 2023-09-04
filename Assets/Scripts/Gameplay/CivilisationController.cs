@@ -96,7 +96,7 @@ public class CivilisationController : MonoBehaviour
         }
         else
         {
-            civilName = info.civilisationName + "" + Random.Range(10000, 99999);
+            civilName = info.civilisationType + "" + Random.Range(10000, 99999);
             switch (GameManager.Instance.difficult)
             {
                 case GameManager.Difficult.Easy:
@@ -266,18 +266,16 @@ public class CivilisationController : MonoBehaviour
     public void RemoveHome(Home home, List<UnitController> unitList = null)
     {
         homes.Remove(home);
-        if (homes.Count == 0)
-        {
-            DestroyCivilisation();
-            return;
-        }
-
         if (unitList != null && unitList.Count != 0)
         {
             foreach (var unit in unitList)
             {
-                homes[0].AddUnit(unit);
+                independentHome.AddUnit(unit);
             }
+        }
+        if (homes.Count == 0)
+        {
+            DestroyCivilisation();
         }
     }
     
@@ -397,7 +395,6 @@ public class CivilisationController : MonoBehaviour
     private void DestroyCivilisation()
     {
         LevelManager.Instance.RemoveCiv(this);
-        LevelManager.Instance.CheckWin();
         DestroyAllUnits();
         Destroy(gameObject);
     }
@@ -409,6 +406,8 @@ public class CivilisationController : MonoBehaviour
         {
             allUnits.AddRange(home.GetUnitList());
         }
+        allUnits.AddRange(independentHome.GetUnitList());
+        
         if(allUnits.Count == 0)
             return;
         for (var i = 0; i < allUnits.Count; i++)

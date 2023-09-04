@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HoodrickCivData
   m_EditorClassIdentifier: 
   control: 1
-  civilName: Hoodrick
+  civilType: 5
   civilColor: {r: 0.9339623, g: 0.67446196, b: 0.2687344, a: 1}
   head: {fileID: 21300000, guid: 94c7bdd04e5eabf44ab6bf7a440fa7e0, type: 3}
   battleShipHead: {fileID: 21300000, guid: 3163e31dc6d59ec44b2a3cd3f8920f84, type: 3}

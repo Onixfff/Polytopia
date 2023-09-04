@@ -8,7 +8,4 @@ public class GameInfo : ScriptableObject
     [SerializeField] private List<CivilisationInfo> playerCivilisationInfos;
     public List<CivilisationInfo> civilisationInfoLists => civilisationInfos;
     public List<CivilisationInfo> playerCivilisationInfoLists => playerCivilisationInfos;
-    
-    [SerializeField] private int countPlayers;
-    public int playersCount => countPlayers;
 }
