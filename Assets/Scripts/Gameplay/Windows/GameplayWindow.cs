@@ -59,6 +59,8 @@ public class GameplayWindow : BaseWindow
      
     [SerializeField] private GameObject technologyObject;
     [SerializeField] private GameObject inputBlockObject;
+    
+    [SerializeField] private Image fadeImage;
 
     private List<Button> _openedTileTechButtons;
     private Tween _tween;
@@ -457,8 +459,17 @@ public class GameplayWindow : BaseWindow
         {
             GetComponent<TechnologyManager>().Init();
             technologyObject.SetActive(true);
-            technologyObject.SetActive(false);
         }));
+        _generateSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.03f).OnComplete(() =>
+        {
+            technologyObject.SetActive(false);
+            StartCutscene();
+        }));
+        
+        void StartCutscene()
+        {
+            fadeImage.DOFade(0, 2f);
+        }
     }
 
     private void OnDestroy()

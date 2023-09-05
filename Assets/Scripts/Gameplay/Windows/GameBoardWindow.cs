@@ -4,6 +4,7 @@ using System.Linq;
 using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using Sequence = DG.Tweening.Sequence;
 
@@ -24,6 +25,7 @@ public class GameBoardWindow : BaseWindow
     [SerializeField] private GameInfo gameInfo;
     [SerializeField] private int countWaterZone = 6;
     [SerializeField] private int countRuin = 5;
+    
 
     private Dictionary<Vector2Int ,Tile> _generatedTiles;
     private Sequence _generateSeq;
@@ -171,11 +173,9 @@ public class GameBoardWindow : BaseWindow
         var inVal3 = 0f;
         _generateSeq.Append(DOTween.To(() => inVal3, x => x = inVal3, 0f, 0.1f).OnComplete((GenerateVillage)));
         var inVal4 = 0f;
-        _generateSeq.Append(DOTween.To(() => inVal4, x => x = inVal4, 0f, 0.1f).OnComplete(() =>
-        {
-            GenerateRuins();
-            StartCutscene();
-        }));
+        _generateSeq.Append(DOTween.To(() => inVal4, x => x = inVal4, 0f, 0.1f).OnComplete(GenerateRuins));
+        var inVal5 = 0f;
+        _generateSeq.Append(DOTween.To(() => inVal5, x => x = inVal5, 0f, 0.5f).OnComplete(StartCutscene));
         
         void StartCutscene()
         {
