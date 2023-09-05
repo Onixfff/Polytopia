@@ -11,10 +11,10 @@ public class GameOptionWindow : MonoBehaviour
     
     [SerializeField] private List<GameObject> objectGorHide;
     
-    [SerializeField] private List<GameObject> gameMods;
-    [SerializeField] private List<GameObject> gameEnemyCount;
-    [SerializeField] private List<GameObject> gameDifficult;
-    [SerializeField] private List<GameObject> gameMapSize;
+    [SerializeField] private List<Image> gameMods;
+    [SerializeField] private List<Image> gameEnemyCount;
+    [SerializeField] private List<Image> gameDifficult;
+    [SerializeField] private List<Image> gameMapSize;
     [SerializeField] private TextMeshProUGUI gameInfoText;
 
     public GameManager.GameMode mode;
@@ -81,9 +81,25 @@ public class GameOptionWindow : MonoBehaviour
 
     private void CheckGameMod()
     {
+        var minDistance = 100f;
+        Image image = null;
+        foreach (var gameMod in gameMods)
+        {
+            gameMod.enabled = false;
+            var distance = Vector2.Distance(gameMod.transform.position, Vector2.zero);
+            if (distance < minDistance)
+            {
+                if(image != null)
+                    image.enabled = false;
+                minDistance = distance;
+                image = gameMod;
+                gameMod.enabled = true;
+            }
+        }
+        
         for (var i = 0; i < gameMods.Count; i++)
         {
-            if (gameMods[i].transform.position.x is <= 1 and >= -1)
+            if (image == gameMods[i])
             {
                 switch (i)
                 {
@@ -104,9 +120,25 @@ public class GameOptionWindow : MonoBehaviour
     
     private void CheckDifficult()
     {
+        var minDistance = 100f;
+        Image image = null;
+        foreach (var diff in gameDifficult)
+        {
+            diff.enabled = false;
+            var distance = Vector2.Distance(diff.transform.position, Vector2.zero);
+            if (distance < minDistance)
+            {
+                if(image != null)
+                    image.enabled = false;
+                minDistance = distance;
+                image = diff;
+                diff.enabled = true;
+            }
+        }
+        
         for (var i = 0; i < gameDifficult.Count; i++)
         {
-            if (gameDifficult[i].transform.position.x is <= 1 and >= -1)
+            if (image == gameDifficult[i])
             {
                 switch (i)
                 {
@@ -127,9 +159,25 @@ public class GameOptionWindow : MonoBehaviour
     
     private void CheckCountEnemy()
     {
+        var minDistance = 100f;
+        Image image = null;
+        foreach (var enemyCount in gameEnemyCount)
+        {
+            enemyCount.enabled = false;
+            var distance = Vector2.Distance(enemyCount.transform.position, Vector2.zero);
+            if (distance < minDistance)
+            {
+                if(image != null)
+                    image.enabled = false;
+                minDistance = distance;
+                image = enemyCount;
+                enemyCount.enabled = true;
+            }
+        }
+        
         for (var i = 0; i < gameEnemyCount.Count; i++)
         {
-            if (gameEnemyCount[i].transform.position.x is <= 0.5f and >= -0.5f)
+            if (image == gameEnemyCount[i])
             {
                 _countEnemy = i + 1;
                 break;
@@ -141,7 +189,23 @@ public class GameOptionWindow : MonoBehaviour
     {
         for (var i = 0; i < gameMapSize.Count; i++)
         {
-            if (gameMapSize[i].transform.position.x is <= 1 and >= -1)
+            var minDistance = 100f;
+            Image image = null;
+            foreach (var map in gameMapSize)
+            {
+                map.enabled = false;
+                var distance = Vector2.Distance(map.transform.position, Vector2.zero);
+                if (distance < minDistance)
+                {
+                    if(image != null)
+                        image.enabled = false;
+                    minDistance = distance;
+                    image = map;
+                    map.enabled = true;
+                }
+            }
+            
+            if (gameMapSize[i] == image)
             {
                 switch (i)
                 {
