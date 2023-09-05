@@ -1,22 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Gameplay.SO;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AI : MonoBehaviour
 {
     public int aiNumber;
     public TaskManager taskManager;
-
+    
+    
     private CivilisationController _controller;
     private Sequence _unitsSeq;
     private Sequence _unitsActionSeq;
     private List<UnitController> _allUnits;
+    private List<int> _openedUnits;
     
     
     private void Start()
     {
         _controller = GetComponentInParent<CivilisationController>();
+        _openedUnits ??= new List<int> { 0 };
+        UpdateOpenUnitTech();
     }
 
     public void StartTurn()
@@ -42,20 +49,21 @@ public class AI : MonoBehaviour
         if (money >= 20)
         {
             Building();
-            BuyingTech();
-            BuyingUnits(0);
+            if(count == 0)
+                BuyingTech();
+            BuyingUnits();
         }
         else
         if (money >= 10)
         {
             Building();
-            BuyingUnits(0);
+            BuyingUnits();
         }
         else
         if (money >= 5)
         {
             Building();
-            BuyingUnits(0);
+            BuyingUnits();
         }
         if(money > 8)
             CheckAssignmentForMoney(money, count + 1);
@@ -83,11 +91,21 @@ public class AI : MonoBehaviour
                 if(intTypes.Count == 0)
                     continue;
                 intTypes.Sort();
+                intTypes.Reverse();
                 var rand = 0;
-                if (intTypes[rand] > 2)
+                if (intTypes[rand] >= 2)
                     rand = Random.Range(0, intTypes.Count);
-                //Debug.Log(intTypes[rand]);
-                tile.BuyTileTech(intTypes[rand], CivilisationInfo.ControlType.AI);
+                var money = _controller.Money;
+                for (var i = 0; i <= 100; i++)
+                {
+                    tile.BuyTileTech(intTypes[rand], CivilisationInfo.ControlType.AI);
+                    if (money == _controller.Money) 
+                        rand = Random.Range(0, intTypes.Count);
+                    else
+                        break;
+                }
+                
+                Debug.Log(intTypes[rand]);
                 return;
             }
 
@@ -219,7 +237,7 @@ public class AI : MonoBehaviour
 
                     if (types.TrueForAll(ty => ty == GameplayWindow.OpenedTechType.Ground))
                     {
-                        #region Monuments
+                        /*#region Monuments
 
 
                         if (tileC.GetOwner().owner.GetMonumentBuilder()
@@ -251,7 +269,7 @@ public class AI : MonoBehaviour
 
                             ints.Add(2);
 
-                        #endregion
+                        #endregion*/
                         
                         if (controller.technologies.Contains(TechInfo.Technology.FreeSpirit))
                         {
@@ -344,6 +362,52 @@ public class AI : MonoBehaviour
     private void BuyingTech()
     {
         AITechManager.Instance.TryBuyNeededTechnology(_controller);
+        UpdateOpenUnitTech();
+    }
+
+    private void UpdateOpenUnitTech()
+    {
+        var technologies = _controller.technologies;
+        foreach (var technology in technologies)
+        {
+            switch (technology)
+            {
+                case TechInfo.Technology.Rider:
+                    if (!_openedUnits.Contains(3))
+                        _openedUnits.Add(3);
+                    break;
+                case TechInfo.Technology.Strategy:
+                    if (!_openedUnits.Contains(2))
+                        _openedUnits.Add(2);
+                    break;
+                case TechInfo.Technology.Archery:
+                    if (!_openedUnits.Contains(1))
+                        _openedUnits.Add(1);
+                    break;
+                case TechInfo.Technology.Chivalry:
+                    if (!_openedUnits.Contains(8))
+                        _openedUnits.Add(8);
+                    break;
+                case TechInfo.Technology.Diplomacy:
+                    if (!_openedUnits.Contains(4))
+                        _openedUnits.Add(4);
+                    break;
+                case TechInfo.Technology.Forge:
+                    if (!_openedUnits.Contains(6))
+                        _openedUnits.Add(6);
+                    break;
+                case TechInfo.Technology.Philosophy:
+                    if (!_openedUnits.Contains(5))
+                        _openedUnits.Add(5);
+                    break;
+                case TechInfo.Technology.Mathematics:
+                    if (!_openedUnits.Contains(7))
+                        _openedUnits.Add(7);
+                    break;
+            }
+        }
+
+        
     }
     
     private void UnitManagement()
@@ -377,13 +441,19 @@ public class AI : MonoBehaviour
         taskManager.OnTaskAreDistributed += EndTurn;
     }
     
-    private void BuyingUnits(int index)
+    private void BuyingUnits()
     {
+        var randUnitIndex = Random.Range(0, _openedUnits.Count);
+        var randUnit = _openedUnits[randUnitIndex];
+
+        if (_allUnits.Count == 0)
+            randUnit = _openedUnits.Last();
+        
         var homes = _controller.homes;
         homes.RemoveAll(home => home.owner != _controller);
         foreach (var home in homes)
         { 
-            home.BuyUnit(index, CivilisationInfo.ControlType.AI);
+            home.BuyUnit(randUnit, CivilisationInfo.ControlType.AI);
         }
     }
 }

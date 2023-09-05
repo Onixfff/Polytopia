@@ -1441,10 +1441,10 @@ RectTransform:
   - {fileID: 8806200400345577307}
   - {fileID: 8952264373384130873}
   - {fileID: 8215788148224867196}
-  - {fileID: 894828274119266989}
+  - {fileID: 546669817020310039}
   - {fileID: 365094536065073522}
   - {fileID: 189744754186906519}
-  - {fileID: 546669817020310039}
+  - {fileID: 894828274119266989}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1512,6 +1512,7 @@ MonoBehaviour:
   isHasRuins: 0
   isHasWhale: 0
   isHasTree: 0
+  isHasMining: 0
   tileType: 0
   isOpened: 0
   groundImage: {fileID: 2212580032476123589}

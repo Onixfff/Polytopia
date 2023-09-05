@@ -152,6 +152,7 @@ public class AITechManager : Singleton<AITechManager>
         switch (techType)
         {
             case TechInfo.Technology.Rider:
+                
                 techPrice = priceFirstTier;
                 break;
             case TechInfo.Technology.Gather:

@@ -945,11 +945,6 @@ public class Tile : MonoBehaviour
     {
         if(fruitTileImage == null)
             return false;
-        if (_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Gather))
-            return false;
-        if(!fruitTileImage.enabled)
-            return false;
-
         Destroy(fruitTileImage.gameObject);
         _owner.AddFood(1);
         return true;
@@ -958,10 +953,6 @@ public class Tile : MonoBehaviour
     public bool BuyAnimal()
     {
         if(animalTileImage == null)
-            return false;
-        if(_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Hunt))
-            return false;
-        if(!animalTileImage.enabled)
             return false;
 
         Destroy(animalTileImage.gameObject);
@@ -973,11 +964,6 @@ public class Tile : MonoBehaviour
     {
         if(fishTileImage == null)
             return false;
-        if(_owner != null && _owner.owner != null && !_owner.owner.technologies.Contains(TechInfo.Technology.Fish))
-            return false;
-        if(!fishTileImage.enabled)
-            return false;
-
         Destroy(fishTileImage.gameObject);
         _owner.AddFood(1);
         return true;

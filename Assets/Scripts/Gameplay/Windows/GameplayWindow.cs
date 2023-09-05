@@ -460,7 +460,7 @@ public class GameplayWindow : BaseWindow
             GetComponent<TechnologyManager>().Init();
             technologyObject.SetActive(true);
         }));
-        _generateSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.03f).OnComplete(() =>
+        _generateSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.1f).OnComplete(() =>
         {
             technologyObject.SetActive(false);
             StartCutscene();

@@ -124,13 +124,13 @@ public class CivilisationController : MonoBehaviour
                 switch (GameManager.Instance.difficult)
                 {
                     case GameManager.Difficult.Easy:
-                        incomePoint -= 0;
+                        incomePoint -= 1;
                         break;
                     case GameManager.Difficult.Normal:
-                        incomePoint += 3;
+                        incomePoint += 5;
                         break;
                     case GameManager.Difficult.Hard:
-                        incomePoint += 5;
+                        incomePoint += 10;
                         break;
                 }
                 AddPoint(incomePoint);
