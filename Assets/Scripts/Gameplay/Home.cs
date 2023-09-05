@@ -312,8 +312,11 @@ public class Home : MonoBehaviour
         {
             var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(tile, 1);
             var freeTile = closeTile.FindAll(tile => tile.IsTileFree());
-            if(tile.tileType != Tile.TileType.Water || tile.tileType != Tile.TileType.DeepWater)
-                freeTile.RemoveAll(til => til.tileType is Tile.TileType.Water or Tile.TileType.DeepWater);
+            if (tile.tileType != Tile.TileType.Water || tile.tileType != Tile.TileType.DeepWater)
+            {
+                freeTile.RemoveAll(til => til.tileType == Tile.TileType.Water);
+                freeTile.RemoveAll(til => til.tileType == Tile.TileType.DeepWater);
+            }
             else
                 freeTile.RemoveAll(til => til.tileType is Tile.TileType.Ground);
             if (freeTile[0] != null)

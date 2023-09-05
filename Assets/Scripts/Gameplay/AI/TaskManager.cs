@@ -131,26 +131,6 @@ public class TaskManager : MonoBehaviour
         var rightUnits = new List<UnitController>();
         switch (taskType)
         {
-            case BaseTask.TaskType.Patrol:
-                break;
-                /*var homes = new List<Home>();
-                foreach (var unit in units)
-                {
-                    if(homes.Contains(unit.GetOwner()))
-                        continue;
-                    var homeUnits = unit.GetOwner().GetUnitList();
-                    homes.Add(unit.GetOwner());
-                    if (homeUnits.Find(controller => task.UnitIsOnTask(controller, taskType.ToString())))
-                    {
-                        rightUnits.Add(unit);
-                        break;
-                    }
-                    var unit1 = units.Find(unit2 => unit2.occupiedTile.GetHomeOnTile() != null && unit2.occupiedTile.GetHomeOnTile() == unit2.GetOwner()); 
-                    rightUnits.Add(unit1);
-                    break;
-                }
-                
-                break;*/
             case BaseTask.TaskType.Attack:
                 foreach (var unit in units)
                 {
@@ -175,7 +155,6 @@ public class TaskManager : MonoBehaviour
                     if (closeTile.Any(tile => tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner))
                     {
                         rightUnits.Add(unit);
-                        continue;
                     }
                 }
                 break;

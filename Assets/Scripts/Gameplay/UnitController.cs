@@ -426,6 +426,9 @@ public class UnitController : MonoBehaviour
         var inVal1 = 0;
         _moveSeq.Join(DOTween.To(() => inVal1, x => inVal1 = x, 1, dur)).OnComplete((() =>
         {
+            if(gameObject.activeSelf)
+                BoardController.Instance.TryMoveBoardTo(rectTransform);
+
             var addedRad = 0;
             if (occupiedTile.isHasMountain)
                 addedRad = 1;

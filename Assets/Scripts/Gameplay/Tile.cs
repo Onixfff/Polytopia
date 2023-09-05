@@ -540,6 +540,10 @@ public class Tile : MonoBehaviour
         if(controlType == CivilisationInfo.ControlType.Player && gameObject != LevelManager.Instance.GetSelectedObject())
             return;
 
+        if (controlType == CivilisationInfo.ControlType.AI)
+        {
+        }
+        
         BuildingUpgrade building = null;
         var buildingUpgrades = new List<BuildingUpgrade>();
         switch (index)
