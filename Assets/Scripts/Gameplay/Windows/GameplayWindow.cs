@@ -199,7 +199,7 @@ public class GameplayWindow : BaseWindow
         }
         if(types.Contains(OpenedTechType.Ground))
         {
-            if (tileC.isHasMountain)
+            if (tileC.isHasMountain && (!tileC.isHasMining))
             {
                 if (controller.technologies.Contains(TechInfo.Technology.Mining))
                 {

@@ -20,6 +20,9 @@ public class RoadManager : MonoBehaviour
         {
             homes.AddRange(board.GetCloseTile(roadTile, 1).FindAll(tile => tile.GetHomeOnTile() != null).Select(tile => tile.GetHomeOnTile()).ToList());
         }
+
+        homes.RemoveAll(home => home.owner == null);
+        
         var capital = homes.Find(home => home.owner.capitalHome == home);
         if(capital == null)
             return;

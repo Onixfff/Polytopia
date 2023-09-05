@@ -25,6 +25,7 @@ public class Tile : MonoBehaviour
     public bool isHasRuins = false;
     public bool isHasWhale = false;
     public bool isHasTree = false;
+    public bool isHasMining = false;
     public TileType tileType = TileType.Ground;
 
     public bool isOpened;
@@ -227,7 +228,7 @@ public class Tile : MonoBehaviour
         if(treeTileImage != null && treeTileImage.enabled)
             _techTypes.Add(GameplayWindow.OpenedTechType.Tree);
             
-        if(cropTileImage != null && cropTileImage.enabled)
+        if(cropTileImage != null && cropTileImage.enabled && isHasCrop)
             _techTypes.Add(GameplayWindow.OpenedTechType.Crop);
             
         if(animalTileImage != null && animalTileImage.enabled)
@@ -621,6 +622,7 @@ public class Tile : MonoBehaviour
                 if (fruitTileImage != null) Destroy(fruitTileImage.gameObject);
                 miningImage.sprite = _owner.owner.civilisationInfo.BuildSprites[6];
                 building = Instantiate(buildingUpgradePrefab, freeTileImage.transform);
+                isHasMining = true;
                 _buildingUpgrade = building;
                 _buildingUpgrade.Init(BuildingUpgrade.BuildType.Mine);
                 buildingUpgrades = GetCountCloseBuildingOfType(BuildingUpgrade.BuildType.Forge);

@@ -71,6 +71,11 @@ public class LevelManager : SingletonPersistent<LevelManager>
         if(_civilisationControllers?.Count == 1)
             ShowWinWindow();
     }
+
+    public void ClearCivList()
+    {
+        _civilisationControllers.Clear();
+    }
     
     public void ShowWinWindow()
     {

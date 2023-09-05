@@ -489,6 +489,11 @@ public class Home : MonoBehaviour
 
         void Show()
         {
+            if(homeTile.unitOnTile == null)
+                return;
+            if(homeTile.unitOnTile.GetOwner().owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
+                return;
+
             occupyButton.gameObject.SetActive(true);
             LevelManager.Instance.OnTurnBegin -= Show;
         }

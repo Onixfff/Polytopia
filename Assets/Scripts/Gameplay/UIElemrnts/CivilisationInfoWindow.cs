@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.SO;
 using TMPro;
 using UnityEngine;
@@ -21,6 +22,7 @@ public class CivilisationInfoWindow : MonoBehaviour
     [SerializeField] private List<GameObject> quests;
 
     private Dictionary<CivButtonInfo, CivilisationController> _civInfoButtons;
+    private List<GameObject> _civInfoObjects;
 
     public void ChangeRelation(DiplomacyManager.RelationType value)
     {
@@ -192,6 +194,7 @@ public class CivilisationInfoWindow : MonoBehaviour
     private void Start()
     {
         _civInfoButtons ??= new Dictionary<CivButtonInfo, CivilisationController>();
+        _civInfoObjects ??= new List<GameObject>();
         CreateCivilizationInfoButton();
         foreach (var button in _civInfoButtons)
         {
@@ -207,6 +210,7 @@ public class CivilisationInfoWindow : MonoBehaviour
     {
         CheckQuests();
         _civInfoButtons ??= new Dictionary<CivButtonInfo, CivilisationController>();
+        _civInfoObjects ??= new List<GameObject>();
         foreach (var keyValue in _civInfoButtons)
         {
             keyValue.Key.UpdateInfoWindow(keyValue.Value);
@@ -279,6 +283,7 @@ public class CivilisationInfoWindow : MonoBehaviour
             button.transform.SetSiblingIndex(5);
             button.Init(controller);
             _civInfoButtons.Add(button, controller);
+            _civInfoObjects.Add(button.gameObject);
         }
     }
 

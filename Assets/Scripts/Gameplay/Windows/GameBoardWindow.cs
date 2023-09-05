@@ -176,6 +176,12 @@ public class GameBoardWindow : BaseWindow
 
     private void OnDestroy()
     {
+        LevelManager.Instance.ClearCivList();
+        /*var civList = LevelManager.Instance.GetCivilisationControllers();
+        for (var i = civList.Count - 1; i >= 0; i--)
+        {
+            LevelManager.Instance.RemoveCiv(civList[i]);
+        }*/
         _generateSeq.Kill();
     }
     
