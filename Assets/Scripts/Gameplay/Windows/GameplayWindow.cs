@@ -455,8 +455,8 @@ public class GameplayWindow : BaseWindow
         var inVal = 0f;
         _generateSeq.Append(DOTween.To(() => inVal, x => x = inVal, 0f, 0.4f).OnComplete(() =>
         {
-            technologyObject.SetActive(true);
             GetComponent<TechnologyManager>().Init();
+            technologyObject.SetActive(true);
             technologyObject.SetActive(false);
         }));
     }

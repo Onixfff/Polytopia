@@ -427,7 +427,7 @@ public class UnitController : MonoBehaviour
         _moveSeq.Join(DOTween.To(() => inVal1, x => inVal1 = x, 1, dur)).OnComplete((() =>
         {
             if(gameObject.activeSelf)
-                BoardController.Instance.TryMoveBoardTo(rectTransform);
+                BoardController.Instance.TryMoveTo(rectTransform);
 
             var addedRad = 0;
             if (occupiedTile.isHasMountain)
@@ -459,6 +459,11 @@ public class UnitController : MonoBehaviour
         }));
 
         return _moveSeq;
+    }
+
+    public RectTransform GetRectTransform()
+    {
+        return rectTransform;
     }
     
     private void OnDestroy()

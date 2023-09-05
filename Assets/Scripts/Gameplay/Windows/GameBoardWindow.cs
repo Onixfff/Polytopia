@@ -171,7 +171,16 @@ public class GameBoardWindow : BaseWindow
         var inVal3 = 0f;
         _generateSeq.Append(DOTween.To(() => inVal3, x => x = inVal3, 0f, 0.1f).OnComplete((GenerateVillage)));
         var inVal4 = 0f;
-        _generateSeq.Append(DOTween.To(() => inVal4, x => x = inVal4, 0f, 0.1f).OnComplete((GenerateRuins)));
+        _generateSeq.Append(DOTween.To(() => inVal4, x => x = inVal4, 0f, 0.1f).OnComplete(() =>
+        {
+            GenerateRuins();
+            StartCutscene();
+        }));
+        
+        void StartCutscene()
+        {
+            BoardController.Instance.MoveToCenter(playerCiv.capitalHome.GetUnitList()[0].GetRectTransform());
+        }
     }
 
     private void OnDestroy()

@@ -152,6 +152,7 @@ public class TaskManager : MonoBehaviour
                         continue;
                     }
                     var closeTile = board.GetCloseTile(unit.occupiedTile, 1);
+                    closeTile.RemoveAll(tile => !tile.IsTileFree());
                     if (closeTile.Any(tile => tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner))
                     {
                         rightUnits.Add(unit);

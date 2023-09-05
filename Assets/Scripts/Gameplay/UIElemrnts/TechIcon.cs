@@ -20,37 +20,43 @@ public class TechIcon : MonoBehaviour
     
     public TechInfo.Technology type;
     public bool isTechUnlock = false;
+    public bool isInit = false;
 
     public void OpenTech()
     {
         techButton.onClick?.Invoke();
     }
-    
+
     private void Start()
     {
-        var player = LevelManager.Instance.gameBoardWindow.playerCiv;
-        if (isTechUnlock == false)
+        if (!isInit)
         {
-            if (lockObject != null) lockObject.SetActive(true);
-            techButton.enabled = false;
-        }
-        else
-        {
-            isTechUnlock = true;
-        }
-        lineObject.SetActive(true);
-        lineObject.transform.SetParent(transform.parent.parent.GetChild(0).transform);
+            isInit = true;
+            var player = LevelManager.Instance.gameBoardWindow.playerCiv;
+            if (isTechUnlock == false)
+            {
+                if (lockObject != null) lockObject.SetActive(true);
+                techButton.enabled = false;
+            }
+            else
+            {
+                isTechUnlock = true;
+            }
+            lineObject.SetActive(true);
+            lineObject.transform.SetParent(transform.parent.parent.GetChild(0).transform);
         
-        if (player.civilisationInfo.technology.startTechnologies == type)
-        {
-            techButton.enabled = true;
-            OpenTech();
+            if (player.civilisationInfo.technology.startTechnologies == type)
+            {
+                techButton.enabled = true;
+                OpenTech();
+            }
+            transform.parent.parent.parent.parent.parent.parent.GetComponent<TechnologyManager>().OnTechBuy += UpdateVisual;
         }
-        transform.parent.parent.parent.parent.parent.parent.GetComponent<TechnologyManager>().OnTechBuy += UpdateVisual;
     }
 
     private void OnEnable()
     {
+        
         UpdateVisual();
     }
 
