@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class GameplayWindow : BaseWindow
 {
     public Action<int, CivilisationInfo.ControlType> OnUnitSpawn;
-    public Action<int> OnTileTech;
+    public Action<int, CivilisationInfo.ControlType> OnTileTech;
 
     public enum OpenedTechType
     {
@@ -336,7 +336,6 @@ public class GameplayWindow : BaseWindow
     
     public void ShowUnitButton(List<int> types, UnitController unit)
     {
-        
         if (types.Count == 0)
         {
             unitButtonParent.SetActive(false);
@@ -358,7 +357,7 @@ public class GameplayWindow : BaseWindow
                     unitButtons[type].onClick.RemoveAllListeners();
                     unitButtons[type].onClick.AddListener((() =>
                     {
-                        unit.Heal(2);
+                        unit.SelfHeal(2);
                         HideDownBar();
                     }));
                     break;
@@ -418,6 +417,14 @@ public class GameplayWindow : BaseWindow
                     })); 
                     break;
             }
+        }
+    }
+    
+    public void HideUnitButton()
+    {
+        foreach (var tile in unitButtons)
+        {
+            tile.gameObject.SetActive(false);            
         }
     }
 
@@ -551,9 +558,29 @@ public class GameplayWindow : BaseWindow
     private void HideDownBar()
     {
         if (downBar != null) downBar.SetActive(false);
-        if (unitTechButtonParent != null) unitTechButtonParent.SetActive(false);
-        if (tileTechButtonParent != null) tileTechButtonParent.SetActive(false);
-        if (tileNameUGUI != null) tileNameUGUI.gameObject.SetActive(false);
+        if (unitTechButtonParent != null)
+        {
+            unitTechButtonParent.SetActive(false);
+        }
+
+        if (tileTechButtonParent != null)
+        {
+            tileTechButtonParent.SetActive(false);
+        }
+
+        if (tileNameUGUI != null)
+        {
+            tileNameUGUI.gameObject.SetActive(false);
+        }
+
+        if (unitButtonParent != null)
+        {
+            unitButtonParent.SetActive(false);
+            foreach (var tile in unitButtons)
+            {
+                tile.gameObject.SetActive(false);            
+            }
+        }
     }
 
     private void LoadMenuScene()
@@ -571,7 +598,7 @@ public class GameplayWindow : BaseWindow
     
     private void BuyTileTech(int index)
     {
-        OnTileTech?.Invoke(index);
+        OnTileTech?.Invoke(index, CivilisationInfo.ControlType.Player);
         HideDownBar();
     }
     

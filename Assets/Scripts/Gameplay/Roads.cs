@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class Roads : MonoBehaviour
     [SerializeField] private List<GameObject> roads;
     [SerializeField] private Tile tile;
     public bool isRoad;
-    
+
     public void CheckCloseTile()
     {
         var board = LevelManager.Instance.gameBoardWindow;
@@ -38,6 +39,9 @@ public class Roads : MonoBehaviour
         {
             ShowRoad(Vector2Int.left);
         }
+        
+        if(tile.GetOwner() != null)
+            tile.GetOwner().owner.roadManager.CheckConnectivityToTheCapital(tile);
     }
 
     public void ShowRoad(Vector2Int pos)

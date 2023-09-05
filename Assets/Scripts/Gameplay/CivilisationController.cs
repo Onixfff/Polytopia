@@ -10,6 +10,7 @@ public class CivilisationController : MonoBehaviour
     public event Action OnMoneyChanged;
 
     public CivilisationInfo civilisationInfo;
+    public RoadManager roadManager;
     public List<Home> homes;
     public Home independentHome;
     public Home capitalHome;

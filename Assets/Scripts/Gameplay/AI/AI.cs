@@ -87,7 +87,7 @@ public class AI : MonoBehaviour
                 if (intTypes[rand] > 2)
                     rand = Random.Range(0, intTypes.Count);
                 //Debug.Log(intTypes[rand]);
-                tile.BuyTileTech(intTypes[rand]);
+                tile.BuyTileTech(intTypes[rand], CivilisationInfo.ControlType.AI);
                 return;
             }
 

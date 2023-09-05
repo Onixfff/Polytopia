@@ -475,18 +475,29 @@ public class UnitController : MonoBehaviour
             if (_owner != null && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player || _civOwner != null &&
                 _civOwner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
             {
-                var ints = new List<int>();
-                if (_hp < unitInfo.hp && _moveThisTurn != 0)
-                    ints.Add(0);
-                if (_owner.owner.technologies.Contains(TechInfo.Technology.FreeSpirit))
-                    ints.Add(1);
-                if (unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Heal))
-                    ints.Add(2);
-                if (unitInfo.IsVeteran && _killCount >= 3 && _lvl == 1)
-                    ints.Add(3);
-                if (unitType == UnitType.Boat || unitType == UnitType.Ship)
-                    ints.Add(4);
-                LevelManager.Instance.gameplayWindow.ShowUnitButton(ints, this);
+                if(_moveThisTurn == 0 || _attackThisTurn == 0)
+                {
+                    LevelManager.Instance.gameplayWindow.HideUnitButton();
+                }
+                else
+                {
+                    var ints = new List<int>();
+                    if (_hp < unitInfo.hp)
+                        ints.Add(0);
+                    if (_owner.owner.technologies.Contains(TechInfo.Technology.FreeSpirit))
+                        ints.Add(1);
+                    if (unitInfo.abilityTypes.Contains(UnitInfo.AbilityType.Heal))
+                        ints.Add(2);
+                    if (unitInfo.IsVeteran && _killCount >= 3 && _lvl == 1)
+                        ints.Add(3);
+                    if (unitType == UnitType.Boat || unitType == UnitType.Ship)
+                        ints.Add(4);
+                    LevelManager.Instance.gameplayWindow.ShowUnitButton(ints, this);
+                }
+            }
+            else
+            {
+                LevelManager.Instance.gameplayWindow.HideUnitButton();
             }
         }
 

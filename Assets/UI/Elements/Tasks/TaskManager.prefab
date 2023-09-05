@@ -55,9 +55,8 @@ MonoBehaviour:
   - {fileID: 4204007360980066666}
   - {fileID: 7722730709557339628}
   - {fileID: 2147816162141632296}
-  - {fileID: 5494287583721530446}
-  - {fileID: 791281747231031023}
   - {fileID: 8100982825946074819}
+  civilisationController: {fileID: 0}
 --- !u!1001 &225733221434186623
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,17 +285,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2611564556853707055, guid: f35455e9f81c6ba45894e909213b951c, type: 3}
   m_PrefabInstance: {fileID: 861585758200039269}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5494287583721530446 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -4050047936250043605, guid: f35455e9f81c6ba45894e909213b951c, type: 3}
-  m_PrefabInstance: {fileID: 861585758200039269}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f520f1e5585ea04890eec19c22abb71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1585217466141547389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -516,17 +504,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77c2278ea93427e4996d4416bc976abc, type: 3}
---- !u!114 &791281747231031023 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8773167994219195380, guid: 77c2278ea93427e4996d4416bc976abc, type: 3}
-  m_PrefabInstance: {fileID: 8303440621712332059}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 987ed56900254fc478f4d4ff70b85d5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6270588896190551092 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2611564556853707055, guid: 77c2278ea93427e4996d4416bc976abc, type: 3}

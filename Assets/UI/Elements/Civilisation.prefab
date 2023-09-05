@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1789822117842824388}
   - component: {fileID: 4738581413254395163}
   - component: {fileID: 724060493717725874}
+  - component: {fileID: 6443075753621172677}
   m_Layer: 5
   m_Name: Civilisation
   m_TagString: Untagged
@@ -63,16 +64,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   civilisationInfo: {fileID: 11400000, guid: 715557d38e026514f9e339bf4c5f589b, type: 2}
+  roadManager: {fileID: 6443075753621172677}
   homes: []
   independentHome: {fileID: 4738581413254395163}
   capitalHome: {fileID: 0}
   civColor: {r: 1, g: 0, b: 0, a: 1}
   technologies: 
+  relationOfCivilisation: {fileID: 724060493717725874}
   civilName: civil
   homePrefab: {fileID: 5697296062761007083, guid: bb5da2bfb2475ad4aadd81645304c540, type: 3}
   monumentBuilder: {fileID: 678440106140558662}
   civilisationStats: {fileID: 1789822117842824388}
-  relationOfCivilisation: {fileID: 724060493717725874}
 --- !u!114 &678440106140558662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,3 +142,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   civilisationController: {fileID: 5349752406243517778}
+--- !u!114 &6443075753621172677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697296062761007083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6befc3156b0e40cdadb7f643813b485f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
