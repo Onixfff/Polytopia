@@ -141,6 +141,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1146588265096533999}
     - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: shipUnits.Array.data[0]
       value: 
       objectReference: {fileID: 6012587381779623556, guid: 9a21c5b1fc6491b40991f6e6a18c3162, type: 3}
@@ -148,6 +152,18 @@ PrefabInstance:
       propertyPath: shipUnits.Array.data[1]
       value: 
       objectReference: {fileID: 6012587381779623556, guid: 9a21c5b1fc6491b40991f6e6a18c3162, type: 3}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[0]
+      value: 
+      objectReference: {fileID: 2118239600478441945}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[1]
+      value: 
+      objectReference: {fileID: 5842365810176900877}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[2]
+      value: 
+      objectReference: {fileID: 5842365810176900877}
     - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: unitBackGrounds.Array.data[0]
       value: 

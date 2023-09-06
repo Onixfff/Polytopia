@@ -347,9 +347,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 242475884038106140}
     - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: shipUnits.Array.data[1]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[0]
+      value: 
+      objectReference: {fileID: 8013822591984867272}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[1]
+      value: 
+      objectReference: {fileID: 8013822591984867272}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[2]
+      value: 
+      objectReference: {fileID: 6746477711272592638}
     - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: unitBackGrounds.Array.data[0]
       value: 

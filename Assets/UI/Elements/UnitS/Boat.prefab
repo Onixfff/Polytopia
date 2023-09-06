@@ -422,11 +422,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3032780062455813708, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -10.999994
+      value: -17.8
       objectReference: {fileID: 0}
     - target: {fileID: 3032780062455813708, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 16.400013
+      value: 16.3
       objectReference: {fileID: 0}
     - target: {fileID: 5697296062761007083, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: m_Name
@@ -468,6 +468,30 @@ PrefabInstance:
       propertyPath: sweats.Array.data[2]
       value: 
       objectReference: {fileID: 242475884038106140}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: shipUnits.Array.data[0]
+      value: 
+      objectReference: {fileID: 6012587381779623556}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[0]
+      value: 
+      objectReference: {fileID: 2763093074112216317}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[1]
+      value: 
+      objectReference: {fileID: 6746477711272592638}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[2]
+      value: 
+      objectReference: {fileID: 7833390973802234087}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[3]
+      value: 
+      objectReference: {fileID: 7833390973802234087}
     - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: unitBackGrounds.Array.data[0]
       value: 
@@ -565,6 +589,17 @@ PrefabInstance:
       addedObject: {fileID: 1733797388205433655}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+--- !u!114 &6012587381779623556 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+  m_PrefabInstance: {fileID: 1150180087250617969}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebe9d276ea5e64149baab3547e23f64b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8238468558075456486 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9052984237761949079, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}

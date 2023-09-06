@@ -29,8 +29,11 @@ public class UnitController : MonoBehaviour
     public string aiTaskName;
     
     [SerializeField] private UnitInfo unitInfo;
+    [SerializeField] private List<Image> unitVisual;
     [SerializeField] private List<Image> unitBackGrounds;
     [SerializeField] private Image headImage;
+    [SerializeField] private Image hpImage;
+    [SerializeField] private Image hpImage1;
     [SerializeField] private Image battleShipHeadImage;
     [SerializeField] private Image horseImage;
     [SerializeField] private TextMeshProUGUI unitHpTMPro;
@@ -40,6 +43,7 @@ public class UnitController : MonoBehaviour
     [SerializeField] private AttackType attackType;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private List<RectTransform> sweats;
+    [SerializeField] private Color disableColor;
     
     private UnitController _unitInTheShip;
     private Home _owner;
@@ -59,6 +63,7 @@ public class UnitController : MonoBehaviour
         SetSweatPos();
         _moveThisTurn = 0;
         _attackThisTurn = 0;
+        DisableUnit();
         transform.SetSiblingIndex(transform.parent.childCount);
         OccupyTile(tile);
         var anchorPos = occupiedTile.GetComponent<RectTransform>().anchoredPosition;
@@ -90,6 +95,17 @@ public class UnitController : MonoBehaviour
     {
         _moveThisTurn = 1;
         _attackThisTurn = 1;
+        foreach (var visual in unitVisual)
+        {
+            visual.color = Color.white;
+        }
+    }
+    public void DisableUnit()
+    {
+        foreach (var visual in unitVisual)
+        {
+            visual.color = disableColor;
+        }
     }
     
     public bool CheckAbility(UnitInfo.AbilityType abilityType)
@@ -301,6 +317,8 @@ public class UnitController : MonoBehaviour
 
     public int GetDmg()
     {
+        if (unitInfo.dmg == 0)
+            return 0;
         var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
         var defenseForce = unitInfo.def * (_hp / unitInfo.hp) * GetDefenseBonus();
         var totalDamage = attackForce + defenseForce;
@@ -311,6 +329,8 @@ public class UnitController : MonoBehaviour
     
     public int GetDefDmg()
     {
+        if (unitInfo.dmg == 0)
+            return 0;
         var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
         var defenseForce = unitInfo.def * (_hp / unitInfo.hp) * GetDefenseBonus();
         var totalDamage = attackForce + defenseForce;
@@ -411,13 +431,6 @@ public class UnitController : MonoBehaviour
         
         _moveSeq = DOTween.Sequence();
         aiFromTile = occupiedTile;
-        _moveThisTurn = 0;
-        if (_attackThisTurn != 0 && !CheckAbility(UnitInfo.AbilityType.Dash))
-            _attackThisTurn = 0;
-        else if(CheckAbility(UnitInfo.AbilityType.Dash))
-            _attackThisTurn = 1;
-        if(CheckAbility(UnitInfo.AbilityType.Persist)) 
-            _attackThisTurn = 1;
         var anchorPos = to.GetComponent<RectTransform>().anchoredPosition;
         transform.SetSiblingIndex(transform.parent.childCount);
         var inValX = rectTransform.anchoredPosition.x;
@@ -435,14 +448,36 @@ public class UnitController : MonoBehaviour
         var inVal1 = 0;
         _moveSeq.Join(DOTween.To(() => inVal1, x => inVal1 = x, 1, dur)).OnComplete((() =>
         {
+            AfterMoveAction();
+        }));
+
+        return _moveSeq;
+
+        void AfterMoveAction()
+        {
             if(gameObject.activeSelf)
                 BoardController.Instance.TryMoveTo(rectTransform);
 
             var addedRad = 0;
             if (occupiedTile.isHasMountain)
                 addedRad = 1;
-            var closeTiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(to, unitInfo.rad + addedRad);
-            
+            var closeTiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(to, 1 + addedRad);
+
+            switch (GetDefenseBonus())
+            {
+                case 0:
+                    hpImage.gameObject.SetActive(false);
+                    hpImage1.gameObject.SetActive(false);
+                    break;
+                case 1:
+                    hpImage.gameObject.SetActive(true);
+                    hpImage1.gameObject.SetActive(false);
+                    break;
+                case 2:
+                    hpImage.gameObject.SetActive(false);
+                    hpImage1.gameObject.SetActive(true);
+                    break;
+            }
             
             foreach (var tile in closeTiles)
             {
@@ -468,9 +503,39 @@ public class UnitController : MonoBehaviour
             {
                 TurnIntoAUnit();
             }
-        }));
+            
+            
+            _moveThisTurn = 0;
+            if (_attackThisTurn != 0 && !CheckAbility(UnitInfo.AbilityType.Dash))
+            {
+                if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+                    DisableUnit();
+                _attackThisTurn = 0;
+            }
+            else if (CheckAbility(UnitInfo.AbilityType.Dash))
+            {
+                _attackThisTurn = 1;
+            }
 
-        return _moveSeq;
+            if (CheckAbility(UnitInfo.AbilityType.Persist))
+            {
+                _attackThisTurn = 1;
+            }
+
+            if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
+            {
+                if(_attackThisTurn == 0)
+                    return;
+                var board = LevelManager.Instance.gameBoardWindow;
+                var closeTile = board.GetCloseTile(occupiedTile, unitInfo.rad);
+                closeTile.RemoveAll(tile => tile.unitOnTile == null);
+                closeTile.RemoveAll(tile => tile.unitOnTile._owner.owner == null);
+                closeTile.RemoveAll(tile => tile.unitOnTile._owner.owner == _owner.owner);
+                closeTile.RemoveAll(tile => tile.unitOnTile._owner.owner.CheckAlly(_owner.owner)); 
+                if(closeTile.Count == 0)
+                    DisableUnit();
+            }
+        }
     }
 
     public RectTransform GetRectTransform()
@@ -515,8 +580,13 @@ public class UnitController : MonoBehaviour
                         ints.Add(2);
                     if (unitInfo.IsVeteran && _killCount >= 3 && _lvl == 1)
                         ints.Add(3);
-                    if (unitType == UnitType.Boat || unitType == UnitType.Ship)
+                    
+                    if (unitType == UnitType.Boat && _owner.owner.technologies.Contains(TechInfo.Technology.Sailing))
                         ints.Add(4);
+                    else 
+                    if (unitType == UnitType.Ship && _owner.owner.technologies.Contains(TechInfo.Technology.Navigation))
+                        ints.Add(4);
+                    
                     LevelManager.Instance.gameplayWindow.ShowUnitButton(ints, this);
                 }
             }
@@ -595,48 +665,33 @@ public class UnitController : MonoBehaviour
                 unitToAttack.TakeDamage(this, GetDmg());
                 if (isThisTheNearestTile && attackType == AttackType.Melee)
                 {
-                    _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
-                    _attackThisTurn = 0; 
-                    _moveThisTurn = 0;
-                    if(CheckAbility(UnitInfo.AbilityType.Persist)) 
-                        _attackThisTurn = 1;
-                    if(CheckAbility(UnitInfo.AbilityType.Escape))
-                        _moveThisTurn = 1;
+                    _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f).OnComplete((() =>
+                    {
+                        AfterAttack();
+                    })));
                 }
                 else
                 {
-                    _attackThisTurn = 0; 
-                    _moveThisTurn = 0;
-                    if(CheckAbility(UnitInfo.AbilityType.Persist)) 
-                        _attackThisTurn = 1;
-                    if(CheckAbility(UnitInfo.AbilityType.Escape))
-                        _moveThisTurn = 1;
                 
                     var pr = Instantiate(projectilePrefab, transform.parent);
                     pr.transform.localPosition = transform.localPosition;
                     _attSeq.Append(pr.transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
                     {
                         LevelManager.Instance.SelectObject(null);
-                        //SelectUnit();
+                        AfterAttack();
                         Destroy(pr.gameObject);
                     })));
                 }
             }
             else
             {
-                _attackThisTurn = 0;
-                _moveThisTurn = 0;
-                if(CheckAbility(UnitInfo.AbilityType.Persist)) 
-                    _attackThisTurn = 1;
-                if(CheckAbility(UnitInfo.AbilityType.Escape))
-                    _moveThisTurn = 1;
                 if (attackType == AttackType.Melee)
                 {
                     _attSeq.Append(transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
                     {
                         unitToAttack.TakeDamage(this, GetDmg());
                         LevelManager.Instance.SelectObject(null);
-                        //SelectUnit();
+                        AfterAttack();
                         if (CheckAbility(UnitInfo.AbilityType.Convert))
                         {
                             unitToAttack.GetOwner().RemoveUnit(unitToAttack);
@@ -657,11 +712,32 @@ public class UnitController : MonoBehaviour
                         Destroy(pr.gameObject);
                     })));
                 } 
-                _attSeq.Append(unitToAttack.Counterstrike(this));
+                if (!CheckAbility(UnitInfo.AbilityType.Convert))
+                    _attSeq.Append(unitToAttack.Counterstrike(this));
             }
         }
         
         return _attSeq;
+
+        void AfterAttack()
+        {
+            _attackThisTurn = 0;
+            _moveThisTurn = 0;
+            if(CheckAbility(UnitInfo.AbilityType.Persist)) 
+                _attackThisTurn = 1;
+            else
+            {
+                if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+                    DisableUnit();
+            }
+            if(CheckAbility(UnitInfo.AbilityType.Escape))
+                _moveThisTurn = 1;
+            else
+            {
+                if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+                    DisableUnit();
+            }
+        }
     }
 
     private void AddKillInCount()
@@ -756,6 +832,9 @@ public class UnitController : MonoBehaviour
         gameObject.SetActive(false);
         if(unitType is UnitType.Ship or UnitType.BattleShip)
             Destroy(gameObject);
+        
+        if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+            _unitInTheShip.DisableUnit();
     }
     
     private void TurnIntoAUnit()
@@ -768,6 +847,8 @@ public class UnitController : MonoBehaviour
         else
             _unitInTheShip.Init(_owner, occupiedTile, false);
         occupiedTile.unitOnTile = _unitInTheShip;
+        if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+            _unitInTheShip.DisableUnit();
         KillUnit();
     }
 
@@ -811,6 +892,9 @@ public class UnitController : MonoBehaviour
 
     private void KillUnit()
     {
+        if(_unitInTheShip != null)
+            _unitInTheShip.KillUnit();
+        
         if(occupiedTile.unitOnTile == this)
             occupiedTile.unitOnTile = null;
         if (_owner != null) 

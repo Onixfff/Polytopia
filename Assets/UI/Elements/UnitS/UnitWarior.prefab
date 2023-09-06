@@ -117,6 +117,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16527ee32ce40b1428bb4755423c2494, type: 3}
+--- !u!114 &6278788295534011434 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7492035265231641643, guid: 16527ee32ce40b1428bb4755423c2494, type: 3}
+  m_PrefabInstance: {fileID: 3520604145041782785}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8132593351018774225 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4613784167360415440, guid: 16527ee32ce40b1428bb4755423c2494, type: 3}
@@ -174,6 +185,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitWarior
       objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[2]
+      value: 
+      objectReference: {fileID: 6278788295534011434}
+    - target: {fileID: 6667371355122788597, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
+      propertyPath: unitVisual.Array.data[3]
+      value: 
+      objectReference: {fileID: 6278788295534011434}
     - target: {fileID: 7835748470077977843, guid: 96530d959c403c843b3ba9bb8364be4a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 23.9272
