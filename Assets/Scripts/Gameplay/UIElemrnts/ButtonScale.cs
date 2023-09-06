@@ -8,8 +8,6 @@ public class ButtonScale : MonoBehaviour
     [SerializeField] private RectTransform button;
     [SerializeField] private RectTransform tmPro;
     [SerializeField] private Image image;
-
-    
     
     public void ChangeColor(DiplomacyManager.RelationType type)
     {
@@ -29,7 +27,7 @@ public class ButtonScale : MonoBehaviour
     
     [Button()]
     public void AutoSize()
-    {
+    { 
         AutoSizeText();
     }
 

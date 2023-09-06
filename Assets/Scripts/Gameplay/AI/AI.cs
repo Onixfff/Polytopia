@@ -44,7 +44,6 @@ public class AI : MonoBehaviour
                 tile.unitOnTile.GetOwner().owner.relationOfCivilisation.AddNewCivilisation(_controller, DiplomacyManager.RelationType.Neutral);
             }
         }
-
         
         if (money >= 20)
         {
@@ -53,13 +52,11 @@ public class AI : MonoBehaviour
                 BuyingTech();
             BuyingUnits();
         }
-        else
         if (money >= 10)
         {
             Building();
             BuyingUnits();
         }
-        else
         if (money >= 5)
         {
             Building();

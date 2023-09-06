@@ -50,15 +50,12 @@ public class CivilisationInfoWindow : MonoBehaviour
 
     public void ChangeOpinion(DiplomacyManager.RelationType relationType, List<DiplomacyManager.OpinionType> values, int opinionValue)
     {
-        if (values.Count < 3)
-        {
-            Debug.Log("values.Count < 3");
-            return;
-        }
         var texts = new List<string>();
         var text = "";
         for (var i = 0; i < 3; i++)
         {
+            if(values.Count == 0)
+                break;
             var opinion = opinionsText[i];
             
             var isGood = false;
@@ -219,6 +216,7 @@ public class CivilisationInfoWindow : MonoBehaviour
 
     private void ShowCivDetailedInformation(CivilisationController controller)
     {
+        var playerCiv = LevelManager.Instance.gameBoardWindow.playerCiv;
         if (controller.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
             playerCivDetailObject.SetActive(true);
@@ -227,26 +225,33 @@ public class CivilisationInfoWindow : MonoBehaviour
         else
         {
             var relationOfCivilisation = controller.GetComponent<RelationOfCivilisation>();
-            var relationType = relationOfCivilisation.GetCivilisationRelation()[LevelManager.Instance.gameBoardWindow.playerCiv];
+            var relationType = relationOfCivilisation.GetCivilisationRelation()[playerCiv];
             ChangeRelation(relationType);
         
         
-            var opinionType = relationOfCivilisation.GetCivilisationOpinion()[LevelManager.Instance.gameBoardWindow.playerCiv];
+            var opinionType = relationOfCivilisation.GetCivilisationOpinion()[playerCiv];
             var opinionTypes = new List<DiplomacyManager.OpinionType>();
-            var opinionValue = relationOfCivilisation.CalculateOpinion(controller);
-            if (opinionValue < 0)
+            var opinionValue = relationOfCivilisation.CalculateOpinion(playerCiv);
+            if (opinionType.Count >= 3)
             {
-                opinionTypes.Add(opinionType[0]);
-                opinionTypes.Add(opinionType[1]);
-                opinionTypes.Add(opinionType[^1]);
+                if (opinionValue < 0)
+                {
+                    opinionTypes.Add(opinionType[0]);
+                    opinionTypes.Add(opinionType[1]);
+                    opinionTypes.Add(opinionType[^1]);
+                }
+                if(opinionValue > 0)
+                {
+                    opinionTypes.Add(opinionType[0]);
+                    opinionTypes.Add(opinionType[^1]);
+                    opinionTypes.Add(opinionType[^2]);
+                }
+                ChangeOpinion(relationType, opinionTypes, opinionValue);
             }
-            if(opinionValue > 0)
+            else
             {
-                opinionTypes.Add(opinionType[0]);
-                opinionTypes.Add(opinionType[^1]);
-                opinionTypes.Add(opinionType[^2]);
+                ChangeOpinion(DiplomacyManager.RelationType.None, new List<DiplomacyManager.OpinionType>(),0);
             }
-            ChangeOpinion(relationType, opinionTypes, opinionValue);
             
             civDetailObject.SetActive(true);
             civDetailObject.GetComponent<DetailCivInfoWindow>().Open(controller);

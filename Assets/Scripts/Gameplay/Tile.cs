@@ -311,7 +311,6 @@ public class Tile : MonoBehaviour
                 {
                     explorerCiv.relationOfCivilisation.AddNewCivilisation(unitOnTile.GetOwner().owner, DiplomacyManager.RelationType.Neutral);
                     unitOnTile.GetOwner().owner.relationOfCivilisation.AddNewCivilisation(explorerCiv, DiplomacyManager.RelationType.None);
-
                 }
             }
             ChangeHomeBoards();

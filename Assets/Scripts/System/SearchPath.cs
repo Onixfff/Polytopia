@@ -58,6 +58,10 @@ public static class AStarAlgorithm
                     {
                         if(!tiles[neighborPosition].IsTileFree() && tiles[neighborPosition].unitOnTile.GetOwner().owner == unit.GetOwner().owner)
                             continue;
+                        if(!tiles[neighborPosition].IsTileFree() && tiles[neighborPosition].unitOnTile.GetOwner().owner.CheckAlly(unit.GetOwner().owner))
+                            continue;
+                        if(tiles[neighborPosition].GetHomeOnTile() != null && tiles[neighborPosition].GetHomeOnTile().owner != null && tiles[neighborPosition].GetHomeOnTile().owner.CheckAlly(unit.GetOwner().owner))
+                            continue;
                         if(tiles[neighborPosition].isHasMountain && !unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain))
                             continue;
                         if(tiles[neighborPosition].tileType == Tile.TileType.Water && !unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float))

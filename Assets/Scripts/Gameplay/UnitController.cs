@@ -396,10 +396,19 @@ public class UnitController : MonoBehaviour
                 occupiedTile.GetHomeOnTile().HideOccupyButton();
             }
         }
-        if(to.isOpened)
+        if (to.isOpened && !gameObject.activeSelf)
+        {
+            var playerCiv = LevelManager.Instance.gameBoardWindow.playerCiv;
+            playerCiv.relationOfCivilisation.AddNewCivilisation(_owner.owner, DiplomacyManager.RelationType.Neutral);
+            _owner.owner.relationOfCivilisation.AddNewCivilisation(playerCiv, DiplomacyManager.RelationType.None);
             gameObject.SetActive(true);
+        }
         else
+        if (!to.isOpened && gameObject.activeSelf)
+        {
             gameObject.SetActive(false);
+        }
+        
         _moveSeq = DOTween.Sequence();
         aiFromTile = occupiedTile;
         _moveThisTurn = 0;
@@ -433,10 +442,13 @@ public class UnitController : MonoBehaviour
             if (occupiedTile.isHasMountain)
                 addedRad = 1;
             var closeTiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(to, unitInfo.rad + addedRad);
+            
+            
             foreach (var tile in closeTiles)
             {
                 tile.UnlockTile(_owner.owner);
             }
+            
             if (occupiedTile.GetHomeOnTile() != null && (occupiedTile.GetHomeOnTile().owner == null || occupiedTile.GetHomeOnTile().owner != _owner.owner))
             {
                 if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
