@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using Sequence = DG.Tweening.Sequence;
 
 public abstract class BaseTask : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public abstract class BaseTask : MonoBehaviour
     
     protected List<UnitController> UnitsAssignedToTheTask;
     protected TaskManager TaskManager;
+    protected Sequence TaskSeq;
+    protected Sequence FuseSeq;
 
     public void AddTaskManager(TaskManager manager)
     {
@@ -55,13 +58,13 @@ public abstract class BaseTask : MonoBehaviour
     
     public virtual void StartTask()
     {
-        //Debug.Log("Task: " + name);
+        Debug.Log("Task: " + name);
         if (UnitsAssignedToTheTask != null)
         {
             UnitsAssignedToTheTask.RemoveAll(unit => unit == null);
             if (UnitsAssignedToTheTask.Count != 0)
             {
-                //Debug.Log("Task: " + name + " starter." + " Count units - " + UnitsAssignedToTheTask.Count);
+                Debug.Log("Task: " + name + " starter." + " Count units - " + UnitsAssignedToTheTask.Count);
                 TaskRealisation();
                 return;
             }
@@ -73,7 +76,7 @@ public abstract class BaseTask : MonoBehaviour
     
     protected virtual void EndTurn()
     { 
-        //Debug.Log("Task: " + name + " continue.");
+        Debug.Log("Task: " + name + " continue.");
         OnTurnEnded?.Invoke();
     }
     
@@ -81,11 +84,11 @@ public abstract class BaseTask : MonoBehaviour
     {
         if (UnitsAssignedToTheTask != null)
         {
-            //Debug.Log("Task: " + name + " ended." + " Count units - " + UnitsAssignedToTheTask.Count);
             OnUnitReturn?.Invoke(this, UnitsAssignedToTheTask);
             UnitsAssignedToTheTask.Clear();
         }
         OnTurnEnded?.Invoke();
+        Debug.Log("Task: " + name + " ended.");
     }
 
     protected void TryAddPointOfInteresting(Vector2Int pos)

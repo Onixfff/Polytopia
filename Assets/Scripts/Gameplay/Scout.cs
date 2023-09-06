@@ -17,7 +17,7 @@ public class Scout : MonoBehaviour
 
         void Circle(Tile startTile, int index)
         {
-            if (index >= 15)
+            if (index >= 20)
             {
                 Destroy(gameObject);
                 return;

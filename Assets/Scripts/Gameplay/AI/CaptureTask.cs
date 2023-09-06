@@ -42,10 +42,26 @@ public class CaptureTask : BaseTask
             return;
         }
         
-        CaptureCloseHome(units[i]).OnComplete(() =>
+        TaskSeq = DOTween.Sequence();
+        TaskSeq.Join(CaptureCloseHome(units[i]));
+        TaskSeq.OnComplete((() =>
         {
+            TaskSeq = null;
+            if(FuseSeq == null)
+                return;
             UnitAction(units, i+1);
-        });
+        }));
+        
+        var inValX = 0f;
+        FuseSeq = DOTween.Sequence();
+        FuseSeq.Join(DOTween.To(() => inValX, x => inValX = x, 1, 1f));
+        FuseSeq.OnComplete((() =>
+        {
+            FuseSeq = null;
+            if(TaskSeq == null)
+                return;
+            UnitAction(units, i+1);
+        }));
     }
     
     private Tween CaptureCloseHome(UnitController unit)

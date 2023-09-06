@@ -160,7 +160,7 @@ public class TaskManager : MonoBehaviour
                 }
                 break;
             case BaseTask.TaskType.Exploring:
-                rightUnits.AddRange(units);
+                rightUnits.AddRange(units.Where(unit => board.GetCloseTile(unit.occupiedTile, 3).Any(tile => civilisationController.GetTileInExploreList().Contains(tile))));
                 break;
             case BaseTask.TaskType.MoveToPoint:
                 if(pointsOfInteresting.Count == 0)

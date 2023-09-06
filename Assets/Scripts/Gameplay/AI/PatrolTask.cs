@@ -9,6 +9,8 @@ public class PatrolTask : BaseTask
 
     public override int CalculatePriority(List<UnitController> units)
     {
+        return -2;
+
         if (CheckEnemyWithUnit())
         {
             taskPriority = 0;
@@ -25,6 +27,8 @@ public class PatrolTask : BaseTask
 
     protected override void UnitAction(List<UnitController> units, int i)
     {
+        EndTask();
+        return;
         if (CheckEnemyWithUnit())
         {
             EndTask();

@@ -194,7 +194,6 @@ public class GameBoardWindow : BaseWindow
         _generateSeq.Kill();
     }
     
-    [Button()]
     private void GenerateBoard()
     {
         if(_generatedTiles != null) RemoveBoard();
@@ -220,7 +219,6 @@ public class GameBoardWindow : BaseWindow
         }
     }
 
-    [Button()]
     private void GenerateEnvironment()
     {
         foreach (var vector2Int in _generatedTiles.Keys.ToList())
@@ -262,7 +260,6 @@ public class GameBoardWindow : BaseWindow
         }
     }
     
-    [Button()]
     private void GenerateRuins()
     {
         for (var i = 0; i < countRuin; i++)
@@ -294,7 +291,6 @@ public class GameBoardWindow : BaseWindow
         }
     }
     
-    [Button()]
     private void GenerateWater()
     {
         for (var i = 0; i < countWaterZone; i++)
@@ -306,7 +302,6 @@ public class GameBoardWindow : BaseWindow
         UpdateWaterVisual();
     }
     
-    [Button()]
     private void UpdateWaterVisual()
     {
         foreach (var tile in _generatedTiles.Values.ToList().Where(tile => tile.tileType == Tile.TileType.Water || tile.tileType == Tile.TileType.DeepWater))
@@ -315,7 +310,6 @@ public class GameBoardWindow : BaseWindow
         }
     }
 
-    [Button()]
     private void CreateCivilisations()
     {
         var gameManager = GameManager.Instance;
@@ -354,7 +348,6 @@ public class GameBoardWindow : BaseWindow
         }
     }
     
-    [Button()]
     private void UpdateRuinsVisual()
     {
         foreach (var tile in _generatedTiles.Values.ToList().Where(tile => tile.tileType == Tile.TileType.Water || tile.tileType == Tile.TileType.DeepWater))
@@ -363,7 +356,6 @@ public class GameBoardWindow : BaseWindow
         }
     }
     
-    [Button()]
     private void GenerateVillage()
     {
         for (var i = 0; i < 6; i++)
@@ -399,7 +391,6 @@ public class GameBoardWindow : BaseWindow
         }
     }
 
-    [Button()]
     private void RemoveBoard()
     {
         for (var i = 0; i < _generatedTiles.Count; i++)

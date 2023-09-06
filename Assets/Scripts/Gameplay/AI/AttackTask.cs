@@ -43,10 +43,26 @@ public class AttackTask : BaseTask
             return;
         }
         
-        ExploreCloseTile(units[i]).OnComplete(() =>
+        TaskSeq = DOTween.Sequence();
+        TaskSeq.Join(ExploreCloseTile(units[i]));
+        TaskSeq.OnComplete((() =>
         {
+            TaskSeq = null;
+            if(FuseSeq == null)
+                return;
             UnitAction(units, i+1);
-        });
+        }));
+        
+        var inValX = 0f;
+        FuseSeq = DOTween.Sequence();
+        FuseSeq.Join(DOTween.To(() => inValX, x => inValX = x, 1, 1f));
+        FuseSeq.OnComplete((() =>
+        {
+            FuseSeq = null;
+            if(TaskSeq == null)
+                return;
+            UnitAction(units, i+1);
+        }));
     }
     
     private Tween ExploreCloseTile(UnitController unit)
@@ -90,8 +106,7 @@ public class AttackTask : BaseTask
         {
             var owner = unit.GetOwner().owner;
 
-            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile,
-                unit.GetUnitInfo().rad);
+            var tiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(unit.occupiedTile, 1);
             var allClosetUnits = tiles.FindAll(tile => tile.unitOnTile != null && tile.unitOnTile.GetOwner().owner != owner);
             if (allClosetUnits.Count > 0)
             {

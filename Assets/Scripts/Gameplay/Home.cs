@@ -165,6 +165,7 @@ public class Home : MonoBehaviour
     
     public List<Tile> GetControlledTiles()
     {
+        _controlledTiles ??= new List<Tile>();
         return _controlledTiles;
     }
 
@@ -208,6 +209,8 @@ public class Home : MonoBehaviour
     
     public int GetIncome()
     {
+        if(isIndependent)
+            return 0;
         var homeIncomeStars = 0;
         var i = 0;
         if (_isCapital)
@@ -610,6 +613,8 @@ public class Home : MonoBehaviour
     
     private void BuyStartUnit()
     {
+        if(isIndependent)
+            return;
         if(!homeTile.IsTileFree() || _unitList.Count >= _unitCapacity)
             return;
         var stIndex = owner.civilisationInfo.StartUnitIndex;
@@ -621,6 +626,8 @@ public class Home : MonoBehaviour
     
     public void BuyUnit(int unitIndex, CivilisationInfo.ControlType controlType)
     {
+        if(isIndependent)
+            return;
         if(!homeTile.IsTileFree() || _unitList.Count >= _unitCapacity)
             return;
         if(!homeTile.IsSelected() && controlType == CivilisationInfo.ControlType.Player)

@@ -32,18 +32,43 @@ public class MoveToPointOfInterestTask : BaseTask
             EndTask();
             return;
         }
-        
-        MoveToNearbyPointOfInterest(units[i]).OnComplete(() =>
+        TaskSeq = DOTween.Sequence();
+        TaskSeq.Join(MoveToNearbyPointOfInterest(units[i]));
+        TaskSeq.OnComplete((() =>
         {
+            TaskSeq = null;
+            if(FuseSeq == null)
+                return;
             UnitAction(units, i+1);
-        });
+        }));
+        
+        var inValX = 0f;
+        FuseSeq = DOTween.Sequence();
+        FuseSeq.Join(DOTween.To(() => inValX, x => inValX = x, 1, 1f));
+        FuseSeq.OnComplete((() =>
+        {
+            FuseSeq = null;
+            if(TaskSeq == null)
+                return;
+            UnitAction(units, i+1);
+        }));
+
     }
 
     private Tween MoveToNearbyPointOfInterest(UnitController unit)
     {
         _moveSeq = DOTween.Sequence();
 
-        _moveSeq.Append(unit.MoveToTile(FindPath(unit)));
+        var tile = FindPath(unit);
+        
+        if (tile == unit.occupiedTile)
+        {
+            _moveSeq.Append(unit.transform.DOShakeRotation(0.05f, 10));
+            Debug.Log($"Task - {name} not found path");
+            return _moveSeq;
+        }
+        
+        _moveSeq.Append(unit.MoveToTile(tile));
         
         return _moveSeq;
     }

@@ -53,8 +53,7 @@ public class UnitController : MonoBehaviour
     private Sequence _counterstrikeSeq;
     private int _killCount = 0;
     private int _lvl = 1;
-
-
+    
     public void Init(Home owner, Tile tile, bool isIndependent)
     {
         SetSweatPos();
@@ -479,6 +478,11 @@ public class UnitController : MonoBehaviour
 
     private void SelectEvent(GameObject pastO, GameObject currO)
     {
+        if (currO == null)
+        {
+            SweatingAnimationDisable();
+        }
+        
         if (currO != null && currO == gameObject)
         {
             if (_owner != null && _owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player || _civOwner != null &&
@@ -547,8 +551,12 @@ public class UnitController : MonoBehaviour
                         Infiltrate(tile.GetHomeOnTile());
                         return;
                     }
+
                     if (tile.IsTileFree() && tile.IsCanMoveTo())
+                    {
+                        tile.HideTargets();
                         MoveToTile(tile);
+                    }
                 }
             }
         }
@@ -559,87 +567,87 @@ public class UnitController : MonoBehaviour
         _attSeq = DOTween.Sequence();
         if (unitToAttack._owner.owner == _owner.owner)
             return _attSeq;
-        var pos = transform.localPosition;
-        var rad = 1;
-        if (attackType == AttackType.Range)
-            rad = unitInfo.rad;
-        var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
-        
-        unitToAttack.GetOwner().owner.ChangeAnotherCivRelationAfterAttack(_owner.owner, true);
-        _owner.owner.turnWhenIAttack = LevelManager.Instance.currentTurn;
-        
-        if (unitToAttack.CheckForKill(GetDmg()))
+        if (transform != null)
         {
-            unitToAttack.TakeDamage(this, GetDmg());
-            if (isThisTheNearestTile && attackType == AttackType.Melee)
+            var pos = transform.localPosition;
+            var rad = 1;
+            if (attackType == AttackType.Range)
+                rad = unitInfo.rad;
+            var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
+        
+            unitToAttack.GetOwner().owner.ChangeAnotherCivRelationAfterAttack(_owner.owner, true);
+            _owner.owner.turnWhenIAttack = LevelManager.Instance.currentTurn;
+        
+            if (unitToAttack.CheckForKill(GetDmg()))
             {
-                _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
-                _attackThisTurn = 0; 
-                _moveThisTurn = 0;
-                if(CheckAbility(UnitInfo.AbilityType.Persist)) 
-                    _attackThisTurn = 1;
-                if(CheckAbility(UnitInfo.AbilityType.Escape))
-                    _moveThisTurn = 1;
-            }
-            else
-            {
-                _attackThisTurn = 0; 
-                _moveThisTurn = 0;
-                if(CheckAbility(UnitInfo.AbilityType.Persist)) 
-                    _attackThisTurn = 1;
-                if(CheckAbility(UnitInfo.AbilityType.Escape))
-                    _moveThisTurn = 1;
+                unitToAttack.TakeDamage(this, GetDmg());
+                if (isThisTheNearestTile && attackType == AttackType.Melee)
+                {
+                    _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f));
+                    _attackThisTurn = 0; 
+                    _moveThisTurn = 0;
+                    if(CheckAbility(UnitInfo.AbilityType.Persist)) 
+                        _attackThisTurn = 1;
+                    if(CheckAbility(UnitInfo.AbilityType.Escape))
+                        _moveThisTurn = 1;
+                }
+                else
+                {
+                    _attackThisTurn = 0; 
+                    _moveThisTurn = 0;
+                    if(CheckAbility(UnitInfo.AbilityType.Persist)) 
+                        _attackThisTurn = 1;
+                    if(CheckAbility(UnitInfo.AbilityType.Escape))
+                        _moveThisTurn = 1;
                 
-                var pr = Instantiate(projectilePrefab, transform.parent);
-                pr.transform.localPosition = transform.localPosition;
-                _attSeq.Append(pr.transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
-                {
-                    LevelManager.Instance.SelectObject(null);
-                    SelectUnit();
-                    Destroy(pr.gameObject);
-                })));
-            }
-        }
-        else
-        {
-            _attackThisTurn = 0;
-            _moveThisTurn = 0;
-            if(CheckAbility(UnitInfo.AbilityType.Persist)) 
-                _attackThisTurn = 1;
-            if(CheckAbility(UnitInfo.AbilityType.Escape))
-                _moveThisTurn = 1;
-            if (attackType == AttackType.Melee)
-            {
-                _attSeq.Append(transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
-                {
-                    unitToAttack.TakeDamage(this, GetDmg());
-                    LevelManager.Instance.SelectObject(null);
-                    SelectUnit();
-
-                })));
-                _attSeq.Append(transform.DOLocalMove(pos, 0.1f));
-                if (CheckAbility(UnitInfo.AbilityType.Convert))
-                {
-                    unitToAttack.GetOwner().RemoveUnit(unitToAttack);
-                    unitToAttack.SetOwner(_owner);
+                    var pr = Instantiate(projectilePrefab, transform.parent);
+                    pr.transform.localPosition = transform.localPosition;
+                    _attSeq.Append(pr.transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
+                    {
+                        LevelManager.Instance.SelectObject(null);
+                        //SelectUnit();
+                        Destroy(pr.gameObject);
+                    })));
                 }
             }
             else
             {
-                var pr = Instantiate(projectilePrefab, transform.parent);
-                pr.transform.localPosition = transform.localPosition;
-                _attSeq.Append(pr.transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
+                _attackThisTurn = 0;
+                _moveThisTurn = 0;
+                if(CheckAbility(UnitInfo.AbilityType.Persist)) 
+                    _attackThisTurn = 1;
+                if(CheckAbility(UnitInfo.AbilityType.Escape))
+                    _moveThisTurn = 1;
+                if (attackType == AttackType.Melee)
                 {
-                    unitToAttack.TakeDamage(this, GetDmg());
-                    LevelManager.Instance.SelectObject(null);
-                    SelectUnit();
-                    Destroy(pr.gameObject);
-                })));
-            } 
-            _attSeq.Append(unitToAttack.Counterstrike(this));
+                    _attSeq.Append(transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
+                    {
+                        unitToAttack.TakeDamage(this, GetDmg());
+                        LevelManager.Instance.SelectObject(null);
+                        //SelectUnit();
+                        if (CheckAbility(UnitInfo.AbilityType.Convert))
+                        {
+                            unitToAttack.GetOwner().RemoveUnit(unitToAttack);
+                            unitToAttack.SetOwner(_owner);
+                        }
+                    })));
+                    _attSeq.Append(transform.DOLocalMove(pos, 0.1f));
+                }
+                else
+                {
+                    var pr = Instantiate(projectilePrefab, transform.parent);
+                    pr.transform.localPosition = transform.localPosition;
+                    _attSeq.Append(pr.transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
+                    {
+                        unitToAttack.TakeDamage(this, GetDmg());
+                        LevelManager.Instance.SelectObject(null);
+                        //SelectUnit();
+                        Destroy(pr.gameObject);
+                    })));
+                } 
+                _attSeq.Append(unitToAttack.Counterstrike(this));
+            }
         }
-        
-        
         
         return _attSeq;
     }
@@ -671,8 +679,8 @@ public class UnitController : MonoBehaviour
                 _counterstrikeSeq.Append(transform.DOLocalMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDefDmg());
+                    _counterstrikeSeq.Join(transform.DOLocalMove(pos, 0.1f));
                 })));
-                _counterstrikeSeq.Append(transform.DOLocalMove(pos, 0.1f));
             }
             else
             {

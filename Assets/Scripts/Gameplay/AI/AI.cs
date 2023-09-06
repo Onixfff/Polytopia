@@ -105,7 +105,7 @@ public class AI : MonoBehaviour
                         break;
                 }
                 
-                Debug.Log(intTypes[rand]);
+                //Debug.Log(intTypes[rand]);
                 return;
             }
 
@@ -414,6 +414,7 @@ public class AI : MonoBehaviour
     {
         var homes = _controller.homes;
         homes.RemoveAll(home => home.owner != _controller);
+        homes.Add(_controller.independentHome);
         _allUnits ??= new List<UnitController>();
         foreach (var home in homes)
         {

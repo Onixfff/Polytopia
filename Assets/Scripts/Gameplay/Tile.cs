@@ -451,7 +451,7 @@ public class Tile : MonoBehaviour
         redTargetImage.gameObject.SetActive(false);
         if (unitOnTile != null)
         {
-            unitOnTile.SweatingAnimationDisable();
+            //unitOnTile.SweatingAnimationDisable();
         }
     }
     

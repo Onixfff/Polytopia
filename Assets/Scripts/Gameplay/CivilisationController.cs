@@ -117,6 +117,8 @@ public class CivilisationController : MonoBehaviour
                 var incomePoint = 0;
                 foreach (var home in homes)
                 {
+                    if(home.isIndependent)
+                        continue;
                     if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
                         continue;
                     incomePoint += home.GetIncomePoint();
@@ -137,7 +139,6 @@ public class CivilisationController : MonoBehaviour
             };
         }
         
-
         void InitIndependentHome()
         {
             independentHome.Init(this, null);
@@ -149,6 +150,8 @@ public class CivilisationController : MonoBehaviour
         var income = 0;
         foreach (var home in homes)
         {
+            if(home.isIndependent)
+                continue;
             if(home.homeTile.unitOnTile != null && home.homeTile.unitOnTile.GetOwner().owner != this)
                 continue;
             income += home.GetIncome();

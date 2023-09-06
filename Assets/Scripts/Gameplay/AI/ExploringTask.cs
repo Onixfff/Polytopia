@@ -20,11 +20,6 @@ public class ExploringTask : BaseTask
 
     protected override void UnitAction(List<UnitController> units, int i)
     {
-        if (CheckInterestingPlace())
-        {
-            EndTask();
-            return;
-        }
         if (units.Count <= i)
         {
             if (CheckInterestingPlace())
@@ -36,10 +31,26 @@ public class ExploringTask : BaseTask
             return;
         }
         
-        ExploreCloseTile(units[i]).OnComplete(() =>
+        TaskSeq = DOTween.Sequence();
+        TaskSeq.Join(ExploreCloseTile(units[i]));
+        TaskSeq.OnComplete((() =>
         {
+            TaskSeq = null;
+            if(FuseSeq == null)
+                return;
             UnitAction(units, i+1);
-        });
+        }));
+        
+        var inValX = 0f;
+        FuseSeq = DOTween.Sequence();
+        FuseSeq.Join(DOTween.To(() => inValX, x => inValX = x, 1, 1f));
+        FuseSeq.OnComplete((() =>
+        {
+            FuseSeq = null;
+            if(TaskSeq == null)
+                return;
+            UnitAction(units, i+1);
+        }));
     }
     
     private Tween ExploreCloseTile(UnitController unit)
@@ -49,6 +60,13 @@ public class ExploringTask : BaseTask
         var dur = 0f;
         if (unit.occupiedTile.isOpened || tile.isOpened)
             dur = 0.2f;
+        if (tile == unit.occupiedTile)
+        {
+            _exploreSeq.Append(unit.transform.DOShakeRotation(0.05f, 10));
+            Debug.Log($"Task - {name} not found path");
+            return _exploreSeq;
+        }
+        
         _exploreSeq.Append(unit.MoveToTile(tile, dur));
         return _exploreSeq;
     }
@@ -73,6 +91,10 @@ public class ExploringTask : BaseTask
         
         foreach (var tile in board.GetCloseTile(unit.occupiedTile, neededRad))
         {
+            if(tile.tileType is Tile.TileType.Water or Tile.TileType.DeepWater)
+                continue;
+            if(!tile.IsTileFree())
+                continue;
             if(TaskManager.civilisationController.GetTileInExploreList().Contains(tile))
                 continue;
             
@@ -109,6 +131,11 @@ public class ExploringTask : BaseTask
                     return true;
                 }
 
+                if (tile.GetOwner() != null && tile.GetOwner().owner != unit.GetOwner().owner)
+                {
+                    if(tile.GetOwner().owner != null)
+                        TryAddPointOfInteresting(tile.pos);
+                }
                 if (tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != unit.GetOwner().owner)
                 {
                     if(tile.GetHomeOnTile().owner != null)
