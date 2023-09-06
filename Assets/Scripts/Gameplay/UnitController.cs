@@ -54,6 +54,7 @@ public class UnitController : MonoBehaviour
     private int _killCount = 0;
     private int _lvl = 1;
 
+
     public void Init(Home owner, Tile tile, bool isIndependent)
     {
         SetSweatPos();
@@ -558,7 +559,7 @@ public class UnitController : MonoBehaviour
         _attSeq = DOTween.Sequence();
         if (unitToAttack._owner.owner == _owner.owner)
             return _attSeq;
-        var pos = transform.position;
+        var pos = transform.localPosition;
         var rad = 1;
         if (attackType == AttackType.Range)
             rad = unitInfo.rad;
@@ -590,8 +591,8 @@ public class UnitController : MonoBehaviour
                     _moveThisTurn = 1;
                 
                 var pr = Instantiate(projectilePrefab, transform.parent);
-                pr.transform.position = transform.position;
-                _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                pr.transform.localPosition = transform.localPosition;
+                _attSeq.Append(pr.transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
                 {
                     LevelManager.Instance.SelectObject(null);
                     SelectUnit();
@@ -609,14 +610,14 @@ public class UnitController : MonoBehaviour
                 _moveThisTurn = 1;
             if (attackType == AttackType.Melee)
             {
-                _attSeq.Append(transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                _attSeq.Append(transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDmg());
                     LevelManager.Instance.SelectObject(null);
                     SelectUnit();
 
                 })));
-                _attSeq.Append(transform.DOMove(pos, 0.1f));
+                _attSeq.Append(transform.DOLocalMove(pos, 0.1f));
                 if (CheckAbility(UnitInfo.AbilityType.Convert))
                 {
                     unitToAttack.GetOwner().RemoveUnit(unitToAttack);
@@ -626,8 +627,8 @@ public class UnitController : MonoBehaviour
             else
             {
                 var pr = Instantiate(projectilePrefab, transform.parent);
-                pr.transform.position = transform.position;
-                _attSeq.Append(pr.transform.DOMove(unitToAttack.transform.position, 0.1f).OnComplete((() =>
+                pr.transform.localPosition = transform.localPosition;
+                _attSeq.Append(pr.transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDmg());
                     LevelManager.Instance.SelectObject(null);
@@ -657,27 +658,27 @@ public class UnitController : MonoBehaviour
         var rad = 1;
         if (attackType == AttackType.Range)
             rad = unitInfo.rad;
-        var pos = transform.position;
+        var pos = transform.localPosition;
         var isThisTheNearestTile = LevelManager.Instance.gameBoardWindow.IsThisTheNearestTile(unitToAttack.occupiedTile, occupiedTile, rad);
         if (!isThisTheNearestTile)
             return _counterstrikeSeq;
-        var unitToAttackPos = unitToAttack.transform.position;
+        var unitToAttackPos = unitToAttack.transform.localPosition;
         
         if (unitToAttack.CheckForKill(GetDefDmg()))
         {
             if (attackType == AttackType.Melee)
             {
-                _counterstrikeSeq.Append(transform.DOMove(unitToAttackPos, 0.1f).OnComplete((() =>
+                _counterstrikeSeq.Append(transform.DOLocalMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDefDmg());
                 })));
-                _counterstrikeSeq.Append(transform.DOMove(pos, 0.1f));
+                _counterstrikeSeq.Append(transform.DOLocalMove(pos, 0.1f));
             }
             else
             {
                 var pr = Instantiate(projectilePrefab, transform.parent);
-                pr.transform.position = transform.position;
-                _attSeq.Append(pr.transform.DOMove(unitToAttackPos, 0.1f).OnComplete((() =>
+                pr.transform.localPosition = transform.localPosition;
+                _attSeq.Append(pr.transform.DOLocalMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDefDmg());
                     Destroy(pr.gameObject);
@@ -688,17 +689,17 @@ public class UnitController : MonoBehaviour
         {
             if (attackType == AttackType.Melee)
             {
-                _counterstrikeSeq.Append(transform.DOMove(unitToAttackPos, 0.1f).OnComplete((() =>
+                _counterstrikeSeq.Append(transform.DOLocalMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDefDmg());
                 })));
-                _counterstrikeSeq.Append(transform.DOMove(pos, 0.1f));
+                _counterstrikeSeq.Append(transform.DOLocalMove(pos, 0.1f));
             }
             else
             {
                 var pr = Instantiate(projectilePrefab, transform.parent);
-                pr.transform.position = transform.position;
-                _attSeq.Append(pr.transform.DOMove(unitToAttackPos, 0.1f).OnComplete((() =>
+                pr.transform.localPosition = transform.localPosition;
+                _counterstrikeSeq.Append(pr.transform.DOLocalMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDefDmg());
                     Destroy(pr.gameObject);
@@ -887,11 +888,19 @@ public class UnitController : MonoBehaviour
     [SerializeField] private AnimationCurve unitSelectAnimationCurve;
     [SerializeField] private float unitSelectAnimHeight = 0.5f;
     [SerializeField] private float unitSelectAnimTime = 0.4f;
+    private Tween _selectJump;
 
     
     private void AnimSelect()
     {
-        transform.DOMoveY(transform.position.y + unitSelectAnimHeight, unitSelectAnimTime).SetEase(unitSelectAnimationCurve);
+        if(_selectJump != null) return;
+        
+        _selectJump = transform.DOLocalMoveY(transform.localPosition.y + unitSelectAnimHeight, unitSelectAnimTime).SetEase(unitSelectAnimationCurve).OnComplete((
+            () =>
+            {
+                _selectJump.Kill();
+                _selectJump = null;
+            }));
     }
     
     #endregion
