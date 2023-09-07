@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.SO;
@@ -8,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class Home : MonoBehaviour
 {
+    
     public enum HomeType
     {
         Village,
@@ -31,7 +33,7 @@ public class Home : MonoBehaviour
     [SerializeField] private Transform blockParent;
 
     #region private
-    
+
     private List<UnitController> _unitList;
     private List<Tile> _controlledTiles;
     private HomeInfo _homeInfo;
@@ -174,7 +176,8 @@ public class Home : MonoBehaviour
         if (owner == null) return;
         if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
         {
-            LevelManager.Instance.gameplayWindow.ShowHomeButton();
+            if(homeTile.IsTileFree())
+                LevelManager.Instance.gameplayWindow.ShowHomeButton();
         }
     }
 
@@ -360,7 +363,6 @@ public class Home : MonoBehaviour
             }
         }
         RemoveAllFood();
-        RemoveUnitBlocks();
         _foodCount = 0;
         _foodFromNextLvl++;
         
@@ -410,28 +412,14 @@ public class Home : MonoBehaviour
             }
             AddFood(leftovers);
         }
-
-        ReturnUnitBlocks();
+        
+        ChangeUnitBlock();
         
         void RemoveAllFood()
         {
             foreach (var foodBlock in homeFoodBlocks)
             {
                 foodBlock.transform.GetChild(0).gameObject.SetActive(false);
-            }
-        }
-        void RemoveUnitBlocks()
-        {
-            for (int i = 0; i < _unitList.Count; i++)
-            {
-                ChangeUnitBlock(false);
-            }
-        }
-        void ReturnUnitBlocks()
-        {
-            for (int i = 0; i < _unitList.Count; i++)
-            {
-                ChangeUnitBlock(true);
             }
         }
     }
@@ -480,7 +468,6 @@ public class Home : MonoBehaviour
         HideOccupyButton();
         Init(homeTile.unitOnTile.GetOwner().owner, homeTile);
         homeTile.unitOnTile.SetOwner(this);
-        ChangeUnitBlock(true);
         AddUnit(homeTile.unitOnTile);
     }
 
@@ -517,23 +504,16 @@ public class Home : MonoBehaviour
         LevelManager.Instance.gameplayWindow.OnUnitSpawn -= BuyUnit;
     }
     
-    private void ChangeUnitBlock(bool isAdd)
+    private void ChangeUnitBlock()
     {
-        if (isAdd)
+        foreach (var homeFoodBlock in homeFoodBlocks)
         {
-            if (_unitList.Count-1 >= 0 && _unitList.Count-1 < homeFoodBlocks.Count)
-            {
-                var a = homeFoodBlocks[_unitList.Count-1];
-                a.transform.GetChild(1).gameObject.SetActive(true);
-            }
+            homeFoodBlock.transform.GetChild(1).gameObject.SetActive(false);
         }
-        else
+
+        for (var i = 0; i < _unitList.Count; i++)
         {
-            if (_unitList.Count-1 >= 0 && _unitList.Count-1 < homeFoodBlocks.Count)
-            {
-                var a = homeFoodBlocks[_unitList.Count-1];
-                a.transform.GetChild(1).gameObject.SetActive(false);
-            }
+            homeFoodBlocks[i].transform.GetChild(1).gameObject.SetActive(true);
         }
     }
     
@@ -646,7 +626,7 @@ public class Home : MonoBehaviour
     {
         _unitList ??= new List<UnitController>();
         _unitList.Add(unit);
-        ChangeUnitBlock(true);
+        ChangeUnitBlock();
     }
     
     public void RemoveUnit(UnitController unit)
@@ -654,10 +634,9 @@ public class Home : MonoBehaviour
         if (_unitList != null)
         {
             _unitList.Remove(unit);
-            ChangeUnitBlock(false);
+            ChangeUnitBlock();
         }
     }
-
 
     #endregion
 }

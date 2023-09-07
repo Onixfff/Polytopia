@@ -100,6 +100,7 @@ public class UnitController : MonoBehaviour
             visual.color = Color.white;
         }
     }
+    
     public void DisableUnit()
     {
         foreach (var visual in unitVisual)
@@ -315,28 +316,28 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public int GetDmg()
+    public int GetDmg(UnitController unitToAttack)
     {
         if (unitInfo.dmg == 0)
             return 0;
         var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
-        var defenseForce = unitInfo.def * (_hp / unitInfo.hp) * GetDefenseBonus();
+        var defenseForce = unitToAttack.unitInfo.def * (unitToAttack._hp / unitToAttack.unitInfo.hp) * unitToAttack.GetDefenseBonus();
         var totalDamage = attackForce + defenseForce;
-        var attackResult = Mathf.Round((attackForce / totalDamage) * unitInfo.dmg * 4.5f); 
-        var defenseResult = Mathf.Round((defenseForce / totalDamage) * unitInfo.def * 4.5f);
-        return (int)attackResult;
+        var attackResult = Mathf.RoundToInt((attackForce / totalDamage) * unitInfo.dmg * 4.5f); 
+        var defenseResult = Mathf.RoundToInt((defenseForce / totalDamage) * unitToAttack.unitInfo.def * 4.5f);
+        return attackResult;
     }
     
-    public int GetDefDmg()
+    public int GetDefDmg(UnitController unitToAttack)
     {
         if (unitInfo.dmg == 0)
             return 0;
         var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
-        var defenseForce = unitInfo.def * (_hp / unitInfo.hp) * GetDefenseBonus();
+        var defenseForce = unitToAttack.unitInfo.def * (unitToAttack._hp / unitToAttack.unitInfo.hp) * unitToAttack.GetDefenseBonus();
         var totalDamage = attackForce + defenseForce;
-        var attackResult = Mathf.Round((attackForce / totalDamage) * unitInfo.dmg * 4.5f);
-        var defenseResult = Mathf.Round((defenseForce / totalDamage) * unitInfo.def * 4.5f);
-        return (int)defenseResult;
+        var attackResult = Mathf.RoundToInt((attackForce / totalDamage) * unitInfo.dmg * 4.5f); 
+        var defenseResult = Mathf.RoundToInt((defenseForce / totalDamage) * unitToAttack.unitInfo.def * 4.5f);
+        return defenseResult;
     }
     
     public bool IsThisUnitAlly(CivilisationController controller)
@@ -430,7 +431,6 @@ public class UnitController : MonoBehaviour
         }
         
         _moveSeq = DOTween.Sequence();
-        aiFromTile = occupiedTile;
         var anchorPos = to.GetComponent<RectTransform>().anchoredPosition;
         transform.SetSiblingIndex(transform.parent.childCount);
         var inValX = rectTransform.anchoredPosition.x;
@@ -660,9 +660,9 @@ public class UnitController : MonoBehaviour
             unitToAttack.GetOwner().owner.ChangeAnotherCivRelationAfterAttack(_owner.owner, true);
             _owner.owner.turnWhenIAttack = LevelManager.Instance.currentTurn;
         
-            if (unitToAttack.CheckForKill(GetDmg()))
+            if (unitToAttack.CheckForKill(GetDmg(unitToAttack)))
             {
-                unitToAttack.TakeDamage(this, GetDmg());
+                unitToAttack.TakeDamage(this, GetDmg(unitToAttack));
                 if (isThisTheNearestTile && attackType == AttackType.Melee)
                 {
                     _attSeq.Append(MoveToTile(unitToAttack.occupiedTile, 0.1f).OnComplete((() =>
@@ -689,7 +689,7 @@ public class UnitController : MonoBehaviour
                 {
                     _attSeq.Append(transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
                     {
-                        unitToAttack.TakeDamage(this, GetDmg());
+                        unitToAttack.TakeDamage(this, GetDmg(unitToAttack));
                         LevelManager.Instance.SelectObject(null);
                         AfterAttack();
                         if (CheckAbility(UnitInfo.AbilityType.Convert))
@@ -706,7 +706,7 @@ public class UnitController : MonoBehaviour
                     pr.transform.localPosition = transform.localPosition;
                     _attSeq.Append(pr.transform.DOLocalMove(unitToAttack.transform.localPosition, 0.1f).OnComplete((() =>
                     {
-                        unitToAttack.TakeDamage(this, GetDmg());
+                        unitToAttack.TakeDamage(this, GetDmg(unitToAttack));
                         LevelManager.Instance.SelectObject(null);
                         //SelectUnit();
                         Destroy(pr.gameObject);
@@ -760,13 +760,13 @@ public class UnitController : MonoBehaviour
             return _counterstrikeSeq;
         var unitToAttackPos = unitToAttack.transform.localPosition;
         
-        if (unitToAttack.CheckForKill(GetDefDmg()))
+        if (unitToAttack.CheckForKill(GetDefDmg(unitToAttack)))
         {
             if (attackType == AttackType.Melee)
             {
                 _counterstrikeSeq.Append(transform.DOLocalMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(this, GetDefDmg());
+                    unitToAttack.TakeDamage(this, GetDefDmg(unitToAttack));
                     _counterstrikeSeq.Join(transform.DOLocalMove(pos, 0.1f));
                 })));
             }
@@ -776,7 +776,7 @@ public class UnitController : MonoBehaviour
                 pr.transform.localPosition = transform.localPosition;
                 _attSeq.Append(pr.transform.DOLocalMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(this, GetDefDmg());
+                    unitToAttack.TakeDamage(this, GetDefDmg(unitToAttack));
                     Destroy(pr.gameObject);
                 })));
             }
@@ -787,7 +787,7 @@ public class UnitController : MonoBehaviour
             {
                 _counterstrikeSeq.Append(transform.DOLocalMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(this, GetDefDmg());
+                    unitToAttack.TakeDamage(this, GetDefDmg(unitToAttack));
                 })));
                 _counterstrikeSeq.Append(transform.DOLocalMove(pos, 0.1f));
             }
@@ -797,7 +797,7 @@ public class UnitController : MonoBehaviour
                 pr.transform.localPosition = transform.localPosition;
                 _counterstrikeSeq.Append(pr.transform.DOLocalMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
-                    unitToAttack.TakeDamage(this, GetDefDmg());
+                    unitToAttack.TakeDamage(this, GetDefDmg(unitToAttack));
                     Destroy(pr.gameObject);
                 })));
             }
@@ -852,11 +852,9 @@ public class UnitController : MonoBehaviour
         KillUnit();
     }
 
-    private int GetDefenseBonus()
+    private float GetDefenseBonus()
     {
-        var bonus = 0;
-        bonus += occupiedTile.GetGroundDefense();
-        return bonus;
+        return occupiedTile.GetGroundDefense();
     }
 
     private void Infiltrate(Home home)
@@ -1010,6 +1008,4 @@ public class UnitController : MonoBehaviour
     #endregion
     
     public string aiName = "unit1";
-    public Home aiHomeExploring;
-    public Tile aiFromTile;
 }
