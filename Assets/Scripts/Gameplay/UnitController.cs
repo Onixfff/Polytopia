@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -73,15 +74,8 @@ public class UnitController : MonoBehaviour
         else
             SetIndependentOwner(owner);
         LevelManager.Instance.OnObjectSelect += SelectEvent;
-        LevelManager.Instance.OnTurnEnd += () =>
-        {
-            _isCanSelected = false;
-        };
-        LevelManager.Instance.OnTurnBegin += () =>
-        {
-            _isCanSelected = true;
-            EnableUnit();
-        };
+        LevelManager.Instance.OnTurnEnd += DisableUnit;
+        LevelManager.Instance.OnTurnBegin += EnableUnit;
 
         
         _hp = unitInfo.hp;
@@ -93,16 +87,26 @@ public class UnitController : MonoBehaviour
 
     public void EnableUnit()
     {
+        _isCanSelected = true;
         _moveThisTurn = 1;
         _attackThisTurn = 1;
         foreach (var visual in unitVisual)
         {
-            visual.color = Color.white;
+            try
+            {
+                visual.color = Color.white;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                throw;
+            }
         }
     }
     
     public void DisableUnit()
     {
+        _isCanSelected = false;
         foreach (var visual in unitVisual)
         {
             visual.color = disableColor;
@@ -547,6 +551,8 @@ public class UnitController : MonoBehaviour
     {
         LevelManager.Instance.OnObjectSelect -= SelectEvent;
 
+        LevelManager.Instance.OnTurnEnd -= DisableUnit;
+        LevelManager.Instance.OnTurnBegin -= EnableUnit;
         _moveSeq.Kill();
         _attSeq.Kill();
         _counterstrikeSeq.Kill();

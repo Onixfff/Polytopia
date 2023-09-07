@@ -506,6 +506,8 @@ public class Home : MonoBehaviour
     
     private void ChangeUnitBlock()
     {
+        if(isIndependent)
+            return;
         foreach (var homeFoodBlock in homeFoodBlocks)
         {
             homeFoodBlock.transform.GetChild(1).gameObject.SetActive(false);
