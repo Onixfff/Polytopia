@@ -129,6 +129,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4529608438999654981}
     m_Modifications:
+    - target: {fileID: 703268621588966122, guid: 28431cab75bda174fbd961bba192170f, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2164506077844567469, guid: 28431cab75bda174fbd961bba192170f, type: 3}
       propertyPath: m_Name
       value: Horse
@@ -377,6 +381,10 @@ PrefabInstance:
     - target: {fileID: 6734263174060406809, guid: a23ee580e8d85074e9b146da65f0e539, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691438827684037130, guid: a23ee580e8d85074e9b146da65f0e539, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8199483110698484134, guid: a23ee580e8d85074e9b146da65f0e539, type: 3}
       propertyPath: m_Name

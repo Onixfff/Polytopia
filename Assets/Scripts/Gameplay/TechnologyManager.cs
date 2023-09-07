@@ -1,294 +1,101 @@
 using System;
 using System.Collections.Generic;
 using Gameplay.SO;
+using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TechnologyManager : MonoBehaviour
 {
     public Action OnTechBuy;
-    
-    [SerializeField] private Button ridingButton;
-    [SerializeField] private Button roadsButton;
-    [SerializeField] private Button tradeButton;
-    [SerializeField] private Button freeSpiritButton;
-    [SerializeField] private Button chivalryButton;
-    
-    [SerializeField] private Button gatheringButton;
-    [SerializeField] private Button farmingButton;
-    [SerializeField] private Button constructButton;
-    [SerializeField] private Button strategyButton;
-    [SerializeField] private Button diplomacyButton;
-    
-    [SerializeField] private Button mountainButton;
-    [SerializeField] private Button miningButton;
-    [SerializeField] private Button forgeButton;
-    [SerializeField] private Button meditationButton;
-    [SerializeField] private Button philosophyButton;
-    
-    [SerializeField] private Button fishingButton;
-    [SerializeField] private Button sailingButton;
-    [SerializeField] private Button navigationButton;
-    [SerializeField] private Button whalingButton;
-    [SerializeField] private Button aquaButton;
-    
-    [SerializeField] private Button huntingButton;
-    [SerializeField] private Button forestryButton;
-    [SerializeField] private Button mathematicsButton;
-    [SerializeField] private Button archeryButton;
-    [SerializeField] private Button spiritualismButton;
-    
-    [SerializeField] private int priceFirstTier = 1;
-    [SerializeField] private int priceTwoTier = 2;
-    [SerializeField] private int priceThreeTier = 3;
-    
-    [SerializeField] private GameObject techObject;
-
-    public void Init()
+        
+    public void OpenTech(TechIcon techIcon, int price)
     {
-        #region Rider
-
-        ridingButton.onClick.AddListener(() =>
+        if (gameObject.activeSelf && !TryBuyTech(CalculatePrice(price)))
         {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceFirstTier)))
-            {
-                UnlockButtons(ridingButton, priceFirstTier, new List<Button>() { freeSpiritButton, roadsButton });
-                RidingTech();
-            }
-        });
-        roadsButton.onClick.AddListener(() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceTwoTier)))
-            {
-                UnlockButtons(roadsButton, priceTwoTier, new List<Button>() { tradeButton });
-                RoadsTech();
-            }
-        });
-        tradeButton.onClick.AddListener(() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceThreeTier)))
-            {
-                UnlockButtons(tradeButton, priceThreeTier);
-                TradeTech();
-            }
-        });
-        freeSpiritButton.onClick.AddListener(() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceTwoTier)))
-            {
-                UnlockButtons(freeSpiritButton, priceTwoTier, new List<Button>() { chivalryButton });
-                FreeSpiritTech();
-            }
-        });
-        chivalryButton.onClick.AddListener(() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceThreeTier)))
-            {
-                UnlockButtons(chivalryButton, priceThreeTier);
-                ChivalryTech();
-            }
-        });
-
-        #endregion
-
-        #region Gathering
-
-        gatheringButton.onClick.AddListener(() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceFirstTier)))
-            {
-                UnlockButtons(gatheringButton, priceFirstTier, new List<Button>() { farmingButton, strategyButton });
-                GatheringTech();
-            }
-        });
-        farmingButton.onClick.AddListener(() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceTwoTier)))
-            {
-                UnlockButtons(farmingButton, priceTwoTier, new List<Button>() { constructButton });
-                FarmingTech();
-            }
-        });
-        constructButton.onClick.AddListener(() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceThreeTier)))
-            {
-                UnlockButtons(constructButton, priceThreeTier);
-                ConstructionTech();
-            }
-        });
-        strategyButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceTwoTier)))
-            {
-                UnlockButtons(strategyButton, priceTwoTier, new List<Button>() { diplomacyButton });
-                StrategyTech();
-            }
-        }));
-        diplomacyButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceThreeTier)))
-            {
-                UnlockButtons(diplomacyButton, priceThreeTier);
-                DiplomacyTech();
-            }
-        }));
-
-        #endregion
-
-        #region Mountain
-
-        mountainButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceFirstTier)))
-            {
-                UnlockButtons(mountainButton, priceFirstTier, new List<Button>() { miningButton, meditationButton });
-                MountainTech();
-            }
-        }));
-        miningButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceTwoTier)))
-            {
-                UnlockButtons(miningButton, priceTwoTier, new List<Button>() { forgeButton });
-                MiningTech();
-            }
-        }));
-        forgeButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceThreeTier)))
-            {
-                UnlockButtons(forgeButton, priceThreeTier);
-                ForgeTech();
-            }
-        }));
-        meditationButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceTwoTier)))
-            {
-                UnlockButtons(meditationButton, priceTwoTier, new List<Button>() { philosophyButton });
-                MeditationTech();
-            }
-        }));
-        philosophyButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceThreeTier)))
-            {
-                UnlockButtons(philosophyButton, priceThreeTier);
-                PhilosophyTech();
-            }
-        }));
-
-        #endregion
-
-        #region Fish
-
-        fishingButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceFirstTier)))
-            {
-                UnlockButtons(fishingButton, priceFirstTier, new List<Button>() { sailingButton, whalingButton });
-                FishingTech();
-            }
-        }));
-        sailingButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceTwoTier)))
-            {
-                UnlockButtons(sailingButton, priceTwoTier, new List<Button>() { navigationButton });
-                SailingTech();
-            }
-        }));
-        navigationButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceThreeTier)))
-            {
-                UnlockButtons(navigationButton, priceThreeTier);
-                NavigationTech();
-            }
-        }));
-        whalingButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceTwoTier)))
-            {
-                UnlockButtons(whalingButton, priceTwoTier, new List<Button>() { aquaButton });
-                WhalingTech();
-            }
-        }));
-        aquaButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceThreeTier)))
-            {
-                UnlockButtons(aquaButton, priceThreeTier);
-                AquatismTech();
-            }
-        }));
-
-        #endregion
-
-        #region Hunt
-
-        huntingButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceFirstTier)))
-            {
-                UnlockButtons(huntingButton, priceFirstTier, new List<Button>() { archeryButton, forestryButton });
-                HuntingTech();
-            }
-        }));
-        archeryButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceTwoTier)))
-            {
-                UnlockButtons(archeryButton, priceTwoTier, new List<Button>() { spiritualismButton });
-                ArcheryTech();
-            }
-        }));
-        spiritualismButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceThreeTier)))
-            {
-                UnlockButtons(spiritualismButton, priceThreeTier);
-                SpiritualismTech();
-            }
-        }));
-        forestryButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceTwoTier)))
-            {
-                UnlockButtons(forestryButton, priceTwoTier, new List<Button>() { mathematicsButton });
-                ForestryTech();
-            }
-        }));
-        mathematicsButton.onClick.AddListener((() =>
-        {
-            if (!techObject.activeSelf || TryBuyTech(CalculatePrice(priceThreeTier)))
-            {
-                UnlockButtons(mathematicsButton, priceThreeTier);
-                MathematicsTech();
-            }
-        }));
-
-        #endregion
-    }
-
-    private void UnlockButtons(Button thisButton, int price, List<Button> buttons = null)
-    {
-        thisButton.GetComponent<TechIcon>().BuyTech();
-        if (buttons == null)
-        {
-            OnTechBuy?.Invoke();
             return;
         }
-        
-        foreach (var button in buttons)
-        {
-            var techIcon = button.GetComponent<TechIcon>();
-            techIcon.UnlockTech();
-        }
         OnTechBuy?.Invoke();
+        
+        switch (techIcon.type)
+        {
+            case TechInfo.Technology.Rider:
+                    RidingTech();
+                    break;
+            case TechInfo.Technology.Gather:
+                GatheringTech();
+                break;
+            case TechInfo.Technology.Mountain:
+                MountainTech();
+                break;
+            case TechInfo.Technology.Fish:
+                FishingTech();
+                break;
+            case TechInfo.Technology.Hunt:
+                HuntingTech();
+                break;
+            case TechInfo.Technology.Roads:
+                RoadsTech();
+                break;
+            case TechInfo.Technology.FreeSpirit:
+                FreeSpiritTech();
+                break;
+            case TechInfo.Technology.Farming:
+                FarmingTech();
+                break;
+            case TechInfo.Technology.Strategy:
+                StrategyTech();
+                break;
+            case TechInfo.Technology.Mining:
+                MiningTech();
+                break;
+            case TechInfo.Technology.Meditation:
+                MeditationTech();
+                break;
+            case TechInfo.Technology.Sailing:
+                SailingTech();
+                break;
+            case TechInfo.Technology.Whaling:
+                WhalingTech();
+                break;
+            case TechInfo.Technology.Archery:
+                ArcheryTech();
+                break;
+            case TechInfo.Technology.Forestry:
+                ForestryTech();
+                break;
+            case TechInfo.Technology.Trade:
+                TradeTech();
+                break;
+            case TechInfo.Technology.Chivalry:
+                ChivalryTech();
+                break;
+            case TechInfo.Technology.Construction:
+                ConstructionTech();
+                break;
+            case TechInfo.Technology.Diplomacy:
+                DiplomacyTech();
+                break;
+            case TechInfo.Technology.Forge:
+                ForgeTech();
+                break;
+            case TechInfo.Technology.Philosophy:
+                PhilosophyTech();
+                break;
+            case TechInfo.Technology.Navigation:
+                NavigationTech();
+                break;
+            case TechInfo.Technology.Aqua:
+                AquatismTech();
+                break;
+            case TechInfo.Technology.Spiritualism:
+                SpiritualismTech();
+                break;
+            case TechInfo.Technology.Mathematics:
+                MathematicsTech();
+                break;
+        }
     }
-
+    
     private int CalculatePrice(int price)
     {
         var techPrice = price;
