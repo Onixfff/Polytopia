@@ -1416,6 +1416,50 @@ MonoBehaviour:
   blockScrollView: {fileID: 3871750023425239144}
   wallObject: {fileID: 3054064837252873413}
   blockParent: {fileID: 5830053041257017267}
+  unitSelectAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.042451575
+      value: 0.24231924
+      inSlope: 0.1052111
+      outSlope: 0.1052111
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.24685588
+    - serializedVersion: 3
+      time: 0.0871783
+      value: 0.04795369
+      inSlope: -4.5206923
+      outSlope: -4.5206923
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.8504699
+    - serializedVersion: 3
+      time: 0.095981285
+      value: 0.0005468433
+      inSlope: -7.9059715
+      outSlope: -7.9059715
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.063013494
+      outWeight: 1
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  unitSelectAnimHeight: 15
+  unitSelectAnimTime: 0.2
 --- !u!114 &7381656535337510055
 MonoBehaviour:
   m_ObjectHideFlags: 0

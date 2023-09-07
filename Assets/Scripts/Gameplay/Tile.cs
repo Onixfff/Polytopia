@@ -65,36 +65,35 @@ public class Tile : MonoBehaviour
     private bool _isSelected;
     private bool _isUnitSelected;
     private bool _isHomeSelected;
-    private int _groundDefense = 0;
     private Home _homeOnTile;
     private Home _owner;
     private List<GameplayWindow.OpenedTechType> _techTypes;
     private Tween _timeTargetTween;
 
-    public int GetGroundDefense()
+    public float GetGroundDefense()
     {
-        _groundDefense = 0;
+        var groundDefense = 0f;
         if (_homeOnTile != null)
         {
-            _groundDefense = 1;
+            groundDefense = 1.5f;
             if (_homeOnTile.isHaveWall)
-                _groundDefense = 2;
+                groundDefense = 4;
         }
         if (isHasMountain)
-            _groundDefense = 1;
+            groundDefense = 1;
         if (unitOnTile != null)
         {
             if (unitOnTile.GetOwner().owner.technologies.Contains(TechInfo.Technology.Aqua) && (tileType == TileType.Water || tileType == TileType.DeepWater))
             {
-                _groundDefense = 1;
+                groundDefense = 1.5f;
             }
             if (unitOnTile.GetOwner().owner.technologies.Contains(TechInfo.Technology.Archery) && treeTileImage != null && treeTileImage.enabled && treeTileImage.gameObject.activeSelf)
             {
-                _groundDefense = 1;
+                groundDefense = 1.5f;
             }
         }
 
-        return _groundDefense;
+        return groundDefense;
     }
     
     public bool IsSelected()
@@ -167,6 +166,12 @@ public class Tile : MonoBehaviour
         }
         LevelManager.Instance.currentName = _tileName;
         selectedOutlineImage.gameObject.SetActive(true);
+
+        if (_homeOnTile != null || _owner != null)
+        {
+            _owner.AnimSelect();
+        }
+        
         if (unitOnTile != null)
         {
             _isSelected = true;
@@ -427,7 +432,7 @@ public class Tile : MonoBehaviour
         if(unitOnTile == null || fog.activeSelf) 
             return;
         redTargetImage.gameObject.SetActive(true);
-        if (unitOnTile.CheckForKill(unit.GetDmg()))
+        if (unitOnTile.CheckForKill(unit.GetDmg(unit)))
         {
             unitOnTile.SweatingAnimationEnable();
         }

@@ -9468,7 +9468,7 @@ GameObject:
   - component: {fileID: 3651845055656872752}
   - component: {fileID: 1301207495849958010}
   m_Layer: 5
-  m_Name: Head (1)
+  m_Name: Cat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23814,7 +23814,6 @@ MonoBehaviour:
   - {fileID: 3088575608290943641}
   - {fileID: 6934971098145890614}
   - {fileID: 6448849996934346606}
-  - {fileID: 3651845055656872752}
   - {fileID: 9055098557185806142}
   - {fileID: 8691563997259398098}
   - {fileID: 3222239369224242265}
