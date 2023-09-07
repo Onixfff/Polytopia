@@ -166,6 +166,12 @@ public class Tile : MonoBehaviour
         }
         LevelManager.Instance.currentName = _tileName;
         selectedOutlineImage.gameObject.SetActive(true);
+
+        if (_homeOnTile != null || _owner != null)
+        {
+            _owner.AnimSelect();
+        }
+        
         if (unitOnTile != null)
         {
             _isSelected = true;

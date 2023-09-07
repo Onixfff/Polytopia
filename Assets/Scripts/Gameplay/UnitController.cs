@@ -994,8 +994,8 @@ public class UnitController : MonoBehaviour
     }
     
     [SerializeField] private AnimationCurve unitSelectAnimationCurve;
-    [SerializeField] private float unitSelectAnimHeight = 0.5f;
-    [SerializeField] private float unitSelectAnimTime = 0.4f;
+    [SerializeField] private float unitSelectAnimHeight = 20f;
+    [SerializeField] private float unitSelectAnimTime = 0.2f;
     private Tween _selectJump;
 
     

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Gameplay.SO;
 using NaughtyAttributes;
 using UnityEngine;
@@ -638,6 +639,27 @@ public class Home : MonoBehaviour
             _unitList.Remove(unit);
             ChangeUnitBlock();
         }
+    }
+
+    #endregion
+
+    #region Anim
+    
+    [SerializeField] private AnimationCurve unitSelectAnimationCurve;
+    [SerializeField] private float unitSelectAnimHeight = 20f;
+    [SerializeField] private float unitSelectAnimTime = 0.2f;
+    
+    private Tween _selectJump;
+    public void AnimSelect()
+    {
+        if(_selectJump != null) return;
+        
+        _selectJump = homeTile.transform.DOLocalMoveY(homeTile.transform.localPosition.y + unitSelectAnimHeight, unitSelectAnimTime).SetEase(unitSelectAnimationCurve).OnComplete((
+            () =>
+            {
+                _selectJump.Kill();
+                _selectJump = null;
+            }));
     }
 
     #endregion
