@@ -474,6 +474,7 @@ public class UnitController : MonoBehaviour
             if(gameObject.activeSelf)
                 BoardController.Instance.TryMoveTo(rectTransform);
             var board = LevelManager.Instance.gameBoardWindow;
+            var gameplayWindow = LevelManager.Instance.gameplayWindow;
             var targets = board.GetCloseTile(occupiedTile, Mathf.Max(unitInfo.moveRad, unitInfo.rad) + 1);
             foreach (var tile in targets)
             {
@@ -508,8 +509,15 @@ public class UnitController : MonoBehaviour
             
             if (occupiedTile.GetHomeOnTile() != null && (occupiedTile.GetHomeOnTile().owner == null || occupiedTile.GetHomeOnTile().owner != _owner.owner))
             {
-                if(_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
+                if (_owner.owner.civilisationInfo.controlType != CivilisationInfo.ControlType.AI)
+                {
                     occupiedTile.GetHomeOnTile().ShowOccupyButton();
+                    gameplayWindow.ShowCaptureHomeNextTurnAlert();
+                }
+                else if(occupiedTile.GetHomeOnTile().owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+                {
+                    gameplayWindow.ShowYourHomeIsCaptureAlert();
+                }
             }
             if (occupiedTile.isHasRuins)
             {

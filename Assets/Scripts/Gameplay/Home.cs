@@ -458,7 +458,7 @@ public class Home : MonoBehaviour
             RemoveUnit(unit);
         }
 
-
+        var gameplayWindow = LevelManager.Instance.gameplayWindow;
         if (owner != null)
         {
             owner.RemoveHome(this, _unitList);
@@ -471,6 +471,10 @@ public class Home : MonoBehaviour
         Init(homeTile.unitOnTile.GetOwner().owner, homeTile);
         homeTile.unitOnTile.SetOwner(this);
         AddUnit(homeTile.unitOnTile);
+        if (owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
+        {
+            gameplayWindow.ShowCaptureHomeAlert();
+        }
     }
 
     public void SetOwner(CivilisationController controller)

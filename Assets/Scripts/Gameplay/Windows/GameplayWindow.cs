@@ -27,12 +27,7 @@ public class GameplayWindow : BaseWindow
         Monument,
         Road
     }
-    #region Alert
-    public AlertWindow alertWindow;
-    
-    [SerializeField] private GameObject turnEnd;
-    [SerializeField] private GameObject turnBegin;
-    #endregion
+   
     #region UpBar
     [SerializeField] private TextMeshProUGUI currentTurnUGUI;
     [SerializeField] private TextMeshProUGUI currentIncomeUGUI;
@@ -368,8 +363,7 @@ public class GameplayWindow : BaseWindow
                     unitButtons[type].onClick.RemoveAllListeners();
                     unitButtons[type].onClick.AddListener((() =>
                     {
-                        unit.DisbandTheSquad();
-                        HideDownBar();
+                        ShowDisbandConfirmAlert(unit);
                     }));
                     break;
                 case 2:
@@ -530,7 +524,7 @@ public class GameplayWindow : BaseWindow
     {
         //Debug.Log("TurnBegin");
         BlockInput(false);
-        ShowTurnBegin();
+        ShowTurnBeginAlert();
         if (GameManager.Instance.gameMode == GameManager.GameMode.Classic)
         {
             currentTurnUGUI.text = LevelManager.Instance.currentTurn + "/30";
@@ -545,7 +539,7 @@ public class GameplayWindow : BaseWindow
     {
         //Debug.Log("TurnEnd");
         BlockInput(true);
-        ShowTurnEnd();
+        ShowTurnEndAlert();
         HideDownBar();
     }
 
@@ -556,22 +550,111 @@ public class GameplayWindow : BaseWindow
         currentPointUGUI.text = LevelManager.Instance.gameBoardWindow.playerCiv.Point.ToString();
     }
 
-    private void ShowTurnEnd()
+    #region Alert
+    
+    public AlertWindow alertWindow;
+    
+    [SerializeField] private GameObject turnEnd;
+    [SerializeField] private GameObject turnBegin;
+    
+    [SerializeField] private GameObject captureHomeNextTurn;
+    [SerializeField] private GameObject captureHome;
+    [SerializeField] private GameObject yourHomeIsCapture;
+    
+    [SerializeField] private GameObject disbandConfirm;
+    [SerializeField] private GameObject findNewCiv;
+    [SerializeField] private GameObject capitalGainPopulation;
+    [SerializeField] private GameObject enemyOccupyIsCapital;
+    
+    private void ShowTurnEndAlert()
     {
         if (turnEnd != null) turnEnd.SetActive(true);
     }
 
-    private void ShowTurnBegin()
+    private void ShowTurnBeginAlert()
     {
-        turnEnd.SetActive(false);
+        CloseAlertWindow(turnEnd, 0);
         turnBegin.SetActive(true);
-        var inVal = 0;
-        DOTween.To(() => inVal, x=> inVal = x, 1, 0.4f).OnComplete(() =>
+        CloseAlertWindow(turnBegin, 0.4f);
+    }
+    
+    public void ShowCaptureHomeNextTurnAlert()
+    {
+        OpenAlertWindow(captureHomeNextTurn, 1f);
+    }
+    
+    public void ShowCaptureHomeAlert()
+    {
+        OpenAlertWindow(captureHome, 1f);
+    }
+    
+    public void ShowYourHomeIsCaptureAlert()
+    {
+        OpenAlertWindow(yourHomeIsCapture, 1f);
+    }
+    
+    public void ShowDisbandConfirmAlert(UnitController unit)
+    {
+        var a = OpenAlertWindow(disbandConfirm);
+        a[0].AddListener((() =>
         {
-            turnBegin.SetActive(false);
+            unit.DisbandTheSquad();
+            HideDownBar();
+        }));
+        a[1].AddListener((() =>
+        {
+            CloseAlertWindow(disbandConfirm, 0);
+            HideDownBar();
+        }));
+    }
+    
+    public void ShowFindNewCivAlert()
+    {
+        OpenAlertWindow(findNewCiv);
+    }
+    
+    public void ShowCapitalGainPopulationAlert()
+    {
+        OpenAlertWindow(capitalGainPopulation)[0].AddListener((() =>
+        {
+            _playerCiv.capitalHome.AddFood(3);
+        }));
+    }
+    
+    public void ShowEnemyOccupyIsCapitalAlert()
+    {
+        OpenAlertWindow(enemyOccupyIsCapital);
+    }
+    
+    private List<Button.ButtonClickedEvent> OpenAlertWindow(GameObject window, float time = 0f)
+    {
+        window.SetActive(true);
+        var buttons = window.GetComponentsInChildren<Button>();
+        if(time != 0)
+            CloseAlertWindow(window, time);
+        var buts = new List<Button.ButtonClickedEvent>();
+        foreach (var button in buttons)
+        {
+            buts.Add(button.onClick);
+        }
+
+        return buts;
+    }
+
+    private void CloseAlertWindow(GameObject window, float time)
+    {
+        var button = window.GetComponentInChildren<Button>();
+        if (button != null) 
+            button.onClick.RemoveAllListeners();
+        var inVal = 0;
+        DOTween.To(() => inVal, x=> inVal = x, 1, time).OnComplete(() =>
+        {
+            window.SetActive(false);
         });
     }
     
+    #endregion
+
     private void HideDownBar()
     {
         if (downBar != null) downBar.SetActive(false);

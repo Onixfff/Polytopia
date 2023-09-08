@@ -997,7 +997,6 @@ public class Tile : MonoBehaviour
 
                     if (rand == 2)
                     {
-                        unitOnTile.GetOwner().owner.capitalHome.AddFood(3);
                         return;
                     }
                 }
