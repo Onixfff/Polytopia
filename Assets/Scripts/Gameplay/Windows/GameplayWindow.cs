@@ -451,7 +451,7 @@ public class GameplayWindow : BaseWindow
         LevelManager.Instance.OnTurnEnd += TurnEnd;
 
         LevelManager.Instance.OnTurnBegin += TurnBegin;
-
+        TurnBegin();
         LevelManager.Instance.OnObjectSelect += SelectEvent;
         _generateSeq = DOTween.Sequence();
         var inVal = 0f;
@@ -531,7 +531,14 @@ public class GameplayWindow : BaseWindow
         //Debug.Log("TurnBegin");
         BlockInput(false);
         ShowTurnBegin();
-        currentTurnUGUI.text = "Ход: " + LevelManager.Instance.currentTurn;
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Classic)
+        {
+            currentTurnUGUI.text = LevelManager.Instance.currentTurn + "/30";
+        }
+        else
+        {
+            currentTurnUGUI.text = LevelManager.Instance.currentTurn.ToString();
+        }
     }
     
     private void TurnEnd()

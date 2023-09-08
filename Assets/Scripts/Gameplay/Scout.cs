@@ -12,7 +12,7 @@ public class Scout : MonoBehaviour
     
     public void StartExploring(Home home, Tile t)
     {
-        var anchoredPosition = home.GetComponent<RectTransform>().anchoredPosition;
+        rectTransform.anchoredPosition = t.GetRectTransform().anchoredPosition;
         Circle(t, 0);
 
         void Circle(Tile startTile, int index)
@@ -22,6 +22,7 @@ public class Scout : MonoBehaviour
                 Destroy(gameObject);
                 return;
             }
+            
             var closeTile = LevelManager.Instance.gameBoardWindow.GetCloseTile(startTile, 4);
             closeTile.RemoveAll(tile1 => tile1.tileType == Tile.TileType.Water && !home.owner.technologies.Contains(TechInfo.Technology.Sailing));
             closeTile.RemoveAll(tile1 => tile1.tileType is Tile.TileType.DeepWater && !home.owner.technologies.Contains(TechInfo.Technology.Navigation));

@@ -473,11 +473,17 @@ public class UnitController : MonoBehaviour
         {
             if(gameObject.activeSelf)
                 BoardController.Instance.TryMoveTo(rectTransform);
-
+            var board = LevelManager.Instance.gameBoardWindow;
+            var targets = board.GetCloseTile(occupiedTile, Mathf.Max(unitInfo.moveRad, unitInfo.rad) + 1);
+            foreach (var tile in targets)
+            {
+                tile.HideTargets();
+            }
+            
             var addedRad = 0;
             if (occupiedTile.isHasMountain)
                 addedRad = 1;
-            var closeTiles = LevelManager.Instance.gameBoardWindow.GetCloseTile(to, 1 + addedRad);
+            var closeTiles = board.GetCloseTile(to, 1 + addedRad);
 
             switch (GetDefenseBonus())
             {
@@ -542,7 +548,6 @@ public class UnitController : MonoBehaviour
             {
                 if(_attackThisTurn == 0)
                     return;
-                var board = LevelManager.Instance.gameBoardWindow;
                 var closeTile = board.GetCloseTile(occupiedTile, unitInfo.rad);
                 closeTile.RemoveAll(tile => tile.unitOnTile == null);
                 closeTile.RemoveAll(tile => tile.unitOnTile._owner.owner == null);

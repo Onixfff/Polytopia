@@ -93,4 +93,36 @@ public class LevelManager : SingletonPersistent<LevelManager>
         a.ShowWindow();
         a.OnTop();
     }
+
+    private void Start()
+    {
+        OnTurnEnd += CheckWin;
+    }
+
+    private void CheckWin()
+    {
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Classic)
+        {
+            if (currentTurn >= 30)
+            {
+                var maxPoint = 0;
+                var winner = _civilisationControllers[0];
+                foreach (var civilisationController in _civilisationControllers)
+                {
+                    if (civilisationController.Point > maxPoint)
+                    {
+                        maxPoint = civilisationController.Point;
+                        winner = civilisationController;
+                    }
+                }
+
+                foreach (var civilisationController in _civilisationControllers)
+                {
+                    if(civilisationController == winner)
+                        continue;
+                    RemoveCiv(civilisationController);
+                }
+            }
+        }
+    }
 }

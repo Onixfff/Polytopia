@@ -466,6 +466,7 @@ public class Home : MonoBehaviour
         
         homeType = HomeType.City;
         homeTile.unitOnTile.GetOwner().RemoveUnit(homeTile.unitOnTile);
+        homeTile.unitOnTile.DisableUnit();
         HideOccupyButton();
         Init(homeTile.unitOnTile.GetOwner().owner, homeTile);
         homeTile.unitOnTile.SetOwner(this);

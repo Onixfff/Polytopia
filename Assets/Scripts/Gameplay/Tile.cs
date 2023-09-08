@@ -201,10 +201,10 @@ public class Tile : MonoBehaviour
             ruinButton.gameObject.SetActive(false);
         }
         
-        if (currO == null || currO.TryGetComponent(out Tile tile))
+        /*if (currO == null || currO.TryGetComponent(out Tile tile))
         {
             HideTargetsTime();
-        }
+        }*/
         
         if(!_isSelected && !_isUnitSelected && !_isHomeSelected) 
             return;
@@ -526,12 +526,8 @@ public class Tile : MonoBehaviour
 
     public void HideTargetsTime()
     {
-        var inValY = 0;
-        _timeTargetTween = DOTween.To(() => inValY, x => inValY = x, 0, 0.01f).OnComplete((() =>
-        {
-            blueTargetImage.gameObject.SetActive(false);
-            redTargetImage.gameObject.SetActive(false);   
-        }));
+        blueTargetImage.gameObject.SetActive(false);
+        redTargetImage.gameObject.SetActive(false);   
     }
     
     public void BuyTileTech(int index, CivilisationInfo.ControlType controlType)
@@ -990,6 +986,7 @@ public class Tile : MonoBehaviour
         ruinsTileImage.enabled = false;
         ruinsTileImage.gameObject.SetActive(false);
         isHasRuins = false;
+        unitOnTile.DisableUnit();
         for (var i = 0; i < 30; i++)
         {
             var rand = Random.Range(0, 6);
