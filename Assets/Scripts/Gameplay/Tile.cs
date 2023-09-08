@@ -72,7 +72,7 @@ public class Tile : MonoBehaviour
 
     public float GetGroundDefense()
     {
-        var groundDefense = 0f;
+        var groundDefense = 1f;
         if (_homeOnTile != null)
         {
             groundDefense = 1.5f;
@@ -80,7 +80,7 @@ public class Tile : MonoBehaviour
                 groundDefense = 4;
         }
         if (isHasMountain)
-            groundDefense = 1;
+            groundDefense = 1.5f;
         if (unitOnTile != null)
         {
             if (unitOnTile.GetOwner().owner.technologies.Contains(TechInfo.Technology.Aqua) && (tileType == TileType.Water || tileType == TileType.DeepWater))

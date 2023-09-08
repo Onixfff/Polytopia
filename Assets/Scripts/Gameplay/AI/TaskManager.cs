@@ -162,32 +162,6 @@ public class TaskManager : MonoBehaviour
             case BaseTask.TaskType.Exploring:
                 rightUnits.AddRange(units.Where(unit => board.GetCloseTile(unit.occupiedTile, 3).Any(tile => civilisationController.GetTileInExploreList().Contains(tile))));
                 break;
-            case BaseTask.TaskType.MoveToPoint:
-                if(pointsOfInteresting.Count == 0)
-                    return rightUnits;
-
-                foreach (var unit in units)
-                {
-                    foreach (var point in pointsOfInteresting)
-                    {
-                        if (board.GetCloseTile(unit.occupiedTile, 1).Contains(board.GetTile(point)))
-                        {
-                            if(!rightUnits.Contains(unit))
-                                rightUnits.Add(unit);
-                        }
-                    }
-                    
-                    if(unit.aiTaskName == "")
-                        if(!rightUnits.Contains(unit))
-                            rightUnits.Add(unit);
-                    
-                    if(unit.aiTaskName == BaseTask.TaskType.MoveToPoint.ToString())
-                        if(!rightUnits.Contains(unit))
-                            rightUnits.Add(unit);
-                   
-                }
-                
-                break;
         }
 
         return rightUnits;

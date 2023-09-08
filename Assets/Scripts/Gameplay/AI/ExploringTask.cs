@@ -56,7 +56,7 @@ public class ExploringTask : BaseTask
     private Tween ExploreCloseTile(UnitController unit)
     {
         _exploreSeq = DOTween.Sequence();
-        var tile = FindPath(unit);
+        var tile = FindPathToExplore(unit);
         var dur = 0f;
         if (unit.occupiedTile.isOpened || tile.isOpened)
             dur = 0.2f;
@@ -71,7 +71,7 @@ public class ExploringTask : BaseTask
         return _exploreSeq;
     }
 
-    private Tile FindPath(UnitController unit)
+    private Tile FindPathToExplore(UnitController unit)
     {
         var board = LevelManager.Instance.gameBoardWindow;
         var allTiles = board.GetAllTile();
@@ -111,13 +111,89 @@ public class ExploringTask : BaseTask
                 path = findPath;
             }
         }
-        
+
         if (path.Count == 0 || !allTiles[path[0]].IsTileFree())
-            return unit.occupiedTile;
+            return FindPathToPoint(unit);
+        
+        if (unit.GetUnitInfo().moveRad == 2)
+        {
+            if (path.Count < 2 || !allTiles[path[1]].IsTileFree())
+                return allTiles[path[0]];
+        
+            return allTiles[path[1]];
+        }
+        
+        if (unit.GetUnitInfo().moveRad == 3)
+        {
+            if (path.Count < 2 || !allTiles[path[1]].IsTileFree())
+                return allTiles[path[0]];
+            
+            if (path.Count < 3 || !allTiles[path[2]].IsTileFree())
+                return allTiles[path[1]];
+        
+            return allTiles[path[2]];
+        }
         
         return allTiles[path[0]];
     }
 
+    private Tile FindPathToPoint(UnitController unit)
+    {
+        var board = LevelManager.Instance.gameBoardWindow;
+        var allTiles = board.GetAllTile();
+        var points = TaskManager.pointsOfInteresting;
+        var path = new List<Vector2Int>();
+        
+        foreach (var point in points)
+        {
+            var findPath = AStarAlgorithm.FindPath(unit.occupiedTile.pos, point, unit);
+            if(findPath == null)
+                continue;
+            if(findPath.Count > 3)
+                continue;
+            
+            if (path.Count == 0)
+                path = findPath;
+
+            if (path.Count < findPath.Count)
+            {
+                path = findPath;
+            }
+        }
+        
+        if (path.Count == 0 || !allTiles[path[0]].IsTileFree())
+            return GoToRandomTile(unit);
+        
+        return allTiles[path[0]];
+    }
+
+    private Tile GoToRandomTile(UnitController unit)
+    {
+        var board = LevelManager.Instance.gameBoardWindow;
+        var tiles = board.GetCloseTile(unit.occupiedTile, unit.GetUnitInfo().moveRad);
+
+        foreach (var tile in tiles)
+        {
+            if(!tile.IsTileFree() && tile.unitOnTile.GetOwner().owner == unit.GetOwner().owner)
+                continue;
+            if(!tile.IsTileFree() && tile.unitOnTile.GetOwner().owner.CheckAlly(unit.GetOwner().owner))
+                continue;
+            if(tile.GetHomeOnTile() != null && tile.GetHomeOnTile().owner != null && tile.GetHomeOnTile().owner.CheckAlly(unit.GetOwner().owner))
+                continue;
+            if(tile.isHasMountain && !unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain))
+                continue;
+            if(tile.tileType == Tile.TileType.Water && (!unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float) || !tile.IsTileHasPort()))
+                continue;
+            if(tile.tileType == Tile.TileType.DeepWater && !unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float))
+                continue;
+
+            return tile;
+        }
+
+        return unit.occupiedTile;
+    }
+
+    
     private bool CheckInterestingPlace()
     {
         foreach (var unit in UnitsAssignedToTheTask)

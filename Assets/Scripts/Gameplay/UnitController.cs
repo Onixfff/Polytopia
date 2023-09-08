@@ -64,7 +64,6 @@ public class UnitController : MonoBehaviour
         SetSweatPos();
         _moveThisTurn = 0;
         _attackThisTurn = 0;
-        DisableUnit();
         transform.SetSiblingIndex(transform.parent.childCount);
         OccupyTile(tile);
         var anchorPos = occupiedTile.GetComponent<RectTransform>().anchoredPosition;
@@ -80,6 +79,7 @@ public class UnitController : MonoBehaviour
         
         _hp = unitInfo.hp;
         unitHpTMPro.text = _hp.ToString();
+        DisableUnit();
         
         if(owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI && !occupiedTile.isOpened) 
             gameObject.SetActive(false);
@@ -106,6 +106,8 @@ public class UnitController : MonoBehaviour
     
     public void DisableUnit()
     {
+        if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI)
+            return;
         _isCanSelected = false;
         foreach (var visual in unitVisual)
         {
@@ -130,17 +132,31 @@ public class UnitController : MonoBehaviour
     public void TakeDamage(UnitController dealer, int dmg)
     {
         _hp -= dmg;
+        unitHpTMPro.text = _hp.ToString();
         if (_hp <= 0)
         {
-            if (dealer != null)
+            DisableUnit();
+            foreach (var visual in unitVisual)
             {
-                dealer.AddKillInCount();
+                visual.color = new Color(0, 0, 0, 0);
             }
-
-            KillUnit();
+            foreach (var visual in unitBackGrounds)
+            {
+                visual.color = new Color(0, 0, 0, 0);
+            }
         }
-        
-        unitHpTMPro.text = _hp.ToString();
+        GetDamageAnim(dmg).OnComplete((() =>
+        {
+            if (_hp <= 0)
+            {
+                if (dealer != null)
+                {
+                    dealer.AddKillInCount();
+                }
+
+                KillUnit();
+            }
+        }));
     }
 
     public float GetHp()
@@ -328,19 +344,15 @@ public class UnitController : MonoBehaviour
         var defenseForce = unitToAttack.unitInfo.def * (unitToAttack._hp / unitToAttack.unitInfo.hp) * unitToAttack.GetDefenseBonus();
         var totalDamage = attackForce + defenseForce;
         var attackResult = Mathf.RoundToInt((attackForce / totalDamage) * unitInfo.dmg * 4.5f); 
-        var defenseResult = Mathf.RoundToInt((defenseForce / totalDamage) * unitToAttack.unitInfo.def * 4.5f);
         return attackResult;
     }
     
     public int GetDefDmg(UnitController unitToAttack)
     {
-        if (unitInfo.dmg == 0)
-            return 0;
-        var attackForce = unitInfo.dmg * (_hp / unitInfo.hp);
-        var defenseForce = unitToAttack.unitInfo.def * (unitToAttack._hp / unitToAttack.unitInfo.hp) * unitToAttack.GetDefenseBonus();
+        var attackForce = unitToAttack.unitInfo.dmg * (unitToAttack._hp / unitToAttack.unitInfo.hp);
+        var defenseForce = unitInfo.def * (_hp / unitInfo.hp) * GetDefenseBonus();
         var totalDamage = attackForce + defenseForce;
-        var attackResult = Mathf.RoundToInt((attackForce / totalDamage) * unitInfo.dmg * 4.5f); 
-        var defenseResult = Mathf.RoundToInt((defenseForce / totalDamage) * unitToAttack.unitInfo.def * 4.5f);
+        var defenseResult = Mathf.RoundToInt((defenseForce / totalDamage) * unitInfo.def * 4.5f);
         return defenseResult;
     }
     
@@ -469,15 +481,15 @@ public class UnitController : MonoBehaviour
 
             switch (GetDefenseBonus())
             {
-                case 0:
+                case 1:
                     hpImage.gameObject.SetActive(false);
                     hpImage1.gameObject.SetActive(false);
                     break;
-                case 1:
+                case 1.5f:
                     hpImage.gameObject.SetActive(true);
                     hpImage1.gameObject.SetActive(false);
                     break;
-                case 2:
+                case 4:
                     hpImage.gameObject.SetActive(false);
                     hpImage1.gameObject.SetActive(true);
                     break;
@@ -557,6 +569,8 @@ public class UnitController : MonoBehaviour
         _attSeq.Kill();
         _counterstrikeSeq.Kill();
         _sweatDot.Kill();
+        _selectJump.Kill();
+        _damagePopupsSeq.Kill();
     }
 
     private void SelectEvent(GameObject pastO, GameObject currO)
@@ -731,13 +745,10 @@ public class UnitController : MonoBehaviour
             _moveThisTurn = 0;
             if(CheckAbility(UnitInfo.AbilityType.Persist)) 
                 _attackThisTurn = 1;
-            else
-            {
-                if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
-                    DisableUnit();
-            }
-            if(CheckAbility(UnitInfo.AbilityType.Escape))
+            else if (CheckAbility(UnitInfo.AbilityType.Escape))
+            { 
                 _moveThisTurn = 1;
+            }
             else
             {
                 if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.Player)
@@ -773,7 +784,7 @@ public class UnitController : MonoBehaviour
                 _counterstrikeSeq.Append(transform.DOLocalMove(unitToAttackPos, 0.1f).OnComplete((() =>
                 {
                     unitToAttack.TakeDamage(this, GetDefDmg(unitToAttack));
-                    _counterstrikeSeq.Join(transform.DOLocalMove(pos, 0.1f));
+                    transform.DOLocalMove(pos, 0.1f);
                 })));
             }
             else
@@ -903,7 +914,9 @@ public class UnitController : MonoBehaviour
             occupiedTile.unitOnTile = null;
         if (_owner != null) 
             _owner.RemoveUnit(this);
-        Destroy(gameObject);
+
+        SweatingAnimationDisable();
+        if (gameObject != null) Destroy(gameObject);
     }
     
     #region UnitAnim
@@ -923,7 +936,7 @@ public class UnitController : MonoBehaviour
         sv2 = sweats[2].localPosition;
     }
 
-    private Tween _sweatDot;
+    private Sequence _sweatDot;
     
     [Button()]
     public void SweatingAnimationEnable()
@@ -936,6 +949,13 @@ public class UnitController : MonoBehaviour
         SweatyAnimation();
         void SweatyAnimation()
         {
+            if (transform == null)
+            {
+                _sweatDot.Kill();
+                _sweatDot = null;
+                return;
+            }
+            
             if(!_isSweaty)
                 return;
 
@@ -963,7 +983,7 @@ public class UnitController : MonoBehaviour
 
                 sweat.localPosition = startPoses[i];
                 sweat.transform.localScale = Vector3.zero;
-                sweat.DOLocalMove(posVector, sweatyDur); // <------------------------------------------------------------ убери заЛупы
+                sweat.DOLocalMove(posVector, sweatyDur);
                 sweat.DOScale(normVector, sweatyDur / 2).OnComplete((() =>
                 {
                     sweat.DOScale(Vector3.zero, sweatyDur / 2);
@@ -971,9 +991,17 @@ public class UnitController : MonoBehaviour
             }
             
             
+            if(_sweatDot == null)
+                return;
             var inVAl = 0f;
-            _sweatDot = DOTween.To(() => inVAl, x => x = inVAl, 1, sweatyDur + 0.1f).OnComplete((() =>
+            _sweatDot.Append(DOTween.To(() => inVAl, x => x = inVAl, 1, sweatyDur + 0.1f).OnComplete((() =>
             {
+                if (transform == null)
+                {
+                    _sweatDot.Kill();
+                    _sweatDot = null;
+                    return;
+                }
                 _sweatDot.Kill();
                 _sweatDot = null;
                     
@@ -983,7 +1011,7 @@ public class UnitController : MonoBehaviour
                 }
                 if(_isSweaty)
                     SweatyAnimation();
-            }));
+            })));
         }
     }
     
@@ -991,13 +1019,13 @@ public class UnitController : MonoBehaviour
     public void SweatingAnimationDisable()
     {
         _isSweaty = false;
+        _sweatDot.Kill();
     }
     
     [SerializeField] private AnimationCurve unitSelectAnimationCurve;
     [SerializeField] private float unitSelectAnimHeight = 20f;
     [SerializeField] private float unitSelectAnimTime = 0.2f;
     private Tween _selectJump;
-
     
     private void AnimSelect()
     {
@@ -1011,6 +1039,27 @@ public class UnitController : MonoBehaviour
             }));
     }
     
+    [SerializeField] private AnimationCurve unitDamageAnimationCurve;
+    [SerializeField] private TextMeshProUGUI damagePopupsTextPrefab;
+    
+    [SerializeField] private float unitDamagePopupsAnimHeight = 20f;
+    [SerializeField] private float unitDamagePopupsAnimTime = 0.2f;
+    private Sequence _damagePopupsSeq;
+
+    private Tween GetDamageAnim(int dmg)
+    {
+        _damagePopupsSeq = DOTween.Sequence();
+        var text = Instantiate(damagePopupsTextPrefab, transform);
+        text.text = dmg.ToString();
+        text.transform.position = headImage.transform.position;
+        _damagePopupsSeq.Append(text.transform.DOLocalMoveY(text.transform.position.y + unitDamagePopupsAnimHeight, unitDamagePopupsAnimTime).SetEase(unitDamageAnimationCurve).OnComplete((
+            () =>
+            {
+                Destroy(text.gameObject);
+            })));
+        return _damagePopupsSeq;
+    }
+
     #endregion
     
     public string aiName = "unit1";

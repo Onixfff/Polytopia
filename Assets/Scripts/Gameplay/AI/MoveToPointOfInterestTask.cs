@@ -33,7 +33,7 @@ public class MoveToPointOfInterestTask : BaseTask
             return;
         }
         TaskSeq = DOTween.Sequence();
-        TaskSeq.Join(MoveToNearbyPointOfInterest(units[i]));
+        //TaskSeq.Join(MoveToNearbyPointOfInterest(units[i]));
         TaskSeq.OnComplete((() =>
         {
             TaskSeq = null;
@@ -55,7 +55,7 @@ public class MoveToPointOfInterestTask : BaseTask
 
     }
 
-    private Tween MoveToNearbyPointOfInterest(UnitController unit)
+    /*private Tween MoveToNearbyPointOfInterest(UnitController unit)
     {
         _moveSeq = DOTween.Sequence();
 
@@ -71,33 +71,7 @@ public class MoveToPointOfInterestTask : BaseTask
         _moveSeq.Append(unit.MoveToTile(tile));
         
         return _moveSeq;
-    }
+    }*/
     
-    private Tile FindPath(UnitController unit)
-    {
-        var board = LevelManager.Instance.gameBoardWindow;
-        var allTiles = board.GetAllTile();
-        var points = TaskManager.pointsOfInteresting;
-        var path = new List<Vector2Int>();
-        
-        foreach (var point in points)
-        {
-            var findPath = AStarAlgorithm.FindPath(unit.occupiedTile.pos, point, unit);
-            if(findPath.Count > 3)
-                continue;
-            
-            if (path.Count == 0)
-                path = findPath;
-
-            if (path.Count < findPath.Count)
-            {
-                path = findPath;
-            }
-        }
-        
-        if (allTiles.Count == 0 || !allTiles[path[0]].IsTileFree())
-            return unit.occupiedTile;
-        
-        return allTiles[path[0]];
-    }
+    
 }

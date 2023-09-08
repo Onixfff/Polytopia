@@ -10,7 +10,6 @@ public class SendTroopsTask : BaseTask
 
     public override int CalculatePriority(List<UnitController> units)
     {
-        return -2;
         var isHaveEnemy = false;
         foreach (var unit in units)
         {
@@ -37,8 +36,6 @@ public class SendTroopsTask : BaseTask
 
     protected override void UnitAction(List<UnitController> units, int i)
     {
-        EndTask();
-        return;
         if (units.Count <= i)
         {
             EndTask();

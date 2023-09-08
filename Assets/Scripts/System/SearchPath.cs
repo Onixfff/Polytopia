@@ -64,7 +64,9 @@ public static class AStarAlgorithm
                             continue;
                         if(tiles[neighborPosition].isHasMountain && !unit.GetOwner().owner.technologies.Contains(TechInfo.Technology.Mountain))
                             continue;
-                        if(tiles[neighborPosition].tileType == Tile.TileType.Water && !unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float))
+                        if(tiles[neighborPosition].tileType == Tile.TileType.Water && (!unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float) || !tiles[neighborPosition].IsTileHasPort()))
+                            continue;
+                        if(tiles[neighborPosition].tileType == Tile.TileType.DeepWater && !unit.GetUnitInfo().abilityTypes.Contains(UnitInfo.AbilityType.Float))
                             continue;
                     }
                     else

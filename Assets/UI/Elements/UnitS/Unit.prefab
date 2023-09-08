@@ -135,9 +135,34 @@ MonoBehaviour:
     m_RotationOrder: 4
   unitSelectAnimHeight: 20
   unitSelectAnimTime: 0.2
+  unitDamageAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  damagePopupsTextPrefab: {fileID: 2149156698917819565, guid: a5ea791c1f12d444e94222a552362afd, type: 3}
+  unitDamagePopupsAnimHeight: 25
+  unitDamagePopupsAnimTime: 0.4
   aiName: unit1
-  aiHomeExploring: {fileID: 0}
-  aiFromTile: {fileID: 0}
 --- !u!1001 &3812576747203271972
 PrefabInstance:
   m_ObjectHideFlags: 0

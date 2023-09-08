@@ -41,6 +41,8 @@ public class AITechManager : Singleton<AITechManager>
                         availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.FreeSpirit:
+                    if(civTech.Count < 8)
+                        break;
                     if (civTech.Contains(TechInfo.Technology.Rider))
                         availableTech.Add(technology);
                     break;
@@ -57,6 +59,8 @@ public class AITechManager : Singleton<AITechManager>
                         availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Meditation:
+                    if(civTech.Count < 5)
+                        break;
                     if (civTech.Contains(TechInfo.Technology.Mountain))
                         availableTech.Add(technology);
                     break;
@@ -65,6 +69,8 @@ public class AITechManager : Singleton<AITechManager>
                         availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Whaling:
+                    if(civTech.Count < 8)
+                        break;
                     if (civTech.Contains(TechInfo.Technology.Fish))
                         availableTech.Add(technology);
                     break;
@@ -73,6 +79,8 @@ public class AITechManager : Singleton<AITechManager>
                         availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Forestry:
+                    if(civTech.Count < 8)
+                        break;
                     if (civTech.Contains(TechInfo.Technology.Hunt))
                         availableTech.Add(technology);
                     break;
@@ -85,6 +93,8 @@ public class AITechManager : Singleton<AITechManager>
                         availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Construction:
+                    if(civTech.Count < 8)
+                        break;
                     if (civTech.Contains(TechInfo.Technology.Farming))
                         availableTech.Add(technology);
                     break;
@@ -105,10 +115,14 @@ public class AITechManager : Singleton<AITechManager>
                         availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Aqua:
+                    if(civTech.Count < 8)
+                        break;
                     if (civTech.Contains(TechInfo.Technology.Whaling))
                         availableTech.Add(technology);
                     break;
                 case TechInfo.Technology.Spiritualism:
+                    if(civTech.Count < 8)
+                        break;
                     if (civTech.Contains(TechInfo.Technology.Archery))
                         availableTech.Add(technology);
                     break;
