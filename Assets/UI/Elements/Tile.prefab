@@ -1537,6 +1537,93 @@ MonoBehaviour:
   upLeft: {fileID: 8612590444181336277}
   getInfoButton: {fileID: 1561394890781274417}
   ruinButton: {fileID: 1810648055290631832}
+  fogAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.042451575
+      value: 0.24231924
+      inSlope: 0.1052111
+      outSlope: 0.1052111
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.24685588
+    - serializedVersion: 3
+      time: 0.0871783
+      value: 0.04795369
+      inSlope: -4.5206923
+      outSlope: -4.5206923
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.8504699
+    - serializedVersion: 3
+      time: 0.095981285
+      value: 0.0005468433
+      inSlope: -7.9059715
+      outSlope: -7.9059715
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.063013494
+      outWeight: 1
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fogParticleAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.002125604
+      value: 0.17225678
+      inSlope: -1.5216283
+      outSlope: -1.5216283
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.24760592
+    - serializedVersion: 3
+      time: 0.017877288
+      value: 0.12963454
+      inSlope: 0.1052111
+      outSlope: 0.1052111
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.24685588
+    - serializedVersion: 3
+      time: 0.04530747
+      value: 0.42182183
+      inSlope: 1.5120454
+      outSlope: 1.5120454
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.59665656
+    - serializedVersion: 3
+      time: 0.058749367
+      value: 0.43559304
+      inSlope: 1.4397001
+      outSlope: 1.4397001
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23759064
+      outWeight: 1
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fogPrefab: {fileID: 3873088433360140817, guid: 7cd27cab6f8e1f24da2c35349f58ec74, type: 3}
+  unitSelectAnimHeight: 15
+  unitSelectAnimTime: 0.3
   pos: {x: 0, y: 0}
   obstacle: 0
   gCost: Infinity
@@ -2358,7 +2445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

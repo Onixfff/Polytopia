@@ -136,34 +136,26 @@ public class Tile : MonoBehaviour
     {
         if (fog.activeSelf)
         {
+            AnimSelect();
             LevelManager.Instance.gameBoardWindow.DeselectAllTile();
+            foreach (var tiles in LevelManager.Instance.gameBoardWindow.GetAllTile())
+            {
+                tiles.Value.HideTargets();
+            }
             return;
         }
+        
         if (_isSelected || _isUnitSelected || _isHomeSelected)
         {
-            /*if (unitOnTile != null && _homeOnTile != null)
+            foreach (var tiles in LevelManager.Instance.gameBoardWindow.GetAllTile())
             {
-                if (_isUnitSelected)
-                {
-                    DeselectedUnitOnTile();
-                    _isSelected = true;
-                    _isHomeSelected = true;
-                    _homeOnTile.SelectHome();
-                    return;
-                }
-                if (_isHomeSelected)
-                {
-                    DeselectedHomeOnTile();
-                    _isSelected = true;
-                    _isUnitSelected = true;
-                    unitOnTile.SelectUnit();
-                    return;
-                }
-            }*/
+                tiles.Value.HideTargets();
+            }
             LevelManager.Instance.SelectObject(null);
             DeselectedTile();
             return;
         }
+        
         LevelManager.Instance.currentName = _tileName;
         selectedOutlineImage.gameObject.SetActive(true);
 
@@ -184,13 +176,21 @@ public class Tile : MonoBehaviour
             _isHomeSelected = true;
             LevelManager.Instance.SelectObject(gameObject);
             _homeOnTile.SelectHome();
+            foreach (var tiles in LevelManager.Instance.gameBoardWindow.GetAllTile())
+            {
+                tiles.Value.HideTargets();
+            }
         }
         else
         {
             _isSelected = true;
             LevelManager.Instance.SelectObject(gameObject);
+            foreach (var tiles in LevelManager.Instance.gameBoardWindow.GetAllTile())
+            {
+                tiles.Value.HideTargets();
+            }
         }
-
+        
         GetInfoTile();
     }
     
@@ -453,10 +453,6 @@ public class Tile : MonoBehaviour
     {
         blueTargetImage.gameObject.SetActive(false);
         redTargetImage.gameObject.SetActive(false);
-        if (unitOnTile != null)
-        {
-            //unitOnTile.SweatingAnimationDisable();
-        }
     }
     
     public bool IsTileFree()
@@ -524,12 +520,6 @@ public class Tile : MonoBehaviour
         _tileName = "Home";
     }
 
-    public void HideTargetsTime()
-    {
-        blueTargetImage.gameObject.SetActive(false);
-        redTargetImage.gameObject.SetActive(false);   
-    }
-    
     public void BuyTileTech(int index, CivilisationInfo.ControlType controlType)
     {
         if(_owner == null)
@@ -1034,6 +1024,33 @@ public class Tile : MonoBehaviour
                 }
             }
         }
+    }
+
+    [SerializeField] private AnimationCurve fogAnimationCurve;
+    [SerializeField] private AnimationCurve fogParticleAnimationCurve;
+    [SerializeField] private GameObject fogPrefab;
+    [SerializeField] private float unitSelectAnimHeight = 15f;
+    [SerializeField] private float unitSelectAnimTime = 0.2f;
+    
+    private Sequence _selectJumpSeq;
+    
+    private void AnimSelect()
+    {
+        if(_selectJumpSeq != null)
+            return;
+        _selectJumpSeq = DOTween.Sequence();
+        _selectJumpSeq.Append(transform.DOLocalMoveY(transform.localPosition.y - unitSelectAnimHeight, unitSelectAnimTime).SetEase(fogAnimationCurve));
+        var fogParticle = Instantiate(fogPrefab, fog.transform);
+        fogParticle.transform.position = fog.transform.position;
+        fogParticle.transform.localScale = new Vector3(0, 0, 0);
+        _selectJumpSeq.Join(fogParticle.transform.DOScale(new Vector3(1, 1, 1), unitSelectAnimTime / 2));
+        _selectJumpSeq.Join(fogParticle.transform.DOLocalMoveY(fogParticle.transform.localPosition.y + unitSelectAnimHeight * 10, unitSelectAnimTime).SetEase(fogParticleAnimationCurve));
+        _selectJumpSeq.AppendCallback((() =>
+        {
+            Destroy(fogParticle);
+            _selectJumpSeq.Kill();
+            _selectJumpSeq = null;
+        }));
     }
     
     #region ForA-star

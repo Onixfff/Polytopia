@@ -206,12 +206,12 @@ public class UnitController : MonoBehaviour
     
     public void SelectUnit()
     {
-        if(!_isCanSelected) return;
-
         LevelManager.Instance.SelectObject(gameObject);
+        AnimSelect();
+
+        if(!_isCanSelected) return;
         if(_owner.owner.civilisationInfo.controlType == CivilisationInfo.ControlType.AI) 
             return;
-        AnimSelect();
         var gameBoard = LevelManager.Instance.gameBoardWindow;
         var allTile = gameBoard.GetAllTile();
         var closeTilesForAttack = gameBoard.GetCloseTile(occupiedTile, unitInfo.rad);
@@ -671,6 +671,10 @@ public class UnitController : MonoBehaviour
 
     public Tween AttackUnitOnTile(UnitController unitToAttack)
     {
+        foreach (var tiles in LevelManager.Instance.gameBoardWindow.GetCloseTile(occupiedTile, 5))
+        {
+            tiles.HideTargets();
+        }
         _attSeq = DOTween.Sequence();
         if (unitToAttack._owner.owner == _owner.owner)
             return _attSeq;
