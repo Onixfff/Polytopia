@@ -145,7 +145,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      sactx-0-2048x2048-ETC2-Units-024238a2_0: -1245075502
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
